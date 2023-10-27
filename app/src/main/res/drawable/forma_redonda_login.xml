@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Agrega un elemento item para la imagen -->
+
+    <item>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle" >
+
+        <stroke android:width="2dp" android:color="@color/white"/>
+        <corners
+
+            android:radius="20dp" />
+
+
+
+
+
+    </shape>
+    </item>
+
+    <!-- Puedes agregar más elementos aquí
+    si lo deseas, co
+mo un color de fondo -->
+</layer-list>

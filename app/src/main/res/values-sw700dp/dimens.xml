@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="smallTablet">1dp</dimen>
+    <dimen name="paddingIcon">20dp</dimen>
+
+</resources>

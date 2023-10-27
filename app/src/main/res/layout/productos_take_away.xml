@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewTachonCantidad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="-2dp"
+            android:elevation="1dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/textTakeAwayCant"
+            app:layout_constraintEnd_toStartOf="@+id/textTakeAwayProductos"
+            app:layout_constraintStart_toStartOf="@+id/textTakeAwayCant"
+            app:layout_constraintTop_toTopOf="@+id/textTakeAwayCant"
+            app:srcCompat="@drawable/linea_tachar" />
+
+        <TextView
+            android:id="@+id/textTakeAwayCant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium_takeAway"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textTakeAwayPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium_takeAway"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.OrderSuperfast.TextViewTachable
+            android:id="@+id/textTakeAwayProductos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="15dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+
+            android:textSize="@dimen/text_size_medium_takeAway"
+
+            app:layout_constraintEnd_toStartOf="@+id/textTakeAwayPrecio"
+            app:layout_constraintStart_toEndOf="@+id/textTakeAwayCant"
+            app:layout_constraintTop_toTopOf="@id/textTakeAwayCant" />
+
+        <view
+            android:id="@+id/view25"
+            class="com.google.android.material.appbar.AppBarLayout"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/grisClaroSuave"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textTakeAwayProductos" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

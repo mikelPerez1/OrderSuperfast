@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Login</string>
+    <string name="botonTodos">TODOS</string>
+    <string name="botonPendiente">NUEVO</string>
+    <string name="botonAceptado">ACEPTADO</string>
+    <string name="botonListo">LISTO</string>
+    <string name="botonCancelado">CANCELADO</string>
+    <string name="actualizar">Actualizar pedidos</string>
+    <string name="volverADispositivos">Elegir dispositivo</string>
+    <string name="salir">SALIR</string>
+    <string name="productos">Productos</string>
+    <string name="opciones">Opciones</string>
+    <string name="dummy_button">dummy_button</string>
+    <string name="hello_blank_fragment">hello_blank_fragment</string>
+    <string name="dummy_content">dummy_content</string>
+    <string name="busqueda">Búsqueda</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="pedido">Pedido: </string>
+    <string name="guardarCambios">Guardar cambios</string>
+    <string name="cambiosGuardados">Cambios guardados</string>
+    <string name="toastCanceladp">No se puede cambiar el estado del pedido cancelado</string>
+
+    <string name="cambiarEstado">CAMBIAR ESTADO</string>
+    <string name="actualizarTiempo">CAMBIAR TIEMPO ESTIMADO</string>
+    <string name="telefono">Teléfono:</string>
+    <string name="cancelacion">Al cancelar se le reembolsa el importe completo del pedido al cliente. Por favor, selecciona el motivo de la cancelación:</string>
+    <string name="cancelarPedido">Cancelar pedido</string>
+
+    <string name="pedidoAceptadoHora">Aceptado </string>
+    <string name="tiempoAñadido">Tiempo añadido:</string>
+    <string name="horaEstimada">Tiempo estimado</string>
+    <string name="tiempoTranscurrido">Tiempo transcurrido</string>
+    <string name="cerrarSesion">¿Está seguro de que desea cerrar la sesión?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="cuentaIncorrecta">Usuario o contraseña incorrectos</string>
+
+
+    <string name="esp">Español</string>
+    <string name="en">Inglés</string>
+    <string name="fr">Francés</string>
+    <string name="port">Portugués</string>
+    <string name="germ">Alemán</string>
+    <string name="ajusteSonido">Sonido</string>
+    <string name="ajusteIdioma">Idioma</string>
+    <string name="fechaPedidoRecibido">Pedido recibido el</string>
+    <string name="pedidotxt">Pedido</string>
+    <string name="txtNotificación">¡Atención revisar pedido %1$s!</string>
+    <string name="tiempoExcedido">Tiempo excedido</string>
+    <string name="filtroOperativo">OPERATIVO</string>
+    <string name="localmode">Modo local:</string>
+    <string name="sonido">Sonido:</string>
+    <string name="idioma">Idioma:</string>
+
+    <string name="aceptar">ACEPTAR</string>
+    <string name="cancelar">CANCELAR</string>
+
+    <string name="listoCancelado">LISTO/CANCELADO</string>
+    <string name="pendienteAceptado">PENDIENTE/ACEPTADO</string>
+    <string name="cambiarSonido">Cambiar sonido</string>
+    <string name="elegirSonido">Selecciona el sonido que se va a reproducir cuando llegue un nuevo pedido</string>
+    <string name="vibracion">Vibración</string>
+    <string name="tono1">Sonido predeterminado 1</string>
+    <string name="tono2">Sonido predeterminado  2</string>
+    <string name="tono3">Sonido predeterminado  3</string>
+    <string name="tono4">Sonido predeterminado  4</string>
+    <string name="tono5">Sonido predeterminado  5</string>
+    <string name="sinSonido">Sin sonido</string>
+    <string name="elegirTono">Elige un sonido</string>
+    <string name="motivoCancelar1">Falta de ingredientes</string>
+    <string name="motivoCancelar2">Cocina saturada</string>
+    <string name="motivoCancelar3">Problemas en cocina</string>
+    <string name="invitado">Invitado</string>
+    <string name="devolucion">Devolución</string>
+    <string name="cantidadADevolver">Introduce la cantidad de dinero a devolver:</string>
+
+
+    <string-array name="arrayIdiomas">
+        <item>Elegir idioma</item>
+        <item>Español</item>
+        <item>Inglés</item>
+    </string-array>
+
+    <string-array name="arrayIdiomasSelect">
+        <item>Elegir idioma</item>
+        <item>es</item>
+        <item>en</item>
+    </string-array>
+    <string name="toastLanguage">Añade el idioma a la lista</string>
+    <string name="echarAtrasPedido">¿Te gustaría devolver el pedido al primer estado?</string>
+    <string name="atras">Atras</string>
+    <string name="faltaPagarTexto">faltan por pagar</string>
+    <string name="newTakeAway">Nuevo take away</string>
+    <string name="alertaTakeAway">Se está acercando el tiempo límite de un take away aceptado</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="dejarRecibirPedidos">Dejar de recibir pedidos</string>
+    <string name="desactivarPlato">Desactivar plato de la carta</string>
+    <string name="ventasHoy">Ver los pedidos de hoy</string>
+    <string name="impresoras">Impresoras</string>
+    <string name="Atras">Atrás</string>
+    <string name="impresorasGuardadas">Impresoras guardadas</string>
+    <string name="nombre">Nombre</string>
+    <string name="devolucionParcial">Parcial</string>
+    <string name="devolucionCompleta">Completa</string>
+    <string name="buscarImpresoras">Buscar impresoras</string>
+    <string name="maxRefundable">Cantidad máxima  reembolsable:</string>
+    <string name="yaDevuelto">"Cantidad reembolsada: "</string>
+    <string name="cantidadAReembolsar">Introduce la cantidad a reembolsar</string>
+    <string name="textoPendiente">Pendiente</string>
+    <string name="textoAceptado">Aceptado</string>
+    <string name="textoListo">Listo</string>
+    <string name="textoCancelado">Cancelado</string>
+    <string name="quieresDejarDeRecibirPedidos">¿Quieres dejar de recibir pedidos?</string>
+    <string name="aceptarPedidos">Aceptar pedidos</string>
+    <string name="volverARecibirPedidos">¿Quieres volver a recibir pedidos?</string>
+    <string name="textoPlato">Platos</string>
+    <string name="textoOpciones">Opciones</string>
+    <string name="textoConfirmar">Confirmar</string>
+    <string name="noInstruccionesEspeciales">No hay instrucciones especiales</string>
+    <string name="textoAnticipacionPedidosProgramados">anticipation of scheduled orders</string>
+    <string name="anticipacionPedidosProgramadosTexto">Ajustar temporizador de los pedidos programados</string>
+    <string name="explicacionAnticipacionPedidosProgramados">Cuando se realiza un pedido programado el cliente establece una hora de recogida. Este apartado le permite configurar cuantos minutos antes de la hora de recogida desea que se le avise del pedido.</string>
+    <string name="cliente">Cliente</string>
+    <string name="programado">Programado</string>
+    <string name="pedirYa">ASAP</string>
+    <string name="num_pedido">Nº pedido:</string>
+    <string name="textoGuardarContraseña">"¿Quiere guardar su usuario y contraseña?"</string>
+    <string name="textoEnReparto">Reparto</string>
+    <string name="textoElegirTiempoAnticipacionPedidos">Actualiza el tiempo de anticipación</string>
+    <string name="textoHoy">Hoy</string>
+    <string name="textoMañana">Mañana</string>
+    <string name="deliveryTimeText">Tiempo entrega: %s mins</string>
+    <string name="tiempoProducirComida">Tiempo comida: %s mins</string>
+    <string name="textPlatos">Platos</string>
+    <string name="textPlato">Plato</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="esconderElementos">Visibilidad de productos en carta</string>
+    <string name="mostrarPedidos">Selecciona los productos que quieres que se muestren de los pedidos</string>
+    <string name="llamar">Llamar</string>
+    <string name="textSelectLanguage">Configurar el lenguaje de la aplicación</string>
+    <string name="textDevolucionCompleta">Haz click en el siguiente botón para devolver el pedido</string>
+    <string name="reiniciarPedido">Reiniciar pedido</string>
+    <string name="recogida">Recoger</string>
+    <string name="textInstruccionesPedido">Instrucciones del pedido</string>
+    <string name="mostrarProductosOcultados">Visualizar los productos escondidos</string>
+    <string name="numero">Nº</string>
+    <string name="pedidoYaReembolsado">El pedido ya ha sido completamente reembolsado</string>
+    <string name="tipoDevolucion">Selecciona el tipo de devolución:</string>
+    <string name="textoRegistroPedidos">Registro de los pedidos</string>
+    <string name="explicacionProductosOcultos">Si la opción de mostrar productos ocultos está desactivada, los productos que estén desactivados no se mostraran en los pedidos. Si un pedido solo contiene productos que has desactivado, este pedido no aparecerá en la lista.\n\nPor otro lado, si la opción de mostrar pedidos ocultos está activada, los productos que tengas desactivados se mostrarán al final de la lista y se destacarán con un color grisáceo para diferenciarlos del resto de los productos activados.</string>
+    <string name="tituloProductosOcultos">Productos visibles en dispositivo</string>
+    <string name="reiniciarPedidoTexto">¿Está seguro de que quiere reiniciar el pedido?</string>
+    <string name="mutearSonido">Silenciar sonido</string>
+    <string name="textoVibracion">Vibración</string>
+    <string name="textoPlaySonido">Reproducir sonido</string>
+    <string name="txtNuevoPedido">Nuevo pedido</string>
+    <string name="txtSalir">¿Salir?</string>
+    <string name="txtCerrarSesion">Si continúa se cerrará la sesión.</string>
+    <string name="txtIdiomas">Idiomas</string>
+    <string name="txtReembolsoCompleto">Se reembolsara todo el dinero del pedido al cliente</string>
+    <string name="txtExplicacionOcultarElementosMenu">Aquellos elementos pertenecientes a una opción que se desactiven no se mostraran al cliente al observar la carta.</string>
+    <string name="txtRecepcionPedidos">Recepción de pedidos</string>
+    <string name="txtProductosVisibles">Es posible que dos dispositivos reciban el mismo pedido. Para ello se ha creado esta opción.</string>
+    <string name="txtConfiguracion">Configuración</string>
+    <string name="txtTiempoTemporizador">Seleccione el tiempo previo a la recogida que desea (en minutos):</string>
+    <string name="txtPedidosPermitir">Permitir</string>
+    <string name="txtPedidosDenegar">Denegar</string>
+    <string name="txtExplicacionRecepcionPedidos">Selecciona si se desea recibir pedidos take away. En caso de desactivarlo no se le dará la posibilidad de realizar dicho tipo de pedidos a los clientes.</string>
+    <string name="explicacionProductosVisibles">Supongamos que tenemos dos dispositivos que reciben los pedidos de una misma zona: uno para la barra y otro para la cocina.\n\nEn el caso del dispositivo de barra se esconderían todos los platos que conllevan preparación en cocina y se activaría la opción de visualizar los productos escondidos. De esta forma, al recibir un pedido que posea bebidas y comida, el camarero podrá observar que debe preparar las bebidas; y al ver que hay productos de cocina no finalizará el pedido ya que en cocina tardan más.\n\nEn el dispositivo de cocina se haría lo contrario; se esconderían los productos que no se preparan en cocina y se desactiva la opción de visualizar los productos escondidos. De esta forma, al recibir un pedido se observa únicamente los platos que corresponden a cocina. Encargándose también de modificar los estados del pedido.</string>
+    <string name="masInformacion">Más información</string>
+    <string name="txtVolver">Volver</string>
+    <string name="txtHistorialAcciones">Historial de acciones</string>
+    <string name="txtExpHistorialAcciones">(Registro con todas las acciones realizadas en el dispositivo)</string>
+    <string name="txtReiniciarPedido">Si continúa, el estado del pedido volverá a aparecer como nuevo.</string>
+    <string name="tituloPopupReiniciarEstado">Reiniciar estado del pedido</string>
+    <string name="toastDevolucion">Devolución exitosa</string>
+    <string name="txtErrorConexion">Error de Internet</string>
+    <string name="cancelationReason">Selecciona la razón de la cancelación</string>
+    <string name="cambiarElementosVisiblesDeLaCarta">Cambiar elementos visibles de la carta</string>
+
+
+</resources>

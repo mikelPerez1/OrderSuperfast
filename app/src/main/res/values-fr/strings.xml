@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Login</string>
+    <string name="botonTodos">TOUTES</string>
+    <string name="dummy_button">f</string>
+    <string name="hello_blank_fragment">f</string>
+    <string name="dummy_content">f</string>
+    <string name="botonPendiente">EN ATTENTE</string>
+    <string name="botonAceptado">ACCEPTÉ</string>
+    <string name="botonListo">PRÊT</string>
+    <string name="botonCancelado">ANNULÉ</string>
+    <string name="actualizar">Actualiser les commandes</string>
+    <string name="volverADispositivos">Choisir le dispositif</string>
+    <string name="salir">aller à</string>
+    <string name="productos">Produits:</string>
+    <string name="opciones">Options:</string>
+    <string name="busqueda">Recherche</string>
+    <string name="login">Connectez-vous</string>
+    <string name="pedido">Ordre:</string>
+    <string name="guardarCambios">Sauvegarder les changements</string>
+    <string name="cambiosGuardados">Modifications sauvegardées</string>
+    <string name="cambiarEstado">CHANGER DE STATUT</string>
+    <string name="actualizarTiempo">MODIFIER LE TEMPS ESTIMÉ</string>
+    <string name="telefono">Téléphone:</string>
+    <string name="cancelacion">Veuillez écrire la raison de l\'annulation.</string>
+    <string name="cancelarPedido">Annuler la commande</string>
+    <string name="pedidoAceptadoHora">Acceptée</string>
+    <string name="tiempoAñadido">Temps ajouté:</string>
+    <string name="horaEstimada">Temps estimé</string>
+    <string name="tiempoTranscurrido">Temps écoulé</string>
+    <string name="cerrarSesion">Vous êtes sûr de vouloir vous déconnecter?</string>
+    <string name="si">Oui</string>
+    <string name="no">Non</string>
+    <string name="toastCanceladp">Impossible de modifier le statut d\'un ordre annulé</string>
+    <string name="cuentaIncorrecta">Identifiant ou mot de passe incorrect</string>
+
+    <string name="esp">Espagnol</string>
+    <string name="en">Anglais</string>
+    <string name="fr">Français</string>
+    <string name="port">Portugais</string>
+    <string name="germ">Allemand</string>
+    <string name="ajusteSonido">Son:</string>
+    <string name="ajusteIdioma">Langue:</string>
+    <string name="fechaPedidoRecibido">Commande reçue le</string>
+    <string name="pedidotxt">Ordre</string>
+    <string name="txtNotificación">Attention à la commande de révision %1$s! </string>
+    <string name="tiempoExcedido">Temps dépassé</string>
+    <string name="filtroOperativo">OPERATIVE</string>
+
+    <string name="localmode">Local mode:</string>
+    <string name="sonido">Sound:</string>
+    <string name="idioma">Language:</string>
+
+    <string name="aceptar">ACCEPT</string>
+    <string name="cancelar">CANCEL</string>
+    <string name="listoCancelado">READY/CANCELLED</string>
+    <string name="pendienteAceptado">PENDING/ACCEPTED</string>
+    <string name="cambiarSonido">Change sound</string>
+    <string name="elegirSonido">Select the sound you want</string>
+    <string name="vibracion">Vibration</string>
+    <string name="tono1">Tone 1</string>
+    <string name="tono2">Tone 2</string>
+    <string name="tono3">Tone 3</string>
+    <string name="tono4">Tone 4</string>
+    <string name="tono5">Tone 5</string>
+    <string name="elegirTono">Choose a sound</string>
+    <string name="invitado">Guest</string>
+    <string name="motivoCancelar1">Not enough ingredients</string>
+    <string name="motivoCancelar2">Saturated kitchen</string>
+    <string name="motivoCancelar3">Try in a few minutes</string>
+    <string name="devolucion">Refund</string>
+    <string name="cantidadADevolver">Insert the amount of money to refund:</string>
+
+    <string-array name="arrayIdiomas">
+        <item>Choose language</item>
+        <item>Spanish</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="arrayIdiomasSelect">
+        <item>Elegir idioma</item>
+        <item>es</item>
+        <item>en</item>
+    </string-array>
+    <string name="toastLanguage">Add the language to the list</string>
+    <string name="echarAtrasPedido">Would you like to reset the order back to its first state?</string>
+    <string name="atras">Back</string>
+    <string name="faltaPagarTexto">pending to pay</string>
+    <string name="newTakeAway">New take away</string>
+    <string name="alertaTakeAway">An accepted takeaway is nearing it\'s programmed time</string>
+    <string name="cerrar">Close</string>
+    <string name="dejarRecibirPedidos">Stop receiving orders</string>
+    <string name="desactivarPlato">Deactivate dish</string>
+    <string name="ventasHoy">View todays sales</string>
+    <string name="impresoras">Printers</string>
+    <string name="Atras">Back</string>
+    <string name="impresorasGuardadas">Saved printers</string>
+    <string name="nombre">Name</string>
+    <string name="devolucionParcial">Partial refund</string>
+    <string name="devolucionCompleta">Complete refund</string>
+    <string name="buscarImpresoras">Search printers</string>
+    <string name="maxRefundable">Max amount refundable</string>
+    <string name="yaDevuelto">"Already refunded: "</string>
+    <string name="cantidadAReembolsar">Insert the amount you want to refund</string>
+    <string name="textoPendiente">Pending</string>
+    <string name="textoAceptado">Accepted</string>
+    <string name="textoListo">Ready</string>
+    <string name="textoCancelado">Cancelled</string>
+    <string name="quieresDejarDeRecibirPedidos">Do you want to stop receiving orders?</string>
+    <string name="aceptarPedidos">Accept orders</string>
+    <string name="volverARecibirPedidos">Do you want to receive orders again?</string>
+    <string name="textoPlato">Dishes</string>
+    <string name="textoOpciones">Options</string>
+    <string name="textoConfirmar">Confirm</string>
+    <string name="noInstruccionesEspeciales">There is not special instructions</string>
+    <string name="textoAnticipacionPedidosProgramados">anticipation of scheduled orders</string>
+    <string name="anticipacionPedidosProgramadosTexto">Anticipation of scheduled orders</string>
+    <string name="explicacionAnticipacionPedidosProgramados">The value of this parameter represents the anticipation with which scheduled orders are placed in advance.\nPriority will be given to scheduled orders over incoming orders.\nScheduled orders in the queue will be displayed in order, with a margin of %s minutes before the scheduled time.\nIf desired, you have the option to adjust this value.</string>
+    <string name="cliente">Client</string>
+    <string name="programado">Programmed</string>
+    <string name="pedirYa">Order now</string>
+    <string name="num_pedido">No. order:</string>
+    <string name="textoGuardarContraseña">"Do you want to save your username and password?  "</string>
+    <string name="textoEnReparto">Delivery</string>
+    <string name="textoElegirTiempoAnticipacionPedidos">Update anticipation time</string>
+    <string name="textoHoy">Today</string>
+    <string name="textoMañana">Tomorrow</string>
+    <string name="deliveryTimeText">Delivery time: %s</string>
+    <string name="tiempoProducirComida">Production time: %s</string>
+    <string name="textPlatos">Dish(es)</string>
+    <string name="textPlato">Dish</string>
+    <string name="ajustes">Settings</string>
+    <string name="esconderElementos">Hide elements from the menu</string>
+    <string name="mostrarPedidos">Select the products you want to be displayed from the orders</string>
+    <string name="llamar">Call</string>
+    <string name="textSelectLanguage">Select the application language</string>
+    <string name="textDevolucionCompleta">Click the following button to refund the order</string>
+    <string name="reiniciarPedido">Reset order</string>
+    <string name="recogida">Pick up</string>
+    <string name="textInstruccionesPedido">Order instructions</string>
+    <string name="mostrarProductosOcultados">Show hidden products?</string>
+    <string name="numero">No.</string>
+    <string name="pedidoYaReembolsado">The order has already been refunded</string>
+    <string name="tipoDevolucion">Refund type:</string>
+    <string name="textoRegistroPedidos">Record of the orders</string>
+    <string name="explicacionProductosOcultos">Si la opción de mostrar pedidos ocultos está desactivada, los productos que estén desactivados no se mostraran en los pedidos. Si un pedido solo contiene productos que has desactivado, este pedido no aparecerá en la lista.  Por otro lado, si la opción de mostrar pedidos ocultos está activada, los productos que tengas desactivados se mostrarán al final de la lista y se destacarán con un color grisáceo para diferenciarlos del resto de los productos activados.</string>
+    <string name="tituloProductosOcultos">Hidden products</string>
+    <string name="reiniciarPedidoTexto">Are you sure you want to reset the order?</string>
+    <string name="mutearSonido">Mute sound</string>
+    <string name="textoVibracion">Vibration</string>
+    <string name="textoPlaySonido">Play sound</string>
+    <string name="txtNuevoPedido">New order</string>
+    <string name="sinSonido">No sound</string>
+    <string name="txtSalir">Exit?</string>
+    <string name="txtCerrarSesion">If you continue, the session will be closed.</string>
+    <string name="txtIdiomas">Languajes</string>
+    <string name="txtReembolsoCompleto">All the money of the order will be refunded to the customer</string>
+    <string name="txtExplicacionOcultarElementosMenu">Those elements belonging to an option that are deactivated will not be shown to the customer when looking at the menu.</string>
+    <string name="txtRecepcionPedidos">"  Receiving orders"</string>
+    <string name="txtProductosVisibles">Two devices may receive the same request. This option has been created for this.</string>
+    <string name="txtConfiguracion">Configuration</string>
+    <string name="txtTiempoTemporizador">Select the pre-pickup time you want (in minutes):</string>
+    <string name="txtPedidosPermitir">Allow</string>
+    <string name="txtPedidosDenegar">Deny</string>
+    <string name="txtExplicacionRecepcionPedidos">Select if you want to receive take away orders. If you deactivate it, you will not give the possibility of making such orders to customers.</string>
+    <string name="explicacionProductosVisibles">Suppose we have two devices that receive orders from the same area; one for the bar and one for the kitchen.    In the case of the bar device, all the dishes that require preparation in the kitchen would be hidden and the option to display the hidden products would be activated. In this way, when receiving an order with drinks and food, the waiter will be able to see that he has to prepare the drinks; and when he sees that there are kitchen products, he will not finish the order as they take longer in the kitchen.    In the kitchen device, the opposite would be done; the products that are not prepared in the kitchen would be hidden and the option of displaying the hidden products would be deactivated. In this way, when an order is received, only the dishes that correspond to the kitchen are displayed. It is also responsible for modifying the status of the order.</string>
+    <string name="masInformacion">More information</string>
+    <string name="txtVolver">Return</string>
+    <string name="txtHistorialAcciones">Record of actions</string>
+    <string name="txtExpHistorialAcciones">(Record with all the actions carried out on the device)​</string>
+    <string name="txtReiniciarPedido">If you continue, the order status will reappear as new.</string>
+    <string name="tituloPopupReiniciarEstado">reset order status</string>
+    <string name="toastDevolucion">Successfully refunded</string>
+    <string name="txtErrorConexion">Error de conexión</string>
+    <string name="cancelationReason">Selecciona la razón de la cancelación</string>
+    <string name="cambiarElementosVisiblesDeLaCarta">Cambiar elementos visibles de la carta</string>
+
+</resources>

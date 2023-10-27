@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <view
+        android:id="@+id/viewOverlayDialog"
+        class="com.google.android.material.appbar.AppBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:cardBackgroundColor="#D1D1D1"
+        app:cardElevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.gridlayout.widget.GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            app:alignmentMode="alignMargins"
+            app:columnCount="4"
+            app:orientation="horizontal"
+            app:rowCount="4">
+
+            <Button
+                android:id="@+id/boton5mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="1 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="0"
+                app:layout_row="0" />
+
+            <Button
+                android:id="@+id/boton10mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="10 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="1"
+                app:layout_row="0" />
+
+            <Button
+                android:id="@+id/boton15mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="15 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="2"
+                app:layout_row="0" />
+
+            <Button
+                android:id="@+id/boton20mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="20 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="3"
+                app:layout_row="0" />
+
+            <Button
+                android:id="@+id/boton25mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="25 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="0"
+                app:layout_row="1" />
+
+            <Button
+                android:id="@+id/boton30mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="30 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="1"
+                app:layout_row="1" />
+
+            <Button
+                android:id="@+id/boton35mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="35 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="2"
+                app:layout_row="1" />
+
+            <Button
+                android:id="@+id/boton40mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="40 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="3"
+                app:layout_row="1" />
+
+            <Button
+                android:id="@+id/boton45mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="45 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="0"
+                app:layout_row="2" />
+
+            <Button
+                android:id="@+id/boton50mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="50 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="1"
+                app:layout_row="2" />
+
+            <Button
+                android:id="@+id/boton55mins"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/round_button3"
+                android:text="55 mins"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text_size"
+                app:backgroundTint="@color/verdeOrderSuperfast"
+                app:layout_column="2"
+                app:layout_row="2" />
+        </androidx.gridlayout.widget.GridLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Customization of dimensions in res/values/dimens.xml -->
+    <dimen name="big_text_size">34sp</dimen>
+    <dimen name="text_size">24sp</dimen>
+    <dimen name="medium_text_size">14sp</dimen>
+    <dimen name="text_size_takeAway">16sp</dimen>
+    <dimen name="text_size_medium_takeAway">20sp</dimen>
+    <dimen name="text_size_medium2_takeAway">22sp</dimen>
+
+    <dimen name="text_size_big_takeAway">30sp</dimen>
+    <dimen name="text_size_semi_big_takeAway">26sp</dimen>
+
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_noti_big">18sp</dimen>
+    <dimen name="text_noti_medium">15sp</dimen>
+    <dimen name="text_noti_small">10sp</dimen>
+    <dimen name="maxDim">600dp</dimen>
+    <dimen name="small_text_size">16sp</dimen>
+    <dimen name="anchuraBotonV">200dp</dimen>
+    <dimen name="anchuraBotonH">230dp</dimen>
+    <dimen name="imagenProductos">75dp</dimen>
+    <dimen name="svsearch">37dp</dimen>
+    <dimen name="DescriptionActivityMargenTop">120dp</dimen>
+    <dimen name="widthButtonDescription">350dp</dimen>
+    <dimen name="layoutMarginBotones">200dp</dimen>
+    <dimen name="LinearLayoutHeightBotones">1000dp</dimen>
+    <dimen name="widthSpace">40dp</dimen>
+    <dimen name="heightSpace">120dp</dimen>
+    <dimen name="heightSpaceMiddle">60dp</dimen>
+    <dimen name="paddingDevices">140dp</dimen>
+    <dimen name="topMarginAll">1140dp</dimen>
+    <dimen name="topMarginHorizontal">660dp</dimen>
+    <dimen name="topMarginMinus">20dp</dimen>
+    <dimen name="NavIconSize">30dp</dimen>
+    <dimen name="NavIconPad">11.25dp</dimen>
+    <dimen name="Navsize">45dp</dimen>
+    <dimen name="listPedidosSize">275dp</dimen>
+    <dimen name="scrollWidth">500dp</dimen>
+    <dimen name="filtroWidth">150dp</dimen>
+    <dimen name="cardTopHeight">100dp</dimen>
+    <dimen name="iconWidth">80dp</dimen>
+    <dimen name="insetPaddingTop">6dp</dimen>
+    <dimen name="paddingIcon">20dp</dimen>
+    <dimen name="paddingIconProductos">15dp</dimen>
+    <dimen name="paddingIconSearch">10dp</dimen>
+    <dimen name="marginFiltro">2dp</dimen>
+    <dimen name="text_small_pedido">16sp</dimen>
+    <dimen name="anchuraBotonesCambiar">250dp</dimen>
+    <dimen name="paddingScrollLayoutHeight">8dp</dimen>
+    <dimen name="searchSize">60dp</dimen>
+    <dimen name="searchWidth">400dp</dimen>
+    <dimen name="spaceHeightExtremes">10dp</dimen>
+    <dimen name="spaceHeightMiddle">40dp</dimen>
+    <dimen name="small_medium_text_size">24sp</dimen>
+    <dimen name="TakeAwayAnchuraDatosCliente">400dp</dimen>
+    <dimen name="heightItem">80dp</dimen>
+    <dimen name="anchuraInsetBarraIzq">130dp</dimen>
+    <dimen name="alturaInsetBarraTop">100dp</dimen>
+    <dimen name="maxHeightScrollview">300dp</dimen>
+    <dimen name="maxHeightScrollviewVertical">300dp</dimen>
+    <dimen name="iconSizeAjustesBig">80dp</dimen>
+    <dimen name="iconSizeAjustesSmall">50dp</dimen>
+    <dimen name="margenAjustes">20dp</dimen>
+    <dimen name="margenAjustesTexto">10dp</dimen>
+
+
+    <dimen name="anchuraNoti">400dp</dimen>
+
+
+    <dimen name="margenTextoAlto20">20dp</dimen>
+    <dimen name="margenTextoAlto25">25dp</dimen>
+    <dimen name="icon50to35">50dp</dimen>
+    <dimen name="margen20to10">20dp</dimen>
+
+    <dimen name="scrollHeight">1dp</dimen>
+    <dimen name="margen15to7">15dp</dimen>
+    <dimen name="margen10to1">10dp</dimen>
+
+    <dimen name="anchura250to150">250dp</dimen>
+    <dimen name="anchura200to150">200dp</dimen>
+    <dimen name="anchura150to100">150dp</dimen>
+    <dimen name="anchura300to225">300dp</dimen>
+    <dimen name="anchura40to20">40dp</dimen>
+    <dimen name="anchura80to40">80dp</dimen>
+
+    <dimen name="siempre20dp">20dp</dimen>
+
+    <dimen name="smallTablet">100dp</dimen>
+
+    <dimen name="margen_minutos">25dp</dimen>
+    <dimen name="anchura350to300">350dp</dimen>
+
+    <dimen name="dimen225to275">275dp</dimen>
+    <dimen name="dimen10to20">20dp</dimen>
+    <dimen name="dimen250to300">300dp</dimen>
+    <dimen name="paddingHorizontalRecycler">100dp</dimen>
+    <dimen name="paddingVerticalRecycler">100dp</dimen>
+    <dimen name="dimen280Tablet">270dp</dimen>
+
+    <dimen name="margen55dp">45dp</dimen>
+    <dimen name="margen10dp">10dp</dimen>
+
+    <dimen name="dimen50to80">50dp</dimen>
+    <dimen name="margen12to24">24dp</dimen>
+    <dimen name="margen30to70">70dp</dimen>
+    <dimen name="margen20to50">50dp</dimen>
+
+    <dimen name="ajustesDesplegableLayout">350dp</dimen>
+    <dimen name="margenRadioButtons">10dp</dimen>
+
+    <dimen name="dimen320to400">400dp</dimen>
+
+    <dimen name="anchuraCategoriaVertical">400dp</dimen>
+    <dimen name="anchuraMaxTxtCat">250dp</dimen>
+
+    <dimen name="alturaCategoriaVertical">100dp</dimen>
+    <dimen name="dimen120">130dp</dimen>
+
+
+
+</resources>

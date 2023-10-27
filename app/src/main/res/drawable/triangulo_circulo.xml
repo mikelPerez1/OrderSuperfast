@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Triángulo -->
+    <path
+        android:fillColor="@color/grisClaro"
+        android:pathData="M 0,100 L 100,100 L 100,0 L 0,0 Z M 0,0 A 20,19 0 0 1 0,190 Z"/>
+
+</vector>

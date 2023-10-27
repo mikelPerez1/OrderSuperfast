@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.OrderSuperfast">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name=".Global"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/iconoordersuperfast"
+        android:label="Order Superfast"
+        android:roundIcon="@drawable/iconoordersuperfast"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Login"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".AjustesProductos"
+            android:exported="false" />
+        <activity
+            android:name=".GuardarFiltrarProductos"
+            android:exported="false" />
+        <activity
+            android:name=".Configuracion_impresoras"
+            android:exported="false" />
+        <activity
+            android:name=".Seleccionar_impresora"
+            android:exported="false" />
+        <activity
+            android:name=".AjustesTakeAway"
+            android:configChanges="orientation"
+            android:exported="false"
+            android:launchMode="standard" />
+        <activity
+            android:name=".TakeAway"
+            android:configChanges="orientation|screenSize|locale"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
+            android:name=".logActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ajustes"
+            android:exported="false" />
+
+        <profileable
+            android:shell="true"
+            tools:targetApi="q" />
+
+        <activity
+            android:name=".DescriptionActivity"
+            android:exported="false"
+            android:launchMode="standard" />
+        <activity
+            android:name=".Lista"
+            android:configChanges="orientation|screenSize|locale"
+            android:exported="false"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan" />
+
+        <service
+            android:name=".ClearService"
+            android:stopWithTask="false" />
+
+        <activity
+            android:name=".Devices"
+            android:exported="false"
+            android:launchMode="standard" />
+        <activity
+            android:name=".Productos"
+            android:exported="true"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAt8Vi3mWCaUE5K26CZ_Ou0wWt-qiQm9Cs" />
+    </application>
+
+</manifest>
