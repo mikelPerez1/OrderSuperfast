@@ -14,6 +14,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <CheckBox
+            android:id="@+id/checkProducto"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:visibility="gone"
+            android:buttonTint="@color/colorUnchecked"
+            app:layout_constraintBottom_toBottomOf="@+id/textTakeAwayCant"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textTakeAwayCant"
+            app:layout_constraintVertical_bias="0.75" />
+
         <ImageView
             android:id="@+id/imageViewTachonCantidad"
             android:layout_width="0dp"
@@ -37,7 +49,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium_takeAway"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/checkProducto"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

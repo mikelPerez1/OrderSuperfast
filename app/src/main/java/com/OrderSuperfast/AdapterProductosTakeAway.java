@@ -16,6 +16,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     private final Context context;
     private String estadoPedido = "";
     final AdapterProductosTakeAway.OnItemClickListener listener;
+    private boolean checkboxVisible = false;
     int k = 0;
 
     private final Resources resources;
@@ -49,6 +51,11 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     public interface OnItemClickListener {
         void onItemClick(ProductoTakeAway item,int position);
 
+    }
+
+    public void changeCheckboxVisible(boolean bool){
+        checkboxVisible=bool;
+        notifyDataSetChanged();
     }
 
     public void setEstadoPedido(String pEstado){
@@ -106,6 +113,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         TextView cantidad,precio;
         TextViewTachable productos;
         ImageView imageViewTachonCantidad;
+        CheckBox checkProducto;
 
 
         ViewHolder(View itemView) {
@@ -114,6 +122,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             productos=itemView.findViewById(R.id.textTakeAwayProductos);
             precio=itemView.findViewById(R.id.textTakeAwayPrecio);
             imageViewTachonCantidad = itemView.findViewById(R.id.imageViewTachonCantidad);
+            checkProducto = itemView.findViewById(R.id.checkProducto);
 
         }
 
@@ -125,6 +134,11 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             precio.setText(item.getPrecio() +"€");
             productos.setText(item.getProducto());
 
+            if(checkboxVisible){
+                checkProducto.setVisibility(View.VISIBLE);
+            }else{
+                checkProducto.setVisibility(View.GONE);
+            }
             if(estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado))) { // para que el tachon solo salga en pedidos aceptados
                 if (item.getTachado()) {
                     System.out.println("item tachado");
@@ -138,9 +152,13 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                     productos.setStrike(false);
                     imageViewTachonCantidad.setVisibility(View.INVISIBLE);
                 }
+
+                checkProducto.setChecked(item.getSeleccionado());
+
             }else{
                 productos.setStrike(false);
                 imageViewTachonCantidad.setVisibility(View.INVISIBLE);
+
             }
 
             if(item.getMostrarSiOcultado()) {
@@ -159,6 +177,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(item,position);
+
                     notifyDataSetChanged();
                 }
             });

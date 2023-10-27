@@ -8299,7 +8299,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         botonTacharProductos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tacharProductos) {
+              //  if (tacharProductos) {
                     // si esta en modo tachar y se le da a guardar, mira
                     for (int i = productosActuales.size() - 1; i >= 0; i--) {
 
@@ -8309,29 +8309,16 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                         productosActuales.remove(i);
                     }
 
-                    /*
-                    for(int i = 0; i<pedidoActual.getListaProductos().getLista().size();i++){
-                        for(int j = 0; j<productosActuales.size();j++){
-                            System.out.println("cambiar tachar "+productosActuales.get(j));
-                            if(i == productosActuales.get(j)){
-                                pedidoActual.getListaProductos().getLista().get(i).setTachado(!pedidoActual.getListaProductos().getLista().get(i).getTachado());
-                                productosActuales.remove(j);
-                                break;
-                            }
-                        }
-
-                    }
-
-                     */
                     productosActuales.clear();
 
-                }
+               // }
 
-                tacharProductos = !tacharProductos;
-                cambiarIconoTachar();
+               // tacharProductos = !tacharProductos;
+               // cambiarIconoTachar();
                 System.out.println("tachado " + tacharProductos);
-
-
+                listaProductosPedido.clear();
+                listaProductosPedido.addAll(getProductosDelPedido(pedidoActual.getListaProductos().getLista()));
+                adapterProductos2.changeCheckboxVisible(false);
             }
         });
 
@@ -9368,10 +9355,13 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             public void onItemClick(ProductoTakeAway item, int position) {
 
                 System.out.println("booleano tachar " + tacharProductos);
+                if(pedidoActual.getStatus().equals("ACEPTADO") || pedidoActual.getStatus().equals(resources.getString(R.string.botonAceptado))){
+                    adapterProductos2.changeCheckboxVisible(true);
+                }
 
-
-                if (tacharProductos) {
-                    item.setTachado(!item.getTachado());
+               // if (tacharProductos) {
+                    item.setSeleccionado(!item.getSeleccionado());
+                    //item.setTachado(!item.getTachado());
                     // pedidoActual.getListaProductos().getLista().get(position).setTachado(item.getTachado());
                     boolean esta = false;
                     for (int i = 0; i < productosActuales.size(); i++) {
@@ -9383,9 +9373,13 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     if (!esta) {
                         productosActuales.add(position);
                     }
+                    if(productosActuales.size()==0){
+                        adapterProductos2.changeCheckboxVisible(false);
+
+                    }
                 }
 
-            }
+            //}
         });
         recyclerProductosI2.setAdapter(adapterProductos2);
     }
