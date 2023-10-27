@@ -336,7 +336,6 @@ public class AdapterList2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             @Override
             public void run() {
                 System.out.println("notificar recycler");
-
                 notifyDataSetChanged();
 
             }

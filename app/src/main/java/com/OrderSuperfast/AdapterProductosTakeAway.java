@@ -55,6 +55,12 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         estadoPedido = pEstado;
     }
 
+    public void destacharTodos(){
+        for(int i = 0; i < mData.size(); i++){
+            mData.get(i).setTachado(false);
+        }
+    }
+
     public AdapterProductosTakeAway(List<ProductoTakeAway> itemList, Activity context, OnItemClickListener listener) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;

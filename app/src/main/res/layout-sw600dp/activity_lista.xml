@@ -812,21 +812,6 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageView
-                        android:id="@+id/botonTacharProductos"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/borde"
-                        android:padding="15dp"
-                        app:backgroundTint="@color/black"
-                        app:icon="@drawable/icono_tachado"
-                        app:srcCompat="@drawable/icono_tachado"
-
-                        app:layout_constraintEnd_toEndOf="@+id/constraintLayout36"
-                        app:layout_constraintTop_toTopOf="@+id/constraintLayout36"
-                        app:tint="@color/white" />
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/overLayoutInfoPedidos"
                         android:layout_width="match_parent"
@@ -1107,7 +1092,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:layout_marginEnd="90dp"
                             android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="@+id/overLayoutProductos"
                             app:layout_constraintStart_toStartOf="parent"
@@ -1116,7 +1100,7 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1.5">
 
                                 <TextView
                                     android:id="@+id/tvNombreCliente"
@@ -1156,7 +1140,27 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="2">
+
+                                <ImageView
+                                    android:id="@+id/botonTacharProductos"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:background="@drawable/borde"
+                                    android:padding="10dp"
+                                    app:backgroundTint="@color/black"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/tachado5"
+                                    app:tint="@color/white" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.16">
 
                                 <TextView
                                     android:id="@+id/textView60"

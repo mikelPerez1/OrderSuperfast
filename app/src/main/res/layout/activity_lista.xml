@@ -875,19 +875,6 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageView
-                        android:id="@+id/botonTacharProductos"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="13dp"
-                        android:background="@drawable/borde"
-                        android:padding="6dp"
-                        app:backgroundTint="@null"
-                        app:icon="@drawable/recivo"
-                        app:layout_constraintEnd_toEndOf="@+id/constraintLayout41"
-                        app:layout_constraintTop_toTopOf="@+id/constraintLayout41"
-                        app:srcCompat="@drawable/recivo" />
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/overLayoutInfoPedidos"
                         android:layout_width="match_parent"
@@ -932,7 +919,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:layout_marginEnd="50dp"
                             android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -941,7 +927,7 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1.25">
 
                                 <TextView
                                     android:id="@+id/tvNombreCliente"
@@ -981,7 +967,27 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1.5">
+
+                                <ImageView
+                                    android:id="@+id/botonTacharProductos"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:background="@drawable/borde"
+                                    android:padding="10dp"
+                                    app:backgroundTint="@color/black"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/tachado5"
+                                    app:tint="@color/white" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.91">
 
                                 <TextView
                                     android:id="@+id/textView60"
@@ -1114,7 +1120,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/arrowUp"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="visible">
+                        tools:visibility="gone">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/desplegable"

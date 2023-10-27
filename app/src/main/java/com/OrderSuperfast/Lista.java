@@ -6944,6 +6944,13 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                             //para que el tachon solo salga en pedidos aceptados
                                             if (adapterProductos2 != null) {
                                                 adapterProductos2.setEstadoPedido(pedidoActual.getStatus());
+                                                adapterProductos2.destacharTodos();
+                                                ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos().getLista();
+                                                for(int i = 0; i < lista.size(); i++){
+                                                    lista.get(i).setTachado(false);
+                                                }
+
+                                                adapterPedidos2.notifyDataSetChanged();
                                             }
                                         } else if (clave.equals("status") && response.getString(clave).equals("ERROR")) {
                                             //peticionGetTakeAway();
@@ -6974,6 +6981,16 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                             mostrarDatosTk(pedidoActual);
                             writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedidoActual.getPedido() + " - " + estadoToIngles(est), activity);
 
+                            //para que el tachon solo salga en pedidos aceptados
+                            if (adapterProductos2 != null) {
+                                adapterProductos2.setEstadoPedido(pedidoActual.getStatus());
+                                ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos().getLista();
+                                for(int i = 0; i < lista.size(); i++){
+                                    lista.get(i).setTachado(false);
+                                }
+
+                                adapterPedidos2.notifyDataSetChanged();
+                            }
 
                         } else if (error.toString().toLowerCase().contains("noconnectionerror")) {
                             Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
@@ -8308,21 +8325,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                         producto.setTachado(!producto.getTachado());
                         productosActuales.remove(i);
                     }
-
-                    /*
-                    for(int i = 0; i<pedidoActual.getListaProductos().getLista().size();i++){
-                        for(int j = 0; j<productosActuales.size();j++){
-                            System.out.println("cambiar tachar "+productosActuales.get(j));
-                            if(i == productosActuales.get(j)){
-                                pedidoActual.getListaProductos().getLista().get(i).setTachado(!pedidoActual.getListaProductos().getLista().get(i).getTachado());
-                                productosActuales.remove(j);
-                                break;
-                            }
-                        }
-
-                    }
-
-                     */
                     productosActuales.clear();
 
                 }
@@ -8355,7 +8357,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         if (tacharProductos) {
             botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.check, getTheme()));
         } else {
-            botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.icono_tachado, getTheme()));
+            botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.tachado5, getTheme()));
 
         }
     }
@@ -8396,7 +8398,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         float rYtachar2 = rYtachar + botonTacharProductos.getHeight();
 
 
-        //icono desplegable
+        //localizacion del icono desplegable
 
         int[] locationDesplegable = new int[2];
         arrowUp.getLocationOnScreen(locationDesplegable);
@@ -8438,7 +8440,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         switch (position) {
             case 0:
                 return filtroPendiente;
-
             case 1:
                 return filtroAceptado;
             case 2:
