@@ -1147,13 +1147,13 @@
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
                                     android:background="@drawable/borde"
-                                    android:padding="10dp"
+                                    android:padding="5dp"
                                     app:backgroundTint="@color/black"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:srcCompat="@drawable/tachado5"
+                                    app:srcCompat="@drawable/tachar"
                                     app:tint="@color/white" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
 

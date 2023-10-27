@@ -43,6 +43,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     private String estadoPedido = "";
     final AdapterProductosTakeAway.OnItemClickListener listener;
     int k = 0;
+    private boolean tachadoHabilitado = false;
 
     private final Resources resources;
 
@@ -59,6 +60,10 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         for(int i = 0; i < mData.size(); i++){
             mData.get(i).setTachado(false);
         }
+    }
+
+    public void setTacharHabilitado(boolean pTachar){
+        this.tachadoHabilitado = pTachar;
     }
 
     public AdapterProductosTakeAway(List<ProductoTakeAway> itemList, Activity context, OnItemClickListener listener) {
@@ -109,6 +114,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         TextView cantidad,precio;
         TextViewTachable productos;
         ImageView imageViewTachonCantidad;
+        ConstraintLayout layoutProducto,lineaSeparatoria;
 
 
         ViewHolder(View itemView) {
@@ -117,16 +123,33 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             productos=itemView.findViewById(R.id.textTakeAwayProductos);
             precio=itemView.findViewById(R.id.textTakeAwayPrecio);
             imageViewTachonCantidad = itemView.findViewById(R.id.imageViewTachonCantidad);
-
+            layoutProducto = itemView.findViewById(R.id.layoutProducto);
+            lineaSeparatoria = itemView.findViewById(R.id.lineaSeparatoria);
         }
 
 
         void bindData(final ProductoTakeAway item, int position) {
 
-            System.out.println("nombre de los productos "+item.getProducto());
             cantidad.setText("x"+ item.getCantidad());
             precio.setText(item.getPrecio() +"€");
             productos.setText(item.getProducto());
+
+            if(tachadoHabilitado){
+                lineaSeparatoria.setVisibility(View.VISIBLE);
+                System.out.println("tachado si "+lineaSeparatoria.getVisibility());
+            }else{
+                lineaSeparatoria.setVisibility(View.INVISIBLE);
+                System.out.println("tachado no "+lineaSeparatoria.getVisibility());
+
+            }
+
+            if(item.getSeleccionado()){
+                layoutProducto.setBackgroundColor(resources.getColor(R.color.azulSuave, context.getTheme()));
+
+            }else{
+                layoutProducto.setBackgroundColor(Color.TRANSPARENT);
+
+            }
 
             if(estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado))) { // para que el tachon solo salga en pedidos aceptados
                 if (item.getTachado()) {

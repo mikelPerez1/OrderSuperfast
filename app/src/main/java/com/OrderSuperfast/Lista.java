@@ -8317,6 +8317,8 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             @Override
             public void onClick(View v) {
                 if (tacharProductos) {
+                    adapterProductos2.setTacharHabilitado(false);
+
                     // si esta en modo tachar y se le da a guardar, mira
                     for (int i = productosActuales.size() - 1; i >= 0; i--) {
 
@@ -8326,8 +8328,15 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                         productosActuales.remove(i);
                     }
                     productosActuales.clear();
+                    listaProductosPedido.clear();
+                    listaProductosPedido.addAll(getProductosDelPedido(pedidoActual.getListaProductos().getLista()));
 
+
+                }else{
+                    adapterProductos2.setTacharHabilitado(true);
                 }
+
+                adapterProductos2.notifyDataSetChanged();
 
                 tacharProductos = !tacharProductos;
                 cambiarIconoTachar();
@@ -8357,7 +8366,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         if (tacharProductos) {
             botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.check, getTheme()));
         } else {
-            botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.tachado5, getTheme()));
+            botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.tachar, getTheme()));
 
         }
     }
@@ -8415,9 +8424,11 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
         if (((x < rX || x > rX2 || y < rY || y > rY2) && !(x > rXtachar && x < rXtachar2 && y > rYtachar && y < rYtachar2)) || (x > rXdesplegable && x < rXdesplegable2 && y > rYdesplegable && y < rYdesplegable2)) {
             if (tacharProductos) {
+                adapterProductos2.setTacharHabilitado(false);
                 revertirTachadoProductos();
                 tacharProductos = false;
                 cambiarIconoTachar();
+                adapterProductos2.notifyDataSetChanged();
                 return false;
             }
 
@@ -9372,7 +9383,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
 
                 if (tacharProductos) {
-                    item.setTachado(!item.getTachado());
+                    item.setSeleccionado(!item.getSeleccionado());
                     // pedidoActual.getListaProductos().getLista().get(position).setTachado(item.getTachado());
                     boolean esta = false;
                     for (int i = 0; i < productosActuales.size(); i++) {

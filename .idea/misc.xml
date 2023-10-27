@@ -4,11 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/linea_tachar.xml" value="0.276" />
+        <entry key="app/src/main/res/drawable/tachar_texto.xml" value="0.284" />
         <entry key="app/src/main/res/layout-sw600dp/activity_lista.xml" value="0.2618384401114206" />
         <entry key="app/src/main/res/layout-sw600dp/activity_take_away.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_lista.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_take_away.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/productos_take_away.xml" value="0.6562763268744735" />
+        <entry key="app/src/main/res/layout/productos_take_away.xml" value="0.5" />
       </map>
     </option>
   </component>
