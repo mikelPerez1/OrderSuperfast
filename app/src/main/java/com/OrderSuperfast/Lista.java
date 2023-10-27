@@ -9435,6 +9435,10 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         backDesplegable.setVisibility(View.VISIBLE);
         layoutOpcionesPedido.setVisibility(View.VISIBLE);
 
+        productosActuales.clear();
+        adapterProductos2.changeCheckboxVisible(false);
+
+
         if (item.getStatus().equals("ACEPTADO") || item.getStatus().equals(resources.getString(R.string.botonAceptado))) {
             botonTacharProductos.setVisibility(View.VISIBLE);
         } else {
