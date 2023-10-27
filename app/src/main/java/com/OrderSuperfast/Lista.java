@@ -6946,7 +6946,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                                 adapterProductos2.setEstadoPedido(pedidoActual.getStatus());
                                                 adapterProductos2.destacharTodos();
                                                 ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos().getLista();
-                                                for(int i = 0; i < lista.size(); i++){
+                                                for (int i = 0; i < lista.size(); i++) {
                                                     lista.get(i).setTachado(false);
                                                 }
 
@@ -6985,7 +6985,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                             if (adapterProductos2 != null) {
                                 adapterProductos2.setEstadoPedido(pedidoActual.getStatus());
                                 ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos().getLista();
-                                for(int i = 0; i < lista.size(); i++){
+                                for (int i = 0; i < lista.size(); i++) {
                                     lista.get(i).setTachado(false);
                                 }
 

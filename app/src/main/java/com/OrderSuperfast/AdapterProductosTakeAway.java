@@ -89,9 +89,6 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     }
 
 
-    public void scrollPrincipio() {
-
-    }
 
     @Override
     public AdapterProductosTakeAway.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

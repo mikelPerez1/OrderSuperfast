@@ -973,6 +973,7 @@
                                     android:id="@+id/botonTacharProductos"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
+                                    android:layout_marginEnd="5dp"
                                     android:background="@drawable/borde"
                                     android:padding="10dp"
                                     app:backgroundTint="@color/black"

@@ -913,9 +913,7 @@ public class AdapterList2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
 
                     } else {
-
                         System.out.println("scroll filtros ocultar ");
-
                         animacionOcultarFlecha(imgFlechaIzq, layoutDegradadoBlancoIzq, layoutGrisIzq);
                     }
                     if (scrollX < maxScrollX - 140) {

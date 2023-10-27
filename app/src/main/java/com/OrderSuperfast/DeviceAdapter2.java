@@ -58,6 +58,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
     private int primerDisposPosicion = -1;
     private boolean animar = false;
     private long f;
+    private boolean animando = false;
 
 
     public DeviceAdapter2(ArrayList<DispositivoZona> itemList, int alt, Context context, DeviceAdapter2.OnItemClickListener listener, LinearLayoutManager pManager) {
@@ -71,7 +72,6 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
         resetZonas();
         handlerAnimacion = new Handler();
         linearManager = pManager;
-
 
 
         this.height = (int) context.getResources().getDimension(R.dimen.heightItem);
@@ -96,7 +96,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if(position==0){
+        if (position == 0) {
             return 3;
         }
 
@@ -239,7 +239,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
                 return new DeviceAdapter2.ViewHolder(view2);
 
             case 3:
-                View v = mInflaterDispositivo.from(parent.getContext()).inflate(R.layout.layout_texto_restaurante,parent,false);
+                View v = mInflaterDispositivo.from(parent.getContext()).inflate(R.layout.layout_texto_restaurante, parent, false);
                 return new DeviceAdapter2.ViewHolder(v);
 
         }
@@ -271,12 +271,8 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
                 handlerAnimacion.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
-
                         closeAnimation(holder.itemView, position);
-
                         Rect rect = new Rect();
-
                         System.out.println("prueba fuera pantalla " + position + " " + holder.itemView.getLocalVisibleRect(rect));
 
 
@@ -350,7 +346,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgDisp;
-        TextView txtDevice,tvRestaurante;
+        TextView txtDevice, tvRestaurante;
         ConstraintLayout lineaBotDispositivo;
         boolean isExpanded = false;
         ImageView imgDispCerrar;
@@ -371,7 +367,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
         void bindData(final DispositivoZona item, boolean esfinal, int position) {
 
-            if(position==0){
+            if (position == 0) {
                 tvRestaurante.setText(item.getNombre());
                 return;
             }
@@ -458,7 +454,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
                 }
             } else {
-               // imgDispCerrar.setVisibility(View.INVISIBLE);
+                // imgDispCerrar.setVisibility(View.INVISIBLE);
                 imgDispCerrar.setImageDrawable(resources.getDrawable(R.drawable.expand));
 
             }
@@ -469,39 +465,41 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // listener.onItemClick(item,position);
-                    dur = 0;
-                    dur2 = 0;
-                    numVeces = 1;
-                    primerDisposPosicion = 11;
-                    f = System.currentTimeMillis();
-                    if (item.getEsZona()) {
-                        bucle = false;
-                        posicionClickada = position;
+                    if (!animando) {
+                        // listener.onItemClick(item,position);
+                        dur = 0;
+                        dur2 = 0;
+                        numVeces = 1;
+                        primerDisposPosicion = 11;
+                        f = System.currentTimeMillis();
+                        if (item.getEsZona()) {
+                            bucle = false;
+                            posicionClickada = position;
 
-                        System.out.println("zona clickada " + position);
-                        System.out.println("Es zona");
-                        setItemsNoClickados(item);
+                            System.out.println("zona clickada " + position);
+                            System.out.println("Es zona");
+                            setItemsNoClickados(item);
 
-                        if (!item.getClickado()) {
+                            if (!item.getClickado()) {
 
-                            resetZonasMenos1(item);
-                            item.setClickado(true);
-                            //linearManager.scrollToPositionWithOffset(position,0);
+                                resetZonasMenos1(item);
+                                item.setClickado(true);
+                                //linearManager.scrollToPositionWithOffset(position,0);
+
+                            } else {
+                                cerrarZonas(item);
+                                item.setClickado(false);
+                            }
+
+                            System.out.println(midata.size());
+                            // animateClickedItem(itemView);
+                            // notifyDataSetChanged();
 
                         } else {
-                            cerrarZonas(item);
-                            item.setClickado(false);
+                            listener.onItemClick(item, position);
                         }
-
-                        System.out.println(midata.size());
-                        // animateClickedItem(itemView);
-                        // notifyDataSetChanged();
-
-                    } else {
-                        listener.onItemClick(item, position);
+                        Log.d("clic", item.getId());
                     }
-                    Log.d("clic", item.getId());
                 }
             });
 
@@ -562,6 +560,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
             @Override
             public void onAnimationStart(@NonNull Animator animation) {
+                animando = true;
                 bucle = true;
                 Handler h = new Handler();
                 i = 5;
@@ -583,7 +582,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
             public void onAnimationEnd(@NonNull Animator animation) {
                 bucle = false;
                 linearManager.scrollToPositionWithOffset(posicionClickada, 0);
-
+                animando = false;
             }
 
             @Override
@@ -616,7 +615,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
         anim.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(@NonNull Animator animation) {
-
+                animando = true;
             }
 
             @Override
@@ -637,6 +636,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
                     params.setMargins(0, 0, 0, 0);
                     view.setLayoutParams(params);
                 }
+                animando = false;
 
             }
 
