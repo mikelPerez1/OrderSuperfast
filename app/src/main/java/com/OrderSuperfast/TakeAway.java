@@ -51,6 +51,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
@@ -124,7 +125,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener {
+public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener,  DevolucionCallback {
 
     private static final String urlDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/setCantidad/";
     private static final String urlDatosDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/getCantidad/";
@@ -1714,7 +1715,7 @@ constraintLayout.layoutPara
         System.out.println("Muchos productos " + arrayProductos.size());
 
 
-        AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this, new AdapterProductosTakeAway.OnItemClickListener() {
+        AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this,recyclerProductosI2, new AdapterProductosTakeAway.OnItemClickListener() {
             @Override
             public void onItemClick(ProductoTakeAway item, int position) {
 
@@ -2073,7 +2074,7 @@ constraintLayout.layoutPara
                 System.out.println("Muchos productos " + arrayProductos.size());
 
 
-                AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this, new AdapterProductosTakeAway.OnItemClickListener() {
+                AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this,recyclerProd, new AdapterProductosTakeAway.OnItemClickListener() {
                     @Override
                     public void onItemClick(ProductoTakeAway item, int position) {
 
@@ -3234,6 +3235,7 @@ constraintLayout.layoutPara
         TextView textViewPestañaRefundParcial = layoutDevolver.findViewById(R.id.textViewPestañaRefundParcial);
         ConstraintLayout contenidoDevolucionTotal = layoutDevolver.findViewById(R.id.constraintContenidoDevolucionTotal);
         ConstraintLayout contenidoDevolucionParcial = layoutDevolver.findViewById(R.id.constraintContenidoDevolucionParcial);
+        ImageView botonDevolucionProductos = layoutDevolver.findViewById(R.id.botonDevolucionProductos);
 
         TextView tvCantRestMax = layoutDevolver.findViewById(R.id.tvCantRestMax);
         View backAnimation = layoutDevolver.findViewById(R.id.backAnimation);
@@ -3310,8 +3312,21 @@ constraintLayout.layoutPara
                 double cantFinal = (double) cantidad_maxima - (double) cantidad_devuelta;
 
                 System.out.println("cantFinal " + cantFinal);
-                peticionEnviarDevolucion(cantFinal, pedidoActual.getNumOrden());
+                peticionEnviarDevolucion(cantFinal, pedidoActual.getNumOrden(),TakeAway.this);
                 dialogDevolucion.cancel();
+            }
+        });
+
+        botonDevolucionProductos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    crearDialogDevolucionProductos(cantidad_devuelta, cantidad_maxima);
+                    dialogDevolucion.cancel();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -3489,7 +3504,7 @@ constraintLayout.layoutPara
                 System.out.println("jsonbody " + cantidad);
                 if (!cantidad.isEmpty()) {
                     double cantActual = Double.valueOf(cantidad);
-                    peticionEnviarDevolucion(cantActual, pedidoActual.getNumOrden());
+                    peticionEnviarDevolucion(cantActual, pedidoActual.getNumOrden(),TakeAway.this);
                     dialogDevolucion.cancel();
                 } else {
                     Toast.makeText(activity, "Please, insert the amount", Toast.LENGTH_SHORT).show();
@@ -3525,7 +3540,211 @@ constraintLayout.layoutPara
     }
 
 
-    private void peticionEnviarDevolucion(double cantidad, int numPedido) {
+    private void crearDialogDevolucionProductos(double cantActual, double cantMax) throws JSONException {
+        final AlertDialog alertDialog;
+        AlertDialog.Builder dialogBuild = new AlertDialog.Builder(activity);
+        final View layoutDevolver = getLayoutInflater().inflate(R.layout.popup_devolucion_productos, null);
+        ArrayList<ProductoPedido> listaProductos = pedidoActual.getListaProductos();
+        String propina = pedidoActual.getImporte().getPropina();
+        if(!propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size()-1).getId().equals("Propina")){
+            System.out.println("Propina "+propina);
+            ProductoPedido p = new ProductoPedido("Propina","Propina","Propina",propina,"0","1","",new ArrayList<>(),true);
+            listaProductos.add(p);
+        }
+        System.out.println("lista productos size " + listaProductos.size());
+
+        ImageView cerrar = layoutDevolver.findViewById(R.id.imgViewCerrar);
+        TextView titulo = layoutDevolver.findViewById(R.id.tituloDevolucionProductos); // no lo necesito, lo puedo poner desde el xml
+        RecyclerView recycler = layoutDevolver.findViewById(R.id.recyclerDevolverProductos);
+        Button botonConfirmarDevolucion = layoutDevolver.findViewById(R.id.botonAceptarDevolucionProductos);
+
+        if(resources.getDimension(R.dimen.scrollHeight)>10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) recycler.getLayoutParams();
+            int maxHeightInPixels = (int) (170 * getResources().getDisplayMetrics().density);
+            layoutParams.matchConstraintMaxHeight = maxHeightInPixels;
+            recycler.setLayoutParams(layoutParams);
+
+        }
+        java.util.Map<String, Float> listaPrecios = new HashMap<>();
+        java.util.Map<String, Integer> cantidadDevueltaProductos = new HashMap<>();
+        String arrayString = preferenciasProductos.getString("productos_devueltos_" + pedidoActual.getNumOrden(), "");
+        JSONArray arrayGuardar;
+        if (!arrayString.equals("")) {
+            arrayGuardar = new JSONArray(arrayString);
+
+        } else {
+            arrayGuardar = new JSONArray();
+
+        }
+        for (int i = 0; i < arrayGuardar.length(); i++) {
+            JSONObject item = arrayGuardar.getJSONObject(i);
+            String id = item.getString("id");
+            int cantidad = item.getInt("cantidad");
+            int cantidad_Max = item.getInt("cantidad_maxima");
+            int cantidad_posible = cantidad_Max - cantidad;
+            cantidadDevueltaProductos.put(id, cantidad_posible);
+
+        }
+
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setHasFixedSize(true);
+
+        DecimalFormat format = new DecimalFormat("0.00");
+        double cantidadPermitida = cantMax - cantActual;
+
+        dialogBuild.setView(layoutDevolver);
+        alertDialog = dialogBuild.create();
+        //crear el adapter del recycler
+
+
+        AdapterDevolucionProductos adapterDevolucionProductos = new AdapterDevolucionProductos(listaProductos, cantidadDevueltaProductos, this, new AdapterDevolucionProductos.OnItemClickListener() {
+            @Override
+            public void onItemClick(ProductoPedido item, int cantidad, boolean aumentar) {
+
+
+                float precioUnidad = Float.valueOf(item.getPrecio());
+                float totalProducto = precioUnidad;
+                float totalPrecio = 0;
+                ArrayList<Opcion> opciones = item.getListaOpciones();
+                if (opciones != null) {
+                    for (int i = 0; i < opciones.size(); i++) {
+                        Opcion o = opciones.get(i);
+                        if (o.getPrecio() != null && !o.getPrecio().equals("")) {
+                            totalProducto += Float.valueOf(o.getPrecio());
+                        }
+                    }
+                }
+                totalProducto = totalProducto * cantidad;
+                listaPrecios.put(item.getId(), totalProducto);
+
+                try {
+                    boolean esta = false;
+                    for (int j = 0; j < arrayGuardar.length(); j++) {
+                        JSONObject objeto = arrayGuardar.getJSONObject(j);
+                        if (objeto.get("id").equals(item.getId())) {
+                            int cant = objeto.getInt("cantidad");
+                            if (aumentar) {
+                                cant++;
+
+                            } else {
+                                cant--;
+                            }
+                            System.out.println("cantidad producto devol " + cant + " " + cantidad);
+                            objeto.put("cantidad", cant);
+                            esta = true;
+                            break;
+                        }
+                    }
+                    if (!esta) {
+                        JSONObject objeto = new JSONObject();
+                        objeto.put("id", item.getId());
+                        objeto.put("cantidad", cantidad);
+                        objeto.put("cantidad_maxima", item.getCantidad());
+                        arrayGuardar.put(objeto);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                for (Float valor : listaPrecios.values()) {
+                    totalPrecio += valor;
+                }
+                //cambiar el simbolo moneda segun pais
+                DecimalFormat format = new DecimalFormat("0.00");
+                botonConfirmarDevolucion.setText("Devolver " + format.format(totalPrecio) + " €");
+
+
+            }
+        });
+
+
+        recycler.setAdapter(adapterDevolucionProductos);
+
+
+        botonConfirmarDevolucion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String textContent = botonConfirmarDevolucion.getText().toString();
+                double cantidad = Float.valueOf(textContent.split(" ")[1]);
+                if (cantidad > cantidadPermitida) {
+                    //mensaje de error
+                    Toast.makeText(activity, "ERROR: superada la cantidad máxima de " + format.format(cantidadPermitida) + " €", Toast.LENGTH_SHORT).show();
+                } else {
+                    //hacer la peticion
+                    System.out.println("devolucion producto " + cantidad + " " + listaPrecios.toString());
+                    peticionEnviarDevolucion(cantidad,pedido.getNumOrden(), new DevolucionCallback() {
+                        @Override
+                        public void onDevolucionExitosa() {
+                            // se guarda en local los productos devueltos del pedido
+                            SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
+                            productosEditor.putString("productos_devueltos_" + pedidoActual.getNumOrden(), arrayGuardar.toString());
+                            productosEditor.apply();
+                            // preferenciasProductos;
+
+
+                            alertDialog.cancel();
+
+                        }
+
+                        @Override
+                        public void onDevolucionFallida(String mensajeError) {
+                            //mostrar mensaje de error
+                            //Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+                }
+
+
+            }
+        });
+
+        cerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.cancel();
+            }
+        });
+
+// Obtener el objeto LayoutParams del diálogo
+        WindowManager.LayoutParams layoutParams = alertDialog.getWindow().getAttributes();
+
+// Obtener el tamaño de la pantalla
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+// Configurar el ancho y alto del diálogo programáticamente
+        layoutParams.width = (int) (displayMetrics.widthPixels * 0.9); // Configurar el ancho al 90% de la pantalla
+        layoutParams.height = (int) (displayMetrics.heightPixels * 0.9); // Configurar el alto al 90% de la pantalla
+
+// Aplicar las nuevas dimensiones al diálogo
+        alertDialog.getWindow().setAttributes(layoutParams);
+        alertDialog.show();
+
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            }
+        });
+
+    }
+
+
+    private void peticionEnviarDevolucion(double cantidad, int numPedido,DevolucionCallback callback) {
         System.out.println("cantidad " + cantidad);
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         String formattedNumber = decimalFormat.format(cantidad);
@@ -3577,11 +3796,15 @@ constraintLayout.layoutPara
                             //  popupClick.dismiss();
                             //  notificacionActiva = false;
 //                    agregarElementoALista(pedido, "listaCancelados");
+                            callback.onDevolucionExitosa();
+
                             pedido = null;
                         } else if (clave.equals("status") && response.getString(clave).equals("ERROR")) {
                             if (response.getString("details").equals("Order already refunded")) {
                                 Toast.makeText(activity, "Order already refunded", Toast.LENGTH_SHORT).show();
                             }
+                            callback.onDevolucionFallida(response.getString("details"));
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -4404,6 +4627,16 @@ constraintLayout.layoutPara
 
     }
 
+    @Override
+    public void onDevolucionExitosa() {
+
+    }
+
+    @Override
+    public void onDevolucionFallida(String mensajeError) {
+
+    }
+
 
     public class SocketListener extends WebSocketListener {
         public TakeAway activity;
@@ -5150,8 +5383,11 @@ constraintLayout.layoutPara
     private ConstraintLayout filtroActual, layoutLog, layoutOpcionesGenerales, layoutMostrarElementos, layoutEsconderElementos, backDesplegable;
     private ConstraintLayout layoutContDispositivo, layoutContScrollTop;
     private boolean tacharProductos = false;
-    private ImageView botonTacharProductos;
+    private Button botonTacharProductos;
     private List<Integer> productosActuales = new ArrayList<>();
+
+    private CustomLayoutManager customLayout;
+
 
 
     private ArrayList<Pair<TakeAwayPedido, Handler>> listaHandlersOrdenar = new ArrayList<>();
@@ -5487,43 +5723,75 @@ constraintLayout.layoutPara
         });
 
 
-        botonTacharProductos.setOnClickListener(new View.OnClickListener() {
+        Handler handlerExp = new Handler();
+        ConstraintLayout textoDescriptivo = findViewById(R.id.layoutExplicacionTachar);
+
+        botonTacharProductos.setOnTouchListener(new View.OnTouchListener() {
+
+            private long clickStartTime;
+
             @Override
-            public void onClick(View v) {
-                if (tacharProductos) {
-                    // si esta en modo tachar y se le da a guardar, coge el producto de la posicion que obtiene de productos actuales y le invierte el valor de tachado
-                    for (int i = productosActuales.size() - 1; i >= 0; i--) {
-
-                        System.out.println("cambiar tachar " + productosActuales.size() + "  " + productosActuales.get(i));
-                        ProductoPedido producto = pedidoActual.getListaProductos().get(productosActuales.get(i));
-                        producto.setTachado(!producto.getTachado());
-                        productosActuales.remove(i);
-                        System.out.println("cambiar tachar elem "+producto.getTachado());
-                    }
-
-                    /*
-                    for(int i = 0; i<pedidoActual.getListaProductos().getLista().size();i++){
-                        for(int j = 0; j<productosActuales.size();j++){
-                            System.out.println("cambiar tachar "+productosActuales.get(j));
-                            if(i == productosActuales.get(j)){
-                                pedidoActual.getListaProductos().getLista().get(i).setTachado(!pedidoActual.getListaProductos().getLista().get(i).getTachado());
-                                productosActuales.remove(j);
-                                break;
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        System.out.println("action_down");
+                        clickStartTime = System.currentTimeMillis();
+                        handlerExp.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                textoDescriptivo.setVisibility(View.VISIBLE);
                             }
+                        }, 200); // Cambia a 500 ms para definir la duración deseada para un "clic corto"
+                        // PRESSED
+                        return true; // Permitir que el evento se propague
+                    case MotionEvent.ACTION_UP:
+                        System.out.println("action_up");
+
+                        handlerExp.removeCallbacksAndMessages(null);
+                        textoDescriptivo.setVisibility(View.INVISIBLE);
+
+                        long clickDuration = System.currentTimeMillis() - clickStartTime;
+                        if (clickDuration < 200) { // Si el clic es corto (menos de 500 ms)
+                            // Realizar una acción para un "clic corto"
+                            // Por ejemplo, mostrar un Toast
+
+                            if (tacharProductos) {
+                                adapterProductos2.setTacharHabilitado(false);
+
+                                // si esta en modo tachar y se le da a guardar, mira
+                                for (int i = productosActuales.size() - 1; i >= 0; i--) {
+
+                                    System.out.println("cambiar tachar " + productosActuales.size() + "  " + productosActuales.get(i));
+                                    ProductoPedido producto = pedidoActual.getListaProductos().get(productosActuales.get(i));
+                                    producto.setTachado(!producto.getTachado());
+                                    productosActuales.remove(i);
+                                }
+                                productosActuales.clear();
+                                listaProductosPedido.clear();
+                                listaProductosPedido.addAll(getProductosDelPedido(pedidoActual.getListaProductos()));
+
+
+                            } else {
+                                adapterProductos2.setTacharHabilitado(true);
+                            }
+
+                            adapterProductos2.notifyDataSetChanged();
+
+                            tacharProductos = !tacharProductos;
+                            cambiarIconoTachar();
+                            System.out.println("tachado " + tacharProductos);
+
+
+                        } else {
+                            // Realizar una acción diferente para un clic largo (mayor o igual a 500 ms)
+                            // Por ejemplo, iniciar una actividad
+                            handlerExp.removeCallbacksAndMessages(null);
+                            textoDescriptivo.setVisibility(View.INVISIBLE);
                         }
 
-                    }
-
-                     */
-                    productosActuales.clear();
-
+                        return true; // Permitir que el evento se propague
                 }
-
-                tacharProductos = !tacharProductos;
-                cambiarIconoTachar();
-                System.out.println("tachado " + tacharProductos);
-
-
+                return false;
             }
         });
 
@@ -5550,9 +5818,9 @@ constraintLayout.layoutPara
 
     private void cambiarIconoTachar() {
         if (tacharProductos) {
-            botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.close1, getTheme()));
+            botonTacharProductos.setText(resources.getString(R.string.txtGuardar));
         } else {
-            botonTacharProductos.setImageDrawable(resources.getDrawable(R.drawable.recivo, getTheme()));
+            botonTacharProductos.setText(resources.getString(R.string.textTachar));
 
         }
     }
@@ -5595,7 +5863,7 @@ constraintLayout.layoutPara
         float rYtachar2 = rYtachar + botonTacharProductos.getHeight();
 
 
-        //icono desplegable
+        //localizacion del icono desplegable
 
         int[] locationDesplegable = new int[2];
         arrowUp.getLocationOnScreen(locationDesplegable);
@@ -5612,9 +5880,11 @@ constraintLayout.layoutPara
 
         if (((x < rX || x > rX2 || y < rY || y > rY2) && !(x > rXtachar && x < rXtachar2 && y > rYtachar && y < rYtachar2)) || (x > rXdesplegable && x < rXdesplegable2 && y > rYdesplegable && y < rYdesplegable2)) {
             if (tacharProductos) {
+                adapterProductos2.setTacharHabilitado(false);
                 revertirTachadoProductos();
                 tacharProductos = false;
                 cambiarIconoTachar();
+                adapterProductos2.notifyDataSetChanged();
                 return false;
             }
 
@@ -5623,6 +5893,7 @@ constraintLayout.layoutPara
 
 
     }
+
 
 
     private void ocultarDesplegablePedido() {
@@ -6186,17 +6457,16 @@ constraintLayout.layoutPara
         adapterPedidos2.cambiarestado(estadoActual);
 
 
-        recyclerProductosI2.setLayoutManager(new LinearLayoutManager(this));
+        customLayout = new CustomLayoutManager(this, tvInstruccionesGenerales.getHeight());
+        recyclerProductosI2.setLayoutManager(customLayout);
         recyclerProductosI2.setHasFixedSize(true);
-        adapterProductos2 = new AdapterProductosTakeAway(listaProductosPedido, this, new AdapterProductosTakeAway.OnItemClickListener() {
+        adapterProductos2 = new AdapterProductosTakeAway(listaProductosPedido, this,recyclerProductosI2, new AdapterProductosTakeAway.OnItemClickListener() {
             @Override
             public void onItemClick(ProductoTakeAway item, int position) {
                 System.out.println("booleano tachar " + tacharProductos);
                 //para que el tachon solo salga en pedidos aceptados
-                adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
-
                 if (tacharProductos) {
-                    item.setTachado(!item.getTachado());
+                    item.setSeleccionado(!item.getSeleccionado());
                     // pedidoActual.getListaProductos().getLista().get(position).setTachado(item.getTachado());
                     boolean esta = false;
                     for (int i = 0; i < productosActuales.size(); i++) {
@@ -6212,6 +6482,7 @@ constraintLayout.layoutPara
 
             }
         });
+        adapterProductos2.setAlturaInstruccionesGenerales(tvInstruccionesGenerales.getHeight());
         recyclerProductosI2.setAdapter(adapterProductos2);
 
     }
@@ -6314,6 +6585,33 @@ constraintLayout.layoutPara
             constraintPartePedidos.setVisibility(View.GONE);
             estaEnPedido = true;
         }
+
+        tvInstruccionesGenerales.setText("Toda la comida a la vez y que vengan con 3 servilletas. Además que tenga 2 cucharas y venga en bandeja. asdada sdad asdad asdasdadas ");
+
+        System.out.println("altura instrucciones mostrar " + tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density);
+
+        tvInstruccionesGenerales.post(new Runnable() {
+            @Override
+            public void run() {
+                if (tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density > 85 * resources.getDisplayMetrics().density) {
+                    customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 35 * resources.getDisplayMetrics().density);
+                }
+
+            }
+        });
+
+        customLayout.setAnchuraRecycler(2000,0);
+
+        recyclerProductosI2.post(new Runnable() {
+            @Override
+            public void run() {
+                customLayout.setAnchuraRecycler(recyclerProductosI2.getWidth(),1000);
+                System.out.println("anchura recycler prod " + recyclerProductosI2.getWidth());
+
+
+            }
+        });
+
 
     }
 

@@ -175,5 +175,7 @@
     <string name="txtErrorConexion">Error de conexión</string>
     <string name="cancelationReason">Selecciona la razón de la cancelación</string>
     <string name="cambiarElementosVisiblesDeLaCarta">Cambiar elementos visibles de la carta</string>
+    <string name="textTachar">Tachar</string>
+    <string name="txtGuardar">Guardar</string>
 
 </resources>

@@ -695,7 +695,8 @@ public class  AdapterTakeAwayPedido extends RecyclerView.Adapter<AdapterTakeAway
                     System.out.println("array productos " + arrayProductos.get(j).getProducto() +" "+arrayProductos.get(j).getCantidad());
                 }
 
-                adapterProductos = new AdapterProductosTakeAway(arrayProductos, (Activity) context, new AdapterProductosTakeAway.OnItemClickListener() {
+
+                adapterProductos = new AdapterProductosTakeAway(arrayProductos, (Activity) context, recyclerProductos,new AdapterProductosTakeAway.OnItemClickListener() {
                     @Override
                     public void onItemClick(ProductoTakeAway item,int position) {
                         //is empty because the recyclerview is only used to contain the items and not interact with them

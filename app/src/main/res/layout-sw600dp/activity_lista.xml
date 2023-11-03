@@ -675,6 +675,54 @@
                     tools:visibility="visible">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutExplicacionTachar"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="70dp"
+                        android:elevation="10dp"
+                        android:padding="4dp"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="@+id/constraintLayout36"
+                        app:layout_constraintStart_toStartOf="@+id/constraintLayout36"
+                        app:layout_constraintTop_toTopOf="@+id/constraintLayout36"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/imageView34"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="10dp"
+                            android:rotation="0"
+                            android:scaleX="-1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/triangulo" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp"
+                            android:background="@drawable/borde_gris_claro_suave"
+                            android:padding="12dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView34">
+
+                            <TextView
+                                android:id="@+id/textView88"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Botón que sirve para tachar los productos que ya se han realizado"
+                                android:textColor="@color/black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout38"
                         android:layout_width="0dp"
                         android:layout_height="120dp"
@@ -839,17 +887,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout38">
 
 
-                        <View
-                            android:id="@+id/overlay"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:background="#000000"
-                            android:elevation="0dp"
-                            android:visibility="invisible"
-
-
-                            />
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/backDesplegable"
                             android:layout_width="50dp"
@@ -861,6 +898,46 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
+                        <TextView
+                            android:id="@+id/textView58"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Order info"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_24"
+
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/overLayoutInfoCliente"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@color/black_overlay"
+                            android:elevation="20dp"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
+                            app:layout_constraintEnd_toEndOf="@+id/linearLayout9"
+                            app:layout_constraintStart_toStartOf="@+id/linearLayout9"
+                            app:layout_constraintTop_toTopOf="@+id/linearLayout9">
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <Button
+                            android:id="@+id/botonCambiarEstado"
+                            android:layout_width="200dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/borde"
+                            android:text="Accept order"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:backgroundTint="@color/colorcancelado"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:visibility="gone" />
+
                         <ImageView
                             android:id="@+id/arrowUp"
                             android:layout_width="50dp"
@@ -871,6 +948,167 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:srcCompat="@drawable/expandless" />
+
+                        <View
+                            android:id="@+id/overlay"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="#000000"
+                            android:elevation="1dp"
+                            android:visibility="invisible"
+
+
+                            />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/overLayoutProductos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:elevation="1dp"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerProductosI2"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="85dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="@+id/overLayoutProductos"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView58">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/linearNombre"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+
+                                >
+
+                                <TextView
+                                    android:id="@+id/tvNombreCliente"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:text="@string/cliente"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tvNombre"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="Telefono cliente"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/text_size_medium_takeAway"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="@+id/tvNombreCliente"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvNombreCliente" />
+
+                                <view
+                                    android:id="@+id/view26"
+                                    class="com.google.android.material.appbar.AppBarLayout"
+                                    android:layout_width="1dp"
+                                    android:layout_height="0dp"
+                                    android:background="@color/grisClaro"
+                                    app:layout_constraintBottom_toBottomOf="@+id/tvNombre"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/linearBoton"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.7"
+
+                                >
+
+                                <Button
+                                    android:id="@+id/botonTacharProductos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="50dp"
+                                    android:background="@drawable/background_semi_redondeado_negro"
+                                    android:padding="5dp"
+                                    android:text="TACHAR"
+                                    app:backgroundTint="@color/black"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:tint="@color/white" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/linearInstrucciones"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.16"
+                                android:background="@color/white"
+                                android:elevation="20dp">
+
+                                <TextView
+                                    android:id="@+id/textView60"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:text="@string/textInstruccionesPedido"
+                                    app:layout_constraintStart_toEndOf="@id/view27"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tvInstruccionesGenerales"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="TextView"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/text_size_medium_takeAway"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="@+id/textView60"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView60" />
+
+                                <view
+                                    android:id="@+id/view27"
+                                    class="com.google.android.material.appbar.AppBarLayout"
+                                    android:layout_width="1dp"
+                                    android:layout_height="0dp"
+                                    android:background="@color/grisClaro"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:visibility="gone">
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layoutOpcionesPedido"
@@ -1075,172 +1313,6 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/overLayoutProductos"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:elevation="1dp"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linearLayout9"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="@+id/overLayoutProductos"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView58">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.5">
-
-                                <TextView
-                                    android:id="@+id/tvNombreCliente"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:text="@string/cliente"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/tvNombre"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:text="Telefono cliente"
-                                    android:textColor="@color/black"
-                                    android:textSize="@dimen/text_size_medium_takeAway"
-                                    android:textStyle="bold"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toStartOf="@+id/tvNombreCliente"
-                                    app:layout_constraintTop_toBottomOf="@+id/tvNombreCliente" />
-
-                                <view
-                                    android:id="@+id/view26"
-                                    class="com.google.android.material.appbar.AppBarLayout"
-                                    android:layout_width="1dp"
-                                    android:layout_height="0dp"
-                                    android:background="@color/grisClaro"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="2">
-
-                                <ImageView
-                                    android:id="@+id/botonTacharProductos"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:background="@drawable/borde"
-                                    android:padding="5dp"
-                                    app:backgroundTint="@color/black"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:srcCompat="@drawable/tachar"
-                                    app:tint="@color/white" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.16">
-
-                                <TextView
-                                    android:id="@+id/textView60"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:text="@string/textInstruccionesPedido"
-                                    app:layout_constraintStart_toEndOf="@id/view27"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/tvInstruccionesGenerales"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:text="TextView"
-                                    android:textColor="@color/black"
-                                    android:textSize="@dimen/text_size_medium_takeAway"
-                                    android:textStyle="bold"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="@+id/textView60"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView60" />
-
-                                <view
-                                    android:id="@+id/view27"
-                                    class="com.google.android.material.appbar.AppBarLayout"
-                                    android:layout_width="1dp"
-                                    android:layout_height="0dp"
-                                    android:background="@color/grisClaro"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:visibility="gone">
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/textView58"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Order info"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_24"
-
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerProductosI2"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
-
-                        <Button
-                            android:id="@+id/botonCambiarEstado"
-                            android:layout_width="200dp"
-                            android:layout_height="70dp"
-                            android:background="@drawable/borde"
-                            android:text="Accept order"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            app:backgroundTint="@color/colorcancelado"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:visibility="gone" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -178,6 +178,8 @@
     <string name="txtErrorConexion">Network error</string>
     <string name="cancelationReason">Select the reason for the cancelation</string>
     <string name="cambiarElementosVisiblesDeLaCarta">Change visible elements of the menu</string>
+    <string name="textTachar">Tachar</string>
+    <string name="txtGuardar">Guardar</string>
 
 
 </resources>

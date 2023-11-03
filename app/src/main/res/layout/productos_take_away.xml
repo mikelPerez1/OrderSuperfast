@@ -58,12 +58,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="15dp"
-            android:text="TextView"
             android:textColor="@color/black"
 
             android:textSize="@dimen/text_size_medium_takeAway"
 
             app:layout_constraintEnd_toStartOf="@+id/textTakeAwayPrecio"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textTakeAwayCant"
             app:layout_constraintTop_toTopOf="@id/textTakeAwayCant" />
 

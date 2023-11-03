@@ -248,7 +248,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="gone">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layoutContScrollTop"
@@ -263,8 +264,8 @@
                             android:id="@+id/layoutContDispositivo"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:minHeight="100dp"
                             android:layout_marginTop="10dp"
+                            android:minHeight="100dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -658,6 +659,55 @@
                     tools:visibility="visible">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutExplicacionTachar"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginTop="55dp"
+                        android:elevation="10dp"
+                        android:padding="4dp"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="@+id/constraintLayout41"
+                        app:layout_constraintStart_toStartOf="@+id/constraintLayout41"
+                        app:layout_constraintTop_toTopOf="@+id/constraintLayout41"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/imageView34"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="10dp"
+                            android:rotation="0"
+                            android:scaleX="-1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/triangulo" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp"
+                            android:background="@drawable/borde_gris_claro_suave"
+                            android:padding="12dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView34">
+
+                            <TextView
+                                android:id="@+id/textView88"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Botón que sirve para tachar los productos que ya se han realizado"
+                                android:textColor="@color/black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout38"
                         android:layout_width="0dp"
                         android:layout_height="90dp"
@@ -918,16 +968,16 @@
                             android:id="@+id/linearLayout9"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="13dp"
+                            android:layout_marginTop="15dp"
                             android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/overLayoutProductos"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView58">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1.25">
+                                android:layout_weight="1.6">
 
                                 <TextView
                                     android:id="@+id/tvNombreCliente"
@@ -944,7 +994,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
                                     android:layout_marginEnd="10dp"
-                                    android:text="Telefono cliente"
+                                    android:text="Nombre"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/text_size_medium_takeAway"
                                     android:textStyle="bold"
@@ -959,7 +1009,7 @@
                                     android:layout_width="1dp"
                                     android:layout_height="0dp"
                                     android:background="@color/grisClaro"
-                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="@+id/tvNombre"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -967,28 +1017,29 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1.5">
+                                android:layout_weight="1.6">
 
-                                <ImageView
+                                <Button
                                     android:id="@+id/botonTacharProductos"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginEnd="5dp"
-                                    android:background="@drawable/borde"
-                                    android:padding="10dp"
+                                    android:layout_width="70dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/background_semi_redondeado_negro"
+                                    android:padding="5dp"
+                                    android:text="Tachar"
+                                    android:textSize="10sp"
                                     app:backgroundTint="@color/black"
-                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:srcCompat="@drawable/tachado5"
                                     app:tint="@color/white" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/linearInstrucciones"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="0.91">
+                                android:layout_weight="1.16">
 
                                 <TextView
                                     android:id="@+id/textView60"
@@ -1019,7 +1070,7 @@
                                     android:layout_width="1dp"
                                     android:layout_height="0dp"
                                     android:background="@color/grisClaro"
-                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="@+id/tvInstruccionesGenerales"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -1051,11 +1102,11 @@
                             android:id="@+id/recyclerProductosI2"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="85dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <Button
                             android:id="@+id/botonCambiarEstado"
@@ -1121,7 +1172,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/arrowUp"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="gone">
+                        tools:visibility="visible">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/desplegable"
@@ -1185,7 +1236,7 @@
                                 android:id="@+id/layoutRetractarPedido"
                                 android:layout_width="230dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="10dp"
                                 android:background="@drawable/background_redondeado_gris_claro_suave"
                                 android:paddingStart="20dp"
                                 android:paddingTop="10dp"

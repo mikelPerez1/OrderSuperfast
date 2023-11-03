@@ -1,0 +1,26 @@
+
+r	java:S117W"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÇáÎöøÿÿÿÿ8¬ï¿ª¸1
+C
+java:S1604Z"(Make this anonymous inner class a lambda(ãÇ¡Øıÿÿÿÿ
+>
+java:S1604g"(Make this anonymous inner class a lambda(Œ«ÿÛ
+>
+java:S1604r"(Make this anonymous inner class a lambda(ú“Úå
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(å¥ğ†
+A
+java:S1659E"&Declare "cantidad" on a separate line.(ğŒ‰Õÿÿÿÿÿ
+B
+java:S1659F"'Declare "disminuir" on a separate line.(‘·İ†øÿÿÿÿ
+J
+java:S1172T"/Remove this unused method parameter "position".(€âóûÿÿÿÿ
+O
+java:S2130^"9Use "Integer.parseInt" for this string-to-int conversion.(ÿÆà—
+O
+java:S2130j"9Use "Integer.parseInt" for this string-to-int conversion.(ÿÆà—
+P	java:S125u"<This block of commented-out lines of code should be removed.(ı…W
+C
+java:S1068"-Remove this unused "mInflater" private field.(ÑñËË
+A
+java:S1068"+Remove this unused "context" private field.(¨îÑÙ
+C
+java:S1068"-Remove this unused "resources" private field.(Òø¢“

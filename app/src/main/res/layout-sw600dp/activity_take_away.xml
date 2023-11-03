@@ -204,7 +204,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
         app:layout_constraintTop_toBottomOf="@+id/barraVertical"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -416,7 +416,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="gone">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -432,8 +433,8 @@
                         android:id="@+id/layoutContDispositivo"
                         android:layout_width="@dimen/dimen250to300"
                         android:layout_height="wrap_content"
-                        android:minHeight="140dp"
                         android:layout_marginTop="20dp"
+                        android:minHeight="140dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -827,19 +828,7 @@
                 tools:visibility="visible">
 
 
-                <ImageView
-                    android:id="@+id/botonTacharProductos"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/borde"
-                    android:padding="15dp"
-                    app:backgroundTint="@color/black"
-                    app:icon="@drawable/icono_tachado"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout53"
-                    app:layout_constraintTop_toTopOf="@+id/constraintLayout53"
-                    app:srcCompat="@drawable/icono_tachado"
-                    app:tint="@color/white" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout38"
@@ -1065,7 +1054,7 @@
                     android:background="@color/black_overlay"
                     android:elevation="0dp"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -1084,6 +1073,55 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout38">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutExplicacionTachar"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="130dp"
+                        android:layout_marginTop="70dp"
+                        android:elevation="10dp"
+                        android:padding="4dp"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/imageView34"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="10dp"
+                            android:rotation="0"
+                            android:scaleX="-1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/triangulo" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp"
+                            android:background="@drawable/borde_gris_claro_suave"
+                            android:padding="12dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView34">
+
+                            <TextView
+                                android:id="@+id/textView88"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Botón que sirve para tachar los productos que ya se han realizado"
+                                android:textColor="@color/black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     <View
@@ -1339,7 +1377,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:layout_marginEnd="60dp"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1348,7 +1385,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_weight="1.5">
 
                             <TextView
                                 android:id="@+id/tvNombreCliente"
@@ -1404,7 +1441,7 @@
                                 android:layout_width="1dp"
                                 android:layout_height="0dp"
                                 android:background="@color/grisClaro"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@+id/tvNombreRecogida"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1412,7 +1449,26 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_weight="2">
+
+                            <Button
+                                android:id="@+id/botonTacharProductos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:background="@drawable/background_semi_redondeado_negro"
+                                android:padding="5dp"
+                                android:text="TACHAR"
+                                app:backgroundTint="@color/black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/white" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5">
 
                             <TextView
                                 android:id="@+id/textView60"
@@ -1475,11 +1531,11 @@
                         android:id="@+id/recyclerProductosI2"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="120dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
                         android:id="@+id/botonCambiarEstado"

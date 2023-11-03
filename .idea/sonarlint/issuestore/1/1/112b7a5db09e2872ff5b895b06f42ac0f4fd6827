@@ -1,0 +1,2199 @@
+
+J
+java:S3740|"/Provide the parametrized type for this generic.(›ÃªÔşÿÿÿÿ
+K
+java:S3740»"/Provide the parametrized type for this generic.(®ÔÛúùÿÿÿÿ
+K
+java:S3740Î"/Provide the parametrized type for this generic.(Çã–ÿÿÿÿÿ
+F
+java:S3740à"/Provide the parametrized type for this generic.(ÂÌ¾¢
+K
+java:S3740ú"/Provide the parametrized type for this generic.(£è’Üúÿÿÿÿ
+M
+java:S3740³8"/Provide the parametrized type for this generic.(ø†—‚8àÀñª¸1
+o
+java:S2293y"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÓµÆ
+o
+java:S2293y"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÓµÆ
+|
+java:S2293ì"YReplace the type specification in this constructor call with the diamond operator ("<>").(‹ú€øÿÿÿÿ8îÀñª¸1
+l
+java:S1192÷#"NDefine a constant instead of duplicating this literal "estado_cocina" 5 times.(‡ÑÈ×8‡Áñª¸1
+k
+java:S1192ê$"HDefine a constant instead of duplicating this literal "propina" 3 times.(¬º±Úùÿÿÿÿ8Áñª¸1
+g
+java:S1192˜	"PDefine a constant instead of duplicating this literal "esPrimeraLista1" 4 times.(ûê´¡
+h
+java:S1192Æ"QDefine a constant instead of duplicating this literal "entra en el else" 3 times.(ú²®Æ
+n
+java:S1192Ø$"PDefine a constant instead of duplicating this literal "numero_telefono" 3 times.(ğ ‰ø8¡Áñª¸1
+j
+java:S1192ß#"LDefine a constant instead of duplicating this literal "saved_text" 14 times.(’óç¦8¥Áñª¸1
+g
+java:S1192á"PDefine a constant instead of duplicating this literal "filtro funcion " 3 times.(»‡‚„
+e
+java:S1192î"IDefine a constant instead of duplicating this literal "textDisp" 3 times.(·‡õãùÿÿÿÿ
+n
+java:S1192F"PDefine a constant instead of duplicating this literal "animation Start" 7 times.(à‚Èï8ªÁñª¸1
+b
+java:S1192ü"KDefine a constant instead of duplicating this literal "pendiente" 11 times.(…ŸÃ¥
+j
+java:S1192¨"NDefine a constant instead of duplicating this literal "pedidoActual " 3 times.(¬ğ©Ğúÿÿÿÿ
+h
+java:S1192ı%"JDefine a constant instead of duplicating this literal "#F3E62525" 3 times.(¬¥É§8±Áñª¸1
+f
+java:S1192×#"HDefine a constant instead of duplicating this literal "numMax_" 8 times.(—Ö®À8´Áñª¸1
+l
+java:S1192É"PDefine a constant instead of duplicating this literal "cantidad_maxima" 4 times.(äÄ–Ïùÿÿÿÿ
+o
+java:S1192â$"LDefine a constant instead of duplicating this literal "metodo_pago" 3 times.(İ—¬£ûÿÿÿÿ8·Áñª¸1
+f
+java:S1192ä"ODefine a constant instead of duplicating this literal "id_restaurante" 3 times.(ë†’ó
+t
+java:S1192Ö$"QDefine a constant instead of duplicating this literal "prefijo_telefono" 3 times.(Ø®ëôúÿÿÿÿ8ºÁñª¸1
+h
+java:S1192Œ$"JDefine a constant instead of duplicating this literal "ubicacion" 5 times.(´äë¯8½Áñª¸1
+c
+java:S1192
+"GDefine a constant instead of duplicating this literal "alpha" 15 times.(¯Ïš±úÿÿÿÿ
+b
+java:S1192³"FDefine a constant instead of duplicating this literal "ancho" 3 times.(éÀæıÿÿÿÿ
+b
+java:S1192’"FDefine a constant instead of duplicating this literal "inset" 8 times.(×Öñ¿ÿÿÿÿÿ
+r
+java:S1192è$"ODefine a constant instead of duplicating this literal "service_charge" 3 times.(•ë‚äÿÿÿÿÿ8ÀÁñª¸1
+_
+java:S1192ƒ	"HDefine a constant instead of duplicating this literal "ajustes" 7 times.(Óá¤¥
+p
+java:S1192¿"RDefine a constant instead of duplicating this literal "noconnectionerror" 3 times.(«ËŒ°8ÃÁñª¸1
+d
+java:S1192ù	"MDefine a constant instead of duplicating this literal "translationY" 6 times.(ÊÒõÌ
+c
+java:S1192õ"GDefine a constant instead of duplicating this literal "status" 5 times.(ÚĞx8ÅÁñª¸1
+l
+java:S1192»$"NDefine a constant instead of duplicating this literal "instrucciones" 6 times.(¸ÉãÏ8ÈÁñª¸1
+g
+java:S1192Á"KDefine a constant instead of duplicating this literal "CANCELADO" 15 times.(¤×üúÿÿÿÿ
+g
+java:S1192»"KDefine a constant instead of duplicating this literal "textChange" 4 times.(çôíÜşÿÿÿÿ
+c
+java:S1192´&"GDefine a constant instead of duplicating this literal "sonido" 4 times.(±Ê´Şşÿÿÿÿ
+e
+java:S1192¥H"GDefine a constant instead of duplicating this literal "scaleX" 7 times.(ƒÖªÚ8ÌÁñª¸1
+a
+java:S1192û"JDefine a constant instead of duplicating this literal "aceptado" 13 times.(Õ‰¾
+^
+java:S1192ë"GDefine a constant instead of duplicating this literal "idDisp" 9 times.(®İú¤
+^
+java:S1192ı"GDefine a constant instead of duplicating this literal "listo" 11 times.(­©Ù
+e
+java:S1192Õ&"GDefine a constant instead of duplicating this literal "error " 4 times.(å’±—8ÏÁñª¸1
+e
+java:S1192•"GDefine a constant instead of duplicating this literal "nombre" 8 times.(â›²ğ8ÑÁñª¸1
+i
+java:S1192ä$"FDefine a constant instead of duplicating this literal "total" 3 times.(ë¢§üÿÿÿÿ8ÓÁñª¸1
+a
+java:S1192Ä%"JDefine a constant instead of duplicating this literal "#ED40B616" 3 times.(Ú½¢â
+j
+java:S1192›"GDefine a constant instead of duplicating this literal "correo" 4 times.(÷å†åıÿÿÿÿ8ÖÁñª¸1
+g
+java:S1192ü"IDefine a constant instead of duplicating this literal "#030000" 10 times.(Ñªáù8ØÁñª¸1
+t
+java:S1192¸4"QDefine a constant instead of duplicating this literal "prueba conexion " 3 times.(åû²üÿÿÿÿ8ÚÁñª¸1
+q
+java:S1192¶%"SDefine a constant instead of duplicating this literal "no aÃ±ade producto" 3 times.(•ëŒ¨8ÜÁñª¸1
+e
+java:S1192ä"ODefine a constant instead of duplicating this literal "pedidosNuevos" 11 times.(‘ˆûB
+g
+java:S1192£"KDefine a constant instead of duplicating this literal "PENDIENTE" 18 times.(Åò­şùÿÿÿÿ
+l
+java:S1192æ$"IDefine a constant instead of duplicating this literal "impuesto" 6 times.(Û¸Áâøÿÿÿÿ8ßÁñª¸1
+l
+java:S1192æ"ODefine a constant instead of duplicating this literal "numero_pedido" 12 times.(™ôãa8áÁñª¸1
+f
+java:S1192ÿ"HDefine a constant instead of duplicating this literal "details" 3 times.(–´ê¯8ãÁñª¸1
+b
+java:S1192í"KDefine a constant instead of duplicating this literal "saveIdRest" 8 times.(§Š
+f
+java:S1192Ë$"HDefine a constant instead of duplicating this literal "cliente" 5 times.(»¼ºø8æÁñª¸1
+i
+java:S1192ø""FDefine a constant instead of duplicating this literal "fecha" 4 times.(³­µ„ıÿÿÿÿ8èÁñª¸1
+p
+java:S1192Û<"RDefine a constant instead of duplicating this literal "elements size es " 7 times.(·ÃÔ†8êÁñª¸1
+`
+java:S1192È"IDefine a constant instead of duplicating this literal "cantidad" 9 times.(½‹“‚
+q
+java:S1192öE"NDefine a constant instead of duplicating this literal "animation end" 7 times.(´òôŞıÿÿÿÿ8íÁñª¸1
+d
+java:S1192å"HDefine a constant instead of duplicating this literal "id_zona" 5 times.(íˆ°„ÿÿÿÿÿ
+e
+java:S1192ñ"IDefine a constant instead of duplicating this literal "#FFFFFF" 46 times.(›úáåüÿÿÿÿ
+j
+java:S1192ı$"GDefine a constant instead of duplicating this literal "precio" 6 times.(¤ÂÚ©øÿÿÿÿ8ğÁñª¸1
+r
+java:S1192ó""TDefine a constant instead of duplicating this literal "yyyy-MM-dd HH:mm:ss" 4 times.(êß±ï8òÁñª¸1
+f
+java:S1192ƒ&"HDefine a constant instead of duplicating this literal "#fe820f" 3 times.(Ê°Îƒ8õÁñª¸1
+a
+java:S1192º"JDefine a constant instead of duplicating this literal "Cancelled" 3 times.(Î¸…í
+e
+java:S1192ş	"IDefine a constant instead of duplicating this literal "Rotation" 6 times.(Ë¿Á—ÿÿÿÿÿ
+`
+java:S1192Ö#"IDefine a constant instead of duplicating this literal "pedidos" 16 times.(·ÖÑ
+i
+java:S1192à="KDefine a constant instead of duplicating this literal "elementss " 3 times.(õÜ°Ÿ8øÁñª¸1
+g
+java:S1192…%"IDefine a constant instead of duplicating this literal "opciones" 5 times.(Ù¼ß8úÁñª¸1
+d
+java:S1192€"HDefine a constant instead of duplicating this literal "#0404cb" 4 times.(‚ôÚßÿÿÿÿÿ
+j
+java:S1192Å%"GDefine a constant instead of duplicating this literal "LISTO" 15 times.(Ò‰ÿ¸øÿÿÿÿ8ıÁñª¸1
+k
+java:S1192­8"MDefine a constant instead of duplicating this literal "pedidosLocal" 4 times.(¥Ñú¤8ÿÁñª¸1
+f
+java:S1192å"JDefine a constant instead of duplicating this literal "ACEPTADO" 19 times.(–Ó¦¹şÿÿÿÿ
+g
+java:S1192µ&"JDefine a constant instead of duplicating this literal "vibracion" 4 times.(®¦º8Âñª¸1
+h
+java:S1192ù$"JDefine a constant instead of duplicating this literal "idCarrito" 3 times.(±“öÎ8ƒÂñª¸1
+h
+java:S1192²7"JDefine a constant instead of duplicating this literal "jsonBody " 3 times.(ÜÕ¢Ì8…Âñª¸1
+k
+java:S1192°<"MDefine a constant instead of duplicating this literal "listElement " 3 times.(¯‰ÕØ8‡Âñª¸1
+g
+java:S1192ş"KDefine a constant instead of duplicating this literal "cancelado" 11 times.(§Š²øÿÿÿÿÿ
+c
+java:S1192‚"GDefine a constant instead of duplicating this literal "pedido" 9 times.(®°Öüÿÿÿÿ
+]
+java:S1192°"FDefine a constant instead of duplicating this literal "Order" 8 times.(È×¯Ü
+k
+java:S1192İ$"HDefine a constant instead of duplicating this literal "importe" 5 times.(ªçúıÿÿÿÿ8ŠÂñª¸1
+m
+java:S1192¾#"ODefine a constant instead of duplicating this literal "id_dispositivo" 3 times.(“øªË8ŒÂñª¸1
+h
+java:S1192ò"JDefine a constant instead of duplicating this literal "#000000" 240 times.(Äç€8Âñª¸1
+R
+java:S1066áC"/Merge this if statement with the enclosing one.(­¬’¦üÿÿÿÿ8ŒÃñª¸1
+R
+java:S1066°O"/Merge this if statement with the enclosing one.(•ÀÜÉÿÿÿÿÿ8Ãñª¸1
+X
+java:S1141ä#"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8™Ãñª¸1
+X
+java:S1141Ä$"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8›Ãñª¸1
+X
+java:S1141Ö7"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8Ãñª¸1
+X
+java:S1141³:"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8¡Ãñª¸1
+X
+java:S1141›;"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8£Ãñª¸1
+X
+java:S1141È;"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8¦Ãñª¸1
+X
+java:S1141Ò>"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8©Ãñª¸1
+l	java:S117ë"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥‚³úÿÿÿÿ
+l	java:S117ë"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥‚³úÿÿÿÿ
+l	java:S117ú"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦öŸØûÿÿÿÿ
+f	java:S117û"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ë½İL
+g	java:S117ş"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(øäæÉ
+l	java:S117ÿ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Õñîÿÿÿÿÿ
+g	java:S117—"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»”³
+g	java:S117˜"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã÷Å€
+l	java:S117É"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äÄ–Ïùÿÿÿÿ
+l	java:S117Ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ã…€…ÿÿÿÿÿ
+l	java:S117£"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡ªÔ–ıÿÿÿÿ
+m	java:S117¤"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ôš½t8µÃñª¸1
+s	java:S117ê#"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡Æ ºşÿÿÿÿ8ºÃñª¸1
+n	java:S117ò#"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(„ıá8½Ãñª¸1
+s	java:S117Ÿ$"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¿ÉÇıùÿÿÿÿ8¿Ãñª¸1
+n	java:S117¢$"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀÜÓ†8ÂÃñª¸1
+m	java:S117‡7"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(« z8ÅÃñª¸1
+s	java:S117¹:"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡Æ ºşÿÿÿÿ8ÈÃñª¸1
+n	java:S117Á:"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(„ıá8ÊÃñª¸1
+s	java:S117õ:"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¿ÉÇıùÿÿÿÿ8ÌÃñª¸1
+n	java:S117ø:"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀÜÓ†8ÏÃñª¸1
+?
+java:S1604¦"(Make this anonymous inner class a lambda(ĞŒ¥÷
+?
+java:S1604°"(Make this anonymous inner class a lambda(òÑ¯
+D
+java:S1604Ñ"(Make this anonymous inner class a lambda(ëèäşøÿÿÿÿ
+?
+java:S1604¤"(Make this anonymous inner class a lambda(ÿÚ„É
+?
+java:S1604Ä"(Make this anonymous inner class a lambda(«œô
+?
+java:S1604Ğ"(Make this anonymous inner class a lambda(‘‘»ü
+?
+java:S1604˜"(Make this anonymous inner class a lambda(µ„Ï
+?
+java:S1604à"(Make this anonymous inner class a lambda(€½¯¿
+D
+java:S1604û"(Make this anonymous inner class a lambda(ƒ‰•×úÿÿÿÿ
+>
+java:S1604§"(Make this anonymous inner class a lambda(‚Ä
+D
+java:S1604®"(Make this anonymous inner class a lambda(–ó¥Éøÿÿÿÿ
+D
+java:S1604Ú"(Make this anonymous inner class a lambda(Öø¢¿şÿÿÿÿ
+D
+java:S1604å"(Make this anonymous inner class a lambda(ìÑ×Šûÿÿÿÿ
+?
+java:S1604š"(Make this anonymous inner class a lambda(ùé‰¬
+D
+java:S1604¢	"(Make this anonymous inner class a lambda(ÄìÜ–şÿÿÿÿ
+D
+java:S1604­	"(Make this anonymous inner class a lambda(”¦´ıÿÿÿÿ
+D
+java:S1604µ	"(Make this anonymous inner class a lambda(ÌÉÅòüÿÿÿÿ
+?
+java:S1604È	"(Make this anonymous inner class a lambda(¯Öã
+?
+java:S1604â	"(Make this anonymous inner class a lambda(Ò‰¥Ú
+?
+java:S1604‡"(Make this anonymous inner class a lambda(˜•™›
+D
+java:S1604³"(Make this anonymous inner class a lambda(“û¸ˆùÿÿÿÿ
+D
+java:S1604Ø"(Make this anonymous inner class a lambda(é¥İúûÿÿÿÿ
+?
+java:S1604â"(Make this anonymous inner class a lambda(ÆïÚ
+?
+java:S1604ê"(Make this anonymous inner class a lambda(Àí‡ƒ
+D
+java:S1604ò"(Make this anonymous inner class a lambda(õù‡ÿÿÿÿÿ
+D
+java:S1604ü"(Make this anonymous inner class a lambda(İÖüİıÿÿÿÿ
+D
+java:S1604¾"(Make this anonymous inner class a lambda(§Œÿüÿÿÿÿ
+D
+java:S1604©"(Make this anonymous inner class a lambda(±øÃŞúÿÿÿÿ
+D
+java:S1604´"(Make this anonymous inner class a lambda(Ó‹Ñ÷ıÿÿÿÿ
+D
+java:S1604¿"(Make this anonymous inner class a lambda(Êö…ùÿÿÿÿ
+?
+java:S1604Ç"(Make this anonymous inner class a lambda(¦‘µÛ
+?
+java:S1604Ò"(Make this anonymous inner class a lambda(áÆ•®
+>
+java:S1604å"(Make this anonymous inner class a lambda(¹°ƒ'
+D
+java:S1604ö"(Make this anonymous inner class a lambda(¤æàëüÿÿÿÿ
+D
+java:S1604Æ"(Make this anonymous inner class a lambda(Ü˜†Ùıÿÿÿÿ
+D
+java:S1604ı"(Make this anonymous inner class a lambda(£ğ‹×ıÿÿÿÿ
+?
+java:S1604™"(Make this anonymous inner class a lambda(Éé–
+D
+java:S1604¦"(Make this anonymous inner class a lambda(“Ãèñşÿÿÿÿ
+?
+java:S1604”"(Make this anonymous inner class a lambda(¤ï¨
+F
+java:S1604»"(Make this anonymous inner class a lambda(ˆŞ©š8áÃñª¸1
+F
+java:S1604Å"(Make this anonymous inner class a lambda(¸°öû8ãÃñª¸1
+F
+java:S1604í"(Make this anonymous inner class a lambda(Ü²ÓÇ8åÃñª¸1
+K
+java:S1604ˆ"(Make this anonymous inner class a lambda(´¸©”üÿÿÿÿ8çÃñª¸1
+K
+java:S1604"(Make this anonymous inner class a lambda(æÍÜúÿÿÿÿ8èÃñª¸1
+K
+java:S1604¼"(Make this anonymous inner class a lambda(´¸©”üÿÿÿÿ8êÃñª¸1
+F
+java:S1604Ì"(Make this anonymous inner class a lambda(ÈËô·8ëÃñª¸1
+K
+java:S1604Ø"(Make this anonymous inner class a lambda(†½çùÿÿÿÿ8íÃñª¸1
+K
+java:S1604ï"(Make this anonymous inner class a lambda(Ü–¯Œûÿÿÿÿ8ïÃñª¸1
+K
+java:S1604‘"(Make this anonymous inner class a lambda(ªŒ–œùÿÿÿÿ8ğÃñª¸1
+K
+java:S1604Ç"(Make this anonymous inner class a lambda(œÅÈœşÿÿÿÿ8òÃñª¸1
+F
+java:S1604Ö"(Make this anonymous inner class a lambda(– ¢°8óÃñª¸1
+F
+java:S1604‡"(Make this anonymous inner class a lambda(Â£»Ÿ8õÃñª¸1
+K
+java:S1604©"(Make this anonymous inner class a lambda(Ï÷Ìšûÿÿÿÿ8öÃñª¸1
+F
+java:S1604Ç"(Make this anonymous inner class a lambda(şÑÃã8øÃñª¸1
+K
+java:S1604Ğ"(Make this anonymous inner class a lambda(şøÃƒşÿÿÿÿ8ùÃñª¸1
+F
+java:S1604ñ"(Make this anonymous inner class a lambda(ı§8ûÃñª¸1
+F
+java:S1604º&"(Make this anonymous inner class a lambda(óÀˆœ8ÿÃñª¸1
+F
+java:S1604Å#"(Make this anonymous inner class a lambda(ÑÂğ8Äñª¸1
+E
+java:S1604Ü&"(Make this anonymous inner class a lambda(–§º8‚Äñª¸1
+F
+java:S1604—4"(Make this anonymous inner class a lambda(Š«­Í8„Äñª¸1
+F
+java:S1604Ë4"(Make this anonymous inner class a lambda(É”Ìç8†Äñª¸1
+F
+java:S1604¸7"(Make this anonymous inner class a lambda(ÑÂğ8‡Äñª¸1
+K
+java:S1604å7"(Make this anonymous inner class a lambda(´¸©”üÿÿÿÿ8‰Äñª¸1
+F
+java:S1604¬="(Make this anonymous inner class a lambda(óÀˆœ8‹Äñª¸1
+F
+java:S1604Å="(Make this anonymous inner class a lambda(óÀˆœ8ŒÄñª¸1
+F
+java:S1604‰:"(Make this anonymous inner class a lambda(ÑÂğ8Äñª¸1
+E
+java:S1604ı="(Make this anonymous inner class a lambda(–§º8Äñª¸1
+K
+java:S1604?"(Make this anonymous inner class a lambda(˜ã¯şÿÿÿÿ8‘Äñª¸1
+E
+java:S1604½>"(Make this anonymous inner class a lambda(ô§ê8’Äñª¸1
+K
+java:S1604Ö@"(Make this anonymous inner class a lambda(±øÃŞúÿÿÿÿ8”Äñª¸1
+F
+java:S1604Ü@"(Make this anonymous inner class a lambda(´Ÿ®¸8•Äñª¸1
+K
+java:S1604ã@"(Make this anonymous inner class a lambda(©«ê¥ÿÿÿÿÿ8—Äñª¸1
+F
+java:S1604é@"(Make this anonymous inner class a lambda(Ä„ŞØ8˜Äñª¸1
+F
+java:S1604ô@"(Make this anonymous inner class a lambda(¨²ö¶8šÄñª¸1
+K
+java:S1604û@"(Make this anonymous inner class a lambda(ã»Õ¯ûÿÿÿÿ8›Äñª¸1
+F
+java:S1604„A"(Make this anonymous inner class a lambda(£ÔÀİ8Äñª¸1
+K
+java:S1604A"(Make this anonymous inner class a lambda(¤ŸüØüÿÿÿÿ8Äñª¸1
+F
+java:S1604–A"(Make this anonymous inner class a lambda(ûèåÛ8 Äñª¸1
+K
+java:S1604A"(Make this anonymous inner class a lambda(Ñààûøÿÿÿÿ8¡Äñª¸1
+K
+java:S1604¦A"(Make this anonymous inner class a lambda(ŒåËúÿÿÿÿ8¢Äñª¸1
+F
+java:S1604¯A"(Make this anonymous inner class a lambda(ò£ã—8¤Äñª¸1
+E
+java:S1604¸A"(Make this anonymous inner class a lambda(ÅÓ*8¥Äñª¸1
+F
+java:S1604ÂA"(Make this anonymous inner class a lambda(ëÅï–8§Äñª¸1
+K
+java:S1604ÌA"(Make this anonymous inner class a lambda(¡áŸüÿÿÿÿ8¨Äñª¸1
+F
+java:S1604ÒA"(Make this anonymous inner class a lambda(Ò¯Ş„8©Äñª¸1
+F
+java:S1604âA"(Make this anonymous inner class a lambda(şéª„8«Äñª¸1
+E
+java:S1604éA"(Make this anonymous inner class a lambda(Ôé÷z8­Äñª¸1
+F
+java:S1604ïA"(Make this anonymous inner class a lambda(Óº©¯8®Äñª¸1
+K
+java:S1604öA"(Make this anonymous inner class a lambda(¸î’«ûÿÿÿÿ8°Äñª¸1
+K
+java:S1604şA"(Make this anonymous inner class a lambda(·â¯œşÿÿÿÿ8²Äñª¸1
+K
+java:S1604‡B"(Make this anonymous inner class a lambda(ªË¦õúÿÿÿÿ8´Äñª¸1
+F
+java:S1604’B"(Make this anonymous inner class a lambda(ÜÈ¥8µÄñª¸1
+K
+java:S1604B"(Make this anonymous inner class a lambda(ÒÃõäøÿÿÿÿ8·Äñª¸1
+K
+java:S1604ÙB"(Make this anonymous inner class a lambda(ÅÏàåüÿÿÿÿ8¸Äñª¸1
+K
+java:S1604•C"(Make this anonymous inner class a lambda(–§·˜ûÿÿÿÿ8ºÄñª¸1
+E
+java:S1604‰D"(Make this anonymous inner class a lambda(¡ØĞ8ÑÄñª¸1
+F
+java:S1604D"(Make this anonymous inner class a lambda(øòÖª8ÓÄñª¸1
+F
+java:S1604±D"(Make this anonymous inner class a lambda(Ã£îÿ8ÕÄñª¸1
+F
+java:S1604¾D"(Make this anonymous inner class a lambda(½®¸º8×Äñª¸1
+K
+java:S1604ƒE"(Make this anonymous inner class a lambda(¼Óñêùÿÿÿÿ8ÙÄñª¸1
+K
+java:S1604µE"(Make this anonymous inner class a lambda(¼Óñêùÿÿÿÿ8ÜÄñª¸1
+F
+java:S1604âF"(Make this anonymous inner class a lambda(ÈËô·8ŞÄñª¸1
+F
+java:S1604íF"(Make this anonymous inner class a lambda(«¤«8ßÄñª¸1
+K
+java:S1604ŒG"(Make this anonymous inner class a lambda(Àæè†üÿÿÿÿ8áÄñª¸1
+F
+java:S1604¯G"(Make this anonymous inner class a lambda(Ú‚½à8ãÄñª¸1
+K
+java:S1604ùJ"(Make this anonymous inner class a lambda(ó¸âµøÿÿÿÿ8äÄñª¸1
+K
+java:S1604•L"(Make this anonymous inner class a lambda(ßã¤‹ÿÿÿÿÿ8æÄñª¸1
+K
+java:S1604¡L"(Make this anonymous inner class a lambda(»âËùÿÿÿÿ8çÄñª¸1
+E
+java:S1604¹M"(Make this anonymous inner class a lambda(ªú<8éÄñª¸1
+F
+java:S1604ÄM"(Make this anonymous inner class a lambda(€§»¥8êÄñª¸1
+K
+java:S1604ıN"(Make this anonymous inner class a lambda(¦™¥úÿÿÿÿ8ìÄñª¸1
+K
+java:S1604ÙO"(Make this anonymous inner class a lambda(ÉŞ…ıÿÿÿÿ8íÄñª¸1
+K
+java:S1604ÍO"(Make this anonymous inner class a lambda(ÉŞ…ıÿÿÿÿ8ïÄñª¸1
+K
+java:S1604»O"(Make this anonymous inner class a lambda(ùöıÿÿÿÿÿ8ğÄñª¸1
+K
+java:S1604×P"(Make this anonymous inner class a lambda(±øÃŞúÿÿÿÿ8òÄñª¸1
+E
+java:S1604ŞP"(Make this anonymous inner class a lambda(‚Ä8óÄñª¸1
+K
+java:S1604æP"(Make this anonymous inner class a lambda(–ó¥Éøÿÿÿÿ8õÄñª¸1
+K
+java:S1604‘Q"(Make this anonymous inner class a lambda(Öø¢¿şÿÿÿÿ8öÄñª¸1
+K
+java:S1604Q"(Make this anonymous inner class a lambda(ìÑ×Šûÿÿÿÿ8÷Äñª¸1
+K
+java:S1604ÂQ"(Make this anonymous inner class a lambda(ËîÄÖùÿÿÿÿ8ùÄñª¸1
+K
+java:S1604’R"(Make this anonymous inner class a lambda(ÏôÌëÿÿÿÿÿ8úÄñª¸1
+E
+java:S1604ÕR"(Make this anonymous inner class a lambda(âº|8üÄñª¸1
+K
+java:S1604ğR"(Make this anonymous inner class a lambda(¡ıß¿ûÿÿÿÿ8ıÄñª¸1
+g
+java:S1301‰"KReplace this "switch" statement by "if" statements to increase readability.(×ö³–úÿÿÿÿ
+n
+java:S1301ÕB"KReplace this "switch" statement by "if" statements to increase readability.(ãÁğ™øÿÿÿÿ8‚Åñª¸1
+3
+java:S1643®"Use a StringBuilder instead.(÷Ü‡
+:
+java:S1643£"Use a StringBuilder instead.(’Õ×ë8‹Åñª¸1
+w
+java:S11044"TMake activity a static final constant or non-public and provide accessors if needed.(×“œüùÿÿÿÿ8Åñª¸1
+K
+java:S5411±%"(Use a primitive boolean expression here.(¶ÙÑúÿÿÿÿ8±Åñª¸1
+F
+java:S5411•<"(Use a primitive boolean expression here.(³ ¤—8´Åñª¸1
+Z
+java:S4973Ù%"<Strings and Boxed types should be compared using "equals()".(©Ôçå8ÓÅñª¸1
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(å¥ğ†
+i
+java:S2259É>"KA "NullPointerException" could be thrown; "jsonImpresora" is nullable here.(îƒ”¯8ó‹òª¸1
+a
+java:S2259ä9"CA "NullPointerException" could be thrown; "datos" is nullable here.(ãˆŠŒ8ö‹òª¸1
+n
+java:S2095¢8"PUse try-with-resources or close this "OutputStreamWriter" in a "finally" clause.(ıÌÎñ8ø‹òª¸1
+b
+java:S2095É>"DUse try-with-resources or close this "Socket" in a "finally" clause.(îƒ”¯8ú‹òª¸1
+Z
+java:S2589…6"7Remove this expression which always evaluates to "true"(óçÚ·üÿÿÿÿ8û‹òª¸1
+U
+java:S2589âR"7Remove this expression which always evaluates to "true"(çôèØ8ı‹òª¸1
+u	java:S115€"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(•È» ıÿÿÿÿ
+u	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(šÅ²ùúÿÿÿÿ
+r	java:S116Å"\Rename this field "ListAdapterPedido" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¼…šş
+†	java:S116ô"kRename this field "FLAG_MOSTRAR_PRODUCTOS_OCULTADOS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ËúËíúÿÿÿÿ
+}	java:S116Í?"[Rename this field "estado_pendiente" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¼ëœÉøÿÿÿÿ8Œòª¸1
+|	java:S116Í?"ZRename this field "estado_aceptado" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¼ëœÉøÿÿÿÿ8‘Œòª¸1
+y	java:S116Í?"WRename this field "estado_listo" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¼ëœÉøÿÿÿÿ8’Œòª¸1
+}	java:S116Í?"[Rename this field "estado_cancelado" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¼ëœÉøÿÿÿÿ8•Œòª¸1
+z	java:S116Ñ?"XRename this field "FLAG_PESTAÃ‘A" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒ©ÿÿÿÿÿ8–Œòª¸1
+7
+java:S1170"!Make this final field static too.(¢ÙÅ¾
+=
+java:S1170…"!Make this final field static too.(ú…Öüüÿÿÿÿ
+7
+java:S1170›"!Make this final field static too.(ŸèĞo
+8
+java:S1170´"!Make this final field static too.(¾·Ê’
+=
+java:S1170Ò"!Make this final field static too.(¤â‹®øÿÿÿÿ
+=
+java:S1170İ"!Make this final field static too.(ÃøÑÅüÿÿÿÿ
+=
+java:S1170ß"!Make this final field static too.(ÕÑâøÿÿÿÿ
+D
+java:S1170Í?"!Make this final field static too.(¼ëœÉøÿÿÿÿ8¡Œòª¸1
+D
+java:S1170Í?"!Make this final field static too.(¼ëœÉøÿÿÿÿ8£Œòª¸1
+D
+java:S1170Í?"!Make this final field static too.(¼ëœÉøÿÿÿÿ8¥Œòª¸1
+D
+java:S1170Í?"!Make this final field static too.(¼ëœÉøÿÿÿÿ8§Œòª¸1
+
+java:S1186÷"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¿Ùêäøÿÿÿÿ
+˜
+java:S1186ü"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ä¶
+Ÿ
+java:S1186Í"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ö±Úå8´Œòª¸1
+Ÿ
+java:S1186Í""€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(šÊœå8¶Œòª¸1
+
+java:S1186à""€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ĞÊŸl8¹Œòª¸1
+¤
+java:S1186Ş("€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(âŠ¼€ıÿÿÿÿ8»Œòª¸1
+¤
+java:S1186øQ"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ãûêøşÿÿÿÿ8¼Œòª¸1
+=
+java:S1659y"'Declare "elements2" on a separate line.(ÓµÆ
+B
+java:S1659}"'Declare "svSearch2" on a separate line.(ù·Íøÿÿÿÿ
+]
+java:S1659ƒ"FDeclare "pendiente" and all following declarations on a separate line.(™­Ÿ¥
+j
+java:S1659ˆ"NDeclare "dialogAtrasPedido" and all following declarations on a separate line.(ö‹’¶úÿÿÿÿ
+G
+java:S1659‰"1Declare "recyclerDatosPedido" on a separate line.(å­€
+;
+java:S1659•"$Declare "idZona" on a separate line.(èİœé
+C
+java:S1659™",Declare "primeraEntrada" on a separate line.(ƒØ“ª
+O
+java:S1659š"3Declare "constraintDatosPedido" on a separate line.(“¢õ—ÿÿÿÿÿ
+;
+java:S1659¥"%Declare "anchura" on a separate line.(™†ü@
+?
+java:S1659ª"(Declare "datoEstado" on a separate line.(ÖÈßÜ
+<
+java:S1659«"&Declare "dPedidos" on a separate line.(á¡è
+a
+java:S1659±"EDeclare "menuBack" and all following declarations on a separate line.(óø»…şÿÿÿÿ
+;
+java:S1659³"$Declare "vBiasV" on a separate line.(×ĞËÁ
+D
+java:S1659È"(Declare "nombreZona" on a separate line.(”åüâûÿÿÿÿ
+l
+java:S1659Ë"UDeclare "navigationBackHorizontal" and all following declarations on a separate line.(†üÿ•
+L
+java:S1659Ì"5Declare "scrollBotonesHorizontal" on a separate line.(òé…Ş
+b
+java:S1659Í"FDeclare "cardviewH" and all following declarations on a separate line.(ş×µŞøÿÿÿÿ
+k
+java:S1659Ğ"ODeclare "horaPedidoAceptado" and all following declarations on a separate line.(‡ï®Úşÿÿÿÿ
+>
+java:S1659Ó""Declare "bot2" on a separate line.(¥Óüÿÿÿÿ
+_
+java:S1659Õ"CDeclare "space2" and all following declarations on a separate line.(¥ñËÓûÿÿÿÿ
+A
+java:S1659Ş"%Declare "offsetX" on a separate line.(°Èô„ûÿÿÿÿ
+J
+java:S1659â".Declare "popupBotonCerrar" on a separate line.(êøç·ùÿÿÿÿ
+T
+java:S1659½?"1Declare "recyclerProductosI2" on a separate line.(› äÚÿÿÿÿÿ8ëŒòª¸1
+I
+java:S1659¿?"2Declare "botonSiguienteEstado" on a separate line.(ªÔÚÙ
+j
+java:S1659À?"SDeclare "constraintPartePedidos" and all following declarations on a separate line.(¶Óòˆ
+b
+java:S1659Á?"KDeclare "filtroAceptado" and all following declarations on a separate line.(ÈĞúß
+n
+java:S1659Â?"RDeclare "layoutRetractarPedido" and all following declarations on a separate line.(—®•Åüÿÿÿÿ
+j
+java:S1659Ã?"NDeclare "tvFiltroPendiente" and all following declarations on a separate line.(¬²§İüÿÿÿÿ
+j
+java:S1659Ä?"GDeclare "tvTelefono" and all following declarations on a separate line.(îêºûÿÿÿÿ8ïŒòª¸1
+d
+java:S1659É?"HDeclare "imgAjustes2" and all following declarations on a separate line.(¥ªËüÿÿÿÿ
+k
+java:S1659Ê?"NDeclare "imgCrossCancelado" and all following declarations on a separate line.(Ùï8òŒòª¸1
+h
+java:S1659Í?"LDeclare "estado_aceptado" and all following declarations on a separate line.(¼ëœÉøÿÿÿÿ
+O
+java:S1659Î?"1Declare "layoutscrollFiltros" on a separate line.(Ì–£–8ôŒòª¸1
+E
+java:S1659Ó?".Declare "imgFlechaDerAnim" on a separate line.(°í—È
+N
+java:S1659Ô?"0Declare "animationFiltroDer" on a separate line.(×Á‹å8öŒòª¸1
+l
+java:S1659×?"UDeclare "layoutDegradadoBlancoDer" and all following declarations on a separate line.(¤Û½™
+o
+java:S1659Ø?"RDeclare "overLayoutInfoPedidos" and all following declarations on a separate line.(¾ÏÑ8ùŒòª¸1
+V
+java:S1659Ú?"3Declare "viewInfoInstrucciones" on a separate line.(Û¦ãíüÿÿÿÿ8úŒòª¸1
+T
+java:S1659ß?"1Declare "layoutContScrollTop" on a separate line.( Éèøøÿÿÿÿ8üŒòª¸1
+I
+java:S1659¶M"&Declare "overBack" on a separate line.(Ğ¡è—ûÿÿÿÿ8ıŒòª¸1
+~
+java:S1450Å"`Remove the "ListAdapterPedido" field and declare it as a local variable in the relevant methods.(¼…šş8ˆòª¸1
+r
+java:S1450¥"URemove the "altura" field and declare it as a local variable in the relevant methods.(™†ü@8‘òª¸1
+s
+java:S1450¥"VRemove the "anchura" field and declare it as a local variable in the relevant methods.(™†ü@8”òª¸1
+|
+java:S1450ƒ"^Remove the "botonDevolucion" field and declare it as a local variable in the relevant methods.(™­Ÿ¥8˜òª¸1
+
+java:S1450Í"^Remove the "cardInfoCliente" field and declare it as a local variable in the relevant methods.(ş×µŞøÿÿÿÿ8Ÿòª¸1
+€
+java:S1450ä"]Remove the "editorTakeAway" field and declare it as a local variable in the relevant methods.(¬˜ûºıÿÿÿÿ8¡òª¸1
+}
+java:S1450É?"ZRemove the "imgCirculo4" field and declare it as a local variable in the relevant methods.(¥ªËüÿÿÿÿ8£òª¸1
+v
+java:S1450À?"XRemove the "interfaz2" field and declare it as a local variable in the relevant methods.(¶Óòˆ8¤òª¸1
+x
+java:S1450¡"URemove the "lables" field and declare it as a local variable in the relevant methods.(ƒ–ã—üÿÿÿÿ8«òª¸1
+v
+java:S1450ƒ"XRemove the "operativo" field and declare it as a local variable in the relevant methods.(™­Ÿ¥8µòª¸1
+{
+java:S1450Æ"XRemove the "productos" field and declare it as a local variable in the relevant methods.(”àÚÿûÿÿÿÿ8½òª¸1
+ˆ
+java:S1450à?"eRemove the "sharedPreferencesLista" field and declare it as a local variable in the relevant methods.(Àæ—˜şÿÿÿÿ8¿òª¸1
+x
+java:S1450Õ"URemove the "space5" field and declare it as a local variable in the relevant methods.(¥ñËÓûÿÿÿÿ8Áòª¸1
+M
+java:S1874–"/Remove this use of "Handler"; it is deprecated.(’Ú©Š8Öòª¸1
+M
+java:S1874—"/Remove this use of "Handler"; it is deprecated.(®µı¬8×òª¸1
+M
+java:S1874Ù"/Remove this use of "Handler"; it is deprecated.(‚¯ê8Úòª¸1
+M
+java:S1874ç"/Remove this use of "Handler"; it is deprecated.(ÿµÎº8Üòª¸1
+m
+java:S1874"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶şÿÿÿÿ8ßòª¸1
+D	java:S131‰""Add a default case to this switch.(×ö³–úÿÿÿÿ8áòª¸1
+p
+java:S3776°"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(íµ±³8èòª¸1
+Y
+java:S1854";Remove this useless assignment to local variable "scroll1".(éÎş8êòª¸1
+_
+java:S1854ù"ARemove this useless assignment to local variable "imageViewBack".(¤‚ø»8ëòª¸1
+^
+java:S1854ø"@Remove this useless assignment to local variable "imageViewInf".(Ò¯ÕÖ8ìòª¸1
+^
+java:S1854÷"@Remove this useless assignment to local variable "imageViewAct".(ÍÀ©8íòª¸1
+e
+java:S1854ì"BRemove this useless assignment to local variable "constraintTodo".(ç¾‹Üıÿÿÿÿ8ïòª¸1
+S
+java:S1854ç"5Remove this useless assignment to local variable "w".(ÉøÒ…8ğòª¸1
+R
+java:S1854æ"5Remove this useless assignment to local variable "h".(ÅÔ­E8ñòª¸1
+]
+java:S1854å":Remove this useless assignment to local variable "imgAct".(ÖÙ—Èûÿÿÿÿ8òòª¸1
+e
+java:S1854à"GRemove this useless assignment to local variable "paramsNavigationBar".(—ıèÄ8óòª¸1
+Y
+java:S1854”";Remove this useless assignment to local variable "scroll1".(éÎş8ôòª¸1
+e
+java:S1854î"BRemove this useless assignment to local variable "constraintTodo".(ç¾‹Üıÿÿÿÿ8öòª¸1
+V	java:S106³"9Replace this use of System.out or System.err by a logger.(«”˜8÷òª¸1
+V
+java:S1874½"3Remove this use of "getDrawable"; it is deprecated.(£ĞÖûÿÿÿÿ8úòª¸1
+V
+java:S1874Â"3Remove this use of "getDrawable"; it is deprecated.(ï¶Åğûÿÿÿÿ8üòª¸1
+^	java:S125Ë"<This block of commented-out lines of code should be removed.(æğÃúÿÿÿÿ8şòª¸1
+^	java:S125Ş"<This block of commented-out lines of code should be removed.(—›€Éıÿÿÿÿ8òª¸1
+V
+java:S1481à"8Remove this unused "paramsNavigationBar" local variable.(—ıèÄ8ƒòª¸1
+N
+java:S1481å"+Remove this unused "imgAct" local variable.(ÖÙ—Èûÿÿÿÿ8…òª¸1
+S
+java:S1117æ"6Rename "h" which hides the field declared at line 184.(ÅÔ­E8†òª¸1
+C
+java:S1481æ"&Remove this unused "h" local variable.(ÅÔ­E8ˆòª¸1
+D
+java:S1481ç"&Remove this unused "w" local variable.(ÉøÒ…8‰òª¸1
+^	java:S125é"<This block of commented-out lines of code should be removed.(ü ¬ûÿÿÿÿ8‹òª¸1
+V
+java:S1481ì"3Remove this unused "constraintTodo" local variable.(ç¾‹Üıÿÿÿÿ8Œòª¸1
+^	java:S125ï"<This block of commented-out lines of code should be removed.(àñÍòùÿÿÿÿ8òª¸1
+X	java:S125ó"<This block of commented-out lines of code should be removed.(Ó‰÷Z8òª¸1
+Y	java:S125õ"<This block of commented-out lines of code should be removed.(çŠ²8òª¸1
+O
+java:S1481÷"1Remove this unused "imageViewAct" local variable.(ÍÀ©8’òª¸1
+O
+java:S1481ø"1Remove this unused "imageViewInf" local variable.(Ò¯ÕÖ8”òª¸1
+P
+java:S1481ù"2Remove this unused "imageViewBack" local variable.(¤‚ø»8•òª¸1
+Y
+java:S1117"6Rename "l" which hides the field declared at line 141.(º®×¡ùÿÿÿÿ8–òª¸1
+^	java:S125ú"<This block of commented-out lines of code should be removed.(ã‘¯•ùÿÿÿÿ8˜òª¸1
+J
+java:S1481",Remove this unused "scroll1" local variable.(éÎş8™òª¸1
+d
+java:S1117"ARename "scrollLayout" which hides the field declared at line 166.(ÑÆÖ¬üÿÿÿÿ8›òª¸1
+^	java:S125ª"<This block of commented-out lines of code should be removed.(Æ‹çÿÿÿÿÿ8Ÿòª¸1
+[	java:S106³"9Replace this use of System.out or System.err by a logger.(éÀæıÿÿÿÿ8¡òª¸1
+V	java:S106´"9Replace this use of System.out or System.err by a logger.(ûêÕ8¢òª¸1
+X	java:S125¶"<This block of commented-out lines of code should be removed.(øœƒc8¤òª¸1
+[	java:S106»"9Replace this use of System.out or System.err by a logger.(şœşµüÿÿÿÿ8§òª¸1
+Y	java:S125Ä"<This block of commented-out lines of code should be removed.(«Î8ªòª¸1
+^	java:S125Æ"<This block of commented-out lines of code should be removed.(¼Êğùÿÿÿÿ8¬òª¸1
+Y	java:S125Ê"<This block of commented-out lines of code should be removed.(«Î8®òª¸1
+Y	java:S125Ì"<This block of commented-out lines of code should be removed.(Ä÷˜º8¯òª¸1
+m
+java:S3252Ñ"PUse static access with "android.view.ViewGroup$LayoutParams" for "MATCH_PARENT".(Ê¾‰w8°òª¸1
+Y	java:S125ã"<This block of commented-out lines of code should be removed.( ©°8³òª¸1
+Y
+java:S1117ç"6Rename "l" which hides the field declared at line 141.(º®×¡ùÿÿÿÿ8µòª¸1
+^	java:S125é"<This block of commented-out lines of code should be removed.(‰çæùÿÿÿÿ8·òª¸1
+V
+java:S1481î"3Remove this unused "constraintTodo" local variable.(ç¾‹Üıÿÿÿÿ8¸òª¸1
+^	java:S125ğ"<This block of commented-out lines of code should be removed.(àñÍòùÿÿÿÿ8¹òª¸1
+Y	java:S125ô"<This block of commented-out lines of code should be removed.(¥¶Ñ8ºòª¸1
+Y	java:S125ö"<This block of commented-out lines of code should be removed.(çŠ²8¼òª¸1
+^	java:S125€"<This block of commented-out lines of code should be removed.(€‚òÓûÿÿÿÿ8¾òª¸1
+J
+java:S1481”",Remove this unused "scroll1" local variable.(éÎş8¿òª¸1
+d
+java:S1117–"ARename "scrollLayout" which hides the field declared at line 166.(ÑÆÖ¬üÿÿÿÿ8Áòª¸1
+X	java:S125©"<This block of commented-out lines of code should be removed.(øœƒc8Äòª¸1
+Y	java:S125¬"<This block of commented-out lines of code should be removed.(«Î8Åòª¸1
+V	java:S106¯"9Replace this use of System.out or System.err by a logger.(ğÄ–˜8Æòª¸1
+[	java:S106²"9Replace this use of System.out or System.err by a logger.(îê®Œşÿÿÿÿ8Èòª¸1
+Y	java:S125¶"<This block of commented-out lines of code should be removed.(º·£‹8Êòª¸1
+Y	java:S125½"<This block of commented-out lines of code should be removed.(«Î8Ìòª¸1
+^	java:S125¿"<This block of commented-out lines of code should be removed.(¼Êğùÿÿÿÿ8Íòª¸1
+Y	java:S125Ã"<This block of commented-out lines of code should be removed.(«Î8Îòª¸1
+V	java:S106Î"9Replace this use of System.out or System.err by a logger.(„˜¡Ï8Ïòª¸1
+V	java:S106Ó"9Replace this use of System.out or System.err by a logger.(Äò°’8Òòª¸1
+u
+java:S3776İ"RRefactor this method to reduce its Cognitive Complexity from 97 to the 15 allowed.(¨Œşÿÿÿÿ8Ôòª¸1
+h
+java:S1854ß"ERemove this useless assignment to local variable "sharedPreferences".(¹¨Ÿ«ÿÿÿÿÿ8Öòª¸1
+Y
+java:S1854›";Remove this useless assignment to local variable "scroll1".(éÎş8×òª¸1
+]
+java:S1854Õ":Remove this useless assignment to local variable "editor".(ÀÂ©Éÿÿÿÿÿ8Ùòª¸1
+^
+java:S1854Ò"@Remove this useless assignment to local variable "scrollLayout".(É¯Ë8Úòª¸1
+e
+java:S1854Ä"BRemove this useless assignment to local variable "constraintTodo".(ç¾‹Üıÿÿÿÿ8Ûòª¸1
+\
+java:S1854Ã">Remove this useless assignment to local variable "linearNavi".(¬¿ş8Üòª¸1
+Y
+java:S1854Ó";Remove this useless assignment to local variable "estado1".(­âÙã8İòª¸1
+Y
+java:S1854ş
+";Remove this useless assignment to local variable "imgMenu".(ÿ… £8Şòª¸1
+j
+java:S1854Ú	"GRemove this useless assignment to local variable "notificationManager".(¨œÑÑúÿÿÿÿ8àòª¸1
+^	java:S125Ş"<This block of commented-out lines of code should be removed.(¬¾¸ıÿÿÿÿ8âòª¸1
+[
+java:S1874à"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8ãòª¸1
+b
+java:S1874á"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8äòª¸1
+p
+java:S1874â"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8åòª¸1
+k
+java:S1874ã"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8æòª¸1
+i
+java:S1874ä"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8çòª¸1
+_
+java:S1874å"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8èòª¸1
+j
+java:S1874æ"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8éòª¸1
+[	java:S106ğ"9Replace this use of System.out or System.err by a logger.(§‚ê½ûÿÿÿÿ8ëòª¸1
+^	java:S125„"<This block of commented-out lines of code should be removed.(ç¤éîûÿÿÿÿ8îòª¸1
+M
+java:S1874¥"/Remove this use of "Handler"; it is deprecated.(ÛÄâ 8òòª¸1
+[	java:S106©"9Replace this use of System.out or System.err by a logger.(–Íöôøÿÿÿÿ8ıòª¸1
+Y	java:S125Û"<This block of commented-out lines of code should be removed.(´î¥á8òª¸1
+[	java:S106¨"9Replace this use of System.out or System.err by a logger.(¬ğ©Ğúÿÿÿÿ8†òª¸1
+[
+java:S1874Ó"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8Œòª¸1
+b
+java:S1874Ô"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8òª¸1
+p
+java:S1874Õ"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8òª¸1
+k
+java:S1874Ö"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8òª¸1
+e
+java:S1874×"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8òª¸1
+i
+java:S1874Ø"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8òª¸1
+_
+java:S1874Ù"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8‘òª¸1
+j
+java:S1874Ú"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8’òª¸1
+[	java:S106ä"9Replace this use of System.out or System.err by a logger.(¬ğ©Ğúÿÿÿÿ8”òª¸1
+[	java:S106ÿ"9Replace this use of System.out or System.err by a logger.(¬ğ©Ğúÿÿÿÿ8˜òª¸1
+[	java:S106"9Replace this use of System.out or System.err by a logger.(Ş„âçşÿÿÿÿ8›òª¸1
+^	java:S125ª"<This block of commented-out lines of code should be removed.(²±½şÿÿÿÿ8òª¸1
+N
+java:S1874«"0Remove this use of "getColor"; it is deprecated.(ê¦êÏ8 òª¸1
+[	java:S106²"9Replace this use of System.out or System.err by a logger.(ÏóÆ†üÿÿÿÿ8¢òª¸1
+[	java:S106·"9Replace this use of System.out or System.err by a logger.(Î¸Àßúÿÿÿÿ8£òª¸1
+X	java:S125¿"<This block of commented-out lines of code should be removed.(ß&8¤òª¸1
+[
+java:S1874è"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8©òª¸1
+b
+java:S1874é"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8ªòª¸1
+p
+java:S1874ê"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8«òª¸1
+k
+java:S1874ë"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8¬òª¸1
+e
+java:S1874ì"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8­òª¸1
+i
+java:S1874í"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8®òª¸1
+_
+java:S1874î"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8¯òª¸1
+j
+java:S1874ï"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8°òª¸1
+W
+java:S1874€"9Remove this use of "getDefaultDisplay"; it is deprecated.(ÖÚä¤8²òª¸1
+V
+java:S1874„"3Remove this use of "getDrawable"; it is deprecated.(Ïüîúÿÿÿÿ8³òª¸1
+[	java:S106‹"9Replace this use of System.out or System.err by a logger.(Š€á§øÿÿÿÿ8¶òª¸1
+F
+java:S1185"(Remove this method to simply inherit it.(ÇêÀİ8·òª¸1
+Y	java:S125“"<This block of commented-out lines of code should be removed.(ø‹“8¹òª¸1
+^	java:S125•"<This block of commented-out lines of code should be removed.(Ö“§¡øÿÿÿÿ8ºòª¸1
+Y
+java:S1117š"6Rename "l" which hides the field declared at line 141.(º®×¡ùÿÿÿÿ8»òª¸1
+J
+java:S1481›",Remove this unused "scroll1" local variable.(éÎş8¼òª¸1
+d
+java:S1117œ"ARename "scrollLayout" which hides the field declared at line 166.(ÑÆÖ¬üÿÿÿÿ8½òª¸1
+M
+java:S1481Ã"/Remove this unused "linearNavi" local variable.(¬¿ş8Àòª¸1
+V
+java:S1481Ä"3Remove this unused "constraintTodo" local variable.(ç¾‹Üıÿÿÿÿ8Áòª¸1
+Y	java:S125Ê"<This block of commented-out lines of code should be removed.(„†¥¼8Âòª¸1
+^	java:S125Î"<This block of commented-out lines of code should be removed.(¯¦¯Ùıÿÿÿÿ8Ãòª¸1
+[	java:S106Ó"9Replace this use of System.out or System.err by a logger.(Ÿò«­ıÿÿÿÿ8Åòª¸1
+Y	java:S125â"<This block of commented-out lines of code should be removed.(æîı8Æòª¸1
+[	java:S106å"9Replace this use of System.out or System.err by a logger.(—Ûüùÿÿÿÿ8Çòª¸1
+[	java:S106ë"9Replace this use of System.out or System.err by a logger.(–Ñ¹Ãıÿÿÿÿ8Èòª¸1
+V	java:S106ô"9Replace this use of System.out or System.err by a logger.(Îê²Ò8Êòª¸1
+Y	java:S125ò"<This block of commented-out lines of code should be removed.(ƒ¨Í§8Ëòª¸1
+[	java:S106Š	"9Replace this use of System.out or System.err by a logger.(ôÎ’œøÿÿÿÿ8Íòª¸1
+Y	java:S125¹	"<This block of commented-out lines of code should be removed.(¦‡Ñ­8Ñòª¸1
+^	java:S125¿	"<This block of commented-out lines of code should be removed.(åµà²ıÿÿÿÿ8Òòª¸1
+V	java:S106Í	"9Replace this use of System.out or System.err by a logger.(Ï»º¿8Ôòª¸1
+z
+java:S3252Ï	"WUse static access with "androidx.core.content.ContextCompat" for "checkSelfPermission".(“Öäşÿÿÿÿ8Õòª¸1
+[
+java:S1481Ú	"8Remove this unused "notificationManager" local variable.(¨œÑÑúÿÿÿÿ8Öòª¸1
+Y	java:S125İ	"<This block of commented-out lines of code should be removed.(›ÙÆ½8×òª¸1
+Z
+java:S1854é	"<Remove this useless assignment to local variable "animLogo".(ïôşæ8Ùòª¸1
+d
+java:S1659ë	"FDeclare "animator2" and all following declarations on a separate line.(ş¿—Ó8Úòª¸1
+Y	java:S125å	"<This block of commented-out lines of code should be removed.(…âŸ8Ûòª¸1
+F
+java:S1481ç	")Remove this unused "anim" local variable.(ü§È8Üòª¸1
+K
+java:S1481è	"-Remove this unused "animLogo" local variable.(ƒû»Ç8Üòª¸1
+Y	java:S125ô	"<This block of commented-out lines of code should be removed.(½¿…8Şòª¸1
+^	java:S125œ
+"<This block of commented-out lines of code should be removed.(‡¥ş½üÿÿÿÿ8áòª¸1
+Y	java:S125¿
+"<This block of commented-out lines of code should be removed.(Õš¢à8ãòª¸1
+Y	java:S125Ã
+"<This block of commented-out lines of code should be removed.(Ü•Î8äòª¸1
+^	java:S125Ï
+"<This block of commented-out lines of code should be removed.(ãÈûüûÿÿÿÿ8åòª¸1
+^	java:S125Õ
+"<This block of commented-out lines of code should be removed.(ØÓöçûÿÿÿÿ8æòª¸1
+Y	java:S125Ù
+"<This block of commented-out lines of code should be removed.(€ö„¯8çòª¸1
+Ÿ
+java:S1186Ü
+"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ğ«Ôƒ8èòª¸1
+¤
+java:S1186ò
+"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(úƒÚÓûÿÿÿÿ8éòª¸1
+Y	java:S125ú
+"<This block of commented-out lines of code should be removed.(Ğ§÷¢8ëòª¸1
+[
+java:S1117ş
+"=Rename "imgMenu" which hides the field declared at line 8138.(ÿ… £8ìòª¸1
+J
+java:S1481ş
+",Remove this unused "imgMenu" local variable.(ÿ… £8ìòª¸1
+w
+java:S1854‰"TRemove this useless assignment to local variable "constraintListaDescripcionPedido".(†›ÑÓüÿÿÿÿ8îòª¸1
+h
+java:S1481‰"ERemove this unused "constraintListaDescripcionPedido" local variable.(†›ÑÓüÿÿÿÿ8ïòª¸1
+^	java:S125Š"<This block of commented-out lines of code should be removed.(“­æìúÿÿÿÿ8ğòª¸1
+^	java:S125"<This block of commented-out lines of code should be removed.(‡¦ÒÑşÿÿÿÿ8ñòª¸1
+m
+java:S3252"PUse static access with "android.view.ViewGroup$LayoutParams" for "MATCH_PARENT".(Ê¾‰w8òòª¸1
+Y	java:S125’"<This block of commented-out lines of code should be removed.(ÙÉÛ8óòª¸1
+[	java:S106™"9Replace this use of System.out or System.err by a logger.(’ßÊ‡üÿÿÿÿ8ôòª¸1
+V	java:S106›"9Replace this use of System.out or System.err by a logger.(ËÏÖë8õòª¸1
+V	java:S106"9Replace this use of System.out or System.err by a logger.(½÷¯®8÷òª¸1
+^	java:S125"<This block of commented-out lines of code should be removed.(ÿÉñıÿÿÿÿ8÷òª¸1
+[	java:S106¤"9Replace this use of System.out or System.err by a logger.(æ¸ëıÿÿÿÿ8øòª¸1
+^	java:S125¦"<This block of commented-out lines of code should be removed.(¿ÏÖ÷úÿÿÿÿ8ùòª¸1
+^	java:S125©"<This block of commented-out lines of code should be removed.(ÆøË”ûÿÿÿÿ8úòª¸1
+Y	java:S125Ç"<This block of commented-out lines of code should be removed.(†½Èû8üòª¸1
+M
+java:S1874½"/Remove this use of "Handler"; it is deprecated.(çî 8şòª¸1
+Y	java:S125Á"<This block of commented-out lines of code should be removed.(ü³Ğò8ÿòª¸1
+J
+java:S1481Ó",Remove this unused "estado1" local variable.(­âÙã8òª¸1
+[	java:S106Ü"9Replace this use of System.out or System.err by a logger.(ÔŞÖÕÿÿÿÿÿ8‚òª¸1
+Y	java:S125‹"<This block of commented-out lines of code should be removed.(Ô¥ô8†òª¸1
+[	java:S106”"9Replace this use of System.out or System.err by a logger.(ÍØäÄÿÿÿÿÿ8‡òª¸1
+Y	java:S125¬"<This block of commented-out lines of code should be removed.(¬Æı«8‰òª¸1
+^	java:S125¯"<This block of commented-out lines of code should be removed.(½Á§©şÿÿÿÿ8Šòª¸1
+k	java:S100¹"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(”ı°8‹òª¸1
+¤
+java:S1186Ü"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(™ˆ¼şÿÿÿÿ8òª¸1
+Ÿ
+java:S1186á"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÜÔÇ8òª¸1
+u
+java:S3776ë"RRefactor this method to reduce its Cognitive Complexity from 43 to the 15 allowed.(¥‚³úÿÿÿÿ8’òª¸1
+d
+java:S1854’"ARemove this useless assignment to local variable "formatCantDev".(ïÜÏ¿ûÿÿÿÿ8”òª¸1
+_
+java:S1854‘"ARemove this useless assignment to local variable "formatCantMax".(æ³à8•òª¸1
+`
+java:S1854ı"CRemove this useless assignment to local variable "viewRefundTotal".(ñ¶“8•òª¸1
+h
+java:S1854ü"ERemove this useless assignment to local variable "viewRefundParcial".(üê†ÿÿÿÿÿ8–òª¸1
+^	java:S125ó"<This block of commented-out lines of code should be removed.(ëğşÿÿÿÿ8—òª¸1
+Y
+java:S1481ü"6Remove this unused "viewRefundParcial" local variable.(üê†ÿÿÿÿÿ8˜òª¸1
+Q
+java:S1481ı"4Remove this unused "viewRefundTotal" local variable.(ñ¶“8™òª¸1
+[
+java:S1117†"=Rename "imgBack" which hides the field declared at line 8137.(¡ß²©8›òª¸1
+[	java:S106"9Replace this use of System.out or System.err by a logger.(÷ºûïüÿÿÿÿ8òª¸1
+[	java:S106Ì"9Replace this use of System.out or System.err by a logger.(Ñä¡Íşÿÿÿÿ8 òª¸1
+^	java:S125Î"<This block of commented-out lines of code should be removed.(í²Âúûÿÿÿÿ8¢òª¸1
+Y	java:S125Ú"<This block of commented-out lines of code should be removed.(¥„É·8£òª¸1
+^	java:S125ì"<This block of commented-out lines of code should be removed.(ßµíãûÿÿÿÿ8¥òª¸1
+\
+java:S1854«"9Remove this useless assignment to local variable "array".(›òğİÿÿÿÿÿ8¨òª¸1
+]
+java:S1161§":Add the "@Override" annotation above this method signature(Ÿ‡Å—ùÿÿÿÿ8©òª¸1
+P
+java:S1481ª"-Remove this unused "nuevoTxt" local variable.(‘©Ëìıÿÿÿÿ8ªòª¸1
+M
+java:S1481«"*Remove this unused "array" local variable.(›òğİÿÿÿÿÿ8«òª¸1
+V	java:S106¶"9Replace this use of System.out or System.err by a logger.(…¥ÔÙ8¬òª¸1
+V	java:S106¸"9Replace this use of System.out or System.err by a logger.(…¥ÔÙ8­òª¸1
+Y
+java:S6353½"<Use concise character class syntax '\\d' instead of '[0-9]'.(•îÎ@8¯òª¸1
+V	java:S106É"9Replace this use of System.out or System.err by a logger.(¡îŞü8±òª¸1
+k
+java:S5361ç"HReplace this call to "replaceAll()" by a call to the "replace()" method.(•ªÇúÿÿÿÿ8³òª¸1
+[	java:S106é"9Replace this use of System.out or System.err by a logger.(ş³ÙÍúÿÿÿÿ8´òª¸1
+Y	java:S125"<This block of commented-out lines of code should be removed.(ÒŸ§´8·òª¸1
+^	java:S125ƒ"<This block of commented-out lines of code should be removed.(üÛ”­úÿÿÿÿ8¸òª¸1
+[	java:S106‹"9Replace this use of System.out or System.err by a logger.(ôÚÒşÿÿÿÿ8Áòª¸1
+Y	java:S125‡"<This block of commented-out lines of code should be removed.(´Ëë´8Âòª¸1
+a
+java:S2130">Use "Double.parseDouble" for this string-to-double conversion.(ãæĞÎşÿÿÿÿ8Ãòª¸1
+V	java:S106"9Replace this use of System.out or System.err by a logger.(İ„Í«8Åòª¸1
+^	java:S125‘"<This block of commented-out lines of code should be removed.(í²Âúûÿÿÿÿ8Æòª¸1
+[
+java:S1874©"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8Éòª¸1
+b
+java:S1874ª"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8Êòª¸1
+p
+java:S1874«"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8Êòª¸1
+k
+java:S1874¬"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8Ëòª¸1
+e
+java:S1874­"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8Ìòª¸1
+i
+java:S1874®"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8Íòª¸1
+_
+java:S1874¯"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8Îòª¸1
+j
+java:S1874°"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8Ïòª¸1
+u
+java:S3776¶"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(‚ß©ùÿÿÿÿ8Ğòª¸1
+X
+java:S1854½":Remove this useless assignment to local variable "titulo".(¾ÿò8Ñòª¸1
+I
+java:S1481½"+Remove this unused "titulo" local variable.(¾ÿò8Óòª¸1
+Y
+java:S2130Ü";Use "Float.parseFloat" for this string-to-float conversion.(„ÖËÁ8×òª¸1
+^
+java:S2130İ";Use "Float.parseFloat" for this string-to-float conversion.(ûÁŒğÿÿÿÿÿ8Øòª¸1
+Y
+java:S1117â"6Rename "o" which hides the field declared at line 143.(ŒîÊæıÿÿÿÿ8Ùòª¸1
+Y
+java:S1117í"6Rename "j" which hides the field declared at line 140.(ˆÃŞÃúÿÿÿÿ8Ûòª¸1
+[	java:S106"9Replace this use of System.out or System.err by a logger.(Š¿Â­øÿÿÿÿ8ßòª¸1
+^	java:S125¦"<This block of commented-out lines of code should be removed.(ó–üÿıÿÿÿÿ8áòª¸1
+[
+java:S1874È"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8åòª¸1
+b
+java:S1874É"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8åòª¸1
+p
+java:S1874Ê"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8æòª¸1
+k
+java:S1874Ë"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8çòª¸1
+e
+java:S1874Ì"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8èòª¸1
+i
+java:S1874Í"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8éòª¸1
+_
+java:S1874Î"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8êòª¸1
+j
+java:S1874Ï"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8ëòª¸1
+p
+java:S3776Õ"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(ƒÖ—Û8ìòª¸1
+V	java:S106Ö"9Replace this use of System.out or System.err by a logger.(öâ±„8íòª¸1
+[	java:S106Ú"9Replace this use of System.out or System.err by a logger.(®è†Ïûÿÿÿÿ8îòª¸1
+V	java:S106Û"9Replace this use of System.out or System.err by a logger.(ª¸Ü”8ğòª¸1
+Y	java:S125Ü"<This block of commented-out lines of code should be removed.(‚ÃóÇ8ñòª¸1
+a
+java:S2130à">Use "Double.parseDouble" for this string-to-double conversion.(¢ßÜ´üÿÿÿÿ8òòª¸1
+V	java:S106ë"9Replace this use of System.out or System.err by a logger.(ÜÕ¢Ì8ôòª¸1
+V	java:S106ğ"9Replace this use of System.out or System.err by a logger.(ùòÍƒ8öòª¸1
+^	java:S125†"<This block of commented-out lines of code should be removed.(í²Âúûÿÿÿÿ8ùòª¸1
+[	java:S106"9Replace this use of System.out or System.err by a logger.(·‚É¿üÿÿÿÿ8üòª¸1
+[	java:S106¡"9Replace this use of System.out or System.err by a logger.(èÒıÎüÿÿÿÿ8şòª¸1
+>	java:S131©""Add a default case to this switch.(Ÿ·ñ_8€‘òª¸1
+V	java:S106¬"9Replace this use of System.out or System.err by a logger.(œæÆÏ8‘òª¸1
+Y	java:S125Ğ"<This block of commented-out lines of code should be removed.(œØŠ8…‘òª¸1
+^	java:S125î"<This block of commented-out lines of code should be removed.(€˜êûÿÿÿÿ8ˆ‘òª¸1
+Y	java:S125ğ"<This block of commented-out lines of code should be removed.(¯ä¿8‰‘òª¸1
+T
+java:S1117ò"6Rename "j" which hides the field declared at line 140.(¢Òú°8Š‘òª¸1
+Y
+java:S1117ü"6Rename "l" which hides the field declared at line 141.(…°Œøÿÿÿÿÿ8Œ‘òª¸1
+^	java:S125ƒ"<This block of commented-out lines of code should be removed.(Äú¡áıÿÿÿÿ8‘òª¸1
+X
+java:S1854•":Remove this useless assignment to local variable "nombre".(â›²ğ8‘òª¸1
+Z
+java:S1854“"7Remove this useless assignment to local variable "est".(àÑ¡›úÿÿÿÿ8‘òª¸1
+[
+java:S1854’"8Remove this useless assignment to local variable "mesa".(ÁÈÃ¿øÿÿÿÿ8‘òª¸1
+Z
+java:S1854‘"7Remove this useless assignment to local variable "num".(Öï›üÿÿÿÿ8‘‘òª¸1
+Z
+java:S1854˜"<Remove this useless assignment to local variable "apellido".(Ù¸À8’‘òª¸1
+]
+java:S1854›":Remove this useless assignment to local variable "correo".(÷å†åıÿÿÿÿ8“‘òª¸1
+Z
+java:S1854š"<Remove this useless assignment to local variable "telefono".(Ö¡8”‘òª¸1
+K
+java:S1481‘"(Remove this unused "num" local variable.(Öï›üÿÿÿÿ8–‘òª¸1
+L
+java:S1481’")Remove this unused "mesa" local variable.(ÁÈÃ¿øÿÿÿÿ8—‘òª¸1
+K
+java:S1481“"(Remove this unused "est" local variable.(àÑ¡›úÿÿÿÿ8˜‘òª¸1
+I
+java:S1481•"+Remove this unused "nombre" local variable.(â›²ğ8™‘òª¸1
+[
+java:S1117š"=Rename "telefono" which hides the field declared at line 212.(Ö¡8š‘òª¸1
+K
+java:S1481š"-Remove this unused "telefono" local variable.(Ö¡8œ‘òª¸1
+N
+java:S1481›"+Remove this unused "correo" local variable.(÷å†åıÿÿÿÿ8‘òª¸1
+^	java:S125¨"<This block of commented-out lines of code should be removed.(†¥À®ûÿÿÿÿ8Ÿ‘òª¸1
+U
+java:S1135¨"2Complete the task associated to this TODO comment.(†¥À®ûÿÿÿÿ8 ‘òª¸1
+^	java:S125¯"<This block of commented-out lines of code should be removed.(ë¾È§ÿÿÿÿÿ8¢‘òª¸1
+^	java:S125¶"<This block of commented-out lines of code should be removed.(ë¾È§ÿÿÿÿÿ8¤‘òª¸1
+p
+java:S3776¾"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ïÙ‘ 8¥‘òª¸1
+S
+java:S1854Ä"5Remove this useless assignment to local variable "d".(µáûÖ8¦‘òª¸1
+D
+java:S1481Ä"&Remove this unused "d" local variable.(µáûÖ8¨‘òª¸1
+V	java:S106Ò"9Replace this use of System.out or System.err by a logger.(Ÿœ¡÷8ª‘òª¸1
+S
+java:S1854á"5Remove this useless assignment to local variable "d".(µáûÖ8¬‘òª¸1
+^	java:S125Ş"<This block of commented-out lines of code should be removed.(Üµ–øÿÿÿÿ8­‘òª¸1
+D
+java:S1481á"&Remove this unused "d" local variable.(µáûÖ8¯‘òª¸1
+^	java:S125è"<This block of commented-out lines of code should be removed.(„µÙ¨ıÿÿÿÿ8°‘òª¸1
+^	java:S125ó"<This block of commented-out lines of code should be removed.(—›€Éıÿÿÿÿ8³‘òª¸1
+V
+java:S1874ö"3Remove this use of "getDrawable"; it is deprecated.(£ĞÖûÿÿÿÿ8´‘òª¸1
+n
+java:S3252ÿ"PUse static access with "android.view.ViewGroup$LayoutParams" for "WRAP_CONTENT".(ô¥éØ8¶‘òª¸1
+Y	java:S125‰"<This block of commented-out lines of code should be removed.(ˆÒ‡ù8·‘òª¸1
+^	java:S125–"<This block of commented-out lines of code should be removed.(–×ŒÉøÿÿÿÿ8º‘òª¸1
+[
+java:S1874˜"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8»‘òª¸1
+b
+java:S1874™"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8¼‘òª¸1
+p
+java:S1874š"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8½‘òª¸1
+k
+java:S1874›"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8¾‘òª¸1
+e
+java:S1874œ"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8À‘òª¸1
+i
+java:S1874"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8Á‘òª¸1
+_
+java:S1874"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8Ã‘òª¸1
+j
+java:S1874Ÿ"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8Ä‘òª¸1
+[
+java:S1874£"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8Å‘òª¸1
+b
+java:S1874¤"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8Ç‘òª¸1
+p
+java:S1874¥"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8É‘òª¸1
+k
+java:S1874¦"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8Ê‘òª¸1
+_
+java:S1874§"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8Ë‘òª¸1
+j
+java:S1874¨"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8Ì‘òª¸1
+Y	java:S125¯"<This block of commented-out lines of code should be removed.(îÓ¸‹8Ï‘òª¸1
+^	java:S125Á"<This block of commented-out lines of code should be removed.(ø¯±éüÿÿÿÿ8Ğ‘òª¸1
+a
+java:S1117Õ"CRename "scrollFiltros" which hides the field declared at line 8139.(×†¥ø8Ò‘òª¸1
+S
+java:S1854ã"5Remove this useless assignment to local variable "d".(µáûÖ8Ô‘òª¸1
+^	java:S125Û"<This block of commented-out lines of code should be removed.(Û×ø€şÿÿÿÿ8Ö‘òª¸1
+Y	java:S125İ"<This block of commented-out lines of code should be removed.(¤®ÈÈ8×‘òª¸1
+D
+java:S1481ã"&Remove this unused "d" local variable.(µáûÖ8Ø‘òª¸1
+Y	java:S125ç"<This block of commented-out lines of code should be removed.(£Ú¥€8Ú‘òª¸1
+[	java:S106ï"9Replace this use of System.out or System.err by a logger.(Üßìûÿÿÿÿ8Û‘òª¸1
+^	java:S125õ"<This block of commented-out lines of code should be removed.(î©ˆ·üÿÿÿÿ8İ‘òª¸1
+^	java:S125ı"<This block of commented-out lines of code should be removed.(„µÙ¨ıÿÿÿÿ8Ş‘òª¸1
+Q
+java:S1874"3Remove this use of "getDrawable"; it is deprecated.(ÂŸæ8ß‘òª¸1
+V
+java:S1874‹"3Remove this use of "getDrawable"; it is deprecated.(ï¶Åğûÿÿÿÿ8á‘òª¸1
+U	java:S106"9Replace this use of System.out or System.err by a logger.(á·•
+8â‘òª¸1
+^	java:S125‘"<This block of commented-out lines of code should be removed.(Ÿßºãşÿÿÿÿ8ä‘òª¸1
+s
+java:S3252•"PUse static access with "android.view.ViewGroup$LayoutParams" for "WRAP_CONTENT".(Û®½Üûÿÿÿÿ8å‘òª¸1
+Y	java:S125 "<This block of commented-out lines of code should be removed.(ˆÒ‡ù8ç‘òª¸1
+Q
+java:S1874¢"3Remove this use of "getDrawable"; it is deprecated.(õÙ´—8è‘òª¸1
+^	java:S125®"<This block of commented-out lines of code should be removed.(–×ŒÉøÿÿÿÿ8ë‘òª¸1
+[
+java:S1874°"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8í‘òª¸1
+b
+java:S1874±"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8î‘òª¸1
+p
+java:S1874²"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8ï‘òª¸1
+k
+java:S1874³"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8ğ‘òª¸1
+e
+java:S1874´"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8ò‘òª¸1
+i
+java:S1874µ"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8ó‘òª¸1
+_
+java:S1874¶"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8ô‘òª¸1
+j
+java:S1874·"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8ö‘òª¸1
+[
+java:S1874»"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8÷‘òª¸1
+b
+java:S1874¼"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8ù‘òª¸1
+p
+java:S1874½"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8ú‘òª¸1
+k
+java:S1874¾"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8û‘òª¸1
+_
+java:S1874¿"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8ü‘òª¸1
+j
+java:S1874À"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8ı‘òª¸1
+Y	java:S125Õ"<This block of commented-out lines of code should be removed.(Ç”ª—8’òª¸1
+[	java:S106Ø"9Replace this use of System.out or System.err by a logger.(†òäµşÿÿÿÿ8‚’òª¸1
+^	java:S125Ù"<This block of commented-out lines of code should be removed.(¢òí¡üÿÿÿÿ8ƒ’òª¸1
+Y	java:S125Û"<This block of commented-out lines of code should be removed.(¸—å°8…’òª¸1
+[	java:S106İ"9Replace this use of System.out or System.err by a logger.(ÔîÑ–ùÿÿÿÿ8†’òª¸1
+^	java:S125ß"<This block of commented-out lines of code should be removed.(Áõ¼Õùÿÿÿÿ8ˆ’òª¸1
+Y	java:S125â"<This block of commented-out lines of code should be removed.(¸—å°8‰’òª¸1
+p	java:S100ê"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘¬ ™üÿÿÿÿ8Š’òª¸1
+^	java:S125ì"<This block of commented-out lines of code should be removed.(½°±±ÿÿÿÿÿ8Œ’òª¸1
+X
+java:S1854â"5Remove this useless assignment to local variable "y".(‘ïûøüÿÿÿÿ8’òª¸1
+S
+java:S1854á"5Remove this useless assignment to local variable "x".(ßõñ8’òª¸1
+n
+java:S3252‡"PUse static access with "android.view.ViewGroup$LayoutParams" for "WRAP_CONTENT".(¼Ô8‘’òª¸1
+[	java:S106¤"9Replace this use of System.out or System.err by a logger.(è‚ßÑÿÿÿÿÿ8”’òª¸1
+W
+java:S1874¨"9Remove this use of "getDefaultDisplay"; it is deprecated.(ıÜŠá8–’òª¸1
+P
+java:S1874¨"2Remove this use of "getMetrics"; it is deprecated.(ıÜŠá8—’òª¸1
+[	java:S106®"9Replace this use of System.out or System.err by a logger.(¼‘ˆéüÿÿÿÿ8™’òª¸1
+^
+java:S1117·";Rename "height" which hides the field declared at line 181.(ŠÑ™»ÿÿÿÿÿ8›’òª¸1
+Y	java:S125Â"<This block of commented-out lines of code should be removed.(±ï¿€8’òª¸1
+D
+java:S1481á"&Remove this unused "x" local variable.(ßõñ8Ÿ’òª¸1
+I
+java:S1481â"&Remove this unused "y" local variable.(‘ïûøüÿÿÿÿ8 ’òª¸1
+a
+java:S1155ô">Use isEmpty() to check whether the collection is empty or not.(Æ·ÿÿÿÿÿ8£’òª¸1
+s
+java:S3252„"PUse static access with "android.view.ViewGroup$LayoutParams" for "WRAP_CONTENT".(ŸøŒûÿÿÿÿ8¦’òª¸1
+Y	java:S125…"<This block of commented-out lines of code should be removed.(äÅ‹À8§’òª¸1
+W
+java:S1874’"9Remove this use of "getDefaultDisplay"; it is deprecated.(ıÜŠá8©’òª¸1
+P
+java:S1874’"2Remove this use of "getMetrics"; it is deprecated.(ıÜŠá8«’òª¸1
+[	java:S106–"9Replace this use of System.out or System.err by a logger.(¿ª¼ûÿÿÿÿ8­’òª¸1
+a
+java:S1155˜">Use isEmpty() to check whether the collection is empty or not.(¡é•öùÿÿÿÿ8¯’òª¸1
+[	java:S106"9Replace this use of System.out or System.err by a logger.(¿ª¼ûÿÿÿÿ8±’òª¸1
+V	java:S106 "9Replace this use of System.out or System.err by a logger.(°©…¦8³’òª¸1
+V	java:S106¦"9Replace this use of System.out or System.err by a logger.(Ú‡¡—8µ’òª¸1
+p	java:S100±"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯àáúÿÿÿÿ8¸’òª¸1
+M
+java:S1874Ò"/Remove this use of "Handler"; it is deprecated.(é®­8¾’òª¸1
+v
+java:S3776Ş"SRefactor this method to reduce its Cognitive Complexity from 150 to the 15 allowed.(ìÆ¬Âúÿÿÿÿ8Ã’òª¸1
+M
+java:S1611á"/Remove the parentheses around the "v" parameter(«Ë©…8Î’òª¸1
+^	java:S125ˆ"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8Ö’òª¸1
+^	java:S125”"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8Ù’òª¸1
+^	java:S125"<This block of commented-out lines of code should be removed.(ˆˆŸÿÿÿÿÿ8Û’òª¸1
+^	java:S125Ä"<This block of commented-out lines of code should be removed.(ùŠ»ïùÿÿÿÿ8á’òª¸1
+^	java:S125Ê"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8é’òª¸1
+^	java:S125Õ"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8ë’òª¸1
+M
+java:S1611Ü"/Remove the parentheses around the "v" parameter(˜íâÿ8í’òª¸1
+Y	java:S125İ"<This block of commented-out lines of code should be removed.(¡§Éã8î’òª¸1
+^	java:S125ƒ"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8ô’òª¸1
+^	java:S125’"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8ö’òª¸1
+^	java:S125›"<This block of commented-out lines of code should be removed.(ˆˆŸÿÿÿÿÿ8ø’òª¸1
+^	java:S125Â"<This block of commented-out lines of code should be removed.(ùŠ»ïùÿÿÿÿ8ÿ’òª¸1
+^	java:S125Ğ"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8“òª¸1
+^	java:S125Û"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8„“òª¸1
+R
+java:S1611ä"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8†“òª¸1
+^	java:S125Œ"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8“òª¸1
+^	java:S125"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8“òª¸1
+^	java:S125É"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8–“òª¸1
+^	java:S125Ì"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8˜“òª¸1
+R
+java:S1611Ó"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8š“òª¸1
+^	java:S125ı"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8£“òª¸1
+^	java:S125€"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8¥“òª¸1
+^	java:S125»"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8®“òª¸1
+^	java:S125¾"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8°“òª¸1
+R
+java:S1611Ç"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8²“òª¸1
+^	java:S125ğ"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8ÿ“òª¸1
+^	java:S125ô"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8‚”òª¸1
+^	java:S125´"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8”òª¸1
+^	java:S125·"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8”òª¸1
+R
+java:S1611À"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8‘”òª¸1
+^	java:S125é"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8›”òª¸1
+^	java:S125í"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8”òª¸1
+^	java:S125«"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8§”òª¸1
+^	java:S125®"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8©”òª¸1
+R
+java:S1611¸"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8«”òª¸1
+^	java:S125ã"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8²”òª¸1
+^	java:S125ñ"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8µ”òª¸1
+^	java:S125­"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8½”òª¸1
+^	java:S125¯"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8¾”òª¸1
+R
+java:S1611Â"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8À”òª¸1
+X	java:S125Ã"<This block of commented-out lines of code should be removed.(‘¦Èa8Â”òª¸1
+^	java:S125í"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8È”òª¸1
+^	java:S125û"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8Ë”òª¸1
+^	java:S125¾"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8Ó”òª¸1
+^	java:S125À"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8Ô”òª¸1
+[	java:S106Å"9Replace this use of System.out or System.err by a logger.(ë”½´ùÿÿÿÿ8Ö”òª¸1
+R
+java:S1611Ô"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8Ø”òª¸1
+^	java:S125û"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8Ş”òª¸1
+^	java:S125ÿ"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8à”òª¸1
+^	java:S125º "<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8ç”òª¸1
+^	java:S125½ "<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8é”òª¸1
+R
+java:S1611Æ "/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8ê”òª¸1
+^	java:S125í "<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8ò”òª¸1
+^	java:S125ñ "<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8õ”òª¸1
+^	java:S125­!"<This block of commented-out lines of code should be removed.(Üá¦øÿÿÿÿ8•òª¸1
+^	java:S125°!"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8‚•òª¸1
+R
+java:S1611¹!"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8…•òª¸1
+^	java:S125Æ!"<This block of commented-out lines of code should be removed.(Ì¦Ÿôşÿÿÿÿ8‰•òª¸1
+Y	java:S125Ø!"<This block of commented-out lines of code should be removed.(¦ğüÀ8•òª¸1
+^	java:S125ï!"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8“•òª¸1
+R
+java:S1611ú!"/Remove the parentheses around the "v" parameter(ºïçúÿÿÿÿ8•òª¸1
+^	java:S125‡""<This block of commented-out lines of code should be removed.(Ì¦Ÿôşÿÿÿÿ8Ÿ•òª¸1
+Y	java:S125""<This block of commented-out lines of code should be removed.(¦ğüÀ8£•òª¸1
+^	java:S125´""<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8§•òª¸1
+[	java:S106ç""9Replace this use of System.out or System.err by a logger.(Å¤’Ùûÿÿÿÿ8¯•òª¸1
+V	java:S106ù""9Replace this use of System.out or System.err by a logger.(üòı8³•òª¸1
+[	java:S106ú""9Replace this use of System.out or System.err by a logger.( á‘Ãúÿÿÿÿ8µ•òª¸1
+[	java:S106û""9Replace this use of System.out or System.err by a logger.(½•¶âúÿÿÿÿ8·•òª¸1
+V	java:S106ş""9Replace this use of System.out or System.err by a logger.(¶Ì’‘8¹•òª¸1
+V	java:S106#"9Replace this use of System.out or System.err by a logger.(•³¬ˆ8»•òª¸1
+^	java:S125Š#"<This block of commented-out lines of code should be removed.(Üş÷Úÿÿÿÿÿ8½•òª¸1
+q
+java:S3776¯#"SRefactor this method to reduce its Cognitive Complexity from 340 to the 15 allowed.( Üó8Â•òª¸1
+c
+java:S1854³#"@Remove this useless assignment to local variable "idrestaurant".(³Í™ùÿÿÿÿ8Ä•òª¸1
+T
+java:S1481³#"1Remove this unused "idrestaurant" local variable.(³Í™ùÿÿÿÿ8È•òª¸1
+]
+java:S1854×#"?Remove this useless assignment to local variable "savedNumMax".(—Ö®À8Ú•òª¸1
+Z
+java:S1854Æ$"7Remove this useless assignment to local variable "sdf".(©„Ìøÿÿÿÿ8Ü•òª¸1
+]
+java:S1854´&":Remove this useless assignment to local variable "sonido".(±Ê´Şşÿÿÿÿ8Ş•òª¸1
+V	java:S106Ë#"9Replace this use of System.out or System.err by a logger.(ñá„¼8á•òª¸1
+T
+java:S1117Ï#"6Rename "k" which hides the field declared at line 139.(çŸÀç8ã•òª¸1
+V	java:S106Ğ#"9Replace this use of System.out or System.err by a logger.(ßÁµ®8ä•òª¸1
+[	java:S106Ñ#"9Replace this use of System.out or System.err by a logger.(šÃ‡üÿÿÿÿ8å•òª¸1
+[	java:S106à#"9Replace this use of System.out or System.err by a logger.(ÂãÁ‡ıÿÿÿÿ8ç•òª¸1
+V	java:S106â#"9Replace this use of System.out or System.err by a logger.(ôÎÑ8è•òª¸1
+V	java:S106ğ#"9Replace this use of System.out or System.err by a logger.(‰İ†÷8ë•òª¸1
+S
+java:S1481ñ#"5Remove this unused "encontradoPedido" local variable.(µî±ù8í•òª¸1
+U	java:S106ù#"9Replace this use of System.out or System.err by a logger.(±¿Ğ38ğ•òª¸1
+[	java:S106ÿ#"9Replace this use of System.out or System.err by a logger.(ÂãÁ‡ıÿÿÿÿ8ò•òª¸1
+V	java:S106$"9Replace this use of System.out or System.err by a logger.(îôÆù8ó•òª¸1
+Y	java:S125‚$"<This block of commented-out lines of code should be removed.(Š‚çŠ8ô•òª¸1
+[	java:S106…$"9Replace this use of System.out or System.err by a logger.(íñÊÎûÿÿÿÿ8õ•òª¸1
+[	java:S106$"9Replace this use of System.out or System.err by a logger.(ĞûòĞùÿÿÿÿ8ø•òª¸1
+Y	java:S125$"<This block of commented-out lines of code should be removed.(ƒ•¾Ù8ù•òª¸1
+P
+java:S1481™$"-Remove this unused "apellido" local variable.(Ê‡ÁŠşÿÿÿÿ8û•òª¸1
+V	java:S106¿$"9Replace this use of System.out or System.err by a logger.(ÑÁâù8ÿ•òª¸1
+V	java:S106%"9Replace this use of System.out or System.err by a logger.(óÅ‹Ú8Š–òª¸1
+V	java:S106%"9Replace this use of System.out or System.err by a logger.(İ–âƒ8Œ–òª¸1
+D	java:S131•%""Add a default case to this switch.(§¼şûÿÿÿÿ8–òª¸1
+V	java:S106²%"9Replace this use of System.out or System.err by a logger.(ÍÚÖ‰8’–òª¸1
+V	java:S106¶%"9Replace this use of System.out or System.err by a logger.(•ëŒ¨8”–òª¸1
+V	java:S106½%"9Replace this use of System.out or System.err by a logger.(•ëŒ¨8•–òª¸1
+V	java:S106É%"9Replace this use of System.out or System.err by a logger.(º¯Éœ8˜–òª¸1
+V	java:S106Ê%"9Replace this use of System.out or System.err by a logger.(Ê¬Û†8š–òª¸1
+V	java:S106Î%"9Replace this use of System.out or System.err by a logger.(µ¹ó”8œ–òª¸1
+t
+java:S2159Ï%"VRemove this call to "equals"; comparisons between unrelated types always return false.(õ²Çæ8–òª¸1
+[	java:S106Ö%"9Replace this use of System.out or System.err by a logger.(õúÓÀúÿÿÿÿ8¡–òª¸1
+T
+java:S1117Ø%"6Rename "l" which hides the field declared at line 141.(ò‚•ë8¢–òª¸1
+V	java:S106â%"9Replace this use of System.out or System.err by a logger.(—Èí8¥–òª¸1
+[	java:S106ê%"9Replace this use of System.out or System.err by a logger.(æî²ÿÿÿÿÿ8¨–òª¸1
+U	java:S106î%"9Replace this use of System.out or System.err by a logger.(ôÍÆ88ª–òª¸1
+^	java:S125ì%"<This block of commented-out lines of code should be removed.(òÀíÌşÿÿÿÿ8¬–òª¸1
+V	java:S106ï%"9Replace this use of System.out or System.err by a logger.(ÀèÓà8­–òª¸1
+^	java:S125ò%"<This block of commented-out lines of code should be removed.(ÇëÎ©ıÿÿÿÿ8¯–òª¸1
+V	java:S106õ%"9Replace this use of System.out or System.err by a logger.(Ï¯ëó8±–òª¸1
+U	java:S106÷%"9Replace this use of System.out or System.err by a logger.(ÈëÓ18²–òª¸1
+[	java:S106ü%"9Replace this use of System.out or System.err by a logger.(—…‡şÿÿÿÿ8´–òª¸1
+Y	java:S125…&"<This block of commented-out lines of code should be removed.(£úÎÍ8µ–òª¸1
+^	java:S125‰&"<This block of commented-out lines of code should be removed.(‚‚ğìûÿÿÿÿ8¶–òª¸1
+V	java:S106Œ&"9Replace this use of System.out or System.err by a logger.(òñÚ8¸–òª¸1
+S
+java:S1117“&"6Rename "n" which hides the field declared at line 142.(ÌÊë$8º–òª¸1
+[	java:S106”&"9Replace this use of System.out or System.err by a logger.(ß“ËÇşÿÿÿÿ8»–òª¸1
+Y	java:S125›&"<This block of commented-out lines of code should be removed.(«š§ô8½–òª¸1
+W
+java:S2130°&"9Use "Integer.parseInt" for this string-to-int conversion.(€ó€¼8¿–òª¸1
+[	java:S106±&"9Replace this use of System.out or System.err by a logger.(óö¨¸ùÿÿÿÿ8Á–òª¸1
+N
+java:S1481´&"+Remove this unused "sonido" local variable.(±Ê´Şşÿÿÿÿ8Â–òª¸1
+[	java:S106·&"9Replace this use of System.out or System.err by a logger.(ê¼Ç˜ÿÿÿÿÿ8Ä–òª¸1
+V
+java:S1874Â&"8Remove this use of "VIBRATOR_SERVICE"; it is deprecated.(˜¯Ú¹8Æ–òª¸1
+^	java:S125Î&"<This block of commented-out lines of code should be removed.(ï›ãŞÿÿÿÿÿ8È–òª¸1
+V	java:S106Õ&"9Replace this use of System.out or System.err by a logger.(å’±—8É–òª¸1
+[	java:S106á&"9Replace this use of System.out or System.err by a logger.(âªÓÿÿÿÿÿ8Ë–òª¸1
+^	java:S125ì&"<This block of commented-out lines of code should be removed.(±æÿÚıÿÿÿÿ8Ï–òª¸1
+P
+java:S1135Ñ'"2Complete the task associated to this TODO comment.(İ‰÷…8Ñ–òª¸1
+P
+java:S1135Ø'"2Complete the task associated to this TODO comment.(’Õ×ë8Ò–òª¸1
+U
+java:S1135Ú'"2Complete the task associated to this TODO comment.(óÈüÿÿÿÿ8Ó–òª¸1
+U
+java:S1135Û'"2Complete the task associated to this TODO comment.(àÓĞôûÿÿÿÿ8Ô–òª¸1
+P
+java:S1135İ'"2Complete the task associated to this TODO comment.(ïü‘¡8Õ–òª¸1
+P
+java:S1135ß'"2Complete the task associated to this TODO comment.(–ÇŸÉ8Ö–òª¸1
+U
+java:S1135ı'"2Complete the task associated to this TODO comment.(¤Ò•ëıÿÿÿÿ8×–òª¸1
+U
+java:S1135("2Complete the task associated to this TODO comment.(Ö¦“Şúÿÿÿÿ8Ø–òª¸1
+U
+java:S1135‘("2Complete the task associated to this TODO comment.(…Ş¦Üüÿÿÿÿ8Ù–òª¸1
+O
+java:S1135—("2Complete the task associated to this TODO comment.(ßÕ¼18Ù–òª¸1
+P
+java:S1172Ş("-Remove this unused method parameter "pedido".(âŠ¼€ıÿÿÿÿ8Û–òª¸1
+V	java:S106Œ)"9Replace this use of System.out or System.err by a logger.(Óöó’8à–òª¸1
+[	java:S106˜)"9Replace this use of System.out or System.err by a logger.(Õööñıÿÿÿÿ8ã–òª¸1
+X	java:S125¦)"<This block of commented-out lines of code should be removed.(½Ë³)8å–òª¸1
+V	java:S106©)"9Replace this use of System.out or System.err by a logger.(ÚØ¿µ8ç–òª¸1
+G
+java:S5413°)")Verify that "remove()" is used correctly.(Á˜‹Ğ8è–òª¸1
+T
+java:S1117®)"6Rename "j" which hides the field declared at line 140.(‡¹±8é–òª¸1
+V	java:S106´)"9Replace this use of System.out or System.err by a logger.(—Èí8ë–òª¸1
+a
+java:S1874¹)">Remove this use of "startActivityForResult"; it is deprecated.(Â—¶şÿÿÿÿ8ì–òª¸1
+X	java:S125¼)"<This block of commented-out lines of code should be removed.(”Şà68í–òª¸1
+Y	java:S125Ä)"<This block of commented-out lines of code should be removed.(Èúï‡8ï–òª¸1
+W
+java:S1172Ë)"4Remove this unused method parameter "idDispositivo".(Şø°Çşÿÿÿÿ8ó–òª¸1
+Y	java:S125Ñ)"<This block of commented-out lines of code should be removed.(Èúï‡8õ–òª¸1
+N
+java:S2201Û)"+The return value of "replace" must be used.(ú‰Šøÿÿÿÿ8ö–òª¸1
+V	java:S106Š*"9Replace this use of System.out or System.err by a logger.(ì¦… 8ú–òª¸1
+^	java:S125ˆ*"<This block of commented-out lines of code should be removed.(¿¢¯úÿÿÿÿ8û–òª¸1
+Y	java:S125*"<This block of commented-out lines of code should be removed.(Ã´°‚8ı–òª¸1
+Y	java:S125—*"<This block of commented-out lines of code should be removed.(Ã´°‚8ÿ–òª¸1
+Y	java:S125š*"<This block of commented-out lines of code should be removed.(Ã´°‚8—òª¸1
+^	java:S125*"<This block of commented-out lines of code should be removed.(“Âê‘øÿÿÿÿ8‚—òª¸1
+Y	java:S125¥*"<This block of commented-out lines of code should be removed.(Ÿ½½¸8…—òª¸1
+V	java:S106©*"9Replace this use of System.out or System.err by a logger.(â˜ä8†—òª¸1
+[	java:S106ª*"9Replace this use of System.out or System.err by a logger.(€óŒÔúÿÿÿÿ8ˆ—òª¸1
+V	java:S106«*"9Replace this use of System.out or System.err by a logger.(Øüñ­8‰—òª¸1
+V	java:S106¬*"9Replace this use of System.out or System.err by a logger.(àÆ‰µ8Š—òª¸1
+u
+java:S3776°*"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(…Ïæşÿÿÿÿ8‹—òª¸1
+d
+java:S1854ï*"ARemove this useless assignment to local variable "listaOpciones".(©ÑÛîıÿÿÿÿ8—òª¸1
+c
+java:S1854ì*"@Remove this useless assignment to local variable "idrestaurant".(³Í™ùÿÿÿÿ8—òª¸1
+Y
+java:S1854ê*";Remove this useless assignment to local variable "element".(ØÂİÔ8—òª¸1
+^
+java:S1854ô*"ARemove this useless assignment to local variable "listaOpciones".(ò­™=8—òª¸1
+^	java:S125±*"<This block of commented-out lines of code should be removed.(…úàŠúÿÿÿÿ8‘—òª¸1
+b
+java:S1117·*"?Rename "datoEstado" which hides the field declared at line 170.(†óü¤şÿÿÿÿ8’—òª¸1
+y
+java:S3923À*"[Remove this conditional structure or edit its code blocks so that they're not all the same.(ÂËÉà8•—òª¸1
+Y	java:S125Ê*"<This block of commented-out lines of code should be removed.(Ã´°‚8˜—òª¸1
+V	java:S106à*"9Replace this use of System.out or System.err by a logger.(ºşç‡8›—òª¸1
+Z
+java:S1874ê*"<Remove this use of "getSerializableExtra"; it is deprecated.(ØÂİÔ8—òª¸1
+J
+java:S1481ê*",Remove this unused "element" local variable.(ØÂİÔ8—òª¸1
+T
+java:S1481ì*"1Remove this unused "idrestaurant" local variable.(³Í™ùÿÿÿÿ8 —òª¸1
+`
+java:S1117õ*"=Rename "producto" which hides the field declared at line 132.(µƒûÿÿÿÿ8¢—òª¸1
+[	java:S106ø*"9Replace this use of System.out or System.err by a logger.(ñĞğ«şÿÿÿÿ8¤—òª¸1
+T
+java:S1117ù*"6Rename "j" which hides the field declared at line 140.(ˆÎ¸Ü8¥—òª¸1
+V	java:S106û*"9Replace this use of System.out or System.err by a logger.(ÑëÃ8§—òª¸1
+V	java:S106‹+"9Replace this use of System.out or System.err by a logger.(Ç¥ú»8¨—òª¸1
+g
+java:S1874™+"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8®—òª¸1
+W
+java:S1854¤+"9Remove this useless assignment to local variable "color".(åßîÒ8°—òª¸1
+V	java:S106+"9Replace this use of System.out or System.err by a logger.(™Ú¯¶8±—òª¸1
+U	java:S106¥+"9Replace this use of System.out or System.err by a logger.(ñòñ8³—òª¸1
+V	java:S106¦+"9Replace this use of System.out or System.err by a logger.(§“ÍÚ8´—òª¸1
+Y	java:S125«+"<This block of commented-out lines of code should be removed.(ÌÊª©8µ—òª¸1
+N
+java:S2201­+"+The return value of "replace" must be used.(ú‰Šøÿÿÿÿ8¶—òª¸1
+[	java:S106¹+"9Replace this use of System.out or System.err by a logger.(Ÿ¶Î†üÿÿÿÿ8¹—òª¸1
+V	java:S106»+"9Replace this use of System.out or System.err by a logger.(í¨¡î8»—òª¸1
+V	java:S106¾+"9Replace this use of System.out or System.err by a logger.(´§€¾8¼—òª¸1
+[	java:S106À+"9Replace this use of System.out or System.err by a logger.(ÿ·­Àıÿÿÿÿ8¾—òª¸1
+V	java:S106É+"9Replace this use of System.out or System.err by a logger.(ÑâÂò8¿—òª¸1
+^	java:S125ß+"<This block of commented-out lines of code should be removed.(‘ÜŒøÿÿÿÿ8Â—òª¸1
+[	java:S106í+"9Replace this use of System.out or System.err by a logger.(úü–ÿÿÿÿÿ8Å—òª¸1
+V	java:S106ö+"9Replace this use of System.out or System.err by a logger.(øå™È8Ç—òª¸1
+V	java:S106ú+"9Replace this use of System.out or System.err by a logger.(„Ø‹“8È—òª¸1
+V	java:S106€,"9Replace this use of System.out or System.err by a logger.(õÔÿÒ8Ê—òª¸1
+^	java:S125,"<This block of commented-out lines of code should be removed.(åµà²ıÿÿÿÿ8Î—òª¸1
+^	java:S125¥,"<This block of commented-out lines of code should be removed.(ä„àıÿÿÿÿ8Ï—òª¸1
+c
+java:S1854Ó,"ERemove this useless assignment to local variable "sharedPreferences".(Æ¨ã¯8Ñ—òª¸1
+c
+java:S1854é,"ERemove this useless assignment to local variable "sharedPreferences".(™ï¤»8Ò—òª¸1
+^
+java:S1854ü,"@Remove this useless assignment to local variable "sharedSonido".(Óá¤¥8Ó—òª¸1
+W
+java:S1854‘-"9Remove this useless assignment to local variable "color".(åßîÒ8Ô—òª¸1
+^
+java:S1854-";Remove this useless assignment to local variable "nPedido".(ˆÓÉÖıÿÿÿÿ8Õ—òª¸1
+]
+java:S1854±0":Remove this useless assignment to local variable "editor".(ÎÃ²üÿÿÿÿ8Ö—òª¸1
+V	java:S106¯,"9Replace this use of System.out or System.err by a logger.(Œ¯Î«8×—òª¸1
+[	java:S106°,"9Replace this use of System.out or System.err by a logger.(ú¦ê÷ıÿÿÿÿ8Ø—òª¸1
+[
+java:S1874²,"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8Ù—òª¸1
+b
+java:S1874³,"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8Ú—òª¸1
+p
+java:S1874´,"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8Û—òª¸1
+k
+java:S1874µ,"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8Ü—òª¸1
+i
+java:S1874¶,"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8Ü—òª¸1
+_
+java:S1874·,"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8İ—òª¸1
+j
+java:S1874¸,"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8Ş—òª¸1
+Z
+java:S1117Â,"<Rename "primera" which hides the field declared at line 168.(ÿÍÙö8à—òª¸1
+V	java:S106Ğ,"9Replace this use of System.out or System.err by a logger.(¯åæ’8á—òª¸1
+Y	java:S125Å,"<This block of commented-out lines of code should be removed.(É÷ÈÂ8â—òª¸1
+[	java:S106Û,"9Replace this use of System.out or System.err by a logger.(–Ñ¹Ãıÿÿÿÿ8ä—òª¸1
+Y	java:S125â,"<This block of commented-out lines of code should be removed.(ƒ¨Í§8å—òª¸1
+U	java:S106è,"9Replace this use of System.out or System.err by a logger.(õèB8ç—òª¸1
+V	java:S106ë,"9Replace this use of System.out or System.err by a logger.(š¥Œ‹8è—òª¸1
+^	java:S125ê,"<This block of commented-out lines of code should be removed.(ë—å“üÿÿÿÿ8é—òª¸1
+[	java:S106÷,"9Replace this use of System.out or System.err by a logger.(ıÎºíşÿÿÿÿ8ë—òª¸1
+O
+java:S1481ü,"1Remove this unused "sharedSonido" local variable.(Óá¤¥8ë—òª¸1
+[	java:S106€-"9Replace this use of System.out or System.err by a logger.(®«âÔøÿÿÿÿ8ì—òª¸1
+[	java:S106„-"9Replace this use of System.out or System.err by a logger.( °Ä˜ùÿÿÿÿ8í—òª¸1
+X	java:S125Œ-"<This block of commented-out lines of code should be removed.(Ïíš8î—òª¸1
+O
+java:S1481-",Remove this unused "nPedido" local variable.(ˆÓÉÖıÿÿÿÿ8ï—òª¸1
+H
+java:S1481‘-"*Remove this unused "color" local variable.(åßîÒ8ğ—òª¸1
+V	java:S106”-"9Replace this use of System.out or System.err by a logger.(îóà8ñ—òª¸1
+Y	java:S125–-"<This block of commented-out lines of code should be removed.(Üû™¶8ò—òª¸1
+Y	java:S125›-"<This block of commented-out lines of code should be removed.(£à­Ê8ó—òª¸1
+Y	java:S125¯-"<This block of commented-out lines of code should be removed.(ÔÀ‰¢8ø—òª¸1
+Y	java:S125Á."<This block of commented-out lines of code should be removed.(ÔÀ‰¢8ù—òª¸1
+P
+java:S1135ú-"2Complete the task associated to this TODO comment.(İ‰÷…8ú—òª¸1
+P
+java:S1135€."2Complete the task associated to this TODO comment.(’Õ×ë8û—òª¸1
+U
+java:S1135„."2Complete the task associated to this TODO comment.(óÈüÿÿÿÿ8ü—òª¸1
+U
+java:S1135ˆ."2Complete the task associated to this TODO comment.(†§·ğùÿÿÿÿ8ü—òª¸1
+P
+java:S1135."2Complete the task associated to this TODO comment.(ïü‘¡8ı—òª¸1
+P
+java:S1135”."2Complete the task associated to this TODO comment.(–ÇŸÉ8ş—òª¸1
+U
+java:S1135 ."2Complete the task associated to this TODO comment.(¤Ò•ëıÿÿÿÿ8ş—òª¸1
+U
+java:S1135¢."2Complete the task associated to this TODO comment.(…Ş¦Üüÿÿÿÿ8ÿ—òª¸1
+O
+java:S1135©."2Complete the task associated to this TODO comment.(ßÕ¼18€˜òª¸1
+^	java:S125«0"<This block of commented-out lines of code should be removed.(‰´‘‘ÿÿÿÿÿ8˜òª¸1
+Y	java:S125·0"<This block of commented-out lines of code should be removed.(¶¡Ïò8‚˜òª¸1
+[	java:S106Ä0"9Replace this use of System.out or System.err by a logger.(ß™„ıÿÿÿÿ8„˜òª¸1
+[	java:S106Ç0"9Replace this use of System.out or System.err by a logger.(Õ¼½øşÿÿÿÿ8†˜òª¸1
+V	java:S106Ê0"9Replace this use of System.out or System.err by a logger.(‘’Şğ8‡˜òª¸1
+[	java:S106ß0"9Replace this use of System.out or System.err by a logger.(Ë˜ÿíûÿÿÿÿ8‰˜òª¸1
+V	java:S106å0"9Replace this use of System.out or System.err by a logger.(¥‘Šü8Š˜òª¸1
+T
+java:S1117’1"6Rename "j" which hides the field declared at line 140.(ïøğõ8˜òª¸1
+Y
+java:S11171"6Rename "o" which hides the field declared at line 143.(òãóãıÿÿÿÿ8‘˜òª¸1
+V	java:S106¯1"9Replace this use of System.out or System.err by a logger.(ôºÂ»8’˜òª¸1
+[
+java:S1874¼1"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8”˜òª¸1
+b
+java:S1874½1"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8•˜òª¸1
+p
+java:S1874¾1"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8–˜òª¸1
+k
+java:S1874¿1"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8–˜òª¸1
+e
+java:S1874À1"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8—˜òª¸1
+i
+java:S1874Á1"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8˜˜òª¸1
+_
+java:S1874Â1"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8™˜òª¸1
+j
+java:S1874Ã1"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8š˜òª¸1
+X
+java:S1854ş3":Remove this useless assignment to local variable "prueba".(Ã§‰ô8›˜òª¸1
+Z
+java:S1854û3"7Remove this useless assignment to local variable "dat".(×ò‘Ûüÿÿÿÿ8œ˜òª¸1
+^	java:S125Í1"<This block of commented-out lines of code should be removed.(Ìµ‚øÿÿÿÿ8˜òª¸1
+Y	java:S125ç1"<This block of commented-out lines of code should be removed.(¶ƒ‘”8Ÿ˜òª¸1
+Y	java:S125ü3"<This block of commented-out lines of code should be removed.(ã±ìÛ8¡˜òª¸1
+I
+java:S1481ş3"+Remove this unused "prueba" local variable.(Ã§‰ô8¢˜òª¸1
+^	java:S125ÿ3"<This block of commented-out lines of code should be removed.(ÆƒŸËıÿÿÿÿ8¢˜òª¸1
+V	java:S106ƒ4"9Replace this use of System.out or System.err by a logger.(îÅÇÓ8§˜òª¸1
+U	java:S106†4"9Replace this use of System.out or System.err by a logger.(ªÛ38¨˜òª¸1
+?
+java:S1170‘4"!Make this final field static too.(íåíŠ8ª˜òª¸1
+U	java:S106š4"9Replace this use of System.out or System.err by a logger.(àô°j8¬˜òª¸1
+Y	java:S125Ÿ4"<This block of commented-out lines of code should be removed.(Ô¥ô8­˜òª¸1
+Y	java:S125¥4"<This block of commented-out lines of code should be removed.(İ‰üŠ8®˜òª¸1
+V	java:S106ª4"9Replace this use of System.out or System.err by a logger.(“Ê×8¯˜òª¸1
+[	java:S106µ4"9Replace this use of System.out or System.err by a logger.(ÊŠÈùÿÿÿÿ8°˜òª¸1
+[	java:S106¸4"9Replace this use of System.out or System.err by a logger.(åû²üÿÿÿÿ8±˜òª¸1
+V	java:S106º4"9Replace this use of System.out or System.err by a logger.(Î¢×8²˜òª¸1
+Y	java:S125¼4"<This block of commented-out lines of code should be removed.(ìöºõ8³˜òª¸1
+V	java:S106Æ4"9Replace this use of System.out or System.err by a logger.(à·Í8´˜òª¸1
+V	java:S106Ç4"9Replace this use of System.out or System.err by a logger.(ƒëá®8µ˜òª¸1
+V	java:S106É4"9Replace this use of System.out or System.err by a logger.(õæ¶²8¶˜òª¸1
+Z
+java:S1854Ó4"=Remove this useless assignment to local variable "vibracion".(®¦º8·˜òª¸1
+]
+java:S1854Ò4":Remove this useless assignment to local variable "sonido".(±Ê´Şşÿÿÿÿ8¸˜òª¸1
+V	java:S106Î4"9Replace this use of System.out or System.err by a logger.(à·Í8¹˜òª¸1
+N
+java:S1481Ò4"+Remove this unused "sonido" local variable.(±Ê´Şşÿÿÿÿ8º˜òª¸1
+K
+java:S1481Ó4".Remove this unused "vibracion" local variable.(®¦º8»˜òª¸1
+Y	java:S125Õ4"<This block of commented-out lines of code should be removed.(Ÿà»š8¼˜òª¸1
+^
+java:S1117à4";Rename "estado" which hides the field declared at line 163.(Ö¿Ç¹ÿÿÿÿÿ8½˜òª¸1
+[	java:S106á4"9Replace this use of System.out or System.err by a logger.(®ˆã¼úÿÿÿÿ8¾˜òª¸1
+Y	java:S125ä4"<This block of commented-out lines of code should be removed.(¬ĞË8¾˜òª¸1
+[	java:S106ï4"9Replace this use of System.out or System.err by a logger.(ğ•æöúÿÿÿÿ8¿˜òª¸1
+[	java:S106ú4"9Replace this use of System.out or System.err by a logger.(ğ•æöúÿÿÿÿ8Á˜òª¸1
+V	java:S106ƒ5"9Replace this use of System.out or System.err by a logger.(êïÛ8Â˜òª¸1
+[	java:S106…5"9Replace this use of System.out or System.err by a logger.(¼ªıÔúÿÿÿÿ8Ã˜òª¸1
+[	java:S106‰5"9Replace this use of System.out or System.err by a logger.(ÄøŠúÿÿÿÿ8Ä˜òª¸1
+^	java:S125†5"<This block of commented-out lines of code should be removed.(ë÷ÄÅûÿÿÿÿ8Ä˜òª¸1
+^	java:S125‹5"<This block of commented-out lines of code should be removed.(Ş»ÂŒüÿÿÿÿ8Å˜òª¸1
+[	java:S1065"9Replace this use of System.out or System.err by a logger.(ú•ÖÙÿÿÿÿÿ8Æ˜òª¸1
+^	java:S125’5"<This block of commented-out lines of code should be removed.( ›èŸûÿÿÿÿ8Ç˜òª¸1
+Y	java:S125œ5"<This block of commented-out lines of code should be removed.(ü—£Ş8È˜òª¸1
+Y	java:S1255"<This block of commented-out lines of code should be removed.(»ŞÏª8É˜òª¸1
+[	java:S106¡5"9Replace this use of System.out or System.err by a logger.(¦ğ³òÿÿÿÿÿ8Ê˜òª¸1
+]
+java:S1854ª5":Remove this useless assignment to local variable "estado".(Ö¿Ç¹ÿÿÿÿÿ8Ì˜òª¸1
+^
+java:S1117ª5";Rename "estado" which hides the field declared at line 163.(Ö¿Ç¹ÿÿÿÿÿ8Í˜òª¸1
+N
+java:S1481ª5"+Remove this unused "estado" local variable.(Ö¿Ç¹ÿÿÿÿÿ8Í˜òª¸1
+[	java:S106«5"9Replace this use of System.out or System.err by a logger.(–Íöôøÿÿÿÿ8Î˜òª¸1
+^	java:S125¯5"<This block of commented-out lines of code should be removed.(ì·ÙÉşÿÿÿÿ8Ï˜òª¸1
+Y	java:S125¹5"<This block of commented-out lines of code should be removed.(Ÿçû¹8Ğ˜òª¸1
+m
+java:S1874Ñ5"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(œƒƒ©ùÿÿÿÿ8Ò˜òª¸1
+V	java:S106û5"9Replace this use of System.out or System.err by a logger.(—Èí8Õ˜òª¸1
+^	java:S125ˆ6"<This block of commented-out lines of code should be removed.(à˜µğøÿÿÿÿ8Ö˜òª¸1
+^	java:S125¯6"<This block of commented-out lines of code should be removed.(Ì šşÿÿÿÿ8Ù˜òª¸1
+^	java:S125½6"<This block of commented-out lines of code should be removed.(à˜µğøÿÿÿÿ8Ú˜òª¸1
+u
+java:S3776ó6"RRefactor this method to reduce its Cognitive Complexity from 73 to the 15 allowed.(Û¦İÇùÿÿÿÿ8Ş˜òª¸1
+[
+java:S1854ª7"8Remove this useless assignment to local variable "info".(ë¯î±ûÿÿÿÿ8ß˜òª¸1
+a
+java:S1854«7">Remove this useless assignment to local variable "jsonString".(û¶¶üÿÿÿÿ8à˜òª¸1
+Y	java:S125ô6"<This block of commented-out lines of code should be removed.(µ¯àÎ8á˜òª¸1
+V	java:S106÷6"9Replace this use of System.out or System.err by a logger.(Ğ³¶Ú8â˜òª¸1
+^	java:S125ú6"<This block of commented-out lines of code should be removed.(Øã™Ûıÿÿÿÿ8ã˜òª¸1
+Y	java:S125€7"<This block of commented-out lines of code should be removed.(Íè×—8ä˜òª¸1
+[	java:S106„7"9Replace this use of System.out or System.err by a logger.(‹´£ÿÿÿÿÿ8å˜òª¸1
+Y	java:S125…7"<This block of commented-out lines of code should be removed.(Õ„§™8æ˜òª¸1
+Y	java:S125ˆ7"<This block of commented-out lines of code should be removed.(ƒ¥ìÁ8ç˜òª¸1
+Y
+java:S11177"6Rename "s" which hides the field declared at line 146.(ş¿èêûÿÿÿÿ8è˜òª¸1
+^	java:S125“7"<This block of commented-out lines of code should be removed.(ª²Ê¢üÿÿÿÿ8ê˜òª¸1
+Y	java:S125–7"<This block of commented-out lines of code should be removed.(øó†¹8ê˜òª¸1
+V	java:S106›7"9Replace this use of System.out or System.err by a logger.(µ­´°8ë˜òª¸1
+^	java:S1257"<This block of commented-out lines of code should be removed.(ÁÇ£«şÿÿÿÿ8ì˜òª¸1
+R
+java:S1481«7"/Remove this unused "jsonString" local variable.(û¶¶üÿÿÿÿ8ï˜òª¸1
+Y	java:S125¬7"<This block of commented-out lines of code should be removed.(»æş›8ï˜òª¸1
+V	java:S106²7"9Replace this use of System.out or System.err by a logger.(ÜÕ¢Ì8ğ˜òª¸1
+[	java:S106»7"9Replace this use of System.out or System.err by a logger.(ìªìšıÿÿÿÿ8ò˜òª¸1
+V	java:S106¼7"9Replace this use of System.out or System.err by a logger.(ó°ËĞ8ú˜òª¸1
+Y	java:S125Õ7"<This block of commented-out lines of code should be removed.(ÌûŞó8ı˜òª¸1
+[	java:S106ß7"9Replace this use of System.out or System.err by a logger.(Û°¾ıÿÿÿÿ8ÿ˜òª¸1
+V	java:S106é7"9Replace this use of System.out or System.err by a logger.(±£ Â8™òª¸1
+?	java:S131Š8""Add a default case to this switch.(Ò†èé8ƒ™òª¸1
+^
+java:S1117œ8";Rename "idRest" which hides the field declared at line 172.(Äİÿÿÿÿÿ8…™òª¸1
+^	java:S1258"<This block of commented-out lines of code should be removed.(„Úùıÿÿÿÿ8†™òª¸1
+V	java:S106 8"9Replace this use of System.out or System.err by a logger.(¥¼Áº8ˆ™òª¸1
+Y	java:S125£8"<This block of commented-out lines of code should be removed.(Ş—¼æ8‰™òª¸1
+V	java:S106¹8"9Replace this use of System.out or System.err by a logger.(ÅßÄ©8Œ™òª¸1
+y
+java:S3923Â8"[Remove this conditional structure or edit its code blocks so that they're not all the same.(–¼ç8™òª¸1
+X	java:S125Ã8"<This block of commented-out lines of code should be removed.(ÂÈÖ98™òª¸1
+Y	java:S125Æ8"<This block of commented-out lines of code should be removed.(Ã´°‚8™òª¸1
+Y	java:S125Ì8"<This block of commented-out lines of code should be removed.(ùÀ§ß8Ù™òª¸1
+Y	java:S125‹9"<This block of commented-out lines of code should be removed.(¼Âëñ8û™òª¸1
+Y	java:S125³9"<This block of commented-out lines of code should be removed.(ù·óœ8‘šòª¸1
+q
+java:S3776î9"SRefactor this method to reduce its Cognitive Complexity from 428 to the 15 allowed.(÷¢ú™8ıšòª¸1
+c
+java:S1854ò9"@Remove this useless assignment to local variable "idrestaurant".(³Í™ùÿÿÿÿ8ÿšòª¸1
+T
+java:S1481ò9"1Remove this unused "idrestaurant" local variable.(³Í™ùÿÿÿÿ8ƒ›òª¸1
+V	java:S106ş9"9Replace this use of System.out or System.err by a logger.(ÜÕ¢Ì8‡›òª¸1
+V	java:S106ÿ9"9Replace this use of System.out or System.err by a logger.(ËïÓ¾8‰›òª¸1
+^	java:S125€:"<This block of commented-out lines of code should be removed.(Ãëšşÿÿÿÿ8Š›òª¸1
+]
+java:S1854¦:"?Remove this useless assignment to local variable "savedNumMax".(—Ö®À8›òª¸1
+Z
+java:S1854;"7Remove this useless assignment to local variable "sdf".(©„Ìøÿÿÿÿ8 ›òª¸1
+]
+java:S1854¦=":Remove this useless assignment to local variable "sonido".(±Ê´Şşÿÿÿÿ8¤›òª¸1
+Z
+java:S1854§="=Remove this useless assignment to local variable "vibracion".(®¦º8¦›òª¸1
+]
+java:S1854¿=":Remove this useless assignment to local variable "sonido".(±Ê´Şşÿÿÿÿ8©›òª¸1
+Z
+java:S1854À="=Remove this useless assignment to local variable "vibracion".(®¦º8¬›òª¸1
+V	java:S106‘:"9Replace this use of System.out or System.err by a logger.(’­”Í8°›òª¸1
+[	java:S106“:"9Replace this use of System.out or System.err by a logger.(Ûú¼¼ÿÿÿÿÿ8³›òª¸1
+[	java:S106š:"9Replace this use of System.out or System.err by a logger.(´øãáúÿÿÿÿ8¶›òª¸1
+T
+java:S1117:"6Rename "k" which hides the field declared at line 139.(çŸÀç8¹›òª¸1
+V	java:S106Ÿ:"9Replace this use of System.out or System.err by a logger.(ßÁµ®8¼›òª¸1
+[	java:S106 :"9Replace this use of System.out or System.err by a logger.(¿ˆÆÿÿÿÿÿ8À›òª¸1
+^	java:S125¢:"<This block of commented-out lines of code should be removed.(½Á§©şÿÿÿÿ8Ã›òª¸1
+[	java:S106¯:"9Replace this use of System.out or System.err by a logger.(ÂãÁ‡ıÿÿÿÿ8Ç›òª¸1
+V	java:S106±:"9Replace this use of System.out or System.err by a logger.(ôÎÑ8Ê›òª¸1
+V	java:S106¿:"9Replace this use of System.out or System.err by a logger.(‰İ†÷8Í›òª¸1
+S
+java:S1481À:"5Remove this unused "encontradoPedido" local variable.(µî±ù8Ğ›òª¸1
+U	java:S106È:"9Replace this use of System.out or System.err by a logger.(±¿Ğ38Ó›òª¸1
+[	java:S106Î:"9Replace this use of System.out or System.err by a logger.(ÂãÁ‡ıÿÿÿÿ8Ö›òª¸1
+V	java:S106Ğ:"9Replace this use of System.out or System.err by a logger.(îôÆù8Ø›òª¸1
+Y	java:S125Ñ:"<This block of commented-out lines of code should be removed.(Š‚çŠ8Ú›òª¸1
+[	java:S106Ô:"9Replace this use of System.out or System.err by a logger.(íñÊÎûÿÿÿÿ8Ü›òª¸1
+[	java:S106Ş:"9Replace this use of System.out or System.err by a logger.(»ˆÍşÿÿÿÿ8ß›òª¸1
+[	java:S106á:"9Replace this use of System.out or System.err by a logger.(Ù¸Ğıÿÿÿÿ8ã›òª¸1
+[	java:S106ä:"9Replace this use of System.out or System.err by a logger.(ĞûòĞùÿÿÿÿ8æ›òª¸1
+Y	java:S125æ:"<This block of commented-out lines of code should be removed.(ƒ•¾Ù8é›òª¸1
+V	java:S106–;"9Replace this use of System.out or System.err by a logger.(ÑÁâù8î›òª¸1
+[	java:S106Ğ;"9Replace this use of System.out or System.err by a logger.(„äÒûÿÿÿÿ8ö›òª¸1
+V	java:S106ì;"9Replace this use of System.out or System.err by a logger.(óÅ‹Ú8ü›òª¸1
+V	java:S106î;"9Replace this use of System.out or System.err by a logger.(İ–âƒ8€œòª¸1
+D	java:S131ó;""Add a default case to this switch.(§¼şûÿÿÿÿ8„œòª¸1
+[	java:S106ú;"9Replace this use of System.out or System.err by a logger.(ç…Ö¦øÿÿÿÿ8ˆœòª¸1
+E
+java:S1125•<"'Remove the unnecessary boolean literal.(³ ¤—8Œœòª¸1
+V	java:S106–<"9Replace this use of System.out or System.err by a logger.(ŸŒ¶‚8œòª¸1
+V	java:S106<"9Replace this use of System.out or System.err by a logger.(•ëŒ¨8œòª¸1
+V	java:S106ª<"9Replace this use of System.out or System.err by a logger.(ò˜›¦8’œòª¸1
+V	java:S106°<"9Replace this use of System.out or System.err by a logger.(¯‰ÕØ8“œòª¸1
+[	java:S106·<"9Replace this use of System.out or System.err by a logger.(Õ¢üÃùÿÿÿÿ8•œòª¸1
+V	java:S106¸<"9Replace this use of System.out or System.err by a logger.(ÔÌÓ¨8–œòª¸1
+V	java:S106Ã<"9Replace this use of System.out or System.err by a logger.(º¯Éœ8˜œòª¸1
+V	java:S106Ä<"9Replace this use of System.out or System.err by a logger.(Ê¬Û†8™œòª¸1
+V	java:S106È<"9Replace this use of System.out or System.err by a logger.(µ¹ó”8šœòª¸1
+t
+java:S2159É<"VRemove this call to "equals"; comparisons between unrelated types always return false.(õ²Çæ8œœòª¸1
+[	java:S106Ğ<"9Replace this use of System.out or System.err by a logger.(õúÓÀúÿÿÿÿ8œòª¸1
+T
+java:S1117Ò<"6Rename "l" which hides the field declared at line 141.(ò‚•ë8Ÿœòª¸1
+V	java:S106Û<"9Replace this use of System.out or System.err by a logger.(·ÃÔ†8 œòª¸1
+V	java:S106ß<"9Replace this use of System.out or System.err by a logger.(—Èí8¢œòª¸1
+[	java:S106ä<"9Replace this use of System.out or System.err by a logger.(´ËšÔıÿÿÿÿ8¤œòª¸1
+[	java:S106ê<"9Replace this use of System.out or System.err by a logger.(æî²ÿÿÿÿÿ8­œòª¸1
+U	java:S106î<"9Replace this use of System.out or System.err by a logger.(ôÍÆ88¯œòª¸1
+^	java:S125ì<"<This block of commented-out lines of code should be removed.(òÀíÌşÿÿÿÿ8°œòª¸1
+V	java:S106ï<"9Replace this use of System.out or System.err by a logger.(ÀèÓà8±œòª¸1
+^	java:S125ò<"<This block of commented-out lines of code should be removed.(ÇëÎ©ıÿÿÿÿ8²œòª¸1
+V	java:S106õ<"9Replace this use of System.out or System.err by a logger.(Ï¯ëó8´œòª¸1
+[	java:S106ı<"9Replace this use of System.out or System.err by a logger.(—…‡şÿÿÿÿ8µœòª¸1
+Y	java:S125†="<This block of commented-out lines of code should be removed.(£úÎÍ8·œòª¸1
+^	java:S125‹="<This block of commented-out lines of code should be removed.(‚‚ğìûÿÿÿÿ8¸œòª¸1
+Y	java:S125="<This block of commented-out lines of code should be removed.(ß—êÛ8ºœòª¸1
+V	java:S106="9Replace this use of System.out or System.err by a logger.(òñÚ8»œòª¸1
+S
+java:S1117–="6Rename "n" which hides the field declared at line 142.(ÌÊë$8½œòª¸1
+[	java:S106—="9Replace this use of System.out or System.err by a logger.(ß“ËÇşÿÿÿÿ8¿œòª¸1
+[	java:S106Ÿ="9Replace this use of System.out or System.err by a logger.(¶ôÍéøÿÿÿÿ8Áœòª¸1
+N
+java:S1481¦="+Remove this unused "sonido" local variable.(±Ê´Şşÿÿÿÿ8Âœòª¸1
+K
+java:S1481§=".Remove this unused "vibracion" local variable.(®¦º8Äœòª¸1
+[	java:S106¨="9Replace this use of System.out or System.err by a logger.(İ­üÿÿÿÿ8Åœòª¸1
+[	java:S106¸="9Replace this use of System.out or System.err by a logger.(´ËšÔıÿÿÿÿ8Çœòª¸1
+W
+java:S2130»="9Use "Integer.parseInt" for this string-to-int conversion.(€ó€¼8Èœòª¸1
+[	java:S106¼="9Replace this use of System.out or System.err by a logger.(óö¨¸ùÿÿÿÿ8Êœòª¸1
+N
+java:S1481¿="+Remove this unused "sonido" local variable.(±Ê´Şşÿÿÿÿ8Ëœòª¸1
+K
+java:S1481À=".Remove this unused "vibracion" local variable.(®¦º8Íœòª¸1
+[	java:S106Â="9Replace this use of System.out or System.err by a logger.(ê¼Ç˜ÿÿÿÿÿ8Îœòª¸1
+V	java:S106Ğ="9Replace this use of System.out or System.err by a logger.(†© â8Ğœòª¸1
+V	java:S106Ö="9Replace this use of System.out or System.err by a logger.(†© â8Òœòª¸1
+[	java:S106İ="9Replace this use of System.out or System.err by a logger.(´ËšÔıÿÿÿÿ8Óœòª¸1
+Y	java:S125Û="<This block of commented-out lines of code should be removed.(Ò¼æ8Ôœòª¸1
+V	java:S106à="9Replace this use of System.out or System.err by a logger.(õÜ°Ÿ8Õœòª¸1
+X	java:S125Ş="<This block of commented-out lines of code should be removed.(¨Çï[8Öœòª¸1
+^	java:S125ï="<This block of commented-out lines of code should be removed.(˜˜§²şÿÿÿÿ8Øœòª¸1
+[	java:S106ó="9Replace this use of System.out or System.err by a logger.(´ËšÔıÿÿÿÿ8Ùœòª¸1
+V	java:S106ø="9Replace this use of System.out or System.err by a logger.(å’±—8Úœòª¸1
+[	java:S106‚>"9Replace this use of System.out or System.err by a logger.(âªÓÿÿÿÿÿ8Üœòª¸1
+[	java:S106Œ>"9Replace this use of System.out or System.err by a logger.(İªœŠúÿÿÿÿ8Şœòª¸1
+V	java:S106”>"9Replace this use of System.out or System.err by a logger.(­ê÷8’òª¸1
+L
+java:S1481•>")Remove this unused "esta" local variable.(Ò­şÿÿÿÿ8”òª¸1
+M
+java:S1481–>"0Remove this unused "indiceFinal" local variable.(×¤—48—òª¸1
+[	java:S106™>"9Replace this use of System.out or System.err by a logger.(ş½¦şÿÿÿÿ8šòª¸1
+V	java:S106Ÿ>"9Replace this use of System.out or System.err by a logger.(áîÅ©8òª¸1
+V	java:S106¦>"9Replace this use of System.out or System.err by a logger.(˜ÛùÚ8 òª¸1
+
+java:S1130¼>"oRemove the declaration of thrown exception 'org.json.JSONException', as it cannot be thrown from method's body.(‚ÁÆ8£òª¸1
+T
+java:S1117Ú>"6Rename "j" which hides the field declared at line 140.(ˆÎ¸Ü8¬òª¸1
+^	java:S125á>"<This block of commented-out lines of code should be removed.(â›ñ¦ıÿÿÿÿ8¯òª¸1
+^	java:S125ì>"<This block of commented-out lines of code should be removed.(¤ı£“şÿÿÿÿ8²òª¸1
+[	java:S106ñ>"9Replace this use of System.out or System.err by a logger.(›íèóùÿÿÿÿ8µòª¸1
+V	java:S106õ>"9Replace this use of System.out or System.err by a logger.(¶Šæî8·òª¸1
+^	java:S125¢?"<This block of commented-out lines of code should be removed.(â›ñ¦ıÿÿÿÿ8¾òª¸1
+T
+java:S1117¬?"6Rename "l" which hides the field declared at line 141.(ş»ª®8Áòª¸1
+[	java:S106­?"9Replace this use of System.out or System.err by a logger.(¤ë‡¨ûÿÿÿÿ8Äòª¸1
+[	java:S106°?"9Replace this use of System.out or System.err by a logger.(ÿÚ¾ùÿÿÿÿ8Æòª¸1
+[	java:S106º@"9Replace this use of System.out or System.err by a logger.(’¨¤ÿÿÿÿÿ8Õòª¸1
+p
+java:S3776Ñ@"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(’ƒæ©8Ùòª¸1
+^	java:S125æ@"<This block of commented-out lines of code should be removed.(Í£½ùûÿÿÿÿ8Şòª¸1
+Y	java:S125ˆA"<This block of commented-out lines of code should be removed.(î•€Ê8äòª¸1
+Ÿ
+java:S1186˜A"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¡é††8çòª¸1
+Y	java:S125ÆA"<This block of commented-out lines of code should be removed.(˜Ù˜8ìòª¸1
+V	java:S106ÕA"9Replace this use of System.out or System.err by a logger.(öˆğÒ8ïòª¸1
+[	java:S106ÙA"9Replace this use of System.out or System.err by a logger.(ˆÓÀışÿÿÿÿ8ñòª¸1
+V	java:S106ÜA"9Replace this use of System.out or System.err by a logger.(ÓšÏ«8óòª¸1
+Y	java:S125B"<This block of commented-out lines of code should be removed.(Œã¼8øòª¸1
+Y	java:S125¨B"<This block of commented-out lines of code should be removed.(ş› à8ıòª¸1
+R
+java:S1874ÌB"/Remove this use of "Handler"; it is deprecated.(£â‚­ıÿÿÿÿ8şòª¸1
+D	java:S131ÕB""Add a default case to this switch.(ãÁğ™øÿÿÿÿ8òª¸1
+V	java:S106×B"9Replace this use of System.out or System.err by a logger.(•æİ”8ƒòª¸1
+[	java:S106âB"9Replace this use of System.out or System.err by a logger.(ÓËÎ¢ûÿÿÿÿ8†òª¸1
+[	java:S106òB"9Replace this use of System.out or System.err by a logger.(™‡£¬ÿÿÿÿÿ8Šòª¸1
+`
+java:S1117óB"=Rename "producto" which hides the field declared at line 132.(”ÙÖ¡ÿÿÿÿÿ8òª¸1
+[	java:S106„C"9Replace this use of System.out or System.err by a logger.(âŠÁğüÿÿÿÿ8‘òª¸1
+[	java:S106ÅC"9Replace this use of System.out or System.err by a logger.(à£Á¾üÿÿÿÿ8˜òª¸1
+U	java:S106ÚC"9Replace this use of System.out or System.err by a logger.(ªÇ·J8¢òª¸1
+D	java:S131úC""Add a default case to this switch.(¼œóÛüÿÿÿÿ8¦òª¸1
+p
+java:S3776‡D"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(µ’è¯8¨òª¸1
+[	java:S106”D"9Replace this use of System.out or System.err by a logger.(“ù€şúÿÿÿÿ8«òª¸1
+^	java:S125•D"<This block of commented-out lines of code should be removed.(ÃÓ±îøÿÿÿÿ8¬òª¸1
+Z
+java:S1854 D"7Remove this useless assignment to local variable "act".(à‘ÈŠÿÿÿÿÿ8¯òª¸1
+K
+java:S1481 D"(Remove this unused "act" local variable.(à‘ÈŠÿÿÿÿÿ8±òª¸1
+^	java:S125¡D"<This block of commented-out lines of code should be removed.(ÇÀå‘ÿÿÿÿÿ8²òª¸1
+[	java:S106¶D"9Replace this use of System.out or System.err by a logger.(Ê€Ìƒüÿÿÿÿ8µòª¸1
+V	java:S106ÁD"9Replace this use of System.out or System.err by a logger.(×şÜÆ8¸òª¸1
+V	java:S106ÃD"9Replace this use of System.out or System.err by a logger.(Í¶Ô»8ºòª¸1
+V	java:S106ÏD"9Replace this use of System.out or System.err by a logger.(Èßº÷8¼òª¸1
+[	java:S106üD"9Replace this use of System.out or System.err by a logger.(Ñ¹ßùÿÿÿÿ8Àòª¸1
+V	java:S106ÿD"9Replace this use of System.out or System.err by a logger.(Ú§¦€8Âòª¸1
+[	java:S106‚E"9Replace this use of System.out or System.err by a logger.( üêàüÿÿÿÿ8Ãòª¸1
+^	java:S125E"<This block of commented-out lines of code should be removed.(ûÿÏ”üÿÿÿÿ8Æòª¸1
+[	java:S106»E"9Replace this use of System.out or System.err by a logger.(¦Ì±Áşÿÿÿÿ8Ëòª¸1
+[	java:S106ÏE"9Replace this use of System.out or System.err by a logger.(ĞöØÃüÿÿÿÿ8Îòª¸1
+[	java:S106×E"9Replace this use of System.out or System.err by a logger.(ŸšÄîùÿÿÿÿ8Ğòª¸1
+p
+java:S3776èE"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ÉæÚ8Óòª¸1
+[	java:S106öE"9Replace this use of System.out or System.err by a logger.(´òôŞıÿÿÿÿ8×òª¸1
+V	java:S106F"9Replace this use of System.out or System.err by a logger.(à‚Èï8Ûòª¸1
+p
+java:S3776™F"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(Õ„Øª8Şòª¸1
+V	java:S106›F"9Replace this use of System.out or System.err by a logger.(½å¢‰8áòª¸1
+[	java:S106©F"9Replace this use of System.out or System.err by a logger.(´òôŞıÿÿÿÿ8åòª¸1
+V	java:S106¿F"9Replace this use of System.out or System.err by a logger.(à‚Èï8èòª¸1
+V	java:S106èF"9Replace this use of System.out or System.err by a logger.(Ÿœ¡÷8íòª¸1
+^	java:S125çF"<This block of commented-out lines of code should be removed.(•¸±‚ÿÿÿÿÿ8ïòª¸1
+~
+java:S3923œG"[Remove this conditional structure or edit its code blocks so that they're not all the same.(’Ç™åÿÿÿÿÿ8ôòª¸1
+Y	java:S125G"<This block of commented-out lines of code should be removed.(ÁÔŞÙ8öòª¸1
+X	java:S125¢G"<This block of commented-out lines of code should be removed.(¬Áš8÷òª¸1
+s
+java:S3252©G"PUse static access with "android.view.ViewGroup$LayoutParams" for "WRAP_CONTENT".(œùÅüÿÿÿÿ8øòª¸1
+^	java:S125´G"<This block of commented-out lines of code should be removed.(–×ŒÉøÿÿÿÿ8ûòª¸1
+[
+java:S1874¶G"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8üòª¸1
+b
+java:S1874·G"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8ıòª¸1
+p
+java:S1874¸G"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8şòª¸1
+k
+java:S1874¹G"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8ÿòª¸1
+e
+java:S1874ºG"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8‚Ÿòª¸1
+i
+java:S1874»G"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8ƒŸòª¸1
+_
+java:S1874¼G"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8„Ÿòª¸1
+j
+java:S1874½G"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8†Ÿòª¸1
+[
+java:S1874ÁG"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8‡Ÿòª¸1
+b
+java:S1874ÂG"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8‰Ÿòª¸1
+p
+java:S1874ÃG"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8ŠŸòª¸1
+k
+java:S1874ÄG"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8‹Ÿòª¸1
+_
+java:S1874ÅG"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8ŒŸòª¸1
+j
+java:S1874ÆG"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8Ÿòª¸1
+^	java:S125ĞG"<This block of commented-out lines of code should be removed.(ˆ˜öšøÿÿÿÿ8•Ÿòª¸1
+^	java:S125áG"<This block of commented-out lines of code should be removed.(šŒÃØúÿÿÿÿ8™Ÿòª¸1
+Y	java:S125åG"<This block of commented-out lines of code should be removed.(öº¤’8›Ÿòª¸1
+[	java:S106ıG"9Replace this use of System.out or System.err by a logger.(ÜÿÙşÿÿÿÿ8Ÿòª¸1
+[	java:S106H"9Replace this use of System.out or System.err by a logger.(´ÍÜÖøÿÿÿÿ8 Ÿòª¸1
+[	java:S106´H"9Replace this use of System.out or System.err by a logger.(´òôŞıÿÿÿÿ8§Ÿòª¸1
+V	java:S106ºH"9Replace this use of System.out or System.err by a logger.(à‚Èï8©Ÿòª¸1
+[	java:S106ÿH"9Replace this use of System.out or System.err by a logger.(´òôŞıÿÿÿÿ8±Ÿòª¸1
+Y	java:S125I"<This block of commented-out lines of code should be removed.(¿Üƒ²8²Ÿòª¸1
+V	java:S106ˆI"9Replace this use of System.out or System.err by a logger.(à‚Èï8´Ÿòª¸1
+Y	java:S125™I"<This block of commented-out lines of code should be removed.(ÊéÉ—8¶Ÿòª¸1
+[	java:S106¬I"9Replace this use of System.out or System.err by a logger.(´òôŞıÿÿÿÿ8¸Ÿòª¸1
+V	java:S106²I"9Replace this use of System.out or System.err by a logger.(à‚Èï8¹Ÿòª¸1
+[	java:S106ÇI"9Replace this use of System.out or System.err by a logger.(´òôŞıÿÿÿÿ8¼Ÿòª¸1
+V	java:S106ÍI"9Replace this use of System.out or System.err by a logger.(à‚Èï8¾Ÿòª¸1
+V	java:S106—J"9Replace this use of System.out or System.err by a logger.(éÂ8ÃŸòª¸1
+[	java:S106¤J"9Replace this use of System.out or System.err by a logger.(´òôŞıÿÿÿÿ8ÅŸòª¸1
+V	java:S106®J"9Replace this use of System.out or System.err by a logger.(à‚Èï8ÇŸòª¸1
+?	java:S131¼J""Add a default case to this switch.(÷«¸í8ÈŸòª¸1
+L
+java:S5413ïJ")Verify that "remove()" is used correctly.(Í¾…Ôşÿÿÿÿ8ÎŸòª¸1
+[	java:S106–K"9Replace this use of System.out or System.err by a logger.(û´­Úşÿÿÿÿ8ÑŸòª¸1
+[	java:S106K"9Replace this use of System.out or System.err by a logger.( Çó‹øÿÿÿÿ8ÓŸòª¸1
+Y	java:S125£K"<This block of commented-out lines of code should be removed.(˜›ÊÒ8ÔŸòª¸1
+G
+java:S5413§K")Verify that "remove()" is used correctly.(è‘´¹8ÕŸòª¸1
+F
+java:S1185µK"(Remove this method to simply inherit it.(ÇêÀİ8×Ÿòª¸1
+Y	java:S125¶K"<This block of commented-out lines of code should be removed.(Ú³óş8ÙŸòª¸1
+h
+java:S1871ÎK"JThis case's code block is the same as the block for the case on line 9675.(Ô„ä§8ÚŸòª¸1
+V	java:S106äK"9Replace this use of System.out or System.err by a logger.(Ô†¿ñ8ŞŸòª¸1
+[	java:S106íK"9Replace this use of System.out or System.err by a logger.(É÷ïøÿÿÿÿ8àŸòª¸1
+V	java:S106“L"9Replace this use of System.out or System.err by a logger.(®¹·÷8äŸòª¸1
+V	java:S106¥L"9Replace this use of System.out or System.err by a logger.(ÿ‰Áµ8æŸòª¸1
+`
+java:S1117ñL"=Rename "producto" which hides the field declared at line 132.(àµ®üÿÿÿÿ8íŸòª¸1
+T
+java:S1117õL"6Rename "j" which hides the field declared at line 140.(ˆÎ¸Ü8îŸòª¸1
+V	java:S106øL"9Replace this use of System.out or System.err by a logger.(Ğ‹ã8öŸòª¸1
+V	java:S106€M"9Replace this use of System.out or System.err by a logger.(÷ŠûÃ8úŸòª¸1
+V	java:S106¢M"9Replace this use of System.out or System.err by a logger.(ÍÆ£²8şŸòª¸1
+[	java:S106¥M"9Replace this use of System.out or System.err by a logger.(¡ÁÎˆüÿÿÿÿ8ÿŸòª¸1
+U	java:S106¨M"9Replace this use of System.out or System.err by a logger.(¦08€ òª¸1
+V	java:S106¬M"9Replace this use of System.out or System.err by a logger.(·É´¥8 òª¸1
+[	java:S106°M"9Replace this use of System.out or System.err by a logger.(ÀÂÎ€ùÿÿÿÿ8‚ òª¸1
+[	java:S106¼M"9Replace this use of System.out or System.err by a logger.(Ãôšıùÿÿÿÿ8„ òª¸1
+V	java:S106ÇM"9Replace this use of System.out or System.err by a logger.(ô†ÃÍ8… òª¸1
+u
+java:S3776ÒM"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ğÂáşÿÿÿÿ8‡ òª¸1
+^	java:S125íM"<This block of commented-out lines of code should be removed.(®Ç€øÿÿÿÿ8Š òª¸1
+Y	java:S125N"<This block of commented-out lines of code should be removed.(­†‹™8 òª¸1
+s
+java:S3252¸N"PUse static access with "android.view.ViewGroup$LayoutParams" for "MATCH_PARENT".(‚ïŞÿşÿÿÿÿ8 òª¸1
+V	java:S106ÄN"9Replace this use of System.out or System.err by a logger.(Úæù8‘ òª¸1
+^	java:S125ÊN"<This block of commented-out lines of code should be removed.(ˆå¡±üÿÿÿÿ8’ òª¸1
+^	java:S125ÔN"<This block of commented-out lines of code should be removed.(ïîÅşÿÿÿÿ8“ òª¸1
+Y	java:S125áN"<This block of commented-out lines of code should be removed.(­†‹™8” òª¸1
+Y	java:S125ìN"<This block of commented-out lines of code should be removed.(›á¸ï8• òª¸1
+Y
+java:S1117€O"6Rename "n" which hides the field declared at line 142.(ß¶Û¢üÿÿÿÿ8— òª¸1
+Y	java:S125‚O"<This block of commented-out lines of code should be removed.(ÉŸŠŠ8˜ òª¸1
+V	java:S106O"9Replace this use of System.out or System.err by a logger.(Şâ´8š òª¸1
+Y	java:S125¯O"<This block of commented-out lines of code should be removed.(¸ò–˜8 òª¸1
+V	java:S106·O"9Replace this use of System.out or System.err by a logger.(‹£¦É8Ÿ òª¸1
+[	java:S106¾O"9Replace this use of System.out or System.err by a logger.(¡ğÁÊÿÿÿÿÿ8¡ òª¸1
+D
+java:S1905ÁO"&Remove this unnecessary cast to "int".(ãÍ¤è8£ òª¸1
+I
+java:S1905ÂO"&Remove this unnecessary cast to "int".(çÜÈ˜ÿÿÿÿÿ8¤ òª¸1
+D
+java:S1905ÃO"&Remove this unnecessary cast to "int".(­ª¿€8¥ òª¸1
+I
+java:S1905ÄO"&Remove this unnecessary cast to "int".(Êı¶Ëûÿÿÿÿ8¦ òª¸1
+[	java:S106ÊO"9Replace this use of System.out or System.err by a logger.(¡ğÁÊÿÿÿÿÿ8§ òª¸1
+T
+java:S1117ÌO"6Rename "h" which hides the field declared at line 184.(á¢Îá8¨ òª¸1
+M
+java:S1874ÌO"/Remove this use of "Handler"; it is deprecated.(á¢Îá8¨ òª¸1
+V	java:S106ÓO"9Replace this use of System.out or System.err by a logger.(Íë’Ò8ª òª¸1
+T
+java:S1117ØO"6Rename "h" which hides the field declared at line 184.(á¢Îá8¬ òª¸1
+M
+java:S1874ØO"/Remove this use of "Handler"; it is deprecated.(á¢Îá8­ òª¸1
+Y	java:S125›P"<This block of commented-out lines of code should be removed.(Ú«®¦8± òª¸1
+s
+java:S3252ŸP"PUse static access with "android.view.ViewGroup$LayoutParams" for "WRAP_CONTENT".(™–€ÿÿÿÿÿ8± òª¸1
+Y	java:S125¢P"<This block of commented-out lines of code should be removed.(Ä®¶á8² òª¸1
+s
+java:S3252¸P"PUse static access with "android.view.ViewGroup$LayoutParams" for "WRAP_CONTENT".(Ò¡Ù×úÿÿÿÿ8´ òª¸1
+`
+java:S1117ÕP"=Rename "imgBack" which hides the field declared at line 8137.(×‘Ùâÿÿÿÿÿ8· òª¸1
+^	java:S125áP"<This block of commented-out lines of code should be removed.(²±½şÿÿÿÿ8¸ òª¸1
+[	java:S106êP"9Replace this use of System.out or System.err by a logger.(ÏóÆ†üÿÿÿÿ8º òª¸1
+[	java:S106ïP"9Replace this use of System.out or System.err by a logger.(Î¸Àßúÿÿÿÿ8» òª¸1
+X	java:S125÷P"<This block of commented-out lines of code should be removed.(ß&8¼ òª¸1
+X	java:S125ûP"<This block of commented-out lines of code should be removed.(ªÕf8½ òª¸1
+^	java:S125€Q"<This block of commented-out lines of code should be removed.(ë°¬ÿÿÿÿÿ8¿ òª¸1
+[
+java:S1874¡Q"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8Á òª¸1
+b
+java:S1874¢Q"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8Â òª¸1
+p
+java:S1874£Q"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8Â òª¸1
+k
+java:S1874¤Q"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8Ã òª¸1
+e
+java:S1874¥Q"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8Ä òª¸1
+i
+java:S1874¦Q"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8Ä òª¸1
+_
+java:S1874§Q"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8Å òª¸1
+j
+java:S1874¨Q"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8Æ òª¸1
+V	java:S106±Q"9Replace this use of System.out or System.err by a logger.(Ï»º¿8Ç òª¸1
+z
+java:S3252³Q"WUse static access with "androidx.core.content.ContextCompat" for "checkSelfPermission".(“Öäşÿÿÿÿ8È òª¸1
+V	java:S106¿Q"9Replace this use of System.out or System.err by a logger.(¬­•´8É òª¸1
+L
+java:S1874ÁQ"/Remove this use of "Handler"; it is deprecated.(ÂçùG8Ê òª¸1
+Y	java:S125ÅQ"<This block of commented-out lines of code should be removed.(Ô¥ô8Ë òª¸1
+V	java:S106ñQ"9Replace this use of System.out or System.err by a logger.(õÜ°Ÿ8Î òª¸1
+V	java:S106óQ"9Replace this use of System.out or System.err by a logger.(õÜ°Ÿ8Ï òª¸1
+o
+java:S3776üQ"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(ÏšÃM8Ğ òª¸1
+V	java:S106ŠR"9Replace this use of System.out or System.err by a logger.(€’ªÜ8Ò òª¸1
+V	java:S106R"9Replace this use of System.out or System.err by a logger.(ˆøŞ8Ó òª¸1
+X	java:S125R"<This block of commented-out lines of code should be removed.(¥Õ•z8Ô òª¸1
+M
+java:S1874‘R"/Remove this use of "Handler"; it is deprecated.(ã•è´8Õ òª¸1
+[
+java:S1117ĞR"=Rename "imgBack" which hides the field declared at line 8137.(ıÛŞ8Ú òª¸1
+Z
+java:S1874äR"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ââ¦8Ü òª¸1
+b
+java:S1874åR"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8İ òª¸1
+p
+java:S1874æR"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8İ òª¸1
+k
+java:S1874çR"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8Ş òª¸1
+i
+java:S1874èR"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8à òª¸1
+_
+java:S1874éR"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8á òª¸1
+j
+java:S1874êR"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8á òª¸1
+[
+java:S1874óR"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8ã òª¸1
+b
+java:S1874ôR"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8ã òª¸1
+p
+java:S1874õR"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8ä òª¸1
+k
+java:S1874öR"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8å òª¸1
+e
+java:S1874÷R"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8å òª¸1
+i
+java:S1874øR"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8æ òª¸1
+_
+java:S1874ùR"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8ç òª¸1
+j
+java:S1874úR"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8ç òª¸1
+[
+java:S1874S"=Remove this use of "setSystemUiVisibility"; it is deprecated.(ÄŒøØ8é òª¸1
+b
+java:S1874S"DRemove this use of "SYSTEM_UI_FLAG_LAYOUT_STABLE"; it is deprecated.(¹üÃ„8ê òª¸1
+p
+java:S1874‘S"MRemove this use of "SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION"; it is deprecated.(®Ü¢Òøÿÿÿÿ8ê òª¸1
+k
+java:S1874’S"HRemove this use of "SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN"; it is deprecated.(¢÷¬ÿÿÿÿÿ8ë òª¸1
+e
+java:S1874“S"BRemove this use of "SYSTEM_UI_FLAG_LOW_PROFILE"; it is deprecated.(Ñàşùûÿÿÿÿ8ì òª¸1
+i
+java:S1874”S"FRemove this use of "SYSTEM_UI_FLAG_HIDE_NAVIGATION"; it is deprecated.(£Ñßğüÿÿÿÿ8ì òª¸1
+_
+java:S1874•S"ARemove this use of "SYSTEM_UI_FLAG_FULLSCREEN"; it is deprecated.(ô‚Â‡8í òª¸1
+j
+java:S1874–S"GRemove this use of "SYSTEM_UI_FLAG_IMMERSIVE_STICKY"; it is deprecated.(£³¥¸şÿÿÿÿ8î òª¸1
+C
+java:S1068‘"%Remove this unused "z" private field.(Ê°¾§8ï òª¸1
+J
+java:S1068›"-Remove this unused "ubiFiltro" private field.(ŸèĞo8ï òª¸1
+P
+java:S1068"2Remove this unused "spinnerTouched" private field.(‡ëËÈ8ğ òª¸1
+T
+java:S1068"1Remove this unused "dialogBuilder" private field.(“‚È÷şÿÿÿÿ8ò òª¸1
+H
+java:S1068Ÿ"*Remove this unused "dialog" private field.(ÿ›ÿ8ò òª¸1
+U
+java:S1068 "2Remove this unused "dialogRecycler" private field.( —¬•úÿÿÿÿ8ó òª¸1
+H
+java:S1068¤"+Remove this unused "cerrado" private field.(û_8ô òª¸1
+G
+java:S1068¥"*Remove this unused "altura" private field.(™†ü@8ô òª¸1
+H
+java:S1068¥"+Remove this unused "anchura" private field.(™†ü@8õ òª¸1
+I
+java:S1068«",Remove this unused "dPedidos" private field.(á¡è8õ òª¸1
+H
+java:S1068³"*Remove this unused "vBiasH" private field.(×ĞËÁ8ö òª¸1
+H
+java:S1068³"*Remove this unused "vBiasV" private field.(×ĞËÁ8÷ òª¸1
+D
+java:S1068´"&Remove this unused "p1" private field.(¾·Ê’8ø òª¸1
+H
+java:S1068¸"%Remove this unused "h" private field.(µË‚ÿÿÿÿÿ8ù òª¸1
+J
+java:S1068¹",Remove this unused "portrait" private field.(û„—“8ú òª¸1
+W
+java:S1068Â"4Remove this unused "pedidosLocalHash" private field.(ÃñÓĞÿÿÿÿÿ8ú òª¸1
+L
+java:S1068É"/Remove this unused "currentTime" private field.(æİüx8û òª¸1
+S
+java:S1068Ñ"5Remove this unused "tiempoFinalString" private field.(µê…ü8ü òª¸1
+V
+java:S1068Ò"3Remove this unused "horaActualizada" private field.(¤â‹®øÿÿÿÿ8ü òª¸1
+M
+java:S1068Õ"*Remove this unused "space5" private field.(¥ñËÓûÿÿÿÿ8ı òª¸1
+O
+java:S1068Ù"1Remove this unused "handlerMusica" private field.(‚¯ê8ı òª¸1
+R
+java:S1068İ"/Remove this unused "countryName" private field.(ÃøÑÅüÿÿÿÿ8ş òª¸1
+L
+java:S1068Ş")Remove this unused "prevX" private field.(°Èô„ûÿÿÿÿ8ÿ òª¸1
+N
+java:S1068Ş"+Remove this unused "offsetX" private field.(°Èô„ûÿÿÿÿ8ÿ òª¸1
+P
+java:S1068ß"-Remove this unused "threshold" private field.(ÕÑâøÿÿÿÿ8€¡òª¸1
+N
+java:S1068à"0Remove this unused "colaTakeAway" private field.(ÂÌ¾¢8¡òª¸1
+Y
+java:S1068á"6Remove this unused "notificacionActiva" private field.(ìòè´ùÿÿÿÿ8¡òª¸1
+U
+java:S1068ä"2Remove this unused "editorTakeAway" private field.(¬˜ûºıÿÿÿÿ8‚¡òª¸1
+Y
+java:S1068å"<Remove this unused "listaTakeAwaysPendientes" private field.(Š¯“r8‚¡òª¸1
+`
+java:S1068æ"=Remove this unused "listaTakeAwaysPreparacion" private field.(‰ÿ·øÿÿÿÿ8…¡òª¸1
+T
+java:S1068È?"1Remove this unused "pedidoActual2" private field.(ı¸¢úÿÿÿÿ8†¡òª¸1
+[
+java:S1068É?"8Remove this unused "imgEsconderElementos" private field.(¥ªËüÿÿÿÿ8†¡òª¸1
+\
+java:S1068É?"9Remove this unused "imgEsconderElementos2" private field.(¥ªËüÿÿÿÿ8‡¡òª¸1
+K
+java:S1068‘4"-Remove this unused "startTime" private field.(íåíŠ8ˆ¡òª¸1
+Y
+java:S1144ê"6Remove this unused private "aÃ±adirNotiALista" method.(‘¬ ™üÿÿÿÿ8ˆ¡òª¸1
+M
+java:S1144½""/Remove this unused private "sinFiltros" method.(¶‚»ª8‰¡òª¸1
+S
+java:S1144Í""5Remove this unused private "handlerTakeAways" method.(šÊœå8‹¡òª¸1
+Y
+java:S1144Ñ"";Remove this unused private "handlerTiempoTakeAways" method.(ë®æà8Œ¡òª¸1
+Z
+java:S1144à""=Remove this unused private "comprobarTiempoTakeAways" method.(ĞÊŸl8¡òª¸1
+]
+java:S1144Â)":Remove this unused private "removeFromNewElements" method.(‘Óóüÿÿÿÿ8¡òª¸1
+[
+java:S1144,">Remove this unused private "createNotificationChannel" method.(ÜÅ)8¡òª¸1
+T
+java:S1144Ã0"1Remove this unused private "masDeDosDias" method.(‰§ıüÿÿÿÿ8¡òª¸1
+Z
+java:S1144¼>"<Remove this unused private "imprimirTicketProductos" method.(‚ÁÆ8¡òª¸1
+f
+java:S1144ºJ"CRemove this unused private "cambiarPedidoAlSiguienteEstado" method.(œÇ¤Øÿÿÿÿÿ8¡òª¸1
+_
+java:S1144ÔJ"<Remove this unused private "quitarBackgroundFiltros" method.(—†é²úÿÿÿÿ8‘¡òª¸1
+]
+java:S1144ÜJ":Remove this unused private "ponerBackgroundFiltro" method.(íàİ÷øÿÿÿÿ8‘¡òª¸1
+U
+java:S1144àJ"7Remove this unused private "setFiltroTextBlack" method.(ğ’é8“¡òª¸1
+U
+java:S1144çJ"7Remove this unused private "setFiltroTextWhite" method.(¾Ä‚Ã8”¡òª¸1
+[
+java:S1144øQ"8Remove this unused private "modoTacharProductos" method.(Ãûêøşÿÿÿÿ8•¡òª¸1
+T
+java:S1144¼R"6Remove this unused private "activityLogPedido" method.(’ùì8–¡òª¸1

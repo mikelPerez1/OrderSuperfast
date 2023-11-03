@@ -3,12 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/background_redondo_izq.xml" value="0.2735" />
+        <entry key="app/src/main/res/drawable/borde.xml" value="0.2735" />
+        <entry key="app/src/main/res/drawable/borde_boton_gris_solo.xml" value="0.2735" />
+        <entry key="app/src/main/res/drawable/borde_gris_claro_suave.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/borde_redondeado_grisaceo.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/linea_tachar.xml" value="0.276" />
-        <entry key="app/src/main/res/drawable/tachar_texto.xml" value="0.284" />
-        <entry key="app/src/main/res/layout-sw600dp/activity_lista.xml" value="0.2618384401114206" />
+        <entry key="app/src/main/res/drawable/triangulo.xml" value="0.2735" />
+        <entry key="app/src/main/res/layout-sw600dp/activity_lista.xml" value="0.18" />
         <entry key="app/src/main/res/layout-sw600dp/activity_take_away.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_lista.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_lista.xml" value="0.39924314096499525" />
         <entry key="app/src/main/res/layout/activity_take_away.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/list_producto_devolver.xml" value="0.28535353535353536" />
+        <entry key="app/src/main/res/layout/popup_devolucion_dinero.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/popup_devolucion_productos.xml" value="0.20982142857142858" />
+        <entry key="app/src/main/res/layout/popup_idiomas.xml" value="0.16171875" />
         <entry key="app/src/main/res/layout/productos_take_away.xml" value="0.5" />
       </map>
     </option>

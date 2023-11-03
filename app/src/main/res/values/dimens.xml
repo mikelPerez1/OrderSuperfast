@@ -10,6 +10,7 @@
     <dimen name="text_size_takeAway">10sp</dimen>
     <dimen name="text_size_medium_takeAway">13sp</dimen>
     <dimen name="text_size_medium2_takeAway">16sp</dimen>
+    <dimen name="text_size_producto">13sp</dimen>
 
     <dimen name="text_size_big_takeAway">20sp</dimen>
     <dimen name="text_size_semi_big_takeAway">18sp</dimen>
