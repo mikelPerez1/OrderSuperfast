@@ -90,7 +90,7 @@ public class EscanearQR extends AppCompatActivity implements DevolucionCallback{
     }
 
     private void inicializarInsets(){
-
+        //
     }
 
     private void inicializarEscaner() {
