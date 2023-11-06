@@ -30,8 +30,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     private final LayoutInflater mInflater;
     private final Context context;
     private String estadoPedido = "";
-    private float alturaInstruccionesGenerales;
-    private float alturaActual;
+
     private RecyclerView recycler;
     final AdapterProductosTakeAway.OnItemClickListener listener;
     int k = 0;
@@ -56,10 +55,6 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         }
     }
 
-    public void setAlturaInstruccionesGenerales(float num) {
-        this.alturaInstruccionesGenerales = num;
-        this.alturaActual = num;
-    }
 
     public void setTacharHabilitado(boolean pTachar) {
         this.tachadoHabilitado = pTachar;
@@ -117,15 +112,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) recycler.getLayoutManager();
-
-        // Obtiene la posición del primer elemento visible
-        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-        boolean contraer = false;
-        System.out.println("first item " + firstVisibleItemPosition + " item actual " + position);
-        if (firstVisibleItemPosition == position && alturaActual > 0) {
-            contraer = true;
-        }
-        holder.bindData(mData.get(position), position, contraer);
+        holder.bindData(mData.get(position), position);
 
     }
 
@@ -149,21 +136,11 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         }
 
 
-        void bindData(final ProductoTakeAway item, int position, boolean contraer) {
+        void bindData(final ProductoTakeAway item, int position) {
 
             cantidad.setText("x" + item.getCantidad());
             precio.setText(item.getPrecio() + "€");
             //productos.setText(item.getProducto());
-            System.out.println("altura instruccion recycler " + alturaActual);
-            /*
-            if (contraer) {
-                productos.getLayoutParams().width = 100;
-                alturaActual = alturaActual - productos.getHeight();
-            }
-
-             */
-
-            System.out.println("resources item "+itemView.getContext().getResources().getDimension(R.dimen.text_size_producto));
 
             if (tachadoHabilitado) {
                 lineaSeparatoria.setVisibility(View.VISIBLE);
@@ -184,7 +161,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
             if (estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado))) { // para que el tachon solo salga en pedidos aceptados
                 if (item.getTachado()) {
-                    System.out.println("item tachado");
+                    System.out.println("item tachado "+item.getTachado());
                     productos.setStrike(true);
                    // productos.setText(item.getProducto().split("\n")[0]);
                     imageViewTachonCantidad.setVisibility(View.VISIBLE);
@@ -209,7 +186,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                     crearTextviews(item, position);
                 }
             } else {
-                System.out.println("item no tachado");
+                System.out.println("item no aceptado no tachado");
                 productos.setStrike(false);
                 imageViewTachonCantidad.setVisibility(View.INVISIBLE);
                 crearTextviews(item, position);

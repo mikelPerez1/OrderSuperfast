@@ -8,6 +8,7 @@ import android.text.Layout;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+// clase para tachar de un color (rojo en este caso) un textview
 public class TextViewTachable extends androidx.appcompat.widget.AppCompatTextView {
     public Paint paint;
     public boolean addStrike = false;
@@ -29,7 +30,7 @@ public class TextViewTachable extends androidx.appcompat.widget.AppCompatTextVie
     private void init(Context context) {
         paint = new Paint();
         paint.setColor(getResources().getColor(R.color.rojo, context.getTheme()));
-        paint.setStrokeWidth(getResources().getDisplayMetrics().density * 2);
+        paint.setStrokeWidth(getResources().getDisplayMetrics().density * 6);
     }
 
     @Override

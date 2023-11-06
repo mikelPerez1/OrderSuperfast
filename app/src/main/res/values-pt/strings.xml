@@ -178,5 +178,7 @@
     <string name="cambiarElementosVisiblesDeLaCarta">Cambiar elementos visibles de la carta</string>
     <string name="textTachar">Tachar</string>
     <string name="txtGuardar">Guardar</string>
+    <string name="textCantidadMayor0">Por favor, inserte una cantidad mayor a 0</string>
+    <string name="escanearQr">Escanear QR</string>
 
 </resources>

@@ -87,7 +87,7 @@ public class CustomLayoutManager extends LinearLayoutManager {
                             alt = alt - innerChild.getHeight();
 
                         } else {
-                            params.width = (int) anchuraRecycler;
+                            params.width = (int) anchuraRecycler-(100);
                         }
                         innerChild.setLayoutParams(params);
                     }

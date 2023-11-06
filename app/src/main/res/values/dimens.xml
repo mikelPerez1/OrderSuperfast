@@ -127,7 +127,7 @@
     <dimen name="ajustesDesplegableLayout">250dp</dimen>
     <dimen name="margenRadioButtons">4dp</dimen>
 
-    <dimen name="dimen320to400">320dp</dimen>
+    <dimen name="dimen320to400">310dp</dimen>
 
     <dimen name="anchuraCategoriaVertical">250dp</dimen>
     <dimen name="anchuraMaxTxtCat">200dp</dimen>

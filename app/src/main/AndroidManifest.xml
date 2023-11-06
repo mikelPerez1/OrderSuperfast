@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".EscanearQR"
+            android:exported="false" />
+        <activity
             android:name=".AjustesProductos"
             android:exported="false" />
         <activity
@@ -45,8 +48,8 @@
         <activity
             android:name=".TakeAway"
             android:configChanges="orientation|screenSize|locale"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".logActivity"
             android:exported="false" />

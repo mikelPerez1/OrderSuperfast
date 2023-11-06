@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
         app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
 
         <ScrollView
@@ -37,6 +37,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutEscanear"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layoutLog">
+
+                        <ImageView
+                            android:id="@+id/imageView35"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:padding="8dp"
+                            app:srcCompat="@drawable/qr_scanner" />
+
+                        <TextView
+                            android:id="@+id/textView87"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/escanearQr"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView35"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView35"
+                            app:layout_constraintTop_toTopOf="@+id/imageView35" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardLogo"
@@ -98,7 +127,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="@+id/layoutEsconderElementos"
                         app:layout_constraintStart_toStartOf="@+id/layoutEsconderElementos"
-                        app:layout_constraintTop_toBottomOf="@+id/layoutLog">
+                        app:layout_constraintTop_toBottomOf="@+id/layoutEscanear">
 
                         <TextView
                             android:id="@+id/tv2"
@@ -832,20 +861,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible">
 
-                <ImageView
-                    android:id="@+id/botonTacharProductos"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="13dp"
-                    android:background="@drawable/borde"
-                    android:padding="15dp"
-                    app:backgroundTint="@color/black"
-                    app:icon="@drawable/icono_tachado"
-                    app:srcCompat="@drawable/icono_tachado"
-                    app:tint="@color/white"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout52"
-                    app:layout_constraintTop_toTopOf="@+id/constraintLayout52"
-                    />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout38"
@@ -1102,10 +1118,9 @@
 
                     <LinearLayout
                         android:id="@+id/linearLayout9"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
-                        android:layout_marginEnd="90dp"
+                        android:layout_marginTop="15dp"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1114,7 +1129,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_weight="1.5">
 
                             <TextView
                                 android:id="@+id/tvNombreCliente"
@@ -1170,7 +1185,7 @@
                                 android:layout_width="1dp"
                                 android:layout_height="0dp"
                                 android:background="@color/grisClaro"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@+id/tvNombreRecogida"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1178,7 +1193,29 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_weight="2">
+
+                            <Button
+                                android:id="@+id/botonTacharProductos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:background="@drawable/background_semi_redondeado_negro"
+                                android:padding="5dp"
+                                android:text="TACHAR"
+                                app:backgroundTint="@color/black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/white" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/linearInstrucciones"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:elevation="20dp"
+                            android:background="@color/white"
+                            android:layout_weight="1.5">
 
                             <TextView
                                 android:id="@+id/textView60"
@@ -1241,11 +1278,11 @@
                         android:id="@+id/recyclerProductosI2"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="110dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
                         android:id="@+id/botonCambiarEstado"

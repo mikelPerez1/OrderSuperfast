@@ -82,6 +82,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,7 +120,7 @@ import okhttp3.WebSocketListener;
 
 
 public class Lista extends AppCompatActivity implements SearchView.OnQueryTextListener, DevolucionCallback {
-    List<ListElement> elements = new ArrayList<ListElement>(), elements2 = new ArrayList<ListElement>();
+    List<ListElement> elements = new ArrayList<>();
     List<Integer> newElements = new ArrayList<>();
     int t = 0;
     List<ListElement> copia = new ArrayList();
@@ -245,7 +246,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
     private boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS;
 
     @Override
-    public void onDevolucionExitosa() {
+    public void onDevolucionExitosa(JSONObject resp) {
 
     }
 
@@ -1769,11 +1770,13 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         }
     }
 
-    private void crearDialogDevolucion(float cantidad_maxima, float cantidad_devuelta) {
+
+    JSONArray arrayGuardar;
+
+    private void crearDialogDevolucion(float cantidad_maxima, float cantidad_devuelta) throws JSONException {
         AlertDialog.Builder dialogBuild = new AlertDialog.Builder(activity);
 
         final View layoutDevolver = getLayoutInflater().inflate(R.layout.popup_devolucion_dinero, null);
-
 
 
         // Locale country =Locale.getDefault();
@@ -1798,8 +1801,12 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         ImageView imgBack = layoutDevolver.findViewById(R.id.imgBackReembolso);
         View backAnimation = layoutDevolver.findViewById(R.id.backAnimation);
         ConstraintLayout constraintAnimation = layoutDevolver.findViewById(R.id.layoutBackAnimation);
+        RecyclerView recyclerProductos = layoutDevolver.findViewById(R.id.recyclerDevolucion);
 
-        FLAG_PESTAÑA = 1;
+        CustomEditTextNumbers editTextCantidad = layoutDevolver.findViewById(R.id.customEditTextNumbers);
+        editTextCantidad.setActivity(activity);
+
+        FLAG_PESTAÑA = 2;
         //parsear las cantidades y ponerle 2 decimales
         float rest = cantidad_maxima - cantidad_devuelta;
         DecimalFormat format = new DecimalFormat("0.00");
@@ -1811,7 +1818,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         String formatedRest = format.format(rest);
         tvCantRestMax.setText("(Max. " + formatedRest + "€)");
 
-        if (cantidad_maxima == (cantidad_devuelta+1)) {
+        if (cantidad_maxima == (cantidad_devuelta + 1)) {
             ConstraintLayout layoutPedidoYaReembolsado = layoutDevolver.findViewById(R.id.layoutPedidoYaReembolsado);
             ConstraintLayout layoutBackPestañas = layoutDevolver.findViewById(R.id.layoutBackPestañas);
             LinearLayout layoutPestaña = layoutDevolver.findViewById(R.id.layoutPestaña);
@@ -1824,7 +1831,8 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             layoutBackPestañas.setVisibility(View.INVISIBLE);
             layoutPestaña.setVisibility(View.INVISIBLE);
             contenidoDevolucionTotal.setVisibility(View.GONE);
-
+            contenidoDevolucionParcial.setVisibility(View.GONE);
+            recyclerProductos.setVisibility(View.GONE);
         }
 
 
@@ -1884,7 +1892,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     pestañaDevolverParcial.setBackground(null);
                     layoutInfoDevoluciones.setVisibility(View.GONE);
 
-                    animacionCambiarPestaña(backAnimation, 1f, 0f, constraintAnimation, pestañaDevolverTotal, 1);
+                    animacionCambiarPestaña(backAnimation, 0f, 1f, constraintAnimation, pestañaDevolverTotal, 1);
 
 
                 }
@@ -1903,7 +1911,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     textViewPestañaRefundParcial.setTextColor(resources.getColor(R.color.white, activity.getTheme()));
                     layoutInfoDevoluciones.setVisibility(View.VISIBLE);
 
-                    animacionCambiarPestaña(backAnimation, 0f, 1f, constraintAnimation, pestañaDevolverParcial, 2);
+                    animacionCambiarPestaña(backAnimation, 1f, 0f, constraintAnimation, pestañaDevolverParcial, 2);
                 }
             }
         });
@@ -1951,11 +1959,124 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
         simboloMoneda.setText("€");
 
-        /////////
+        ///////// recycler
+
+
+        ArrayList<ProductoPedido> listaProductos = pedidoActual.getListaProductos().getLista();
+        String propina = pedidoActual.getImporte().getPropina();
+        if (propina != null && !propina.equals("null") && !propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size() - 1).getId().equals("Propina")) {
+            System.out.println("Propina " + propina);
+            ProductoPedido p = new ProductoPedido("Propina", "Propina", "Propina", propina, "0", "1", "", new ArrayList<>(), true);
+            listaProductos.add(p);
+        }
+
+        Map<String, Float> listaPrecios = new HashMap<>();
+        Map<String, Integer> cantidadDevueltaProductos = new HashMap<>();
+        String arrayString = preferenciasProductos.getString("productos_devueltos_" + pedidoActual.getPedido(), "");
+        if (!arrayString.equals("")) {
+            arrayGuardar = new JSONArray(arrayString);
+
+        } else {
+            arrayGuardar = new JSONArray();
+
+        }
+        for (int i = 0; i < arrayGuardar.length(); i++) {
+            JSONObject item = arrayGuardar.getJSONObject(i);
+            String id = item.getString("id");
+            int cantidad = item.getInt("cantidad");
+            int cantidad_Max = item.getInt("cantidad_maxima");
+            int cantidad_posible = cantidad_Max - cantidad;
+            cantidadDevueltaProductos.put(id, cantidad_posible);
+
+        }
+
+        LinearLayoutManager manager = new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+
+            }
+        };
+        recyclerProductos.setLayoutManager(manager);
+
+        recyclerProductos.setHasFixedSize(true);
+
+        double cantidadPermitida = rest;
+
+
+        AdapterDevolucionProductos adapterDevolucionProductos = new AdapterDevolucionProductos(listaProductos, cantidadDevueltaProductos, this, new AdapterDevolucionProductos.OnItemClickListener() {
+            @Override
+            public void onItemClick(ProductoPedido item, int cantidad, boolean aumentar) {
+
+                editTextCantidad.setText("");
+
+
+                float precioUnidad = Float.valueOf(item.getPrecio());
+                float totalProducto = precioUnidad;
+                float totalPrecio = 0;
+                ArrayList<Opcion> opciones = item.getListaOpciones();
+                if (opciones != null) {
+                    for (int i = 0; i < opciones.size(); i++) {
+                        Opcion o = opciones.get(i);
+                        if (o.getPrecio() != null && !o.getPrecio().equals("")) {
+                            totalProducto += Float.valueOf(o.getPrecio());
+                        }
+                    }
+                }
+                totalProducto = totalProducto * cantidad;
+                listaPrecios.put(item.getId(), totalProducto);
+
+                try {
+                    boolean esta = false;
+                    for (int j = 0; j < arrayGuardar.length(); j++) {
+                        JSONObject objeto = arrayGuardar.getJSONObject(j);
+                        if (objeto.get("id").equals(item.getId())) {
+                            int cant = objeto.getInt("cantidad");
+                            if (aumentar) {
+                                cant++;
+
+                            } else {
+                                cant--;
+                            }
+                            System.out.println("cantidad producto devol " + cant + " " + cantidad);
+                            objeto.put("cantidad", cant);
+                            esta = true;
+                            break;
+                        }
+                    }
+                    if (!esta) {
+                        JSONObject objeto = new JSONObject();
+                        objeto.put("id", item.getId());
+                        objeto.put("cantidad", cantidad);
+                        objeto.put("cantidad_maxima", item.getCantidad());
+                        arrayGuardar.put(objeto);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                for (Float valor : listaPrecios.values()) {
+                    totalPrecio += valor;
+                }
+                //cambiar el simbolo moneda segun pais
+                DecimalFormat format = new DecimalFormat("0.00");
+                // botonConfirmarDevolucion.setText("Devolver " + format.format(totalPrecio) + " €");
+
+
+            }
+        });
+
+        recyclerProductos.setAdapter(adapterDevolucionProductos);
+
+
+        ////////
         Button botonAceptar = layoutDevolver.findViewById(R.id.botonSi);
         Button botonCancelar = layoutDevolver.findViewById(R.id.botonNo);
-        CustomEditTextNumbers editTextCantidad = layoutDevolver.findViewById(R.id.customEditTextNumbers);
-        editTextCantidad.setActivity(activity);
+
         InputFilter[] filterArray = new InputFilter[1];
         filterArray[0] = new InputFilter.LengthFilter(7) {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -1997,6 +2118,29 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     imm.hideSoftInputFromWindow(editTextCantidad.getWindowToken(), 0);
                 }
 
+                return false;
+            }
+        });
+
+        editTextCantidad.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    System.out.println("editCantidad clickado");
+                    listaPrecios.clear();
+                    try {
+                        if (!arrayString.equals("")) {
+                            arrayGuardar = new JSONArray(arrayString);
+                        } else {
+                            arrayGuardar = new JSONArray();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapterDevolucionProductos.resetearSeleccionados();
+                }
                 return false;
             }
         });
@@ -2047,27 +2191,45 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         botonAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //  String numPedido = String.valueOf(pedidoActual.getPedido());
-
-                //SharedPreferences sharedPreferencesIds = getSharedPreferences("ids", Context.MODE_PRIVATE);
-                // String idRestaurante = sharedPreferencesIds.getString("saveIdRest", "null");
                 String cantidad = editTextCantidad.getText().toString();
                 cantidad = cantidad.replace(",", "");
-                //Log.d("datos pasar devolución", "idRestaurante = " + idRestaurante + ", numPedido = " + numPedido + ", cantidad = " + cantidad);
-                //  cantidad = cantidad.replace(".", "%2E");
-                // String urlPrueba = "https://app.ordersuperfast.com/devolverDinero.php?idRest=" + idRestaurante + "&numPedido=" + numPedido + "&cantidad=" + cantidad;
-                //  Log.d("datos url", urlPrueba);
                 System.out.println("jsonbody " + cantidad);
+
+                AtomicDouble cant = new AtomicDouble(0);
+
+                if ((cantidad.equals("") || Integer.valueOf(cantidad) == 0) && !listaPrecios.isEmpty()) {
+                    int cantidadTotal = 0;
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    listaPrecios.forEach((clave, valor) -> {
+                        //cantidadTotal +=valor;
+                        cant.addAndGet(valor);
+                        System.out.println("valor item " + cant);
+
+                    });
+
+
+                }
+
+
                 if (!cantidad.isEmpty() && Float.valueOf(cantidad) > 0) {
                     double cantActual = Double.valueOf(cantidad);
                     System.out.println("jsonbody " + cantActual);
 
                     peticionEnviarDevolucion(cantActual, activity);
                     //dialogDevolucion.cancel();
-                } else {
+                } else if (!listaPrecios.isEmpty()) {
+                    int cantidadTotal = 0;
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    listaPrecios.forEach((clave, valor) -> {
+                        //cantidadTotal +=valor;
+                        cant.addAndGet(valor);
+                        System.out.println("valor item " + cant);
 
-                    Toast.makeText(activity, "Please, insert an amount greater than 0", Toast.LENGTH_SHORT).show();
+                    });
+                    peticionEnviarDevolucion(cant.get(), activity);
+
+                } else {
+                    Toast.makeText(activity, resources.getString(R.string.textCantidadMayor0), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -2107,9 +2269,10 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         final View layoutDevolver = getLayoutInflater().inflate(R.layout.popup_devolucion_productos, null);
         ArrayList<ProductoPedido> listaProductos = pedidoActual.getListaProductos().getLista();
         String propina = pedidoActual.getImporte().getPropina();
-        if(!propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size()-1).getId().equals("Propina")){
-            System.out.println("Propina "+propina);
-            ProductoPedido p = new ProductoPedido("Propina","Propina","Propina",propina,"0","1","",new ArrayList<>(),true);
+        System.out.println("propina " + propina);
+        if (propina != null && !propina.equals("null") && !propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size() - 1).getId().equals("Propina")) {
+            System.out.println("Propina " + propina);
+            ProductoPedido p = new ProductoPedido("Propina", "Propina", "Propina", propina, "0", "1", "", new ArrayList<>(), true);
             listaProductos.add(p);
         }
         System.out.println("lista productos size " + listaProductos.size());
@@ -2119,7 +2282,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         RecyclerView recycler = layoutDevolver.findViewById(R.id.recyclerDevolverProductos);
         Button botonConfirmarDevolucion = layoutDevolver.findViewById(R.id.botonAceptarDevolucionProductos);
 
-        if(resources.getDimension(R.dimen.scrollHeight)>10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (resources.getDimension(R.dimen.scrollHeight) > 10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) recycler.getLayoutParams();
             int maxHeightInPixels = (int) (160 * getResources().getDisplayMetrics().density);
             layoutParams.matchConstraintMaxHeight = maxHeightInPixels;
@@ -2239,7 +2402,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     System.out.println("devolucion producto " + cantidad + " " + listaPrecios.toString());
                     peticionEnviarDevolucion(cantidad, new DevolucionCallback() {
                         @Override
-                        public void onDevolucionExitosa() {
+                        public void onDevolucionExitosa(JSONObject resp) {
                             // se guarda en local los productos devueltos del pedido
                             SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
                             productosEditor.putString("productos_devueltos_" + pedidoActual.getPedido(), arrayGuardar.toString());
@@ -2343,7 +2506,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                 dialogDevolucion.cancel();
                                 quitarTeclado();
                             }
-                            callback.onDevolucionExitosa();
+                            callback.onDevolucionExitosa(response);
 
                         } else if (clave.equals("status") && response.getString(clave).equals("ERROR")) {
                             Toast.makeText(activity, response.getString("details"), Toast.LENGTH_SHORT).show();
@@ -2405,7 +2568,11 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                         e.printStackTrace();
                     }
                 }
-                crearDialogDevolucion(cantidad_maxima, cantidad_devuelta);
+                try {
+                    crearDialogDevolucion(cantidad_maxima, cantidad_devuelta);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -7666,7 +7833,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                                                         cantidadProducto = prod.getString(clave);
                                                                     } else if (clave.equals("instrucciones")) {
                                                                         instruccionesProducto = prod.getString(clave);
-                                                                    } else if(clave.equals("src")){
+                                                                    } else if (clave.equals("src")) {
                                                                         imagen = prod.getString(clave);
                                                                     } else if (clave.equals("opciones")) {
                                                                         JSONArray listaOpciones = prod.getJSONArray("opciones");
@@ -7960,7 +8127,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                             System.out.println("error " + error.toString());
                             if (error.toString().toLowerCase().contains("noconnectionerror")) {
                                 Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(Lista.this, error.toString(), Toast.LENGTH_SHORT).show();
 
                             }
@@ -8174,15 +8341,15 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
     private boolean tacharProductos = false;
     private Button botonTacharProductos;
     private ConstraintLayout layoutDegradadoBlancoIzq, layoutDegradadoBlancoDer, layoutGrisIzq, layoutGrisDer;
-    private ConstraintLayout overLayoutProductos, overLayoutInfoPedidos, overLayoutPartePedidos, layoutOpcionesPedido,overLayoutInfoCliente;
+    private ConstraintLayout overLayoutProductos, overLayoutInfoPedidos, overLayoutPartePedidos, layoutOpcionesPedido, overLayoutInfoCliente;
     private LinearLayout linearLayoutScrollFiltros;
     private View viewInfoNombre, viewInfoInstrucciones;
     private int posicionFiltro = 0;
     private List<Integer> productosActuales = new ArrayList<>();
 
-    private ConstraintLayout linearNombre,linearBoton,linearInstrucciones;
+    private ConstraintLayout linearNombre, linearBoton, linearInstrucciones;
 
-    private ConstraintLayout layoutContDispositivo, layoutContScrollTop;
+    private ConstraintLayout layoutContDispositivo, layoutContScrollTop, layoutEscanear;
     private SharedPreferences sharedPreferencesLista;
     private SharedPreferences.Editor editorLista;
 
@@ -8270,6 +8437,8 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         linearBoton = findViewById(R.id.linearBoton);
         linearInstrucciones = findViewById(R.id.linearInstrucciones);
 
+        layoutEscanear = findViewById(R.id.layoutEscanear);
+
         setRestaurantImages();
         setRecycler();
         setListeners();
@@ -8279,6 +8448,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         filtroPendiente.callOnClick();
         System.out.println("nombre dispositivo " + nombreDisp);
         nombreDispositivo.setText(nombreDisp);
+
     }
 
     private void setRestaurantImages() {
@@ -8365,6 +8535,15 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             @Override
             public void onClick(View v) {
                 irActivityLog();
+                ocultarDesplegable();
+            }
+        });
+
+        layoutEscanear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Lista.this, EscanearQR.class);
+                launcher.launch(i);
                 ocultarDesplegable();
             }
         });
@@ -8512,43 +8691,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                 ocultarDesplegablePedido();
             }
         });
-
-        /*
-
-        botonTacharProductos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tacharProductos) {
-                    adapterProductos2.setTacharHabilitado(false);
-
-                    // si esta en modo tachar y se le da a guardar, mira
-                    for (int i = productosActuales.size() - 1; i >= 0; i--) {
-
-                        System.out.println("cambiar tachar " + productosActuales.size() + "  " + productosActuales.get(i));
-                        ProductoPedido producto = pedidoActual.getListaProductos().getLista().get(productosActuales.get(i));
-                        producto.setTachado(!producto.getTachado());
-                        productosActuales.remove(i);
-                    }
-                    productosActuales.clear();
-                    listaProductosPedido.clear();
-                    listaProductosPedido.addAll(getProductosDelPedido(pedidoActual.getListaProductos().getLista()));
-
-
-                }else{
-                    adapterProductos2.setTacharHabilitado(true);
-                }
-
-                adapterProductos2.notifyDataSetChanged();
-
-                tacharProductos = !tacharProductos;
-                cambiarIconoTachar();
-                System.out.println("tachado " + tacharProductos);
-
-
-            }
-        });
-
-         */
 
 
         Handler handlerExp = new Handler();
@@ -9687,9 +9829,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         });
 
 
-
-
-        adapterProductos2.setAlturaInstruccionesGenerales(tvInstruccionesGenerales.getHeight());
         recyclerProductosI2.setAdapter(adapterProductos2);
     }
 
@@ -9722,13 +9861,14 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         listaProductosPedido.addAll(getProductosDelPedido(listaProductos));
 
         ////prueba
-        listaProductosPedido.add(0, new ProductoTakeAway(4, "producto 1 asfasfa asfasfaf asfasf asfafs fasfasf asfafafsaf asfafs asf asffasffafs as asf \n + Bacon \n + Huevo asda sd asdad ad sadadsasdasda dasdadsa asd  ", 2));
-        listaProductosPedido.add(0, new ProductoTakeAway(4, "producto 2 ssssssssssssss ssssssssssssssss sssssssssssssssss sssssssssssss", 2));
-        listaProductosPedido.add(0, new ProductoTakeAway(4, "producto 3 sfffffffffffff ffffffffffffffff ffffffffffff ffffffffffff\n + Bacon  ", 2));
+        //listaProductosPedido.add(0, new ProductoTakeAway(4, "producto 1 asfasfa asfasfaf asfasf asfafs fasfasf asfafafsaf asfafs asf asffasffafs as asf \n + Bacon \n + Huevo asda sd asdad ad sadadsasdasda dasdadsa asd  ", 2));
+        //listaProductosPedido.add(0, new ProductoTakeAway(4, "Salmón aguaciro recien pescado del mar \n + Bacon \n + Pepinillos de la huerta recien recolectados", 2));
+        //listaProductosPedido.add(0, new ProductoTakeAway(4, "Hamburguesa mediterranea El Buho Rojo (Explosion de sabores picantes)", 2));
+        //listaProductosPedido.add(0, new ProductoTakeAway(4, "Hamburguesa moruna El Buho Rojo (mejor hamburguesa de españa) \n + Bacon  ", 2));
         ////
 
-        for(int i = 0; i < listaProductosPedido.size();i++){
-            System.out.println("producto pos "+i +"  "+listaProductosPedido.get(i).getProducto());
+        for (int i = 0; i < listaProductosPedido.size(); i++) {
+            System.out.println("producto pos " + i + "  " + listaProductosPedido.get(i).getProducto());
 
         }
 
@@ -9784,14 +9924,14 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             @Override
             public void run() {
                 if (tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density > 45 * resources.getDisplayMetrics().density) {
-                    if(dimen>10){
-                        customLayout.setAltura(tvInstruccionesGenerales.getHeight() + 15 * resources.getDisplayMetrics().density);
-
-                    }else{
+                    if (dimen > 10) {
                         customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 35 * resources.getDisplayMetrics().density);
 
+                    } else {
+                        customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 5 * resources.getDisplayMetrics().density);
+
                     }
-                   // customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 0 * resources.getDisplayMetrics().density);
+                    // customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 0 * resources.getDisplayMetrics().density);
                 }
 
             }
@@ -9800,7 +9940,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         adapterProductos2.notifyDataSetChanged();
 
 
-        customLayout.setAnchuraRecycler(2000,0);
+        customLayout.setAnchuraRecycler(2000, 0);
 
         recyclerProductosI2.post(new Runnable() {
             @Override
@@ -9809,7 +9949,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                 linearInstrucciones.post(new Runnable() {
                     @Override
                     public void run() {
-                        customLayout.setAnchuraRecycler(recyclerProductosI2.getWidth(),linearInstrucciones.getWidth());
+                        customLayout.setAnchuraRecycler(recyclerProductosI2.getWidth(), linearInstrucciones.getWidth());
                         System.out.println("anchura recycler prod " + linearInstrucciones.getWidth());
 
                     }
@@ -9914,7 +10054,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
             listaProductosTakeAway.add(productoParaArray);
         }
-        imgAjustes.callOnClick();
         return listaProductosTakeAway;
 
     }

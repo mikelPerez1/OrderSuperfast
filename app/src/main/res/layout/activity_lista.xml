@@ -26,7 +26,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
             app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
 
             <ScrollView
@@ -42,6 +42,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutEscanear"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintEnd_toEndOf="@+id/layoutEsconderElementos"
+                            app:layout_constraintStart_toStartOf="@+id/layoutEsconderElementos"
+                            app:layout_constraintTop_toBottomOf="@+id/layoutLog">
+
+                            <ImageView
+                                android:id="@+id/imageView35"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:padding="8dp"
+                                app:srcCompat="@drawable/qr_scanner" />
+
+                            <TextView
+                                android:id="@+id/textView87"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/escanearQr"
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="@+id/imageView35"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/imageView35"
+                                app:layout_constraintTop_toTopOf="@+id/imageView35" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cardLogo"
@@ -103,7 +132,7 @@
                             android:layout_marginTop="20dp"
                             app:layout_constraintEnd_toEndOf="@+id/layoutEsconderElementos"
                             app:layout_constraintStart_toStartOf="@+id/layoutEsconderElementos"
-                            app:layout_constraintTop_toBottomOf="@+id/layoutLog">
+                            app:layout_constraintTop_toBottomOf="@+id/layoutEscanear">
 
                             <TextView
                                 android:id="@+id/tv2"
@@ -699,6 +728,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Botón que sirve para tachar los productos que ya se han realizado"
                                 android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_medium2_takeAway"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />

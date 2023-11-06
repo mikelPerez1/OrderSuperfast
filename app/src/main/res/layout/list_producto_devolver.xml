@@ -7,11 +7,11 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lineaSeparatoria"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/black"
+        android:background="#C3C3C3"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -22,7 +22,7 @@
         android:id="@+id/constraintLayout58"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,8 +52,8 @@
 
             <ImageView
                 android:id="@+id/imgDevolucionProductosMas"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/round_button"
                 android:backgroundTint="@color/verdeOrderSuperfastTranslucido"
                 android:padding="4dp"
@@ -67,7 +67,7 @@
                 android:id="@+id/txtDevolucionProductosCant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="10dp"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_medium_takeAway"
@@ -78,15 +78,15 @@
 
             <ImageView
                 android:id="@+id/imgDevolverProductosMenos"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/round_button"
                 android:backgroundTint="@color/verdeOrderSuperfastTranslucido"
                 android:padding="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtDevolucionProductosCant"
-                app:layout_constraintTop_toTopOf="@id/imgDevolucionProductosMas"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/remove"
                 app:tint="@color/verdeOsfOscuro" />
         </androidx.constraintlayout.widget.ConstraintLayout>

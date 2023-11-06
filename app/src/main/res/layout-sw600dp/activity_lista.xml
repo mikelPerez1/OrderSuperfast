@@ -29,7 +29,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
             app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
 
             <ScrollView
@@ -55,6 +55,35 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutEscanear"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layoutLog">
+
+                            <ImageView
+                                android:id="@+id/imageView35"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:padding="8dp"
+                                app:srcCompat="@drawable/qr_scanner" />
+
+                            <TextView
+                                android:id="@+id/textView87"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/escanearQr"
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="@+id/imageView35"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/imageView35"
+                                app:layout_constraintTop_toTopOf="@+id/imageView35" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cardLogo"
@@ -116,7 +145,7 @@
                             android:layout_marginTop="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/layoutLog">
+                            app:layout_constraintTop_toBottomOf="@+id/layoutEscanear">
 
                             <TextView
                                 android:id="@+id/tv2"
@@ -888,10 +917,215 @@
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutOpcionesPedido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:background="@null"
+                            android:elevation="3dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/desplegable"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:background="@null"
+                                android:elevation="0dp"
+                                android:paddingStart="20dp"
+                                android:paddingRight="20dp"
+                                android:paddingBottom="60dp"
+                                android:visibility="invisible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:visibility="visible">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layoutLlamar"
+                                    android:layout_width="220dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@drawable/background_redondeado_gris_claro_suave"
+                                    android:paddingStart="20dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="20dp"
+                                    android:paddingBottom="10dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/layoutRefund">
+
+                                    <ImageView
+                                        android:id="@+id/imageView22"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:background="@null"
+                                        android:padding="10dp"
+                                        android:rotation="0"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:srcCompat="@drawable/llamar"
+                                        app:tint="@color/white" />
+
+                                    <TextView
+                                        android:id="@+id/textView66"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:gravity="right"
+
+                                        android:text="@string/llamar"
+                                        android:textColor="@color/white"
+                                        android:textSize="16sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@+id/imageView22"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layoutRetractarPedido"
+                                    android:layout_width="220dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@drawable/background_redondeado_gris_claro_suave"
+                                    android:paddingStart="20dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="20dp"
+                                    android:paddingBottom="10dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/textView61"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:gravity="right"
+                                        android:text="@string/reiniciarPedido"
+                                        android:textColor="@color/white"
+
+                                        android:textSize="16sp"
+                                        app:layout_constraintBottom_toBottomOf="@+id/imageView21"
+                                        app:layout_constraintEnd_toStartOf="@+id/imageView21"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/imageView21" />
+
+                                    <ImageView
+                                        android:id="@+id/imageView21"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:background="@null"
+                                        android:padding="8dp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:srcCompat="@drawable/reiniciar_estado"
+                                        app:tint="@color/white" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layoutRefund"
+                                    android:layout_width="220dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@drawable/background_redondeado_gris_claro_suave"
+                                    android:paddingStart="20dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="20dp"
+                                    android:paddingBottom="10dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/layoutCancelar">
+
+                                    <TextView
+                                        android:id="@+id/textView59"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="right"
+                                        android:text="@string/devolucion"
+                                        android:textColor="@color/white"
+                                        android:textSize="16sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@+id/imageView20"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <ImageView
+                                        android:id="@+id/imageView20"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:background="@null"
+                                        android:padding="8dp"
+                                        app:layout_constraintBottom_toBottomOf="@+id/textView59"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/textView59"
+                                        app:srcCompat="@drawable/reembolso"
+                                        app:tint="@color/white" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layoutCancelar"
+                                    android:layout_width="220dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@drawable/background_redondeado_gris_claro_suave"
+                                    android:paddingStart="20dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="20dp"
+                                    android:paddingBottom="10dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/layoutRetractarPedido">
+
+                                    <TextView
+                                        android:id="@+id/textView57"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="right"
+
+                                        android:text="@string/cancelarPedido"
+                                        android:textColor="@color/white"
+                                        android:textSize="16sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@+id/imageView19"
+                                        app:layout_constraintHorizontal_bias="1.0"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <ImageView
+                                        android:id="@+id/imageView19"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:background="@null"
+                                        android:padding="8dp"
+                                        app:layout_constraintBottom_toBottomOf="@+id/textView57"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/textView57"
+                                        app:srcCompat="@drawable/cancelar_pedido"
+                                        app:tint="@color/white" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/backDesplegable"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="@drawable/borde_gris_claro"
+                            android:elevation="1dp"
                             android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/arrowUp"
                             app:layout_constraintEnd_toEndOf="@+id/arrowUp">
@@ -1109,210 +1343,6 @@
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </LinearLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/layoutOpcionesPedido"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:background="@null"
-                            android:elevation="3dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/desplegable"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-
-                                android:background="@null"
-                                android:elevation="0dp"
-                                android:paddingStart="20dp"
-                                android:paddingRight="20dp"
-                                android:paddingBottom="60dp"
-                                android:visibility="invisible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:visibility="visible">
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/layoutLlamar"
-                                    android:layout_width="220dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:background="@drawable/background_redondeado_gris_claro_suave"
-                                    android:paddingStart="20dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="20dp"
-                                    android:paddingBottom="10dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/layoutRefund">
-
-                                    <ImageView
-                                        android:id="@+id/imageView22"
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:background="@null"
-                                        android:padding="10dp"
-                                        android:rotation="0"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:srcCompat="@drawable/llamar"
-                                        app:tint="@color/white" />
-
-                                    <TextView
-                                        android:id="@+id/textView66"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="10dp"
-                                        android:layout_marginEnd="10dp"
-                                        android:gravity="right"
-
-                                        android:text="@string/llamar"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toStartOf="@+id/imageView22"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/layoutRetractarPedido"
-                                    android:layout_width="220dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:background="@drawable/background_redondeado_gris_claro_suave"
-                                    android:paddingStart="20dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="20dp"
-                                    android:paddingBottom="10dp"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
-
-                                    <TextView
-                                        android:id="@+id/textView61"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="10dp"
-                                        android:layout_marginEnd="10dp"
-                                        android:gravity="right"
-                                        android:text="@string/reiniciarPedido"
-                                        android:textColor="@color/white"
-
-                                        android:textSize="16sp"
-                                        app:layout_constraintBottom_toBottomOf="@+id/imageView21"
-                                        app:layout_constraintEnd_toStartOf="@+id/imageView21"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="@+id/imageView21" />
-
-                                    <ImageView
-                                        android:id="@+id/imageView21"
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:background="@null"
-                                        android:padding="8dp"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:srcCompat="@drawable/reiniciar_estado"
-                                        app:tint="@color/white" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/layoutRefund"
-                                    android:layout_width="220dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:background="@drawable/background_redondeado_gris_claro_suave"
-                                    android:paddingStart="20dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="20dp"
-                                    android:paddingBottom="10dp"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/layoutCancelar">
-
-                                    <TextView
-                                        android:id="@+id/textView59"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="10dp"
-                                        android:layout_marginTop="10dp"
-                                        android:layout_marginEnd="10dp"
-                                        android:layout_marginBottom="10dp"
-                                        android:gravity="right"
-                                        android:text="@string/devolucion"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toStartOf="@+id/imageView20"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
-
-                                    <ImageView
-                                        android:id="@+id/imageView20"
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:background="@null"
-                                        android:padding="8dp"
-                                        app:layout_constraintBottom_toBottomOf="@+id/textView59"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="@+id/textView59"
-                                        app:srcCompat="@drawable/reembolso"
-                                        app:tint="@color/white" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/layoutCancelar"
-                                    android:layout_width="220dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:background="@drawable/background_redondeado_gris_claro_suave"
-                                    android:paddingStart="20dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="20dp"
-                                    android:paddingBottom="10dp"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/layoutRetractarPedido">
-
-                                    <TextView
-                                        android:id="@+id/textView57"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="10dp"
-                                        android:layout_marginTop="10dp"
-                                        android:layout_marginEnd="10dp"
-                                        android:layout_marginBottom="10dp"
-                                        android:gravity="right"
-
-                                        android:text="@string/cancelarPedido"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toStartOf="@+id/imageView19"
-                                        app:layout_constraintHorizontal_bias="1.0"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
-
-                                    <ImageView
-                                        android:id="@+id/imageView19"
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:background="@null"
-                                        android:padding="8dp"
-                                        app:layout_constraintBottom_toBottomOf="@+id/textView57"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="@+id/textView57"
-                                        app:srcCompat="@drawable/cancelar_pedido"
-                                        app:tint="@color/white" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,7 +7,7 @@ public class Importe implements Serializable {
     private String total;
     private String impuesto;
     private String service_charge;
-    private String propina;
+    private String propina = "";
 
     public Importe(String pMetodo,String pTotal,String pImpuesto,String pService,String pPropina){
         this.metodo_pago=pMetodo;

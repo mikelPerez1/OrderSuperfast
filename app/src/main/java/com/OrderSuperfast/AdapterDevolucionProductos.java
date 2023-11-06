@@ -3,6 +3,7 @@ package com.OrderSuperfast;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -54,6 +56,14 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
         }
     }
 
+    public void resetearSeleccionados(){
+        for(int i = 0;i<arrayCant.size();i++){
+            arrayCant.set(i,0);
+        }
+        notifyDataSetChanged();
+
+    }
+
     @Override
     public int getItemCount() {
         return mData.size();
@@ -80,6 +90,7 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
         TextView cantidad;
         ImageView aumentar,disminuir;
         TextViewTachable nombreProducto;
+        ConstraintLayout lineaSeparatoria;
 
 
 
@@ -89,6 +100,7 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
             cantidad = itemView.findViewById(R.id.txtDevolucionProductosCant);
             aumentar = itemView.findViewById(R.id.imgDevolucionProductosMas);
             disminuir = itemView.findViewById(R.id.imgDevolverProductosMenos);
+            lineaSeparatoria = itemView.findViewById(R.id.lineaSeparatoria);
         }
 
 
@@ -98,17 +110,36 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
             nombreProducto.setText(item.getNombre());
             int cantidad_maxima = cantidadDevueltaProductos.get(item.getId())!=null ? cantidadDevueltaProductos.get(item.getId()) : Integer.valueOf(item.getCantidad());
 
+            if(position == mData.size()-1){
+                lineaSeparatoria.setBackgroundColor(Color.BLACK);
+            }else{
+                lineaSeparatoria.setBackgroundColor(Color.parseColor("#C3C3C3"));
+
+            }
+
             if(cantidad_maxima==0){
                 cantidad.setVisibility(View.GONE);
                 aumentar.setVisibility(View.GONE);
                 disminuir.setVisibility(View.GONE);
                 nombreProducto.setStrike(true);
 
+                //
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                params.height = 0; // O establece params.width = 0 si es horizontal
+                itemView.setLayoutParams(params);
+
             }else{
                 cantidad.setVisibility(View.VISIBLE);
                 aumentar.setVisibility(View.VISIBLE);
                 disminuir.setVisibility(View.VISIBLE);
                 nombreProducto.setStrike(false);
+                itemView.setVisibility(View.VISIBLE);
+
+                //
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                params.height = RecyclerView.LayoutParams.WRAP_CONTENT; // O establece params.width = RecyclerView.LayoutParams.WRAP_CONTENT si es horizontal
+                itemView.setLayoutParams(params);
+
 
             }
             int cant = arrayCant.get(position);

@@ -587,68 +587,6 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
 
         //cardviews de los diferentes estados del takeAway
 
-        cardPreparacion = findViewById(R.id.cardViewPreparacion);
-        cardReparto = findViewById(R.id.cardViewReparto);
-        cardHecho = findViewById(R.id.cardViewHecho);
-        cardPendientes = findViewById(R.id.cardViewPendientes);
-        cardCancelados = findViewById(R.id.cardViewCancelados);
-
-
-        cardPreparacion2 = findViewById(R.id.cardViewPreparacion2);
-        cardReparto2 = findViewById(R.id.cardViewReparto2);
-        cardHecho2 = findViewById(R.id.cardViewHecho2);
-        cardPendientes2 = findViewById(R.id.cardViewPendientes2);
-        cardCancelados2 = findViewById(R.id.cardViewCancelados2);
-
-        tvNumPedidosPreparacion = findViewById(R.id.textEnPreparacionNumero);
-        tvNumPedidosReparto = findViewById(R.id.textEnRepartoNumero);
-        tvNumPedidosHecho = findViewById(R.id.textHechoNumero);
-        tvNumPedidosPendientes = findViewById(R.id.textPendienteNumero);
-        tvNumPedidosCancelados = findViewById(R.id.textCanceladosNumero);
-
-
-        tvNumPedidosPreparacion2 = findViewById(R.id.textPreparacionNumero2);
-        tvNumPedidosReparto2 = findViewById(R.id.textRepartoNumero2);
-        tvNumPedidosHecho2 = findViewById(R.id.textHechoNumero2);
-        tvNumPedidosPendientes2 = findViewById(R.id.textPendienteNumero2);
-        tvNumPedidosCancelados2 = findViewById(R.id.textCanceladoNumero2);
-
-
-        tvTextoPreparacion = findViewById(R.id.textPreparacion);
-        tvTextoReparto = findViewById(R.id.textReparto);
-        tvTextoHecho = findViewById(R.id.textHecho);
-        tvTextoPendientes = findViewById(R.id.textPendiente);
-        tvTextoCancelados = findViewById(R.id.textCancelados);
-
-        tvTextoPreparacion2 = findViewById(R.id.textPreparacion2);
-        tvTextoReparto2 = findViewById(R.id.textReparto2);
-        tvTextoHecho2 = findViewById(R.id.textHecho2);
-        tvTextoPendientes2 = findViewById(R.id.textPendiente2);
-        tvTextoCancelados2 = findViewById(R.id.textCancelado2);
-
-
-        trianguloHechoBot = findViewById(R.id.trianguloHechoBottom);
-        trianguloHechoTop = findViewById(R.id.trianguloHechoTop);
-        trianguloRepBot = findViewById(R.id.trianguloRepartoBottom);
-        trianguloRepTop = findViewById(R.id.trianguloRepartoTop);
-        trianguloPrepBot = findViewById(R.id.trianguloPreparacionBottom);
-        trianguloPrepTop = findViewById(R.id.trianguloPreparacionTop);
-        trianguloPendienteTop = findViewById(R.id.trianguloPendienteTop);
-        trianguloPendienteBot = findViewById(R.id.trianguloPendienteBottom);
-        trianguloCanceladosTop = findViewById(R.id.trianguloCanceladosTop);
-        trianguloCanceladosBot = findViewById(R.id.trianguloCanceladosBottom);
-
-
-        trianguloHechoIzq = findViewById(R.id.trianguloHechoIzq);
-        trianguloHechoDer = findViewById(R.id.trianguloHechoDer);
-        trianguloRepIzq = findViewById(R.id.trianguloRepartoIzq);
-        trianguloRepDer = findViewById(R.id.trianguloRepartoDer);
-        trianguloPrepIzq = findViewById(R.id.trianguloPreparacionIzq);
-        trianguloPrepDer = findViewById(R.id.trianguloPreparacionDer);
-        trianguloPendienteIzq = findViewById(R.id.trianguloPendienteIzq);
-        trianguloPendienteDer = findViewById(R.id.trianguloPendienteDer);
-        trianguloCanceladosDer = findViewById(R.id.trianguloCanceladoDer);
-        trianguloCanceladosIzq = findViewById(R.id.trianguloCanceladoIzq);
 
         ajustesTakeAway = findViewById(R.id.ajustesTakeAway);
         ajustesTakeAwayVertical = findViewById(R.id.ajustesTakeAway3);
@@ -695,107 +633,7 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
          */
 
 
-        cardPreparacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String est = "ACEPTADO";
-                estadoActual = est;
-                //rehacerListaPedidos(est);
-                cambiarTipoTakeAwayActual(est);
-                comprobarNumPedidosListas();
-                ordenarSegunFecha(listaPedidosTotales);
-                actualizarListaPedidos();
-            }
-        });
 
-        cardPreparacion2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardPreparacion.callOnClick();
-            }
-        });
-
-        cardReparto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String est = "REPARTO";
-                estadoActual = est;
-
-                //rehacerListaPedidos(est);
-                cambiarTipoTakeAwayActual(est);
-
-                comprobarNumPedidosListas();
-                ordenarSegunFecha(listaPedidosTotales);
-                actualizarListaPedidos();
-
-            }
-        });
-
-        cardReparto2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardReparto.callOnClick();
-            }
-        });
-
-        cardHecho.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
-
-        cardHecho2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardHecho.callOnClick();
-            }
-        });
-
-        cardPendientes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
-
-        cardPendientes2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardPendientes.callOnClick();
-            }
-        });
-
-        cardCancelados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        cardCancelados2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardCancelados.callOnClick();
-            }
-        });
-
-
-        imageViewAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        imageViewAtrasTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
 
         comprobarNumPedidosListas();
@@ -1340,82 +1178,6 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
     }
 
 
-    private void cambiarEstadoDePedido(String pEstado, int numPedido) {
-
-
-        //////////////////////////////
-        String url = urlCambiarPedido + "?idRest=" + idRest + "&idDisp=" + idDisp + "&nPedido=" + numPedido + "&estado=" + pEstado;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        System.out.println("Peticion exitosa");
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplication(), "Connection failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        requestQueue.add(stringRequest);
-
-
-    }
-
-
-    private boolean estaEnLista(int numPedido) {
-
-        for (int i = 0; i < listaPedidosTotales.size(); i++) {
-            if (listaPedidosTotales.get(i).getNumOrden() == numPedido) {
-                return true;
-            }
-        }
-
-        return false;
-
-    }
-
-    private boolean estaEnLista2(int numPedido) {
-        String listaNotificaciones = sharedTakeAways.getString("listaNum", "");
-        String n = "";
-        if (!listaNotificaciones.equals("")) {
-            String[] lista = listaNotificaciones.split(" ");
-            for (int i = 0; i < lista.length; i++) {
-                n = lista[i];
-                if (n.equals(String.valueOf(numPedido))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-
-    }
-
-    private void añadirAListas(TakeAwayPedido pedido) {
-
-        listaPedidosTotales.add(pedido);
-        String est = pedido.getEstado();
-
-        if (est.equals("pendiente")) {
-            listaPendientes.add(pedido);
-        } else if (est.equals("preparacion")) {
-            listaPreparacion.add(pedido);
-        } else if (est.equals("hecho")) {
-            listaHecho.add(pedido);
-        } else if (est.equals("reparto")) {
-            listaHecho.add(pedido);
-        } else if (est.equals("cancelado")) {
-            listaCancelados.add(pedido);
-        }
-
-
-    }
-
-
     private void crearSiguienteDialogSiFalta() {
         if (colaTakeAway.size() > 0) {
             try {
@@ -1426,30 +1188,6 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
             //crearDialogTakeAway(false);
         }
     }
-/*
-    private TakeAwayPedido transformarJsonEnPedido(JSONObject elemento) throws JSONException {
-
-
-        int numP = Integer.valueOf(elemento.getString("numOrden"));
-        String nombre = elemento.getString("nombreCliente");
-        String estado = elemento.getString("estado");
-        int tiempo = Integer.valueOf(elemento.getString("tiempo"));
-        String direccion = elemento.getString("direccion");
-        String cp = elemento.getString("codigoPostal");
-        boolean pagado = Boolean.valueOf(elemento.getString("pagado"));
-        int cod = Integer.valueOf(elemento.getString("codigo"));
-        String productos = elemento.getString("productos");
-        String comentarios = elemento.getString("comentarios");
-        String telefono = elemento.getString("telefono");
-        String tipo = elemento.getString("tipo");
-        String fecha = elemento.getString("fecha");
-        Date f = new Date();
-        TakeAwayPedido pedido = new TakeAwayPedido(numP, nombre, estado, tiempo, direccion, cp, pagado, 0, cod, productos, comentarios, telefono, tipo, f);
-        return pedido;
-    }
-
-
- */
 
     private void crearPopupClickado(TakeAwayPedido p) {
         pedido = p;
@@ -1873,14 +1611,6 @@ constraintLayout.layoutPara
 
     }
 
-    private void mandarImprimir(TakeAwayPedido pedido) {
-
-        String productos = "";
-        //productos = pedido.getProductos();
-        System.out.println("productos para imprimir " + productos);
-
-    }
-
 
     private void crearDialogTakeAway(boolean clickado) {
 
@@ -1997,19 +1727,7 @@ constraintLayout.layoutPara
                 constraintCuerpoNoti = popupView.findViewById(R.id.constraintCuerpoNoti);
                 constraintTopNoti = popupView.findViewById(R.id.constraintInfoNuevaNoti);
 
-  /*
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scroller.getLayoutParams();
 
-            if(resources.getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE){
-                layoutParams.matchConstraintMaxHeight = (int) resources.getDimension(R.dimen.maxHeightScrollview);
-            }else{
-                layoutParams.matchConstraintMaxHeight = (int) resources.getDimension(R.dimen.maxHeightScrollviewVertical);
-
-            }
-
-
-            scroller.setLayoutParams(layoutParams);
-   */
                 RecyclerView recyclerProd = popupView.findViewById(R.id.recyclerComanda);
 
                 nombreCliente.setText(pedido.getDatosTakeAway().getNombre() + " " + pedido.getDatosTakeAway().getPrimer_apellido() + " " + pedido.getDatosTakeAway().getSegundo_apellido());
@@ -2433,320 +2151,6 @@ constraintLayout.layoutPara
 
     }
 
-    private void cambiarTipoTakeAwayActual(String estado) {
-
-
-        if (estado.equals("ACEPTADO")) {
-            cardPreparacion.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardReparto.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardHecho.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados.setCardBackgroundColor(resources.getColor(R.color.black));
-
-            cardPreparacion2.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardReparto2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardHecho2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados2.setCardBackgroundColor(resources.getColor(R.color.black));
-
-
-            tvTextoPreparacion.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosPreparacion.setTextColor(getResources().getColor(R.color.black));
-            tvTextoReparto.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados.setTextColor(getResources().getColor(R.color.white));
-
-            tvTextoPreparacion2.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosPreparacion2.setTextColor(getResources().getColor(R.color.black));
-            tvTextoReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados2.setTextColor(getResources().getColor(R.color.white));
-
-
-            trianguloPrepTop.setVisibility(View.VISIBLE);
-            trianguloPrepBot.setVisibility(View.VISIBLE);
-            trianguloRepTop.setVisibility(View.INVISIBLE);
-            trianguloRepBot.setVisibility(View.INVISIBLE);
-            trianguloHechoTop.setVisibility(View.INVISIBLE);
-            trianguloHechoBot.setVisibility(View.INVISIBLE);
-            trianguloPendienteTop.setVisibility(View.INVISIBLE);
-            trianguloPendienteBot.setVisibility(View.INVISIBLE);
-            trianguloCanceladosTop.setVisibility(View.INVISIBLE);
-            trianguloCanceladosBot.setVisibility(View.INVISIBLE);
-
-            trianguloPrepIzq.setVisibility(View.VISIBLE);
-            trianguloPrepDer.setVisibility(View.VISIBLE);
-            trianguloRepIzq.setVisibility(View.INVISIBLE);
-            trianguloRepDer.setVisibility(View.INVISIBLE);
-            trianguloHechoIzq.setVisibility(View.INVISIBLE);
-            trianguloHechoDer.setVisibility(View.INVISIBLE);
-            trianguloPendienteIzq.setVisibility(View.INVISIBLE);
-            trianguloPendienteDer.setVisibility(View.INVISIBLE);
-            trianguloCanceladosIzq.setVisibility(View.INVISIBLE);
-            trianguloCanceladosDer.setVisibility(View.INVISIBLE);
-
-
-        } else if (estado.equals("REPARTO")) {
-            cardReparto.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardPreparacion.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardHecho.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados.setCardBackgroundColor(resources.getColor(R.color.black));
-
-
-            cardReparto2.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardPreparacion2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardHecho2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados2.setCardBackgroundColor(resources.getColor(R.color.black));
-
-
-            tvTextoPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosReparto.setTextColor(getResources().getColor(R.color.black));
-            tvTextoHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados.setTextColor(getResources().getColor(R.color.white));
-
-            tvTextoPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto2.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosReparto2.setTextColor(getResources().getColor(R.color.black));
-            tvTextoHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados2.setTextColor(getResources().getColor(R.color.white));
-
-
-            trianguloPrepTop.setVisibility(View.INVISIBLE);
-            trianguloPrepBot.setVisibility(View.INVISIBLE);
-            trianguloRepTop.setVisibility(View.VISIBLE);
-            trianguloRepBot.setVisibility(View.VISIBLE);
-            trianguloHechoTop.setVisibility(View.INVISIBLE);
-            trianguloHechoBot.setVisibility(View.INVISIBLE);
-            trianguloPendienteTop.setVisibility(View.INVISIBLE);
-            trianguloPendienteBot.setVisibility(View.INVISIBLE);
-            trianguloCanceladosTop.setVisibility(View.INVISIBLE);
-            trianguloCanceladosBot.setVisibility(View.INVISIBLE);
-
-            trianguloPrepIzq.setVisibility(View.INVISIBLE);
-            trianguloPrepDer.setVisibility(View.INVISIBLE);
-            trianguloRepIzq.setVisibility(View.VISIBLE);
-            trianguloRepDer.setVisibility(View.VISIBLE);
-            trianguloHechoIzq.setVisibility(View.INVISIBLE);
-            trianguloHechoDer.setVisibility(View.INVISIBLE);
-            trianguloPendienteIzq.setVisibility(View.INVISIBLE);
-            trianguloPendienteDer.setVisibility(View.INVISIBLE);
-            trianguloCanceladosIzq.setVisibility(View.INVISIBLE);
-            trianguloCanceladosDer.setVisibility(View.INVISIBLE);
-
-
-        } else if (estado.equals("LISTO")) {
-            cardHecho.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardPreparacion.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardReparto.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados.setCardBackgroundColor(resources.getColor(R.color.black));
-
-
-            cardHecho2.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardPreparacion2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardReparto2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados2.setCardBackgroundColor(resources.getColor(R.color.black));
-
-
-            tvTextoPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosHecho.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados.setTextColor(getResources().getColor(R.color.white));
-
-            tvTextoPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho2.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosHecho2.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados2.setTextColor(getResources().getColor(R.color.white));
-
-
-            trianguloPrepTop.setVisibility(View.INVISIBLE);
-            trianguloPrepBot.setVisibility(View.INVISIBLE);
-            trianguloRepTop.setVisibility(View.INVISIBLE);
-            trianguloRepBot.setVisibility(View.INVISIBLE);
-            trianguloHechoTop.setVisibility(View.VISIBLE);
-            trianguloHechoBot.setVisibility(View.VISIBLE);
-            trianguloPendienteTop.setVisibility(View.INVISIBLE);
-            trianguloPendienteBot.setVisibility(View.INVISIBLE);
-            trianguloCanceladosTop.setVisibility(View.INVISIBLE);
-            trianguloCanceladosBot.setVisibility(View.INVISIBLE);
-
-            trianguloPrepIzq.setVisibility(View.INVISIBLE);
-            trianguloPrepDer.setVisibility(View.INVISIBLE);
-            trianguloRepIzq.setVisibility(View.INVISIBLE);
-            trianguloRepDer.setVisibility(View.INVISIBLE);
-            trianguloHechoIzq.setVisibility(View.VISIBLE);
-            trianguloHechoDer.setVisibility(View.VISIBLE);
-            trianguloPendienteIzq.setVisibility(View.INVISIBLE);
-            trianguloPendienteDer.setVisibility(View.INVISIBLE);
-            trianguloCanceladosIzq.setVisibility(View.INVISIBLE);
-            trianguloCanceladosDer.setVisibility(View.INVISIBLE);
-
-
-        } else if (estado.equals("PENDIENTE")) {
-            cardHecho.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPreparacion.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardReparto.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardCancelados.setCardBackgroundColor(resources.getColor(R.color.black));
-
-
-            cardHecho2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPreparacion2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardReparto2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes2.setCardBackgroundColor(getResources().getColor(R.color.grisClaro));
-            cardCancelados2.setCardBackgroundColor(resources.getColor(R.color.black));
-
-
-            tvTextoPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes.setTextColor(getResources().getColor(R.color.black));
-            tvTextoPendientes.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosCancelados.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados.setTextColor(getResources().getColor(R.color.white));
-
-            tvTextoPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes2.setTextColor(getResources().getColor(R.color.black));
-            tvTextoPendientes2.setTextColor(getResources().getColor(R.color.black));
-            tvNumPedidosCancelados2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoCancelados2.setTextColor(getResources().getColor(R.color.white));
-
-
-            trianguloPrepTop.setVisibility(View.INVISIBLE);
-            trianguloPrepBot.setVisibility(View.INVISIBLE);
-            trianguloRepTop.setVisibility(View.INVISIBLE);
-            trianguloRepBot.setVisibility(View.INVISIBLE);
-            trianguloHechoTop.setVisibility(View.INVISIBLE);
-            trianguloHechoBot.setVisibility(View.INVISIBLE);
-            trianguloPendienteTop.setVisibility(View.VISIBLE);
-            trianguloPendienteBot.setVisibility(View.VISIBLE);
-            trianguloCanceladosTop.setVisibility(View.INVISIBLE);
-            trianguloCanceladosBot.setVisibility(View.INVISIBLE);
-
-            trianguloPrepIzq.setVisibility(View.INVISIBLE);
-            trianguloPrepDer.setVisibility(View.INVISIBLE);
-            trianguloRepIzq.setVisibility(View.INVISIBLE);
-            trianguloRepDer.setVisibility(View.INVISIBLE);
-            trianguloHechoIzq.setVisibility(View.INVISIBLE);
-            trianguloHechoDer.setVisibility(View.INVISIBLE);
-            trianguloPendienteIzq.setVisibility(View.VISIBLE);
-            trianguloPendienteDer.setVisibility(View.VISIBLE);
-            trianguloCanceladosIzq.setVisibility(View.INVISIBLE);
-            trianguloCanceladosDer.setVisibility(View.INVISIBLE);
-
-
-        } else if (estado.equals("CANCELADO")) {
-
-            cardHecho.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPreparacion.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardReparto.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados.setCardBackgroundColor(resources.getColor(R.color.grisClaro));
-
-
-            cardHecho2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPreparacion2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardReparto2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardPendientes2.setCardBackgroundColor(getResources().getColor(R.color.black));
-            cardCancelados2.setCardBackgroundColor(resources.getColor(R.color.grisClaro));
-
-
-            tvTextoPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados.setTextColor(getResources().getColor(R.color.black));
-            tvTextoCancelados.setTextColor(getResources().getColor(R.color.black));
-
-            tvTextoPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPreparacion2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosReparto2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosHecho2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvTextoPendientes2.setTextColor(getResources().getColor(R.color.white));
-            tvNumPedidosCancelados2.setTextColor(getResources().getColor(R.color.black));
-            tvTextoCancelados2.setTextColor(getResources().getColor(R.color.black));
-
-
-            trianguloPrepTop.setVisibility(View.INVISIBLE);
-            trianguloPrepBot.setVisibility(View.INVISIBLE);
-            trianguloRepTop.setVisibility(View.INVISIBLE);
-            trianguloRepBot.setVisibility(View.INVISIBLE);
-            trianguloHechoTop.setVisibility(View.INVISIBLE);
-            trianguloHechoBot.setVisibility(View.INVISIBLE);
-            trianguloPendienteTop.setVisibility(View.INVISIBLE);
-            trianguloPendienteBot.setVisibility(View.INVISIBLE);
-            trianguloCanceladosTop.setVisibility(View.VISIBLE);
-            trianguloCanceladosBot.setVisibility(View.VISIBLE);
-
-            trianguloPrepIzq.setVisibility(View.INVISIBLE);
-            trianguloPrepDer.setVisibility(View.INVISIBLE);
-            trianguloRepIzq.setVisibility(View.INVISIBLE);
-            trianguloRepDer.setVisibility(View.INVISIBLE);
-            trianguloHechoIzq.setVisibility(View.INVISIBLE);
-            trianguloHechoDer.setVisibility(View.INVISIBLE);
-            trianguloPendienteIzq.setVisibility(View.INVISIBLE);
-            trianguloPendienteDer.setVisibility(View.INVISIBLE);
-            trianguloCanceladosIzq.setVisibility(View.VISIBLE);
-            trianguloCanceladosDer.setVisibility(View.VISIBLE);
-        }
-
-        if (popupClick != null && popupClick.isShowing()) {
-            popupClick.dismiss();
-        }
-
-
-    }
 
     private void ordenarSegunFecha(ArrayList<TakeAwayPedido> array) {
 
@@ -2861,248 +2265,8 @@ constraintLayout.layoutPara
         }
 
 
-        tvNumPedidosPreparacion.setText(String.valueOf(numAceptado));
-        tvNumPedidosPreparacion2.setText(String.valueOf(numAceptado));
-
-        tvNumPedidosReparto.setText(String.valueOf(numRep));
-        tvNumPedidosReparto2.setText(String.valueOf(numRep));
-
-        tvNumPedidosHecho.setText(String.valueOf(numHechos));
-        tvNumPedidosHecho2.setText(String.valueOf(numHechos));
-
-        tvNumPedidosPendientes.setText(String.valueOf(numPend));
-        tvNumPedidosPendientes2.setText(String.valueOf(numPend));
-
-        tvNumPedidosCancelados.setText(String.valueOf(numCancelados));
-        tvNumPedidosCancelados2.setText(String.valueOf(numCancelados));
 
     }
-
-/*
-    private void guardarListas() throws JSONException {
-
-        JSONObject jsonGuardarListas = new JSONObject();
-
-        jsonGuardarListas.put("listaPendientes", convertirListaEnJson(listaPendientes));
-        jsonGuardarListas.put("listaPreparacion", convertirListaEnJson(listaPreparacion));
-        jsonGuardarListas.put("listaReparto", convertirListaEnJson(listaReparto));
-        jsonGuardarListas.put("listaHecho", convertirListaEnJson(listaHecho));
-
-        editorTakeAway.putString("listas", jsonGuardarListas.toString());
-        editorTakeAway.apply();
-
-    }
-
-    private void removeElementLista(int numOrden, ArrayList<TakeAwayPedido> array) {
-
-        for (int i = 0; i < array.size(); i++) {
-            if (array.get(i).getNumOrden() == numOrden) {
-                array.remove(i);
-            }
-        }
-
-    }
-
-    private JSONArray convertirListaEnJson(ArrayList<TakeAwayPedido> array) throws JSONException {
-        JSONArray listaDevolver = new JSONArray();
-        JSONObject elemento;
-
-        for (int i = 0; i < array.size(); i++) {
-            elemento = new JSONObject();
-            TakeAwayPedido pedido = array.get(i);
-            elemento.put("numOrden", pedido.getNumOrden());
-            elemento.put("estado", pedido.getEstado());
-            elemento.put("nombreCliente", pedido.getNombreCliente());
-            elemento.put("codigo", pedido.getCodigoTakeAway());
-            elemento.put("cantidadFaltante", pedido.getCantidadFaltaPagar());
-            elemento.put("comentarios", pedido.getComentarios());
-            elemento.put("codigoPostal", pedido.getCodigoPostal());
-            elemento.put("direccion", pedido.getDireccion());
-            elemento.put("pagado", pedido.getPagado());
-            elemento.put("productos", pedido.getProductos());
-            elemento.put("telefono", pedido.getTelefono());
-            elemento.put("tiempo", pedido.getTiempo());
-            elemento.put("tipo", pedido.getTipoCliente());
-            Date fecha = pedido.getFecha();
-            c = Calendar.getInstance();
-            c.setTime(fecha);
-            String fechaString = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH) + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
-            elemento.put("fecha", fechaString);
-            listaDevolver.put(elemento);
-        }
-
-        return listaDevolver;
-    }
-
-    private void guardarLista() throws JSONException {
-        JSONArray listaDevolver = new JSONArray();
-        JSONObject elemento;
-
-        for (int i = 0; i < listaPendientes.size(); i++) {
-            elemento = new JSONObject();
-            TakeAwayPedido pedido = listaPendientes.get(i);
-            elemento.put("numOrden", pedido.getNumOrden());
-            elemento.put("estado", pedido.getEstado());
-            elemento.put("nombreCliente", pedido.getNombreCliente());
-            elemento.put("codigo", pedido.getCodigoTakeAway());
-            elemento.put("cantidadFaltante", pedido.getCantidadFaltaPagar());
-            elemento.put("comentarios", pedido.getComentarios());
-            elemento.put("codigoPostal", pedido.getCodigoPostal());
-            elemento.put("direccion", pedido.getDireccion());
-            elemento.put("pagado", pedido.getPagado());
-            elemento.put("productos", pedido.getProductos());
-            elemento.put("telefono", pedido.getTelefono());
-            elemento.put("tiempo", pedido.getTiempo());
-            elemento.put("tipo", pedido.getTipoCliente());
-            Date fecha = pedido.getFecha();
-            c = Calendar.getInstance();
-
-            c.setTime(fecha);
-            String fechaString = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH) + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
-            elemento.put("fecha", fechaString);
-            System.out.println("fecha1 " + fechaString);
-
-            listaDevolver.put(elemento);
-        }
-
-
-        String listasGuardadas = sharedTakeAways.getString("listas", "");
-        if (!listasGuardadas.equals("")) {
-
-            JSONObject listas = new JSONObject(listasGuardadas);
-            listas.put("listaPendientes", listaDevolver);
-            editorTakeAway.putString("listas", listas.toString());
-            editorTakeAway.apply();
-        }
-
-
-    }
-
-    private void borrarElementoDeLista(int numOrden, String lista) {
-        //función que elimina el elemento con el identificador que recive como parámetro
-        //de la lista que también se recive como parámetro
-
-
-        JSONObject listas, objeto;
-        JSONArray array;
-        String listasGuardadas = sharedTakeAways.getString("listas", "");
-        int numOrdenObjeto;
-
-        if (!listasGuardadas.equals("")) {
-
-            try {
-                listas = new JSONObject(listasGuardadas);
-                array = listas.getJSONArray(lista);
-                for (int i = 0; i < array.length(); i++) {
-                    objeto = array.getJSONObject(i);
-                    numOrdenObjeto = objeto.getInt("numOrden");
-                    if (numOrden == numOrdenObjeto) {
-                        array.remove(i);
-                    }
-
-                }
-
-                listas.put(lista, array.toString());
-                editorTakeAway.putString("listas", listas.toString());
-                editorTakeAway.apply();
-
-            } catch (JSONException e) {
-
-            }
-        }
-
-
-    }
-
-    private JSONObject takeAwayPedidoToJson(TakeAwayPedido pedido) {
-        JSONObject elemento = new JSONObject();
-        try {
-
-            elemento.put("numOrden", pedido.getNumOrden());
-            elemento.put("estado", pedido.getEstado());
-            elemento.put("nombreCliente", pedido.getNombreCliente());
-            elemento.put("codigo", pedido.getCodigoTakeAway());
-            elemento.put("cantidadFaltante", pedido.getCantidadFaltaPagar());
-            elemento.put("comentarios", pedido.getComentarios());
-            elemento.put("codigoPostal", pedido.getCodigoPostal());
-            elemento.put("direccion", pedido.getDireccion());
-            elemento.put("pagado", pedido.getPagado());
-            elemento.put("productos", pedido.getProductos());
-            elemento.put("telefono", pedido.getTelefono());
-            elemento.put("tiempo", pedido.getTiempo());
-            elemento.put("tipo", pedido.getTipoCliente());
-            Date fecha = pedido.getFecha();
-            c = Calendar.getInstance();
-
-            c.setTime(fecha);
-            String fechaString = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH) + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
-            elemento.put("fecha", fechaString);
-            System.out.println("fecha1 " + fechaString);
-            elemento.put("fecha", fechaString);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return elemento;
-    }
-
-    private void agregarElementoALista(TakeAwayPedido pedido, String lista) {
-
-        JSONObject elemento = new JSONObject();
-        try {
-
-            elemento.put("numOrden", pedido.getNumOrden());
-            elemento.put("estado", pedido.getEstado());
-            elemento.put("nombreCliente", pedido.getNombreCliente());
-            elemento.put("codigo", pedido.getCodigoTakeAway());
-            elemento.put("cantidadFaltante", pedido.getCantidadFaltaPagar());
-            elemento.put("comentarios", pedido.getComentarios());
-            elemento.put("codigoPostal", pedido.getCodigoPostal());
-            elemento.put("direccion", pedido.getDireccion());
-            elemento.put("pagado", pedido.getPagado());
-            elemento.put("productos", pedido.getProductos());
-            elemento.put("telefono", pedido.getTelefono());
-            elemento.put("tiempo", pedido.getTiempo());
-            elemento.put("tipo", pedido.getTipoCliente());
-            Date fecha = pedido.getFecha();
-            c = Calendar.getInstance();
-
-            c.setTime(fecha);
-            String fechaString = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH) + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
-            elemento.put("fecha", fechaString);
-            System.out.println("fecha1 " + fechaString);
-            elemento.put("fecha", fechaString);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //falta coger la lista del sharedPreferences, convertirlo en jsonArray, insertarlo, volver a cambiar el json en string y volver a guardar la lista
-
-        JSONObject listas;
-        JSONArray array;
-        String listasGuardadas = sharedTakeAways.getString("listas", "");
-        if (!listasGuardadas.equals("")) {
-
-            try {
-                listas = new JSONObject(listasGuardadas);
-                array = listas.getJSONArray(lista);
-
-
-                array.put(elemento);
-                listas.put(lista, array);
-                editorTakeAway.putString("listas", listas.toString());
-                editorTakeAway.apply();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    }
-
- */
 
     private void peticionGetDatosDevolucion(int numPedido) {
         JSONObject jsonBody = new JSONObject();
@@ -3678,7 +2842,7 @@ constraintLayout.layoutPara
                     System.out.println("devolucion producto " + cantidad + " " + listaPrecios.toString());
                     peticionEnviarDevolucion(cantidad,pedido.getNumOrden(), new DevolucionCallback() {
                         @Override
-                        public void onDevolucionExitosa() {
+                        public void onDevolucionExitosa(JSONObject resp) {
                             // se guarda en local los productos devueltos del pedido
                             SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
                             productosEditor.putString("productos_devueltos_" + pedidoActual.getNumOrden(), arrayGuardar.toString());
@@ -3796,7 +2960,7 @@ constraintLayout.layoutPara
                             //  popupClick.dismiss();
                             //  notificacionActiva = false;
 //                    agregarElementoALista(pedido, "listaCancelados");
-                            callback.onDevolucionExitosa();
+                            callback.onDevolucionExitosa(response);
 
                             pedido = null;
                         } else if (clave.equals("status") && response.getString(clave).equals("ERROR")) {
@@ -4498,8 +3662,17 @@ constraintLayout.layoutPara
                             cambiarPedidoAlSiguienteEstado();
                             mostrarDatosTk(pedido);
                             writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumOrden() + " - " + estadoToIngles(est), activity);
-                            if(adapterProductos2!=null){
-                                adapterProductos2.setEstadoPedido(pedido.getEstado());
+
+                            //para que el tachon solo salga en pedidos aceptados
+                            if (adapterProductos2 != null) {
+                                adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
+                                adapterProductos2.destacharTodos();
+                                ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos();
+                                for (int i = 0; i < lista.size(); i++) {
+                                    lista.get(i).setTachado(false);
+                                }
+
+                                adapterPedidos2.notifyDataSetChanged();
                             }
                         }
                         System.out.println(clave + " " + response.getString(clave));
@@ -4522,6 +3695,17 @@ constraintLayout.layoutPara
                     cambiarPedidoAlSiguienteEstado();
                     mostrarDatosTk(pedido);
                     writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumOrden() + " - " + estadoToIngles(est), activity);
+
+                    if (adapterProductos2 != null) {
+                        adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
+                        adapterProductos2.destacharTodos();
+                        ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos();
+                        for (int i = 0; i < lista.size(); i++) {
+                            lista.get(i).setTachado(false);
+                        }
+
+                        adapterPedidos2.notifyDataSetChanged();
+                    }
 
                 } else if (error.toString().toLowerCase().contains("noConnectionError")) {
                     Toast.makeText(TakeAway.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
@@ -4628,7 +3812,7 @@ constraintLayout.layoutPara
     }
 
     @Override
-    public void onDevolucionExitosa() {
+    public void onDevolucionExitosa(JSONObject resp) {
 
     }
 
@@ -5387,6 +4571,8 @@ constraintLayout.layoutPara
     private List<Integer> productosActuales = new ArrayList<>();
 
     private CustomLayoutManager customLayout;
+    private ConstraintLayout linearInstrucciones,layoutEscanear;
+
 
 
 
@@ -5474,6 +4660,8 @@ constraintLayout.layoutPara
         viewInfoInstrucciones = findViewById(R.id.view27);
 
         botonTacharProductos = findViewById(R.id.botonTacharProductos);
+        linearInstrucciones = findViewById(R.id.linearInstrucciones);
+        layoutEscanear = findViewById(R.id.layoutEscanear);
 
 
         setRestaurantImages();
@@ -5563,6 +4751,15 @@ constraintLayout.layoutPara
                 Intent i = new Intent(TakeAway.this, ajustes.class);
                 //   startActivity(i);
                 launcher.launch(i);
+                ocultarDesplegable();
+            }
+        });
+
+        layoutEscanear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TakeAway.this,EscanearQR.class);
+                startActivity(i);
                 ocultarDesplegable();
             }
         });
@@ -5795,16 +4992,6 @@ constraintLayout.layoutPara
             }
         });
 
-        /*
-
-        lay.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-
-         */
 
 
     }
@@ -5905,6 +5092,8 @@ constraintLayout.layoutPara
 
         overIcon.setVisibility(View.INVISIBLE);
         overBack.setVisibility(View.INVISIBLE);
+        botonTacharProductos.setAlpha(1);
+        linearInstrucciones.setBackgroundColor(Color.WHITE);
 
         ObjectAnimator scaleXAnimator = null;
         ObjectAnimator scaleYAnimator = null;
@@ -6160,6 +5349,8 @@ constraintLayout.layoutPara
 
                 overBack.setVisibility(View.VISIBLE);
                 overIcon.setVisibility(View.VISIBLE);
+                botonTacharProductos.setAlpha((float) 0.5);
+                linearInstrucciones.setBackgroundColor(Color.TRANSPARENT);
 
 
                 ValueAnimator anim = ValueAnimator.ofInt(arrowUp.getHeight(), desplegable.getHeight());
@@ -6446,6 +5637,8 @@ constraintLayout.layoutPara
             public void onItemClick(TakeAwayPedido item, int position) {
                 pedidoActual = item;
                 mostrarDatosTk(item);
+                //para que el tachon solo salga en pedidos aceptados
+                adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
             }
 
             @Override
@@ -6482,7 +5675,6 @@ constraintLayout.layoutPara
 
             }
         });
-        adapterProductos2.setAlturaInstruccionesGenerales(tvInstruccionesGenerales.getHeight());
         recyclerProductosI2.setAdapter(adapterProductos2);
 
     }
@@ -6537,7 +5729,9 @@ constraintLayout.layoutPara
         }
         listaProductosPedido.clear();
         listaProductosPedido.addAll(getProductosDelPedido(listaProductos));
-        adapterProductos2.notifyDataSetChanged();
+        for(int i = 0; i<listaProductosPedido.size();i++){
+            System.out.println("elemento tachado "+ listaProductosPedido.get(i).getProducto()+ "  "+listaProductosPedido.get(i).getTachado());
+        }
         tvNombreCliente.setText(resources.getString(R.string.cliente));
 
         //resources.getString(R.string.num_pedido)
@@ -6594,24 +5788,40 @@ constraintLayout.layoutPara
             @Override
             public void run() {
                 if (tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density > 85 * resources.getDisplayMetrics().density) {
-                    customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 35 * resources.getDisplayMetrics().density);
+                    if(dimen>10){
+                        customLayout.setAltura(tvInstruccionesGenerales.getHeight() + 15 * resources.getDisplayMetrics().density);
+
+                    }else{
+                        customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 35 * resources.getDisplayMetrics().density);
+
+                    }
+                    // customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 0 * resources.getDisplayMetrics().density);
                 }
 
             }
         });
+
+        adapterProductos2.notifyDataSetChanged();
+
 
         customLayout.setAnchuraRecycler(2000,0);
 
         recyclerProductosI2.post(new Runnable() {
             @Override
             public void run() {
-                customLayout.setAnchuraRecycler(recyclerProductosI2.getWidth(),1000);
-                System.out.println("anchura recycler prod " + recyclerProductosI2.getWidth());
+
+                linearInstrucciones.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        customLayout.setAnchuraRecycler(recyclerProductosI2.getWidth(),linearInstrucciones.getWidth());
+                        System.out.println("anchura recycler prod " + linearInstrucciones.getWidth());
+
+                    }
+                });
 
 
             }
         });
-
 
     }
 
@@ -6711,7 +5921,7 @@ constraintLayout.layoutPara
                 producto += "\n " + "[ " + instrucciones + " ]";
             }
 
-            System.out.println("array producto texto " + producto);
+            System.out.println("producto t "+i+" esta tachado "+pedido.getTachado());
 
             ProductoTakeAway productoParaArray = new ProductoTakeAway(Integer.valueOf(cantidad), producto, 0);
             productoParaArray.setTachado(pedido.getTachado());
