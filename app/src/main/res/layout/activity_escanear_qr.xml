@@ -108,7 +108,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
@@ -119,6 +119,7 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout60"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="40dp"
@@ -128,7 +129,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/botonEscanearQr"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/textView89">
 
                 <TextView
                     android:id="@+id/datosqr"
@@ -175,6 +176,20 @@
                     app:layout_constraintStart_toEndOf="@+id/textView92"
                     app:layout_constraintTop_toTopOf="@+id/textView92" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView89"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:text="Datos asociados al QR"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_big_takeAway"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayout60"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout60"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/botonEscanearQr"
