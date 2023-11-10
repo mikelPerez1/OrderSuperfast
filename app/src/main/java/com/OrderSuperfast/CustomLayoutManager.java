@@ -1,6 +1,7 @@
 package com.OrderSuperfast;
 
 import android.content.Context;
+import android.text.BoringLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,19 +14,25 @@ public class CustomLayoutManager extends LinearLayoutManager {
     private float alturaMargen;
     private float anchuraRecycler;
     private Context c;
-    float alt,anchuraInstrucciones;
+    private float alt, anchuraInstrucciones;
+    private boolean reorganizar;
 
     public CustomLayoutManager(Context context, float altura) {
         super(context);
-        c=context;
+        c = context;
         alturaMargen = altura;
     }
 
     public void setAltura(float pAlt) {
         this.alturaMargen = pAlt;
+        if (alturaMargen > 0) {
+            reorganizar = true;
+        } else {
+            reorganizar = false;
+        }
     }
 
-    public void setAnchuraRecycler(float pAnchura,float pAnchuraInstrucciones) {
+    public void setAnchuraRecycler(float pAnchura, float pAnchuraInstrucciones) {
 
         this.anchuraRecycler = pAnchura;
         this.anchuraInstrucciones = pAnchuraInstrucciones;
@@ -35,37 +42,21 @@ public class CustomLayoutManager extends LinearLayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         super.onLayoutChildren(recycler, state);
         alt = alturaMargen;
+        System.out.println("modify ");
+
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            int position = getPosition(child);
+            alt = alturaMargen;
 
-/*
-            if(alt>0){
-
-                ViewGroup.LayoutParams params = child.getLayoutParams();
-                params.width = (int) (anchuraRecycler/2) -50;
-                child.setLayoutParams(params);
-                alt= alt - child.getBottom();
-            }else{
-                ViewGroup.LayoutParams params = child.getLayoutParams();
-                params.width  =(int) anchuraRecycler;
-                child.setLayoutParams(params);
-
-
-            }
-
- */
-
-
-            System.out.println("altura enviada "+alt );
+            System.out.println("altura enviada " + child.getTop() +" "+child.getBottom());
             alt = alt - child.getTop();
 
-            modifyTextViewsWithSpecificID(child);
-
+            if (reorganizar) {
+                modifyTextViewsWithSpecificID(child);
             }
+
         }
-
-
+    }
 
 
     private void modifyTextViewsWithSpecificID(View view) {
@@ -75,21 +66,40 @@ public class CustomLayoutManager extends LinearLayoutManager {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View innerChild = viewGroup.getChildAt(i);
 
+                int numOpciones = 0;
                 // Verifica si el ID del elemento contiene "textview_"
                 if (innerChild instanceof TextView && innerChild.getId() != View.NO_ID) {
 
                     String idString = (String) innerChild.getTag();
-                    if (idString!=null && idString.contains("Producto_")) {
-                        // Si el ID contiene "textview_", cambia el ancho del TextView
+                    if (idString != null && idString.contains("Producto_")) {
+                        // Si el ID contiene "Producto_", cambia el ancho del TextView
                         ViewGroup.LayoutParams params = innerChild.getLayoutParams();
+                        System.out.println("altura elemento " + alt + " del tag " + idString);
+                        if (!idString.equals("Producto_")) {
+                            numOpciones++;
+
+                            alt = alt - ((55 * c.getResources().getDisplayMetrics().density) * numOpciones);
+                            System.out.println("elemento opcion " + ((TextView) innerChild).getText().toString() + " altura " + alt);
+                        } else {
+                            numOpciones = 0;
+                        }
                         if (alt > 0) {
-                            params.width = (int) (anchuraRecycler - anchuraInstrucciones) - 100;
+                            System.out.println("anchura manager " + this.getWidth() + " " + anchuraInstrucciones + " " + (int) (c.getResources().getDisplayMetrics().density * 40));
+                            params.width = (int) (this.getWidth() - anchuraInstrucciones) - (int) (c.getResources().getDisplayMetrics().density * 50);
+                            innerChild.setLayoutParams(params);
                             alt = alt - innerChild.getHeight();
 
+
                         } else {
-                            params.width = (int) anchuraRecycler-(100);
+                            params.width = (int) this.getWidth();
+                            innerChild.setLayoutParams(params);
+
                         }
-                        innerChild.setLayoutParams(params);
+
+                        if (!idString.equals("Producto_")) {
+                            alt = alt + ((55 * c.getResources().getDisplayMetrics().density) * numOpciones);
+                        }
+
                     }
                 }
                 // Continúa buscando recursivamente en la jerarquía de vistas

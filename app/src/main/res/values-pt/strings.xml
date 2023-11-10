@@ -180,5 +180,7 @@
     <string name="txtGuardar">Guardar</string>
     <string name="textCantidadMayor0">Por favor, inserte una cantidad mayor a 0</string>
     <string name="escanearQr">Escanear QR</string>
+    <string name="errorDevolucionMayor">Cantidad mayor a la permitida</string>
+    <string name="textoTachar">Tachar</string>
 
 </resources>

@@ -27,6 +27,8 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterCategoria;
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterEsconderProducto;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;

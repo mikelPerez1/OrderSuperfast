@@ -145,7 +145,7 @@
     <string name="mostrarProductosOcultados">Show hidden products</string>
     <string name="numero">No.</string>
     <string name="pedidoYaReembolsado">The order has already been fully refunded</string>
-    <string name="tipoDevolucion">select refund type:</string>
+    <string name="tipoDevolucion">Or select another refund type:</string>
     <string name="textoRegistroPedidos">Record of the orders</string>
     <string name="explicacionProductosOcultos"> If the option of show hidden products is deactivated, the products that are deactivated will not be shown in the orders. If an order containts only deactivated products, this order will not appear in the list.\n\nOn the other hand, if the option for showing hidden products is activated, the products you have deactivated will be shown at the end of the list with a grayish color to distinguish from the rest of the activated products.s</string>
     <string name="tituloProductosOcultos">Products visible on device</string>
@@ -182,6 +182,8 @@
     <string name="txtGuardar">Guardar</string>
     <string name="textCantidadMayor0">Please, insert an amount greater than 0</string>
     <string name="escanearQr">Scan QR</string>
+    <string name="errorDevolucionMayor">Amount higher than allowed</string>
+    <string name="textoTachar">Cross out</string>
 
 
 </resources>

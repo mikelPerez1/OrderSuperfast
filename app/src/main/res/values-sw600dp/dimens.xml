@@ -117,6 +117,8 @@
     <dimen name="alturaCategoriaVertical">100dp</dimen>
     <dimen name="dimen120">130dp</dimen>
 
+    <dimen name="limiteMinimoReorganizarTextoProductos">55dp</dimen>
+
 
 
 </resources>

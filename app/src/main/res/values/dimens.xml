@@ -136,6 +136,7 @@
     <dimen name="dimen60">60dp</dimen>
     <dimen name="paddingIconoRest">5dp</dimen>
     <dimen name="dimen25">25dp</dimen>
+    <dimen name="limiteMinimoReorganizarTextoProductos">40dp</dimen>
 
 
 </resources>

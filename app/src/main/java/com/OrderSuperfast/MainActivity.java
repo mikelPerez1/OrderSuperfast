@@ -356,6 +356,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        ConstraintLayout layoutEscanear = findViewById(R.id.layoutEscanear);
+        layoutEscanear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, EscanearQR.class);
+                startActivity(i);
+                ocultarDesplegable();
+            }
+        });
+
         ImageView navBarBack = findViewById(R.id.navigationBarBack);
         navBarBack.setOnClickListener(new View.OnClickListener() {
             @Override

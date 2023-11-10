@@ -22,8 +22,8 @@
         tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutOpcionesGenerales"
-            android:layout_width="wrap_content"
+            android:id="@+id/layoutEscanear"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="50dp"
@@ -31,6 +31,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView35"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                app:srcCompat="@drawable/qr_scanner" />
+
+            <TextView
+                android:id="@+id/textView87"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/escanearQr"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView35"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView35"
+                app:layout_constraintTop_toTopOf="@+id/imageView35" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutOpcionesGenerales"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/layoutEscanear"
+            app:layout_constraintStart_toStartOf="@+id/layoutEscanear"
+            app:layout_constraintTop_toBottomOf="@+id/layoutEscanear">
 
             <ImageView
                 android:id="@+id/imageView25"
@@ -52,6 +81,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView25"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView25"
                 app:layout_constraintTop_toTopOf="@+id/imageView25" />
         </androidx.constraintlayout.widget.ConstraintLayout>

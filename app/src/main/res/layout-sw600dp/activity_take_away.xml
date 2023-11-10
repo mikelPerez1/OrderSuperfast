@@ -1335,6 +1335,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@drawable/borde_gris_claro"
+                        android:elevation="1dp"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@id/arrowUp"
                         app:layout_constraintEnd_toEndOf="@id/arrowUp">
@@ -1422,6 +1423,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView58">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutInfoCliente"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1.5">
@@ -1496,7 +1498,9 @@
                                 android:layout_height="50dp"
                                 android:background="@drawable/background_semi_redondeado_negro"
                                 android:padding="5dp"
-                                android:text="TACHAR"
+                                android:text="@string/textoTachar"
+                                android:textAllCaps="false"
+
                                 app:backgroundTint="@color/black"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -1508,7 +1512,8 @@
                             android:id="@+id/linearInstrucciones"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:elevation="20dp"
+                            android:translationZ="20dp"
+                            android:outlineProvider="none"
                             android:background="@color/white"
                             android:layout_weight="1.5">
 
@@ -1541,7 +1546,7 @@
                                 android:layout_width="1dp"
                                 android:layout_height="0dp"
                                 android:background="@color/grisClaro"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@+id/tvInstruccionesGenerales"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 

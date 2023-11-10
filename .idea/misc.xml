@@ -4,17 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/background_redondo_izq.xml" value="0.2735" />
+        <entry key="app/src/main/res/drawable/background_redondo_izq_gris.xml" value="0.3575" />
         <entry key="app/src/main/res/drawable/borde.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/borde_boton_gris_solo.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/borde_gris_claro_suave.xml" value="0.2725" />
         <entry key="app/src/main/res/drawable/borde_redondeado_grisaceo.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/linea_tachar.xml" value="0.276" />
         <entry key="app/src/main/res/drawable/triangulo.xml" value="0.2735" />
-        <entry key="app/src/main/res/layout-port/activity_escanear_qr.xml" value="0.17699871740059855" />
-        <entry key="app/src/main/res/layout-sw600dp/activity_lista.xml" value="0.20755885997521686" />
+        <entry key="app/src/main/res/layout-land/activity_devices.xml" value="0.26079521162890124" />
+        <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.2975630611372381" />
+        <entry key="app/src/main/res/layout-port/activity_escanear_qr.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-sw600dp/activity_lista.xml" value="0.25" />
         <entry key="app/src/main/res/layout-sw600dp/activity_take_away.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_escanear_qr.xml" value="0.27960666951688756" />
-        <entry key="app/src/main/res/layout/activity_lista.xml" value="0.39924314096499525" />
+        <entry key="app/src/main/res/layout/activity_devices.xml" value="0.21120136810602821" />
+        <entry key="app/src/main/res/layout/activity_escanear_qr.xml" value="0.2975609756097561" />
+        <entry key="app/src/main/res/layout/activity_lista.xml" value="0.2580299785867238" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_take_away.xml" value="0.33" />
         <entry key="app/src/main/res/layout/list_producto_devolver.xml" value="0.75" />
         <entry key="app/src/main/res/layout/popup_devolucion_dinero.xml" value="0.33" />
@@ -24,7 +29,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

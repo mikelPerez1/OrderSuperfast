@@ -30,8 +30,6 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -43,14 +41,11 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
@@ -78,12 +73,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevolucionProductos;
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterList2;
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterProductosTakeAway;
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterTakeAway2;
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterTakeAwayPedido;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -94,6 +93,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -125,7 +125,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener,  DevolucionCallback {
+public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener, DevolucionCallback {
 
     private static final String urlDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/setCantidad/";
     private static final String urlDatosDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/getCantidad/";
@@ -452,7 +452,9 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
 
         getWindow().setWindowAnimations(0);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        resources = getResources();
 
+        verEsMovil();
         // idZona = "T";
         //  idDisp = "de";
         // getDestination();
@@ -474,7 +476,6 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
         sharedTakeAways = getSharedPreferences("takeAway", Context.MODE_PRIVATE);
         editorTakeAway = sharedTakeAways.edit();
         tiempoPedidosProgramados = sharedTakeAways.getInt("tiempoPedidosProgramados", 20);
-        resources = getResources();
         constraintMenuIzq = findViewById(R.id.layoutBarraMenuIzq);
         constraintMenuTop = findViewById(R.id.layoutBarraMenuTop);
         root = findViewById(R.id.rootLayout);
@@ -631,9 +632,6 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
         });
 
          */
-
-
-
 
 
         comprobarNumPedidosListas();
@@ -1453,7 +1451,7 @@ constraintLayout.layoutPara
         System.out.println("Muchos productos " + arrayProductos.size());
 
 
-        AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this,recyclerProductosI2, new AdapterProductosTakeAway.OnItemClickListener() {
+        AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this, recyclerProductosI2, new AdapterProductosTakeAway.OnItemClickListener() {
             @Override
             public void onItemClick(ProductoTakeAway item, int position) {
 
@@ -1792,7 +1790,7 @@ constraintLayout.layoutPara
                 System.out.println("Muchos productos " + arrayProductos.size());
 
 
-                AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this,recyclerProd, new AdapterProductosTakeAway.OnItemClickListener() {
+                AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this, recyclerProd, new AdapterProductosTakeAway.OnItemClickListener() {
                     @Override
                     public void onItemClick(ProductoTakeAway item, int position) {
 
@@ -2265,7 +2263,6 @@ constraintLayout.layoutPara
         }
 
 
-
     }
 
     private void peticionGetDatosDevolucion(int numPedido) {
@@ -2308,7 +2305,11 @@ constraintLayout.layoutPara
                     }
                 }
                 System.out.println("cantidad ya devuelta " + cantidad_devuelta);
-                crearDialogDevolucion(cantidad_maxima, cantidad_devuelta);
+                try {
+                    crearDialogDevolucion(cantidad_maxima, cantidad_devuelta);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -2377,7 +2378,9 @@ constraintLayout.layoutPara
         }
     }
 
-    private void crearDialogDevolucion(double cantidad_maxima, double cantidad_devuelta) {
+    private JSONArray arrayGuardar;
+
+    private void crearDialogDevolucion(double cantidad_maxima, double cantidad_devuelta) throws JSONException {
         AlertDialog.Builder dialogBuild = new AlertDialog.Builder(activity);
 
         final View layoutDevolver = getLayoutInflater().inflate(R.layout.popup_devolucion_dinero, null);
@@ -2400,6 +2403,7 @@ constraintLayout.layoutPara
         ConstraintLayout contenidoDevolucionTotal = layoutDevolver.findViewById(R.id.constraintContenidoDevolucionTotal);
         ConstraintLayout contenidoDevolucionParcial = layoutDevolver.findViewById(R.id.constraintContenidoDevolucionParcial);
         ImageView botonDevolucionProductos = layoutDevolver.findViewById(R.id.botonDevolucionProductos);
+        RecyclerView recyclerProductos = layoutDevolver.findViewById(R.id.recyclerDevolucion);
 
         TextView tvCantRestMax = layoutDevolver.findViewById(R.id.tvCantRestMax);
         View backAnimation = layoutDevolver.findViewById(R.id.backAnimation);
@@ -2410,15 +2414,15 @@ constraintLayout.layoutPara
         ConstraintLayout layoutInfoDevoluciones = layoutDevolver.findViewById(R.id.layoutInfoDevoluciones);
 
 
-        FLAG_PESTAÑA = 1;
+        FLAG_PESTAÑA = 2;
         //parsear las cantidades y ponerle 2 decimales
         double rest = cantidad_maxima - cantidad_devuelta;
         DecimalFormat format = new DecimalFormat("0.00");
         String formatCantMax = format.format(cantidad_maxima);
         String formatCantDev = format.format(cantidad_devuelta);
         System.out.println("formated " + formatCantMax + " y devuelta " + formatCantDev);
-        formatCantMax = formatCantMax.replace(",", ".");
-        formatCantDev = formatCantDev.replace(",", ".");
+        //formatCantMax = formatCantMax.replace(",", ".");
+        //formatCantDev = formatCantDev.replace(",", ".");
         String formatedRest = format.format(rest);
         tvCantRestMax.setText("(Max. " + formatedRest + "€)");
 
@@ -2434,7 +2438,8 @@ constraintLayout.layoutPara
             layoutBackPestañas.setVisibility(View.INVISIBLE);
             layoutPestaña.setVisibility(View.INVISIBLE);
             contenidoDevolucionTotal.setVisibility(View.GONE);
-
+            contenidoDevolucionParcial.setVisibility(View.GONE);
+            recyclerProductos.setVisibility(View.GONE);
         }
 
 
@@ -2476,7 +2481,7 @@ constraintLayout.layoutPara
                 double cantFinal = (double) cantidad_maxima - (double) cantidad_devuelta;
 
                 System.out.println("cantFinal " + cantFinal);
-                peticionEnviarDevolucion(cantFinal, pedidoActual.getNumOrden(),TakeAway.this);
+                peticionEnviarDevolucion(cantFinal, pedidoActual.getNumOrden(), TakeAway.this);
                 dialogDevolucion.cancel();
             }
         });
@@ -2505,7 +2510,7 @@ constraintLayout.layoutPara
                 pestañaDevolverParcial.setBackground(null);
                 //  layoutInfoDevoluciones.setVisibility(View.GONE);
 
-                animacionCambiarPestaña(backAnimation, 1f, 0f, constraintAnimation, pestañaDevolverTotal, 1);
+                animacionCambiarPestaña(backAnimation, 0f, 1f, constraintAnimation, pestañaDevolverTotal, 1);
 
             }
         });
@@ -2521,7 +2526,7 @@ constraintLayout.layoutPara
                 textViewPestañaRefundParcial.setTextColor(resources.getColor(R.color.white, activity.getTheme()));
                 //  layoutInfoDevoluciones.setVisibility(View.VISIBLE);
 
-                animacionCambiarPestaña(backAnimation, 0f, 1f, constraintAnimation, pestañaDevolverParcial, 2);
+                animacionCambiarPestaña(backAnimation, 1f, 0f, constraintAnimation, pestañaDevolverParcial, 2);
 
 
             }
@@ -2595,6 +2600,126 @@ constraintLayout.layoutPara
             }
         };
 
+
+        ///////// recycler
+
+
+        ArrayList<ProductoPedido> listaProductos = new ArrayList<>();
+        listaProductos.addAll(pedidoActual.getListaProductos());
+        String propina = pedidoActual.getImporte().getPropina();
+        if (propina != null && !propina.equals("null") && !propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size() - 1).getId().equals("Propina")) {
+            System.out.println("Propina " + propina);
+            ProductoPedido p = new ProductoPedido("Propina", "Propina", "Propina", propina, "0", "1", "", new ArrayList<>(), true);
+            listaProductos.add(p);
+
+        }
+
+        java.util.Map<String, Float> listaPrecios = new HashMap<>();
+        java.util.Map<String, Integer> cantidadDevueltaProductos = new HashMap<>();
+        String arrayString = preferenciasProductos.getString("productos_devueltos_" + pedidoActual.getNumOrden(), "");
+        if (!arrayString.equals("")) {
+            arrayGuardar = new JSONArray(arrayString);
+
+        } else {
+            arrayGuardar = new JSONArray();
+
+        }
+        for (int i = 0; i < arrayGuardar.length(); i++) {
+            JSONObject item = arrayGuardar.getJSONObject(i);
+            String id = item.getString("id");
+            int cantidad = item.getInt("cantidad");
+            int cantidad_Max = item.getInt("cantidad_maxima");
+            int cantidad_posible = cantidad_Max - cantidad;
+            cantidadDevueltaProductos.put(id, cantidad_posible);
+
+        }
+
+        LinearLayoutManager manager = new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+
+            }
+        };
+        recyclerProductos.setLayoutManager(manager);
+
+        recyclerProductos.setHasFixedSize(true);
+
+        double cantidadPermitida = rest;
+
+
+        AdapterDevolucionProductos adapterDevolucionProductos = new AdapterDevolucionProductos(listaProductos, cantidadDevueltaProductos, this, new AdapterDevolucionProductos.OnItemClickListener() {
+            @Override
+            public void onItemClick(ProductoPedido item, int cantidad, boolean aumentar) {
+
+                editTextCantidad.setText("");
+
+
+                float precioUnidad = Float.valueOf(item.getPrecio());
+                float totalProducto = precioUnidad;
+                float totalPrecio = 0;
+                ArrayList<Opcion> opciones = item.getListaOpciones();
+                if (opciones != null) {
+                    for (int i = 0; i < opciones.size(); i++) {
+                        Opcion o = opciones.get(i);
+                        if (o.getPrecio() != null && !o.getPrecio().equals("")) {
+                            totalProducto += Float.valueOf(o.getPrecio());
+                        }
+                    }
+                }
+                totalProducto = totalProducto * cantidad;
+                listaPrecios.put(item.getId(), totalProducto);
+
+                try {
+                    boolean esta = false;
+                    for (int j = 0; j < arrayGuardar.length(); j++) {
+                        JSONObject objeto = arrayGuardar.getJSONObject(j);
+                        if (objeto.get("id").equals(item.getId())) {
+                            int cant = objeto.getInt("cantidad");
+                            if (aumentar) {
+                                cant++;
+
+                            } else {
+                                cant--;
+                            }
+                            System.out.println("cantidad producto devol " + cant + " " + cantidad);
+                            objeto.put("cantidad", cant);
+                            esta = true;
+                            break;
+                        }
+                    }
+                    if (!esta) {
+                        JSONObject objeto = new JSONObject();
+                        objeto.put("id", item.getId());
+                        objeto.put("cantidad", cantidad);
+                        objeto.put("cantidad_maxima", item.getCantidad());
+                        arrayGuardar.put(objeto);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                for (Float valor : listaPrecios.values()) {
+                    totalPrecio += valor;
+                }
+                //cambiar el simbolo moneda segun pais
+                DecimalFormat format = new DecimalFormat("0.00");
+                // botonConfirmarDevolucion.setText("Devolver " + format.format(totalPrecio) + " €");
+
+
+            }
+        });
+
+        recyclerProductos.setAdapter(adapterDevolucionProductos);
+
+
+        ////////
+
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         editTextCantidad.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -2659,21 +2784,77 @@ constraintLayout.layoutPara
 
                 //SharedPreferences sharedPreferencesIds = getSharedPreferences("ids", Context.MODE_PRIVATE);
                 // String idRestaurante = sharedPreferencesIds.getString("saveIdRest", "null");
+
                 String cantidad = editTextCantidad.getText().toString();
                 cantidad = cantidad.replace(",", "");
-                //Log.d("datos pasar devolución", "idRestaurante = " + idRestaurante + ", numPedido = " + numPedido + ", cantidad = " + cantidad);
-                //  cantidad = cantidad.replace(".", "%2E");
-                // String urlPrueba = "https://app.ordersuperfast.com/devolverDinero.php?idRest=" + idRestaurante + "&numPedido=" + numPedido + "&cantidad=" + cantidad;
-                //  Log.d("datos url", urlPrueba);
                 System.out.println("jsonbody " + cantidad);
-                if (!cantidad.isEmpty()) {
+
+                AtomicDouble cant = new AtomicDouble(0);
+
+                if (!cantidad.isEmpty() && Float.valueOf(cantidad) > 0) {
                     double cantActual = Double.valueOf(cantidad);
-                    peticionEnviarDevolucion(cantActual, pedidoActual.getNumOrden(),TakeAway.this);
-                    dialogDevolucion.cancel();
+                    System.out.println("jsonbody " + cantActual);
+
+                    peticionEnviarDevolucion(cantActual, pedidoActual.getNumOrden(), new DevolucionCallback() {
+                        @Override
+                        public void onDevolucionExitosa(JSONObject resp) {
+                            Toast.makeText(activity, resources.getString(R.string.toastDevolucion), Toast.LENGTH_SHORT).show();
+                            dialogDevolucion.cancel();
+
+                        }
+
+                        @Override
+                        public void onDevolucionFallida(String mensajeError) {
+                            if (mensajeError.equals("Amount higher than allowed")) {
+                                Toast.makeText(activity, resources.getString(R.string.errorDevolucionMayor)+" "+cantActual+" (max " + formatedRest + ")", Toast.LENGTH_SHORT).show();
+                                dialogDevolucion.cancel();
+
+                            } else {
+                                Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+                    //dialogDevolucion.cancel();
+                } else if (!listaPrecios.isEmpty()) {
+                    listaPrecios.forEach((clave, valor) -> {
+                        cant.addAndGet(valor);
+                        System.out.println("valor item " + clave + " " + cant);
+
+                    });
+
+                    peticionEnviarDevolucion(cant.get(), pedidoActual.getNumOrden(), new DevolucionCallback() {
+                        @Override
+                        public void onDevolucionExitosa(JSONObject resp) {
+                            // se guarda en local los productos devueltos del pedido
+                            SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
+                            productosEditor.putString("productos_devueltos_" + pedidoActual.getNumOrden(), arrayGuardar.toString());
+                            productosEditor.apply();
+                            // preferenciasProductos;
+                            Toast.makeText(activity, resources.getString(R.string.toastDevolucion), Toast.LENGTH_SHORT).show();
+                            dialogDevolucion.cancel();
+                        }
+
+                        @Override
+                        public void onDevolucionFallida(String mensajeError) {
+                            if (mensajeError.equals("Amount higher than allowed")) {
+                                String formatedCant = format.format(cant);
+                                Toast.makeText(activity, resources.getString(R.string.errorDevolucionMayor)+" "+formatedCant+" (max " + formatedRest + ")", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        }
+                    });
+
                 } else {
-                    Toast.makeText(activity, "Please, insert the amount", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, resources.getString(R.string.textCantidadMayor0), Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
 
         botonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -2710,9 +2891,9 @@ constraintLayout.layoutPara
         final View layoutDevolver = getLayoutInflater().inflate(R.layout.popup_devolucion_productos, null);
         ArrayList<ProductoPedido> listaProductos = pedidoActual.getListaProductos();
         String propina = pedidoActual.getImporte().getPropina();
-        if(!propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size()-1).getId().equals("Propina")){
-            System.out.println("Propina "+propina);
-            ProductoPedido p = new ProductoPedido("Propina","Propina","Propina",propina,"0","1","",new ArrayList<>(),true);
+        if (!propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size() - 1).getId().equals("Propina")) {
+            System.out.println("Propina " + propina);
+            ProductoPedido p = new ProductoPedido("Propina", "Propina", "Propina", propina, "0", "1", "", new ArrayList<>(), true);
             listaProductos.add(p);
         }
         System.out.println("lista productos size " + listaProductos.size());
@@ -2722,7 +2903,7 @@ constraintLayout.layoutPara
         RecyclerView recycler = layoutDevolver.findViewById(R.id.recyclerDevolverProductos);
         Button botonConfirmarDevolucion = layoutDevolver.findViewById(R.id.botonAceptarDevolucionProductos);
 
-        if(resources.getDimension(R.dimen.scrollHeight)>10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (resources.getDimension(R.dimen.scrollHeight) > 10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) recycler.getLayoutParams();
             int maxHeightInPixels = (int) (170 * getResources().getDisplayMetrics().density);
             layoutParams.matchConstraintMaxHeight = maxHeightInPixels;
@@ -2840,7 +3021,7 @@ constraintLayout.layoutPara
                 } else {
                     //hacer la peticion
                     System.out.println("devolucion producto " + cantidad + " " + listaPrecios.toString());
-                    peticionEnviarDevolucion(cantidad,pedido.getNumOrden(), new DevolucionCallback() {
+                    peticionEnviarDevolucion(cantidad, pedido.getNumOrden(), new DevolucionCallback() {
                         @Override
                         public void onDevolucionExitosa(JSONObject resp) {
                             // se guarda en local los productos devueltos del pedido
@@ -2908,7 +3089,7 @@ constraintLayout.layoutPara
     }
 
 
-    private void peticionEnviarDevolucion(double cantidad, int numPedido,DevolucionCallback callback) {
+    private void peticionEnviarDevolucion(double cantidad, int numPedido, DevolucionCallback callback) {
         System.out.println("cantidad " + cantidad);
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         String formattedNumber = decimalFormat.format(cantidad);
@@ -2985,6 +3166,60 @@ constraintLayout.layoutPara
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
+    private ArrayList<Pair<Integer, ArrayList<String>>> getElementosTachados() {
+        String listaString = sharedTakeAways.getString("lista_productos_tachados_" + idRest, null);
+
+        ArrayList<Pair<Integer, ArrayList<String>>> listaFinal = new ArrayList<>();
+        if (listaString != null) {
+            try {
+                JSONArray array = new JSONArray(listaString);
+
+                for (int i = 0; i < array.length(); i++) {
+                    ArrayList<String> idProductosTachados = new ArrayList<>();
+                    JSONObject jsonProducto = array.getJSONObject(i);
+                    int numero_pedido = jsonProducto.getInt("numero_pedido");
+                    JSONArray jsonTachados = jsonProducto.getJSONArray("productos_tachados");
+                    for (int j = 0; j < jsonTachados.length(); j++) {
+                        String id = jsonTachados.getString(j);
+                        idProductosTachados.add(id);
+                    }
+
+                    Pair<Integer, ArrayList<String>> par = new Pair<>(numero_pedido, idProductosTachados);
+                    listaFinal.add(par);
+                }
+
+                return listaFinal;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return listaFinal;
+            }
+
+        } else {
+            return listaFinal;
+        }
+
+    }
+
+    private boolean estaTachado(int num, ArrayList<Pair<Integer, ArrayList<String>>> array, String idProducto) {
+        boolean esta = false;
+        for (int i = 0; i < array.size(); i++) {
+            Pair<Integer, ArrayList<String>> par = array.get(i);
+            if (par.first == num) {
+                ArrayList<String> listaIds = par.second;
+                for (int j = 0; j < listaIds.size(); j++) {
+                    if (listaIds.get(j).equals(idProducto)) {
+                        esta = true;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        return esta;
+
+    }
+
 
     private void peticionGetTakeAway() {
 
@@ -3004,7 +3239,7 @@ constraintLayout.layoutPara
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlObtenerPedidos, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
+                ArrayList<Pair<Integer, ArrayList<String>>> productosTachados = getElementosTachados();
                 if (listaPedidosTotales.size() == 0) {
                     listaPedidosTotales.add(0, new TakeAwayPedido());
                 }
@@ -3199,6 +3434,9 @@ constraintLayout.layoutPara
                                                     }
                                                 }
                                                 ProductoPedido productoPedido = new ProductoPedido(idProducto, idCarrito, nombreProducto, precioProducto, impuestoProducto, cantidadProducto, instruccionesProducto, opciones, true);
+                                                if (estaTachado(num, productosTachados, idProducto)) {
+                                                    productoPedido.setTachado(true);
+                                                }
                                                 listaProductos.add(productoPedido);
                                             }
                                         }
@@ -4571,9 +4809,7 @@ constraintLayout.layoutPara
     private List<Integer> productosActuales = new ArrayList<>();
 
     private CustomLayoutManager customLayout;
-    private ConstraintLayout linearInstrucciones,layoutEscanear;
-
-
+    private ConstraintLayout linearInstrucciones, layoutEscanear;
 
 
     private ArrayList<Pair<TakeAwayPedido, Handler>> listaHandlersOrdenar = new ArrayList<>();
@@ -4758,7 +4994,7 @@ constraintLayout.layoutPara
         layoutEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TakeAway.this,EscanearQR.class);
+                Intent i = new Intent(TakeAway.this, EscanearQR.class);
                 startActivity(i);
                 ocultarDesplegable();
             }
@@ -4963,6 +5199,12 @@ constraintLayout.layoutPara
                                     producto.setTachado(!producto.getTachado());
                                     productosActuales.remove(i);
                                 }
+                                try {
+                                    guardarElementosTachadosDelPedido(pedidoActual.getListaProductos());
+                                } catch (JSONException e) {
+                                    System.out.println("error json: " + e.toString());
+                                    e.printStackTrace();
+                                }
                                 productosActuales.clear();
                                 listaProductosPedido.clear();
                                 listaProductosPedido.addAll(getProductosDelPedido(pedidoActual.getListaProductos()));
@@ -4992,11 +5234,62 @@ constraintLayout.layoutPara
             }
         });
 
+    }
 
+    private void guardarElementosTachadosDelPedido(ArrayList<ProductoPedido> listaGuardar) throws JSONException {
+        System.out.println("GUARDAR ELEMENTOS TACHADOS");
+        int numPedido = pedidoActual.getNumOrden();
+        JSONObject productosTachado = new JSONObject();
+        JSONArray productosGuardar = new JSONArray();
+
+
+        for (int i = 0; i < listaGuardar.size(); i++) {
+            ProductoPedido producto = listaGuardar.get(i);
+            if (producto.getTachado()) {
+                String idProducto = producto.getId();
+                productosGuardar.put(idProducto);
+                System.out.println("guardar producto " + idProducto);
+
+            }
+        }
+
+        productosTachado.put("numero_pedido", numPedido);
+        productosTachado.put("productos_tachados", productosGuardar);
+
+        String listaString = sharedTakeAways.getString("lista_productos_tachados_" + idRest, null);
+
+
+        if (listaString != null) {
+            JSONArray array = new JSONArray(listaString);
+            boolean esta = false;
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject objeto = array.getJSONObject(i);
+
+                if (objeto.getInt("numero_pedido") == numPedido) {
+                    array.remove(i);
+                    objeto = new JSONObject(productosTachado.toString());
+                    array.put(objeto);
+                    esta = true;
+                    break;
+                }
+            }
+            if (!esta) {
+                array.put(productosTachado);
+            }
+
+            editorTakeAway.putString("lista_productos_tachados_" + idRest, array.toString());
+            editorTakeAway.apply();
+        } else {
+            JSONArray array = new JSONArray();
+            array.put(productosTachado);
+            editorTakeAway.putString("lista_productos_tachados_" + idRest, array.toString());
+            editorTakeAway.apply();
+
+        }
 
     }
 
-    private void cambiarFiltroRecycler(){
+    private void cambiarFiltroRecycler() {
         recyclerPedidosI2.stopScroll();
         adapterPedidos2.cambiarestado(estadoActual);
         recyclerPedidosI2.scrollToPosition(0);
@@ -5080,7 +5373,6 @@ constraintLayout.layoutPara
 
 
     }
-
 
 
     private void ocultarDesplegablePedido() {
@@ -5653,7 +5945,7 @@ constraintLayout.layoutPara
         customLayout = new CustomLayoutManager(this, tvInstruccionesGenerales.getHeight());
         recyclerProductosI2.setLayoutManager(customLayout);
         recyclerProductosI2.setHasFixedSize(true);
-        adapterProductos2 = new AdapterProductosTakeAway(listaProductosPedido, this,recyclerProductosI2, new AdapterProductosTakeAway.OnItemClickListener() {
+        adapterProductos2 = new AdapterProductosTakeAway(listaProductosPedido, this, recyclerProductosI2, new AdapterProductosTakeAway.OnItemClickListener() {
             @Override
             public void onItemClick(ProductoTakeAway item, int position) {
                 System.out.println("booleano tachar " + tacharProductos);
@@ -5671,6 +5963,7 @@ constraintLayout.layoutPara
                     if (!esta) {
                         productosActuales.add(position);
                     }
+                    adapterProductos2.notifyDataSetChanged();
                 }
 
             }
@@ -5723,17 +6016,26 @@ constraintLayout.layoutPara
 
     private void mostrarDatosTk(TakeAwayPedido item) {
         ArrayList<ProductoPedido> listaProductos = item.getListaProductos();
-        for(int j = 0; j < listaProductos.size(); j++){
+        for (int j = 0; j < listaProductos.size(); j++) {
             ProductoPedido p = listaProductos.get(j);
-            System.out.println("tachado "+p.getNombre()+" "+p.getTachado());
+            System.out.println("tachado " + p.getNombre() + " " + p.getTachado());
         }
         listaProductosPedido.clear();
         listaProductosPedido.addAll(getProductosDelPedido(listaProductos));
-        for(int i = 0; i<listaProductosPedido.size();i++){
-            System.out.println("elemento tachado "+ listaProductosPedido.get(i).getProducto()+ "  "+listaProductosPedido.get(i).getTachado());
-        }
         tvNombreCliente.setText(resources.getString(R.string.cliente));
 
+        ////prueba
+        //listaProductosPedido.add(0, new ProductoTakeAway(4, "producto 1 asfasfa asfasfaf asfasf asfafs fasfasf asfafafsaf asfafs asf asffasffafs as asf \n + Bacon \n + Huevo asda sd asdad ad sadadsasdasda dasdadsa asd  ", 2));
+        /*
+        listaProductosPedido.add(0, new ProductoTakeAway(4, "Salmón aguaciro recien pescado del mar \n + Bacon \n + Pepinillos de la huerta recien recolectados", 2));
+        listaProductosPedido.add(0, new ProductoTakeAway(4, "Hamburguesa mediterranea El Buho Rojo (Explosion de sabores picantes)", 2));
+        listaProductosPedido.add(0, new ProductoTakeAway(4, "Hamburguesa moruna El Buho Rojo (mejor hamburguesa de españa) \n + Bacon  ", 2));
+        //  listaProductosPedido.add(0, new ProductoTakeAway(4, "Salmón aguaciro recien pescado del mar  \n + Bacon \n + Bacon \n + Bacon \n + Pepinillos de la huerta recien recolectados \n + Pepinillos de la huerta recien recolectados \n + Pepinillos de la huerta recien recolectados con sabor a lima limon" , 2));
+        listaProductosPedido.add(0, new ProductoTakeAway(4, "Hamburguesa mediterranea El Buho Rojo (Explosion de sabores picantes)", 2));
+        listaProductosPedido.add(0, new ProductoTakeAway(4, "Hamburguesa moruna El Buho Rojo (mejor hamburguesa de españa) \n + Bacon  ", 2));
+
+         */
+        ////
         //resources.getString(R.string.num_pedido)
         tvNumPedido.setText(resources.getString(R.string.numero) + " " + item.getNumOrden());
 
@@ -5747,7 +6049,14 @@ constraintLayout.layoutPara
 
         tvEstActual.setText(estActualIdioma(item.getEstado()));
         tvNombreRecogida.setText(item.getDatosTakeAway().getNombre() + " " + item.getDatosTakeAway().getPrimer_apellido() + " " + item.getDatosTakeAway().getSegundo_apellido());
+
         tvInstruccionesGenerales.setText(!item.getInstruccionesGenerales().equals("") ? item.getInstruccionesGenerales() : resources.getString(R.string.noInstruccionesEspeciales));
+
+        //la siguiente linea solo es de prueba
+        //tvInstruccionesGenerales.setText(!item.getInstruccionesGenerales().equals("") ? item.getInstruccionesGenerales() : "Toda la comida a la vez y que vengan con 3 servilletas. Además que tenga 2 cucharas y venga en bandeja. asdada sdad asdad asdasdadas ");
+
+
+
         botonSiguienteEstado.setText(textBotonEstadoSiguiente());
         if (!item.getCliente().getNumero_telefono().equals("") && item.getCliente().getNumero_telefono() != null) {
             layoutLlamar.setVisibility(View.VISIBLE);
@@ -5765,9 +6074,11 @@ constraintLayout.layoutPara
         backDesplegable.setVisibility(View.VISIBLE);
         layoutOpcionesPedido.setVisibility(View.VISIBLE);
 
-        if(item.getEstado().equals("ACEPTADO") || item.getEstado().equals(resources.getString(R.string.botonAceptado))){
+
+
+        if (item.getEstado().equals("ACEPTADO") || item.getEstado().equals(resources.getString(R.string.botonAceptado))) {
             botonTacharProductos.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             botonTacharProductos.setVisibility(View.INVISIBLE);
         }
 
@@ -5779,44 +6090,71 @@ constraintLayout.layoutPara
             constraintPartePedidos.setVisibility(View.GONE);
             estaEnPedido = true;
         }
+        customLayout.setAnchuraRecycler(2000, 0);
 
-        tvInstruccionesGenerales.setText("Toda la comida a la vez y que vengan con 3 servilletas. Además que tenga 2 cucharas y venga en bandeja. asdada sdad asdad asdasdadas ");
 
-        System.out.println("altura instrucciones mostrar " + tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density);
-
+        int limiteMin = (int) resources.getDimension(R.dimen.limiteMinimoReorganizarTextoProductos);
         tvInstruccionesGenerales.post(new Runnable() {
             @Override
             public void run() {
-                if (tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density > 85 * resources.getDisplayMetrics().density) {
-                    if(dimen>10){
-                        customLayout.setAltura(tvInstruccionesGenerales.getHeight() + 15 * resources.getDisplayMetrics().density);
+                System.out.println("altura instrucciones generales " + (tvInstruccionesGenerales.getHeight()) + " " + botonTacharProductos.getHeight());
 
-                    }else{
-                        customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 35 * resources.getDisplayMetrics().density);
+                if (tvInstruccionesGenerales.getHeight() > limiteMin) {
+                    if (dimen > 10) {
+
+                        customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 10 * resources.getDisplayMetrics().density);
+
+                    } else {
+                        customLayout.setAltura(linearInstrucciones.getHeight() - 40 * resources.getDisplayMetrics().density);
 
                     }
                     // customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 0 * resources.getDisplayMetrics().density);
+                } else {
+                    customLayout.setAltura(0);
+
                 }
 
             }
         });
 
-        adapterProductos2.notifyDataSetChanged();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapterProductos2.notifyDataSetChanged();
+            }
+        }, 100);
 
 
-        customLayout.setAnchuraRecycler(2000,0);
 
         recyclerProductosI2.post(new Runnable() {
             @Override
             public void run() {
 
+
                 linearInstrucciones.post(new Runnable() {
                     @Override
                     public void run() {
-                        customLayout.setAnchuraRecycler(recyclerProductosI2.getWidth(),linearInstrucciones.getWidth());
+                        customLayout.setAnchuraRecycler(recyclerProductosI2.getWidth(), linearInstrucciones.getWidth());
                         System.out.println("anchura recycler prod " + linearInstrucciones.getWidth());
+                        cambiarMargenTopRecyclerProductos();
+                        System.out.println("altura instrucciones generales " + (tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density) + " " + 45 * resources.getDisplayMetrics().density);
+                        if (tvInstruccionesGenerales.getHeight() > limiteMin) {
+                            if (dimen > 10) {
+
+                                customLayout.setAltura(tvInstruccionesGenerales.getHeight() + - 20 * resources.getDisplayMetrics().density);
+
+                            } else {
+                                customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 40 * resources.getDisplayMetrics().density);
+
+                            }
+                            // customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 0 * resources.getDisplayMetrics().density);
+                        } else {
+                            customLayout.setAltura(0);
+
+                        }
 
                     }
+
                 });
 
 
@@ -5921,7 +6259,7 @@ constraintLayout.layoutPara
                 producto += "\n " + "[ " + instrucciones + " ]";
             }
 
-            System.out.println("producto t "+i+" esta tachado "+pedido.getTachado());
+            System.out.println("producto t " + i + " esta tachado " + pedido.getTachado());
 
             ProductoTakeAway productoParaArray = new ProductoTakeAway(Integer.valueOf(cantidad), producto, 0);
             productoParaArray.setTachado(pedido.getTachado());
@@ -5933,12 +6271,43 @@ constraintLayout.layoutPara
     }
 
 
+    private void cambiarMargenTopRecyclerProductos(){
+
+        if(esMovil) {
+            ConstraintLayout layoutInfoCliente = findViewById(R.id.layoutInfoCliente);
+            layoutInfoCliente.post(new Runnable() {
+                @Override
+                public void run() {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) recyclerProductosI2.getLayoutParams();
+                    int margen = (int) (25*resources.getDisplayMetrics().density) + layoutInfoCliente.getHeight();
+                    System.out.println("altura layoutInfoCliente "+tvInstruccionesGenerales.getHeight());
+                    params.setMargins(0,margen,0,0);
+                    recyclerProductosI2.setLayoutParams(params);
+                }
+            });
+
+        }
+
+    }
+
+    private boolean esMovil;
+    private void verEsMovil(){
+        int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
+        if(dimen > 10){
+            esMovil = true;
+        }else{
+            esMovil = false;
+        }
+    }
+
     private void configurationChange(int newConf) {
         int margen = (int) resources.getDimension(R.dimen.margen15dp);
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
         ponerInsetsI2();
         estaEnPedido = false;
         adapterPedidos2.expandLessAll();
+
+        cambiarMargenTopRecyclerProductos();
 
         if (newConf == Configuration.ORIENTATION_LANDSCAPE) {
 
@@ -6137,8 +6506,10 @@ constraintLayout.layoutPara
 
 
                 cambiarAModoVerticalTablet();
-                if (adapterPedidos2.holder2 != null) {
-                    adapterPedidos2.holder2.cambiarFiltro(estadoActual);
+                AdapterTakeAway2.ViewHolder2 holder = adapterPedidos2.getHolder();
+
+                if (holder != null) {
+                    holder.cambiarFiltro(estadoActual);
                 }
 
 

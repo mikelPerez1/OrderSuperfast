@@ -26,7 +26,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
             app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
 
             <ScrollView
@@ -994,6 +994,16 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerProductosI2"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="85dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <LinearLayout
                             android:id="@+id/linearLayout9"
                             android:layout_width="0dp"
@@ -1005,9 +1015,10 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView58">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layoutInfoCliente"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.6">
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.15">
 
                                 <TextView
                                     android:id="@+id/tvNombreCliente"
@@ -1028,10 +1039,36 @@
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/text_size_medium_takeAway"
                                     android:textStyle="bold"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintEnd_toStartOf="@+id/constraintLayout61"
                                     app:layout_constraintStart_toStartOf="@+id/tvNombreCliente"
                                     app:layout_constraintTop_toBottomOf="@+id/tvNombreCliente" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/constraintLayout61"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.6"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <Button
+                                        android:id="@+id/botonTacharProductos"
+                                        android:layout_width="70dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:background="@drawable/background_semi_redondeado_negro"
+                                        android:padding="5dp"
+                                        android:text="@string/textoTachar"
+                                        android:textAllCaps="false"
+
+                                        android:textSize="10sp"
+                                        app:backgroundTint="@color/black"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintHorizontal_bias="0.0"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:tint="@color/white" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
 
                                 <view
                                     android:id="@+id/view26"
@@ -1045,31 +1082,13 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.6">
-
-                                <Button
-                                    android:id="@+id/botonTacharProductos"
-                                    android:layout_width="70dp"
-                                    android:layout_height="40dp"
-                                    android:background="@drawable/background_semi_redondeado_negro"
-                                    android:padding="5dp"
-                                    android:text="Tachar"
-                                    android:textSize="10sp"
-                                    app:backgroundTint="@color/black"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:tint="@color/white" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/linearInstrucciones"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.16">
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.15"
+                                android:background="@color/white"
+                                android:elevation="20dp"
+                                android:outlineProvider="none">
 
                                 <TextView
                                     android:id="@+id/textView60"
@@ -1086,13 +1105,16 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
                                     android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="4dp"
                                     android:text="TextView"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/text_size_medium_takeAway"
                                     android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="@+id/textView60"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView60" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView60"
+                                    app:layout_constraintVertical_bias="0.0" />
 
                                 <view
                                     android:id="@+id/view27"
@@ -1125,16 +1147,6 @@
 
                             android:textStyle="bold"
                             android:visibility="gone"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerProductosI2"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="85dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 

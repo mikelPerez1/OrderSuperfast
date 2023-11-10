@@ -3,15 +3,25 @@ package com.OrderSuperfast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +29,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -34,6 +46,7 @@ public class EscanearQR extends AppCompatActivity implements DevolucionCallback{
     private Button botonEscanearQr;
     private TextView datosqr,textZona,textUbicacion;
     private static final String urlPeticion = "";
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -49,7 +62,9 @@ public class EscanearQR extends AppCompatActivity implements DevolucionCallback{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_escanear_qr);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         init();
+        inicializarEscaner();
     }
 
     @Override
@@ -86,10 +101,50 @@ public class EscanearQR extends AppCompatActivity implements DevolucionCallback{
         ImageView imgBack = findViewById(R.id.imgBack);
         imgBack.setOnClickListener(v -> finish());
 
+        CardView cardEscanearQr = findViewById(R.id.cardEscanearQr);
+        cardEscanearQr.setOnClickListener(v->inicializarEscaner());
+
 
     }
 
+
+
     private void inicializarInsets(){
+        SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        System.out.println("ROTACION " + display.getRotation());
+        ConstraintLayout layoutNavi = findViewById(R.id.constraintNavigationPedidos);
+        LinearLayout constraintNav = findViewById(R.id.linearLayoutNaviPedidos);
+        int inset = prefInset.getInt("inset", 0);
+        View view;
+        System.out.println("inset actual "+inset);
+        if (inset > 0) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                view = findViewById(R.id.barraVertical);
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                marginParams.setMargins(0,inset,0,0);
+                view.setLayoutParams(marginParams);
+
+            } else {
+                System.out.println("ROTACION 2 entra");
+                view = findViewById(R.id.barraHorizontal);
+
+                if (display.getRotation() == Surface.ROTATION_90) {
+                    ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                    marginParams.setMarginStart(inset);
+                    view.setLayoutParams(marginParams);
+
+
+                } else {
+                    ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                    marginParams.setMarginEnd(inset);
+                    view.setLayoutParams(marginParams);
+
+                }
+
+            }
+        }
 
     }
 
@@ -110,7 +165,8 @@ public class EscanearQR extends AppCompatActivity implements DevolucionCallback{
     private final ActivityResultLauncher<ScanOptions> escaner = registerForActivityResult(new ScanContract(),
             result -> {
                 if(result.getContents() == null) {
-                    Toast.makeText(EscanearQR.this, "Cancelled", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(EscanearQR.this, "Cancelled", Toast.LENGTH_LONG).show();
+                   finish();
                 } else {
                     // El código QR fue escaneado exitosamente, result.getContents() contiene el valor del código QR.
                     String qrData = result.getContents();
@@ -124,6 +180,15 @@ public class EscanearQR extends AppCompatActivity implements DevolucionCallback{
                                 try {
                                     textZona.setText(resp.getString("zona"));
                                     textUbicacion.setText(resp.getString("ubicacion"));
+                                    /*
+                                    ConstraintLayout layoutDatosQr = findViewById(R.id.layoutDatosQr);
+                                    layoutDatosQr.setVisibility(View.VISIBLE);
+                                    TextView textEscaneaQR = findViewById(R.id.datosqr);
+                                    textEscaneaQR.setVisibility(View.GONE);
+
+                                     */
+
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

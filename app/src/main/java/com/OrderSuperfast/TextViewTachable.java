@@ -40,8 +40,9 @@ public class TextViewTachable extends androidx.appcompat.widget.AppCompatTextVie
         if (addStrike) {
             Layout layout = getLayout();
             for (int i = 0; i < layout.getLineCount(); i++) {
-                int baseline =layout.getLineTop(i) +(10+(layout.getLineBaseline(i)-layout.getLineTop(i) )/ 2);
-                System.out.println("lineas "+baseline);
+
+                int baseline =layout.getLineTop(i) +((int) ((layout.getLineBaseline(i)-layout.getLineTop(i))/ 1.45));
+                System.out.println("lineas "+(layout.getLineBaseline(i)-layout.getLineTop(i) ));
                 canvas.drawLine(layout.getLineLeft(i), baseline, layout.getLineRight(i), baseline, paint);
             }
         }

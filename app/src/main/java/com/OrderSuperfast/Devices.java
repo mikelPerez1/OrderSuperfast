@@ -84,7 +84,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
-
+import com.OrderSuperfast.Modelo.Adaptadores.DeviceAdapter2;
+import com.OrderSuperfast.Modelo.Adaptadores.DeviceAdapter;
 
 public class Devices extends AppCompatActivity {
 
@@ -179,6 +180,16 @@ public class Devices extends AppCompatActivity {
         }
 
         registerLauncher();
+
+        ConstraintLayout layoutEscanear = findViewById(R.id.layoutEscanear);
+        layoutEscanear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Devices.this, EscanearQR.class);
+                launcher.launch(i);
+                ocultarDesplegable();
+            }
+        });
 
         listaArrayZonas = ((Global) this.getApplication()).getListaZonas();
 

@@ -146,7 +146,7 @@
     <string name="mostrarProductosOcultados">Visualizar los productos escondidos</string>
     <string name="numero">Nº</string>
     <string name="pedidoYaReembolsado">El pedido ya ha sido completamente reembolsado</string>
-    <string name="tipoDevolucion">Selecciona el tipo de devolución:</string>
+    <string name="tipoDevolucion">O selecciona otro tipo de devolución:</string>
     <string name="textoRegistroPedidos">Registro de los pedidos</string>
     <string name="explicacionProductosOcultos">Si la opción de mostrar productos ocultos está desactivada, los productos que estén desactivados no se mostraran en los pedidos. Si un pedido solo contiene productos que has desactivado, este pedido no aparecerá en la lista.\n\nPor otro lado, si la opción de mostrar pedidos ocultos está activada, los productos que tengas desactivados se mostrarán al final de la lista y se destacarán con un color grisáceo para diferenciarlos del resto de los productos activados.</string>
     <string name="tituloProductosOcultos">Productos visibles en dispositivo</string>
@@ -182,6 +182,8 @@
     <string name="txtGuardar">Guardar</string>
     <string name="textCantidadMayor0">Por favor, inserte una cantidad mayor a 0</string>
     <string name="escanearQr">Escanear QR</string>
+    <string name="errorDevolucionMayor">Cantidad mayor a la permitida</string>
+    <string name="textoTachar">Tachar</string>
 
 
 </resources>

@@ -546,6 +546,7 @@
                                         android:rotation="90"
                                         android:scaleX="1"
                                         android:scaleY="1"
+                                        android:visibility="visible"
                                         app:layout_constraintBottom_toBottomOf="@+id/scrollFiltros"
                                         app:layout_constraintEnd_toEndOf="@+id/scrollFiltros"
                                         app:layout_constraintTop_toTopOf="@+id/scrollFiltros"
@@ -1226,7 +1227,8 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView58">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/linearNombre"
+
+                                android:id="@+id/layoutInfoCliente"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.5"
@@ -1246,7 +1248,7 @@
                                     android:id="@+id/tvNombre"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
+                                    android:layout_marginTop="2dp"
                                     android:layout_marginEnd="10dp"
                                     android:text="Telefono cliente"
                                     android:textColor="@color/black"
@@ -1281,11 +1283,14 @@
                                     android:id="@+id/botonTacharProductos"
                                     android:layout_width="wrap_content"
                                     android:layout_height="50dp"
+                                    android:layout_marginEnd="10dp"
                                     android:background="@drawable/background_semi_redondeado_negro"
                                     android:padding="5dp"
-                                    android:text="TACHAR"
+                                    android:textAllCaps="false"
+                                    android:text="@string/textoTachar"
                                     app:backgroundTint="@color/black"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="1.0"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:tint="@color/white" />
@@ -1298,6 +1303,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.16"
                                 android:background="@color/white"
+                                android:outlineProvider="none"
                                 android:elevation="20dp">
 
                                 <TextView
@@ -1313,15 +1319,18 @@
                                     android:id="@+id/tvInstruccionesGenerales"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
+                                    android:layout_marginTop="2dp"
                                     android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="2dp"
                                     android:text="TextView"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/text_size_medium_takeAway"
                                     android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="@+id/textView60"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView60" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView60"
+                                    app:layout_constraintVertical_bias="0.0" />
 
                                 <view
                                     android:id="@+id/view27"

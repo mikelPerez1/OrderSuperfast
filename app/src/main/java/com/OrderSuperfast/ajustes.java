@@ -28,7 +28,6 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +37,8 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.os.LocaleListCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterCategoria;
 
 import java.util.ArrayList;
 import java.util.List;

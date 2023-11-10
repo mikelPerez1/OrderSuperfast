@@ -15,6 +15,7 @@ public class ProductoPedido implements Serializable {
     private ArrayList<Opcion> listaOpciones;
     private boolean mostrarProductosOcultados;
     private boolean tachado = false;
+    private int idProductoPedido;
 
     public ProductoPedido(String pId,String pIdCarrito,String pNombre,String pPrecio,String pImpuesto,String pCantidad,String pInstrucciones,ArrayList<Opcion> pLista,boolean pMostrar){
         this.id=pId;
@@ -50,8 +51,11 @@ public class ProductoPedido implements Serializable {
 
     public boolean getTachado(){return this.tachado;}
 
+    public int getIdProductoPedido(){return this.idProductoPedido;}
 
     //setters
 
     public void setTachado(boolean bool){this.tachado=bool;}
+
+    public void setIdProductoPedido(int pId){this.idProductoPedido = pId;}
 }
