@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="com.OrderSuperfast.Lista">
+    tools:context="com.OrderSuperfast.Vista.Lista">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/interfaz2"
@@ -626,7 +626,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <com.OrderSuperfast.CustomSvSearch
+                            <com.OrderSuperfast.Modelo.Clases.CustomSvSearch
                                 android:id="@+id/svSearchi2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="50dp"
@@ -642,6 +642,17 @@
                             android:id="@+id/recyclerviewTakeAway2"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layoutContDispositivo" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerMesas"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
@@ -1938,7 +1949,7 @@
                         </LinearLayout>
                     </HorizontalScrollView>
 
-                    <com.OrderSuperfast.CustomSvSearch
+                    <com.OrderSuperfast.Modelo.Clases.CustomSvSearch
                         android:id="@+id/svSearch2"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -1966,7 +1977,7 @@
                         tools:visibility="visible">
 
 
-                    </com.OrderSuperfast.CustomSvSearch>
+                    </com.OrderSuperfast.Modelo.Clases.CustomSvSearch>
 
                     <ImageButton
                         android:id="@+id/productos2"
@@ -2019,7 +2030,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
-                    <com.OrderSuperfast.CustomSvSearch
+                    <com.OrderSuperfast.Modelo.Clases.CustomSvSearch
                         android:id="@+id/svSearch"
                         android:layout_width="@dimen/iconWidth"
                         android:layout_height="@dimen/iconWidth"
@@ -2041,7 +2052,7 @@
                         tools:ignore="MissingConstraints">
 
 
-                    </com.OrderSuperfast.CustomSvSearch>
+                    </com.OrderSuperfast.Modelo.Clases.CustomSvSearch>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"

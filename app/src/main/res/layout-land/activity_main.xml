@@ -377,7 +377,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/imageView27" />
 
-                        <com.OrderSuperfast.CustomEditText
+                        <com.OrderSuperfast.Modelo.Clases.CustomEditText
                             android:id="@+id/loginPassword"
                             android:layout_width="wrap_content"
                             android:layout_height="40sp"
@@ -392,7 +392,7 @@
                             app:layout_constraintStart_toEndOf="@+id/imageView27"
                             app:layout_constraintTop_toBottomOf="@+id/loginUsername" />
 
-                        <com.OrderSuperfast.CustomEditText
+                        <com.OrderSuperfast.Modelo.Clases.CustomEditText
                             android:id="@+id/loginUsername"
                             android:layout_width="wrap_content"
                             android:layout_height="40sp"

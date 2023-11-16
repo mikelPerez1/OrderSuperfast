@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.OrderSuperfast.TextViewTachable
+            <com.OrderSuperfast.Modelo.Clases.TextViewTachable
                 android:id="@+id/txtDevolucionProductosNombre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

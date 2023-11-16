@@ -28,10 +28,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.CustomSvSearch;
-import com.OrderSuperfast.ProductoPedido;
+import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
+import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.R;
-import com.OrderSuperfast.TakeAwayPedido;
+import com.OrderSuperfast.Modelo.Clases.TakeAwayPedido;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -28,9 +28,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.CustomSvSearch;
-import com.OrderSuperfast.ListElement;
-import com.OrderSuperfast.ProductoPedido;
+import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
+import com.OrderSuperfast.Modelo.Clases.ListElement;
+import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.R;
 
 import java.util.ArrayList;

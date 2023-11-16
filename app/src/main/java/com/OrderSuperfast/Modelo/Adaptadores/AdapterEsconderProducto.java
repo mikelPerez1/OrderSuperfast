@@ -16,10 +16,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.ElementoProducto;
-import com.OrderSuperfast.OpcionProducto;
-import com.OrderSuperfast.Producto;
-import com.OrderSuperfast.ProductoAbstracto;
+import com.OrderSuperfast.Modelo.Clases.ElementoProducto;
+import com.OrderSuperfast.Modelo.Clases.OpcionProducto;
+import com.OrderSuperfast.Modelo.Clases.Producto;
+import com.OrderSuperfast.Modelo.Clases.ProductoAbstracto;
 import com.OrderSuperfast.R;
 import com.google.android.flexbox.FlexboxLayout;
 import com.l4digital.fastscroll.FastScrollRecyclerView;

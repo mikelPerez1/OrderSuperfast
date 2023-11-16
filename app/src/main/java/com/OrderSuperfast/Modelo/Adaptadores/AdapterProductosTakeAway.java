@@ -14,12 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.ProductoTakeAway;
+import com.OrderSuperfast.Modelo.Clases.ProductoTakeAway;
 import com.OrderSuperfast.R;
-import com.OrderSuperfast.TextViewTachable;
+import com.OrderSuperfast.Modelo.Clases.TextViewTachable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +30,8 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     private final LayoutInflater mInflater;
     private final Context context;
     private String estadoPedido = "";
+    private boolean modoMesa = false;
 
-    private RecyclerView recycler;
     final AdapterProductosTakeAway.OnItemClickListener listener;
     int k = 0;
     private int textSize;
@@ -61,14 +60,16 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         this.tachadoHabilitado = pTachar;
     }
 
-    public AdapterProductosTakeAway(List<ProductoTakeAway> itemList, Activity context, RecyclerView pRecycler, OnItemClickListener listener) {
+    public void setModomesa(){this.modoMesa=true;}
+
+    public AdapterProductosTakeAway(List<ProductoTakeAway> itemList, Activity context, OnItemClickListener listener) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = itemList;
         this.listener = listener;
         this.Original = new ArrayList<>();
         this.filtrado = new ArrayList<>();
-        recycler = pRecycler;
+
         resources = context.getResources();
         setTextSize();
     }
@@ -113,7 +114,6 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recycler.getLayoutManager();
         holder.bindData(mData.get(position), position);
 
     }
@@ -140,7 +140,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
         void bindData(final ProductoTakeAway item, int position) {
 
-            cantidad.setText("x" + item.getCantidad());
+            cantidad.setText("x" + item.getCantidad()+" ");
             precio.setText(item.getPrecio() + "€");
             //productos.setText(item.getProducto());
 
@@ -160,8 +160,10 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                 layoutProducto.setBackgroundColor(Color.TRANSPARENT);
 
             }
+            System.out.println("producto tachado adapter "+modoMesa);
+            if (estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado)) || modoMesa) { // para que el tachon solo salga en pedidos aceptados
 
-            if (estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado))) { // para que el tachon solo salga en pedidos aceptados
+
                 if (item.getTachado()) {
                     productos.setStrike(true);
                     productos.setText(item.getProducto().split("\n")[0]);
@@ -260,10 +262,14 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
             tv.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
 
+
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tv.getLayoutParams();
+
             params.setMarginStart((int) (10 * resources.getDisplayMetrics().density));
             params.setMarginEnd((int) (15 * resources.getDisplayMetrics().density));
             tv.setLayoutParams(params);
+
+
 
             ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) tv.getLayoutParams();
             p.horizontalBias = 0.0f;
@@ -343,9 +349,12 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                 tv.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
 
                 params = (ViewGroup.MarginLayoutParams) tv.getLayoutParams();
+
                 params.setMarginStart((int) (10 * resources.getDisplayMetrics().density));
                 params.setMarginEnd((int) (15 * resources.getDisplayMetrics().density));
                 tv.setLayoutParams(params);
+
+
 
                 p = (ConstraintLayout.LayoutParams) tv.getLayoutParams();
                 p.horizontalBias = 0.0f;

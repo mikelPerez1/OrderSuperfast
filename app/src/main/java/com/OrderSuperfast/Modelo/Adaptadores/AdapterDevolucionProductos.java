@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.ProductoPedido;
+import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.R;
-import com.OrderSuperfast.TextViewTachable;
+import com.OrderSuperfast.Modelo.Clases.TextViewTachable;
 
 import java.util.ArrayList;
 import java.util.List;

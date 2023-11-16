@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/background_desvanecer.xml" value="0.305" />
+        <entry key="app/src/main/res/drawable/background_flecha_filtro.xml" value="0.306" />
+        <entry key="app/src/main/res/drawable/background_gris.xml" value="0.306" />
+        <entry key="app/src/main/res/drawable/background_gris_redondeado_con_borde.xml" value="0.3575" />
+        <entry key="app/src/main/res/drawable/background_pedido_mesa.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/background_redondo_izq.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/background_redondo_izq_gris.xml" value="0.3575" />
         <entry key="app/src/main/res/drawable/borde.xml" value="0.2735" />
@@ -12,16 +17,27 @@
         <entry key="app/src/main/res/drawable/linea_tachar.xml" value="0.276" />
         <entry key="app/src/main/res/drawable/triangulo.xml" value="0.2735" />
         <entry key="app/src/main/res/layout-land/activity_devices.xml" value="0.26079521162890124" />
+        <entry key="app/src/main/res/layout-land/activity_guardar_filtrar_productos.xml" value="0.2975630611372381" />
         <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.2975630611372381" />
         <entry key="app/src/main/res/layout-port/activity_escanear_qr.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-sw600dp-land/activity_guardar_filtrar_productos.xml" value="0.18125" />
         <entry key="app/src/main/res/layout-sw600dp/activity_lista.xml" value="0.25" />
         <entry key="app/src/main/res/layout-sw600dp/activity_take_away.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_devices.xml" value="0.21120136810602821" />
         <entry key="app/src/main/res/layout/activity_escanear_qr.xml" value="0.2975609756097561" />
+        <entry key="app/src/main/res/layout/activity_guardar_filtrar_productos.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_lista.xml" value="0.2580299785867238" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_take_away.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/layout_categoria_2.xml" value="0.23086789226165028" />
+        <entry key="app/src/main/res/layout/layout_categoria_ajustes.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/layout_categoria_vertical.xml" value="0.23086789226165028" />
+        <entry key="app/src/main/res/layout/layout_mesa.xml" value="0.29157759726378796" />
+        <entry key="app/src/main/res/layout/layout_mesa_vertical.xml" value="0.23001282599401454" />
+        <entry key="app/src/main/res/layout/layout_pedido_mesa.xml" value="0.28844926611359284" />
+        <entry key="app/src/main/res/layout/layout_top_lista.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/list_producto_devolver.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/pedido_take_away_2.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/popup_devolucion_dinero.xml" value="0.33" />
         <entry key="app/src/main/res/layout/popup_devolucion_productos.xml" value="0.20982142857142858" />
         <entry key="app/src/main/res/layout/popup_idiomas.xml" value="0.16171875" />

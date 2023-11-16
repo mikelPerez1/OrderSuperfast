@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="10dp"
-    tools:context="com.OrderSuperfast.Lista">
+    tools:context="com.OrderSuperfast.Vista.Lista">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/interfaz2"
@@ -29,7 +29,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
             app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
 
             <ScrollView
@@ -324,7 +324,8 @@
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tvNombreDispositivo"
-                                app:layout_constraintVertical_bias="1.0">
+                                app:layout_constraintVertical_bias="1.0"
+                                tools:visibility="gone">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="match_parent"
@@ -635,7 +636,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <com.OrderSuperfast.CustomSvSearch
+                            <com.OrderSuperfast.Modelo.Clases.CustomSvSearch
                                 android:id="@+id/svSearchi2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="50dp"
@@ -655,8 +656,20 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/layoutContDispositivo" />
+                            app:layout_constraintTop_toBottomOf="@id/layoutContDispositivo"
+                            tools:visibility="gone" />
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerMesas"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layoutContDispositivo"
+                            tools:visibility="visible" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -766,126 +779,198 @@
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout37"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.75">
+                            android:id="@+id/layoutTopModoMesas"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="gone"
+                            tools:visibility="visible">
 
-                            <ImageView
-                                android:id="@+id/imgCrossCancelado"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:rotation="0"
-                                android:visibility="invisible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.0"
-                                app:srcCompat="@drawable/estado_cancelado"
-                                app:tint="@color/colorcancelado" />
-
-                            <TextView
-                                android:id="@+id/tvFasePedido"
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1/3"
-                                android:textColor="@color/white"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/tvNombreMesaTop"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="TextView"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_big_takeAway"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <Button
+                                    android:id="@+id/botonTacharModoMesas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="50dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/background_semi_redondeado_negro"
+                                    android:padding="5dp"
+                                    android:text="@string/textoTachar"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/black"
+                                    app:backgroundTint="@color/white"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvNombreMesaTop"
+                                    app:tint="@color/black" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <Button
+                                android:id="@+id/botonLimpiarMesa"
+                                android:layout_width="180dp"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginBottom="20dp"
+
+                                android:background="@drawable/borde"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:text="Limpiar mesa"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_medium2_takeAway"
+                                android:textStyle="bold"
+                                app:backgroundTint="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.39" />
-
-                            <ImageView
-                                android:id="@+id/imgCirculo3"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:rotation="0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:srcCompat="@drawable/borde_circulo_sinfondo_izq"
-                                app:tint="@color/black"
-                                tools:layout_editor_absoluteY="16dp" />
-
-                            <ImageView
-                                android:id="@+id/imgCirculo1"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginStart="-10dp"
-                                android:rotation="0"
-                                android:scaleX="-1"
-
-                                app:layout_constraintBottom_toBottomOf="@+id/imgCirculo3"
-                                app:layout_constraintStart_toEndOf="@+id/imgCirculo3"
-                                app:layout_constraintTop_toTopOf="@+id/imgCirculo3"
-                                app:layout_constraintVertical_bias="0.0"
-                                app:srcCompat="@drawable/borde_circulo_sinfondo_izq"
-                                app:tint="@color/black" />
-
-                            <ImageView
-                                android:id="@+id/imgCirculo2"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginStart="1dp"
-                                android:layout_marginTop="-20dp"
-                                android:rotation="240"
-                                app:layout_constraintEnd_toEndOf="@+id/imgCirculo1"
-                                app:layout_constraintStart_toStartOf="@+id/imgCirculo3"
-                                app:layout_constraintTop_toBottomOf="@+id/imgCirculo3"
-                                app:srcCompat="@drawable/borde_circulo_sinfondo_izq"
-                                app:tint="@color/black" />
+                                app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/constraintLayout37"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:id="@+id/layoutTopModoPedidos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:visibility="gone">
 
-                            <TextView
-                                android:id="@+id/tvNumPedido"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constraintLayout37"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/pedido"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/text_size_big_takeAway"
+                                android:layout_marginStart="20dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.75">
 
-                            <TextView
-                                android:id="@+id/tvEstActual"
+                                <ImageView
+                                    android:id="@+id/imgCrossCancelado"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:rotation="0"
+                                    android:visibility="invisible"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.0"
+                                    app:srcCompat="@drawable/estado_cancelado"
+                                    app:tint="@color/colorcancelado" />
+
+                                <TextView
+                                    android:id="@+id/tvFasePedido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1/3"
+                                    android:textColor="@color/white"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.39" />
+
+                                <ImageView
+                                    android:id="@+id/imgCirculo3"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:rotation="0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:srcCompat="@drawable/borde_circulo_sinfondo_izq"
+                                    app:tint="@color/black"
+                                    tools:layout_editor_absoluteY="16dp" />
+
+                                <ImageView
+                                    android:id="@+id/imgCirculo1"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginStart="-10dp"
+                                    android:rotation="0"
+                                    android:scaleX="-1"
+
+                                    app:layout_constraintBottom_toBottomOf="@+id/imgCirculo3"
+                                    app:layout_constraintStart_toEndOf="@+id/imgCirculo3"
+                                    app:layout_constraintTop_toTopOf="@+id/imgCirculo3"
+                                    app:layout_constraintVertical_bias="0.0"
+                                    app:srcCompat="@drawable/borde_circulo_sinfondo_izq"
+                                    app:tint="@color/black" />
+
+                                <ImageView
+                                    android:id="@+id/imgCirculo2"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginStart="1dp"
+                                    android:layout_marginTop="-20dp"
+                                    android:rotation="240"
+                                    app:layout_constraintEnd_toEndOf="@+id/imgCirculo1"
+                                    app:layout_constraintStart_toStartOf="@+id/imgCirculo3"
+                                    app:layout_constraintTop_toBottomOf="@+id/imgCirculo3"
+                                    app:srcCompat="@drawable/borde_circulo_sinfondo_izq"
+                                    app:tint="@color/black" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="Pending"
-                                android:textColor="@color/blue2"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/constraintLayout37"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/tvNumPedido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/pedido"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_big_takeAway"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tvEstActual"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Pending"
+                                    android:textColor="@color/blue2"
+                                    android:textSize="@dimen/text_size_medium2_takeAway"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvNumPedido"
+                                    app:textAllCaps="true" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <Button
+                                android:id="@+id/botonSiguienteEstado"
+                                android:layout_width="180dp"
+                                android:layout_height="70dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@drawable/borde"
+                                android:text="Siguiente estado"
+                                android:textColor="@color/black"
+
                                 android:textSize="@dimen/text_size_medium2_takeAway"
                                 android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvNumPedido"
-                                app:textAllCaps="true" />
+                                app:backgroundTint="@color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <Button
-                            android:id="@+id/botonSiguienteEstado"
-                            android:layout_width="180dp"
-                            android:layout_height="70dp"
-                            android:layout_marginEnd="20dp"
-                            android:background="@drawable/borde"
-                            android:text="Siguiente estado"
-                            android:textColor="@color/black"
-
-                            android:textSize="@dimen/text_size_medium2_takeAway"
-                            android:textStyle="bold"
-                            app:backgroundTint="@color/white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -914,7 +999,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout38">
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout38"
+                        tools:visibility="gone">
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -1250,7 +1336,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
                                     android:layout_marginEnd="10dp"
-                                    android:text="Telefono cliente"
+                                    android:text="Nombre cliente"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/text_size_medium_takeAway"
                                     android:textStyle="bold"
@@ -1286,8 +1372,8 @@
                                     android:layout_marginEnd="10dp"
                                     android:background="@drawable/background_semi_redondeado_negro"
                                     android:padding="5dp"
-                                    android:textAllCaps="false"
                                     android:text="@string/textoTachar"
+                                    android:textAllCaps="false"
                                     app:backgroundTint="@color/black"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="1.0"
@@ -1303,8 +1389,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.16"
                                 android:background="@color/white"
-                                android:outlineProvider="none"
-                                android:elevation="20dp">
+                                android:elevation="20dp"
+                                android:outlineProvider="none">
 
                                 <TextView
                                     android:id="@+id/textView60"
@@ -1353,6 +1439,50 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </LinearLayout>
 
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutPedidosModoMesa"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout38"
+                        tools:visibility="visible">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutDesvanecerDer"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/background_desvanecer"
+                            android:elevation="20dp"
+                            android:rotation="180"
+                            android:visibility="invisible"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutDesvanecerIzq"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/background_desvanecer"
+                            android:elevation="20dp"
+                            android:visibility="invisible"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerPedidosModoMesa"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1981,7 +2111,7 @@
                         </LinearLayout>
                     </HorizontalScrollView>
 
-                    <com.OrderSuperfast.CustomSvSearch
+                    <com.OrderSuperfast.Modelo.Clases.CustomSvSearch
                         android:id="@+id/svSearch2"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -2009,7 +2139,7 @@
                         tools:visibility="visible">
 
 
-                    </com.OrderSuperfast.CustomSvSearch>
+                    </com.OrderSuperfast.Modelo.Clases.CustomSvSearch>
 
                     <ImageButton
                         android:id="@+id/productos2"
@@ -2064,7 +2194,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
-                    <com.OrderSuperfast.CustomSvSearch
+                    <com.OrderSuperfast.Modelo.Clases.CustomSvSearch
                         android:id="@+id/svSearch"
                         android:layout_width="@dimen/iconWidth"
                         android:layout_height="0dp"
@@ -2086,7 +2216,7 @@
                         tools:ignore="MissingConstraints">
 
 
-                    </com.OrderSuperfast.CustomSvSearch>
+                    </com.OrderSuperfast.Modelo.Clases.CustomSvSearch>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"

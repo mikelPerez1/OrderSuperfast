@@ -1,8 +1,6 @@
 package com.OrderSuperfast.Modelo.Adaptadores;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -10,15 +8,10 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.util.Log;
 import android.util.Pair;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.os.Handler;
 
@@ -29,10 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import com.OrderSuperfast.R;
-import com.OrderSuperfast.DispositivoZona;
+import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
 
 public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHolder> {
 

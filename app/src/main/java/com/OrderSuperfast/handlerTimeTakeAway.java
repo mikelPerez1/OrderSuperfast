@@ -2,6 +2,8 @@ package com.OrderSuperfast;
 
 import android.os.Handler;
 
+import com.OrderSuperfast.Modelo.Clases.TakeAwayPedido;
+
 public class handlerTimeTakeAway {
     private TakeAwayPedido takeAway;
     private Handler handler;

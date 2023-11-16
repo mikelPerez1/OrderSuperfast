@@ -25,11 +25,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ListElementPedido;
-import com.OrderSuperfast.Opcion;
-import com.OrderSuperfast.ProductoPedido;
-import com.OrderSuperfast.ProductoTakeAway;
+import com.OrderSuperfast.Modelo.Clases.Opcion;
+import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
+import com.OrderSuperfast.Modelo.Clases.ProductoTakeAway;
 import com.OrderSuperfast.R;
-import com.OrderSuperfast.TakeAwayPedido;
+import com.OrderSuperfast.Modelo.Clases.TakeAwayPedido;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -703,7 +703,7 @@ public class  AdapterTakeAwayPedido extends RecyclerView.Adapter<AdapterTakeAway
                 }
 
 
-                adapterProductos = new AdapterProductosTakeAway(arrayProductos, (Activity) context, recyclerProductos,new AdapterProductosTakeAway.OnItemClickListener() {
+                adapterProductos = new AdapterProductosTakeAway(arrayProductos, (Activity) context,new AdapterProductosTakeAway.OnItemClickListener() {
                     @Override
                     public void onItemClick(ProductoTakeAway item,int position) {
                         //is empty because the recyclerview is only used to contain the items and not interact with them

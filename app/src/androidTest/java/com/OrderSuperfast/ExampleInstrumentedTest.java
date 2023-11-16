@@ -4,9 +4,7 @@ import static androidx.test.espresso.Espresso.*;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -16,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import com.OrderSuperfast.MainActivity;
+import com.OrderSuperfast.Vista.MainActivity;
 
 /**
  * Instrumented test, which will execute on an Android device.

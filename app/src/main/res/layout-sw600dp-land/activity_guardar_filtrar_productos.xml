@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rootLayout"
     android:background="@color/black"
-    tools:context=".GuardarFiltrarProductos">
+    tools:context=".Vista.GuardarFiltrarProductos">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutInterfaz2"
@@ -524,6 +524,168 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutModoPedidos"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/layoutCategoriasAjustes"
+                    tools:visibility="visible">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutBackModo"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="-5dp"
+                        android:layout_marginEnd="-5dp"
+
+                        android:layout_marginBottom="-5dp"
+                        android:background="@drawable/background_gris_redondeado_con_borde"
+                        app:layout_constraintBottom_toBottomOf="@+id/layoutPestañaModo"
+                        app:layout_constraintEnd_toEndOf="@+id/layoutPestañaModo"
+                        app:layout_constraintStart_toStartOf="@+id/layoutPestañaModo"
+                        app:layout_constraintTop_toTopOf="@+id/layoutPestañaModo">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutBackAnimationModo"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/layoutPestañaModo"
+                        app:layout_constraintEnd_toEndOf="@id/layoutPestañaModo"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@id/layoutPestañaModo"
+                        app:layout_constraintTop_toTopOf="@+id/layoutPestañaModo">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/backAnimationModo"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@drawable/background_redondeado_negro"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintWidth_percent="0.51">
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/textTituloModo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="@string/txtRecepcionPedidos"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_big_takeAway"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.8" />
+
+                    <TextView
+                        android:id="@+id/textInfoModo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/txtExplicacionRecepcionPedidos"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_medium_takeAway"
+                        app:layout_constraintEnd_toEndOf="@+id/textTituloModo"
+                        app:layout_constraintStart_toStartOf="@+id/textTituloModo"
+                        app:layout_constraintTop_toBottomOf="@+id/textTituloModo" />
+
+
+                    <LinearLayout
+                        android:id="@+id/layoutPestañaModo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:background="@null"
+                        android:orientation="horizontal"
+                        android:padding="4dp"
+                        app:layout_constraintEnd_toEndOf="@+id/textTituloModo"
+                        app:layout_constraintStart_toStartOf="@+id/textTituloModo"
+                        app:layout_constraintTop_toBottomOf="@+id/textInfoModo"
+                        app:layout_constraintWidth_percent="0.6"
+                        tools:visibility="visible">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutPestañaPedidos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_redondeado_negro"
+
+                            >
+
+                            <TextView
+                                android:id="@+id/tvPestañaPedidos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="Pedidos"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_medium_takeAway"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:textAllCaps="true" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutPestañaMesas"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="2dp"
+
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tvPestañaMesas"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="Mesas"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_medium_takeAway"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:textAllCaps="true" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layoutVisualizacionProductos"
                     android:layout_width="0dp"
@@ -531,7 +693,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/layoutCategoriasAjustes"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout51"

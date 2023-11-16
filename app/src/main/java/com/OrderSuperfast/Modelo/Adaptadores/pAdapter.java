@@ -21,8 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.Producto;
-import com.OrderSuperfast.ProductoAbstracto;
+import com.OrderSuperfast.Modelo.Clases.Producto;
+import com.OrderSuperfast.Modelo.Clases.ProductoAbstracto;
 import com.OrderSuperfast.R;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
 import com.l4digital.fastscroll.FastScroller;

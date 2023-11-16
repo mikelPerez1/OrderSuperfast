@@ -426,7 +426,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/textView9">
 
-                                    <com.OrderSuperfast.CustomEditTextNumbers
+                                    <com.OrderSuperfast.Modelo.Clases.CustomEditTextNumbers
                                         android:id="@+id/customEditTextNumbers"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
