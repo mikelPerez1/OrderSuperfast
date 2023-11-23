@@ -25,6 +25,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.OrderSuperfast.ContextUtils;
+import com.OrderSuperfast.Controlador.ControladorLog;
 import com.OrderSuperfast.R;
 
 import java.io.BufferedReader;
@@ -41,18 +42,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class logActivity extends AppCompatActivity {
+public class logActivity extends VistaGeneral {
 
-    TextView logTexto;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private ImageView imgNavBack, imgRest1, imgRest2, imgBack, imgBack2;
     private int inset = 0;
-    private Display display;
-    private CardView cardLog;
     private Resources resources;
-    private ConstraintLayout barraVertical, barraHorizontal;
-    private ScrollView scroll;
     private LinearLayout linearLog;
     private int dimen25;
 
@@ -93,7 +88,6 @@ public class logActivity extends AppCompatActivity {
         getWindow().setWindowAnimations(0);
 
 
-        logTexto = findViewById(R.id.logText);
 
 
         sharedPreferences = getSharedPreferences("logPedido", Context.MODE_PRIVATE);
@@ -102,81 +96,70 @@ public class logActivity extends AppCompatActivity {
         SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
         inset = prefInset.getInt("inset", 0);
         System.out.println("insetLog " + inset);
-        display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         initialize();
         LinearLayout constraintNav = findViewById(R.id.linearLayoutNaviPedidos);
 
         if (inset > 0) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                //logTexto.setPadding(0, inset, 0, 0);
             } else {
                 if (display.getRotation() == Surface.ROTATION_90) {
                     //  constraintNav.setPadding(0, 0, 0, 0);
-                    //   logTexto.setPadding(inset, 0, 0, 0);
 
                 } else {
                     System.out.println("ROTACION " + display.getRotation());
 
                     // constraintNav.setPadding(0, 0, inset, 0);
-                    // logTexto.setPadding(0, 0, 0, 0);
 
                 }
 
             }
         }
 
-        removeOlderLines();
-        String logResult = readFromFile(this);
+        ControladorLog controlador = new ControladorLog(this);
+        controlador.getLines();
 
-        System.out.println("resultLog " + logResult);
-        //logTexto.setText(Html.fromHtml(logResult));
+       // removeOlderLines();
+        //String logResult = readFromFile(this);
+
+        //System.out.println("resultLog " + logResult);
 
 
-        scroll.post(new Runnable() {
-            @Override
-            public void run() {
-                int scrollHeight = scroll.getChildAt(0).getHeight();
 
-// Desplaza el ScrollView hasta abajo sin animación
-                scroll.scrollTo(0, scrollHeight);
-            }
-        });
 
     }
 
     private void initialize() {
         resources = getResources();
-        imgRest1 = findViewById(R.id.imgRest1);
-        imgRest2 = findViewById(R.id.imgRest2);
-        imgBack = findViewById(R.id.imgBack);
-        imgBack2 = findViewById(R.id.imgBack2);
-        cardLog = findViewById(R.id.cardLog);
-        barraVertical = findViewById(R.id.barraVertical);
-        barraHorizontal = findViewById(R.id.barraHorizontal);
-        scroll = findViewById(R.id.scroll);
+
+        ConstraintLayout barraVertical = findViewById(R.id.barraVertical);
+        ConstraintLayout barraHorizontal = findViewById(R.id.barraHorizontal);
+        ScrollView scroll = findViewById(R.id.scroll);
         linearLog = findViewById(R.id.linearLog);
         dimen25 = (int) resources.getDimension(R.dimen.dimen25);
 
-        changeOrientation();
-        setCardMargins();
+
+
+
+        changeOrientation(barraVertical,barraHorizontal);
         setListeners();
+
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                int scrollHeight = scroll.getChildAt(0).getHeight();
+                // Desplaza el ScrollView hasta abajo sin animación
+                scroll.scrollTo(0, scrollHeight);
+            }
+        });
     }
 
 
-    private void setCardMargins() {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) cardLog.getLayoutParams();
-        int dim = (int) resources.getDimension(R.dimen.margen15dp);
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // params.setMargins(0,dim,dim,dim);
-            // params.setMarginStart(0);
-        } else {
-            //  params.setMargins(0,dim,dim,0);
-            //  params.setMarginStart(dim);
-        }
-        // cardLog.setLayoutParams(params);
-    }
+
 
     private void setListeners() {
+        ImageView imgBack = findViewById(R.id.imgBack);
+        ImageView imgBack2 = findViewById(R.id.imgBack2);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +175,7 @@ public class logActivity extends AppCompatActivity {
         });
     }
 
-    private void changeOrientation() {
+    private void changeOrientation(ConstraintLayout barraVertical, ConstraintLayout barraHorizontal) {
         if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             barraVertical.setVisibility(View.VISIBLE);
             barraHorizontal.setVisibility(View.GONE);
@@ -372,7 +355,7 @@ public class logActivity extends AppCompatActivity {
     }
 
 
-    private void addTextview(String texto,boolean margen) {
+    public void addTextview(String texto,boolean margen) {
         TextView textView = new TextView(this);
         textView.setText(Html.fromHtml(texto));
         textView.setLayoutParams(new LinearLayout.LayoutParams(

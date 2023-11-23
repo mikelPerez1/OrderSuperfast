@@ -36,11 +36,16 @@
         <entry key="app/src/main/res/layout/layout_mesa_vertical.xml" value="0.23001282599401454" />
         <entry key="app/src/main/res/layout/layout_pedido_mesa.xml" value="0.28844926611359284" />
         <entry key="app/src/main/res/layout/layout_top_lista.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/layout_top_lista_mesas.xml" value="0.19495510902094912" />
+        <entry key="app/src/main/res/layout/layout_zona_vincular.xml" value="0.67" />
         <entry key="app/src/main/res/layout/list_producto_devolver.xml" value="0.75" />
         <entry key="app/src/main/res/layout/pedido_take_away_2.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/popup_cancelar.xml" value="0.5" />
         <entry key="app/src/main/res/layout/popup_devolucion_dinero.xml" value="0.33" />
         <entry key="app/src/main/res/layout/popup_devolucion_productos.xml" value="0.20982142857142858" />
         <entry key="app/src/main/res/layout/popup_idiomas.xml" value="0.16171875" />
+        <entry key="app/src/main/res/layout/popup_mas_informacion.xml" value="0.13980333475844378" />
+        <entry key="app/src/main/res/layout/popup_modificar_qr.xml" value="0.37777777777777777" />
         <entry key="app/src/main/res/layout/productos_take_away.xml" value="0.5" />
       </map>
     </option>

@@ -2,7 +2,6 @@ package com.OrderSuperfast.Vista;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -34,11 +33,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.Modelo.Clases.ElementoProducto;
+import com.OrderSuperfast.Controlador.Interfaces.CallbackBoolean;
+import com.OrderSuperfast.Controlador.ControladorConfiguracion;
+import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterCategoria;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterEsconderProducto;
 import com.OrderSuperfast.Modelo.Clases.Categoria;
-import com.OrderSuperfast.Modelo.Clases.OpcionProducto;
 import com.OrderSuperfast.Modelo.Clases.Producto;
 import com.OrderSuperfast.Modelo.Clases.ProductoAbstracto;
 import com.OrderSuperfast.R;
@@ -54,14 +54,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class GuardarFiltrarProductos extends AppCompatActivity {
+public class GuardarFiltrarProductos extends VistaGeneral {
     private static final String urlObtenerProductos = "https://app.ordersuperfast.es/android/v1/carta/productosYOpciones/obtener/";
     private static final String urlActualizarVisibles = "https://app.ordersuperfast.es/android/v1/carta/productosYOpciones/actualizarVisibles/";
 
@@ -89,6 +87,7 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
     private int FLAG_MOSTRAR_PRODUCTOS = 1, FLAG_ESCONDER_PRODUCTOS = 2, FLAG_ESCONDER_OPCIONES = 3, FLAG_MODO_ACTUAL, FLAG_MODO_PEDIDOS;
     private boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS;
 
+    private ControladorConfiguracion controlador;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -117,11 +116,16 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
         getWindow().setWindowAnimations(0);
 
         resources = getResources();
+
+        controlador = new ControladorConfiguracion(this);
+
         initialize();
         setListeners();
 
+
         try {
             inicializarHash();
+            controlador.inicializarHash(idRestaurante);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -241,9 +245,24 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
         botonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modificarListaProductosMostrar();
-                peticionCambiarVisibleProducto();
-                peticionCambiarEstadoRecepcionPedidos();
+                //modificarListaProductosMostrar();
+               // peticionCambiarVisibleProducto();
+                //peticionCambiarEstadoRecepcionPedidos();
+
+                controlador.modificarListaProductosMostrar(idRestaurante, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
+                controlador.peticionCambiarVisibleProducto(idRestaurante, idZona, idDisp, new CallbackBoolean() {
+                    @Override
+                    public void onPeticionExitosa(boolean bool) {
+                        getProductos();
+                    }
+
+                    @Override
+                    public void onPeticionFallida(String error) {
+                        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                controlador.peticionCambiarEstadoRecepcionPedidos(FLAG_PESTAÑA,recibiendoPedidos,idRestaurante,idZona);
                 guardarNuevoTemporizador();
                 guardarModoPedido();
                 Intent data = new Intent();
@@ -335,6 +354,24 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
     }
 
     private void getProductos() {
+        controlador.getProductos(new DevolucionCallback() {
+            @Override
+            public void onDevolucionExitosa(JSONObject resp) {
+                listaProductos = controlador.getListaProductos();
+                listaProductosEsconder = controlador.getListaProductosEsconder();
+                listaOpcionesEsconder = controlador.getListaOpcionesEsconder();
+                listaCompleta = controlador.getListaCompleta();
+                System.out.println("lista productos " + listaProductos.size());
+                setAdaptador();
+                setAdaptadorRecyclerVisualizacion();
+            }
+
+            @Override
+            public void onDevolucionFallida(String mensajeError) {
+
+            }
+        });
+        /*
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("id_restaurante", idRestaurante);
@@ -487,6 +524,8 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
 
+         */
+
     }
 
 
@@ -508,6 +547,9 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
                 }
                 System.out.println("switch clicked " + FLAG_ACTUAL + " " + FLAG_ESCONDER_OPCIONES);
 
+                controlador.añadirElementosACambiar(item, FLAG_ACTUAL);
+
+                /*
                 if (FLAG_ACTUAL == FLAG_ESCONDER_PRODUCTOS) {
                     try {
                         if (item.getClaseTipo().equals("producto")) {
@@ -535,7 +577,8 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                } else if (FLAG_ACTUAL == FLAG_ESCONDER_OPCIONES) {
+                }
+                else if (FLAG_ACTUAL == FLAG_ESCONDER_OPCIONES) {
                     try {
                         if (item.getClaseTipo().equals("elemento")) {
                             String id = item.getId();
@@ -563,6 +606,9 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
+                 */
+
             }
         });
 
@@ -1029,8 +1075,10 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
         listCategorias.add(cat2);
         Categoria cat3 = new Categoria(resources.getString(R.string.anticipacionPedidosProgramadosTexto), 2);
         listCategorias.add(cat3);
-        Categoria cat4 = new Categoria("Modo", 3); //TODO
-        listCategorias.add(cat4);
+        if (resources.getDimension(R.dimen.scrollHeight) < 10) {
+            Categoria cat4 = new Categoria("Modo", 3);
+            listCategorias.add(cat4);
+        }
 
         setRecyclerCategorias();
     }
@@ -1048,7 +1096,7 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
 
 
     private void setAdaptadorRecyclerVisualizacion() {
-        System.out.println("adapter size " + listaProductos.size());
+        System.out.println("adapter size " + listaProductos.size() + "falgActual " + FLAG_MODO_ACTUAL);
         adapterVisualizacionProductos = new AdapterEsconderProducto(listaProductos, this, new AdapterEsconderProducto.OnItemClickListener() {
             @Override
             public void onItemClick(ProductoAbstracto item) {
@@ -1066,6 +1114,9 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
                 }
                 System.out.println("switch clicked");
 
+                controlador.añadirElementosACambiar(item, FLAG_ACTUAL);
+
+                /*
                 if (FLAG_ACTUAL == FLAG_ESCONDER_PRODUCTOS) {
                     try {
                         if (item.getClaseTipo().equals("producto")) {
@@ -1093,7 +1144,8 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                } else if (FLAG_ACTUAL == FLAG_ESCONDER_OPCIONES) {
+                }
+                else if (FLAG_ACTUAL == FLAG_ESCONDER_OPCIONES) {
                     try {
                         if (item.getClaseTipo().equals("elemento")) {
                             String id = item.getId();
@@ -1120,6 +1172,8 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
+                 */
             }
         });
         recyclerviewVisualizacion.setBubbleVisible(true, false);
@@ -1199,6 +1253,7 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
     private void ponerInsetsI2() {
         SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
         inset = prefInset.getInt("inset", 0);
+
         if (inset > 0) {
             if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) barraHorizontal.getLayoutParams();
@@ -1221,9 +1276,7 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
 
         String tiempoString = editTextPedidosProgramados.getText().toString();
         int tiempo = Integer.valueOf(tiempoString);
-        SharedPreferences.Editor editor = sharedTakeAway.edit();
-        editor.putInt("tiempoPedidosProgramados", tiempo);
-        editor.apply();
+        controlador.guardarNuevoTemporizador(tiempo);
 
     }
 
@@ -1296,6 +1349,22 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
     private boolean recibiendoPedidos = false;
 
     private void peticionObtenerEstadoRecepcionPedidos() {
+        controlador.peticionObtenerEstadoRecepcionPedidos(idRestaurante, idZona, new CallbackBoolean() {
+            @Override
+            public void onPeticionExitosa(boolean bool) {
+                recibiendoPedidos = bool;
+                if (!bool) {
+                    cambiarInterfazRecibirPedidos();
+                }
+            }
+
+            @Override
+            public void onPeticionFallida(String error) {
+                Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*
         JSONObject jsonBody = new JSONObject();
         try {
 
@@ -1316,8 +1385,7 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
                     String clave = iterator.next();
                     if (clave.equals("recibiendo_pedidos")) {
                         try {
-                            recibiendoPedidos = response.getBoolean(clave);
-                            cambiarInterfazRecibirPedidos();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -1332,9 +1400,14 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
             }
         });
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+
+         */
     }
 
     private void peticionCambiarEstadoRecepcionPedidos() {
+        controlador.peticionCambiarEstadoRecepcionPedidos(FLAG_PESTAÑA, recibiendoPedidos, idRestaurante, idZona);
+
+        /*
         JSONObject jsonBody = new JSONObject();
         if ((FLAG_PESTAÑA == 1 && recibiendoPedidos) || (FLAG_PESTAÑA == 2 && !recibiendoPedidos)) {
             return;
@@ -1378,6 +1451,8 @@ public class GuardarFiltrarProductos extends AppCompatActivity {
             }
         });
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+
+         */
 
     }
 

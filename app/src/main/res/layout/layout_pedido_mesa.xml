@@ -22,7 +22,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
+            app:cardElevation="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:fillViewport="true"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout63"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout62">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/tvInstruccionesPedidoMesa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:text="Instruccion"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_medium_takeAway"
+                            tools:visibility="visible" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerProductosPedidoMesa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout67"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginStart="10dp"
@@ -57,11 +90,11 @@
                         android:layout_height="70dp"
                         android:layout_marginEnd="10dp"
                         android:padding="10dp"
-                        app:tint="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/reembolso_gordo" />
+                        app:srcCompat="@drawable/reembolso_gordo"
+                        app:tint="@color/black" />
 
                     <ImageView
                         android:id="@+id/imgPedidoCancelar"
@@ -76,34 +109,12 @@
                         app:tint="@color/black" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/tvInstruccionesPedidoMesa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:text="Instruccion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout62"
-                    tools:visibility="gone" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerProductosPedidoMesa"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout63"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvInstruccionesPedidoMesa" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout62"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/black"
+                    android:minHeight="110dp"
                     android:padding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -128,24 +139,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
                         android:text="TextView"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_medium2_takeAway"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView38"
+                        app:layout_constraintEnd_toStartOf="@+id/imgLlamar"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvNumPedidoMesa" />
 
                     <ImageView
-                        android:id="@+id/imageView38"
+                        android:id="@+id/imgLlamar"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:tint="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvNumPedidoMesa"
-                        app:layout_constraintVertical_bias="0.0"
                         app:srcCompat="@drawable/llamar" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

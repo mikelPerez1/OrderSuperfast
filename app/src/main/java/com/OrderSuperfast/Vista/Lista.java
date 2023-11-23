@@ -23,8 +23,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -39,6 +37,7 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -64,22 +63,20 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ClearService;
 import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.DevolucionCallback;
+import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Clases.Importe;
-import com.OrderSuperfast.ListElementPedido;
+import com.OrderSuperfast.Modelo.Clases.ListElementPedido;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevolucionProductos;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterList2;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterListaMesas;
@@ -93,6 +90,7 @@ import com.OrderSuperfast.Modelo.Clases.CustomEditTextNumbers;
 import com.OrderSuperfast.Modelo.Clases.CustomLayoutManager;
 import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
 import com.OrderSuperfast.Modelo.Clases.ListElement;
+import com.OrderSuperfast.Modelo.Clases.ListaProductoPedido;
 import com.OrderSuperfast.Modelo.Clases.Mesa;
 import com.OrderSuperfast.Modelo.Clases.Opcion;
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
@@ -111,12 +109,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -142,7 +135,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 
-public class Lista extends AppCompatActivity implements SearchView.OnQueryTextListener, DevolucionCallback {
+public class Lista extends VistaGeneral implements SearchView.OnQueryTextListener, DevolucionCallback {
     List<ListElement> elements = new ArrayList<>();
     List<Integer> newElements = new ArrayList<>();
     int t = 0;
@@ -153,7 +146,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
     private static final String urlDatosDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/getCantidad/";
     private static final String urlDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/setCantidad/";
     ListAdapter listAdapter;//
-    private Button activo, pendiente, listo, cancelado, todos, operativo, activo2, pendiente2, listo2, cancelado2, todos2, operativo2, cambiarAceptar, cambiarListo, cambiarCancelar, cambiarPendiente, botonDevolucion;//
+    private Button cambiarAceptar, cambiarListo, cambiarCancelar, cambiarPendiente, botonDevolucion;//
     ImageButton producto;//
     private final String tiempo = "";
     private String info = "";
@@ -453,7 +446,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             // imgAct.setLayoutParams(new LinearLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
 
-            todos.setWidth(2);
             ConstraintLayout constraintMenu = findViewById(R.id.constraintmenu);
             int a = lay.getWidth();
             System.out.println("ancho" + a);
@@ -640,7 +632,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         startService(new Intent(getBaseContext(), ClearService.class));
         setContentView(R.layout.activity_lista);
         resources = getResources();
-        verEsMovil();
         SharedPreferences sharedId = getSharedPreferences("ids", Context.MODE_PRIVATE);
         idDisp = sharedId.getString("idDisp", "");
         idZona = sharedId.getString("idZona", "");
@@ -831,7 +822,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                             listAdapter.cambiarEstadoPedido(pedidoActual.getPedido(), getString(R.string.botonPendiente), colorPedido("PENDIENTE"));
                             listAdapter.filtrar(estado, newText);
                             if (!paralocal) {
-                                ejecutar(getString(R.string.botonPendiente), "", activity);
+                                ejecutar(getString(R.string.botonPendiente), "", pedidoActual.getPedido(), activity);
                             } else {
                                 cambiarEnLocal(resources.getString(R.string.botonPendiente));
                             }
@@ -891,7 +882,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     listAdapter.cambiarEstadoPedido(pedidoActual.getPedido(), getString(R.string.botonAceptado), colorPedido("ACEPTADO"));
                     listAdapter.filtrar(estado, newText);
                     if (!paralocal) {
-                        ejecutar(getString(R.string.botonAceptado), "", activity);
+                        ejecutar(getString(R.string.botonAceptado), "", pedidoActual.getPedido(), activity);
                     } else {
                         cambiarEnLocal(resources.getString(R.string.botonAceptado));
                     }
@@ -918,7 +909,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     listAdapter.cambiarEstadoPedido(pedidoActual.getPedido(), getString(R.string.botonListo), "#0404cb");
                     listAdapter.filtrar(estado, newText);
                     if (!paralocal) {
-                        ejecutar(getString(R.string.botonListo), "", activity);
+                        ejecutar(getString(R.string.botonListo), "", pedidoActual.getPedido(), activity);
                     } else {
                         cambiarEnLocal(resources.getString(R.string.botonListo));
                     }
@@ -975,7 +966,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                             writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedidoActual.getPedido() + " - " + "Cancelled" + ": " + txt, activity);
 
-                            ejecutar(getString(R.string.botonCancelado), "", activity);
+                            ejecutar(getString(R.string.botonCancelado), "", pedidoActual.getPedido(), activity);
 
 
                             // editPedidosLocal.putStringSet("pedidosLocal", set);
@@ -2947,7 +2938,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
     ///
 
 
-
     private String cambiarEstadoIdioma(String estadoBase) {
         String estadoCambiado = "";
         if (estadoBase.equals("ACEPTADO")) {
@@ -4807,7 +4797,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                     callback.onDevolucionFallida(error.toString());
 
                     Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     callback.onDevolucionFallida(error.toString());
                 }
                 error.printStackTrace();
@@ -4818,8 +4808,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
     }
 
-    private void ejecutar(String est, String info, DevolucionCallback callback) {
-        //Toast.makeText(getApplicationContext(), est, Toast.LENGTH_SHORT).show();
+    private void ejecutar(String est, String info, int numPedido, DevolucionCallback callback) {
         String est2 = getState(est);
         ListElement element = pedidoActual;
         System.out.println("entra en ejecutar");
@@ -4837,7 +4826,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             System.out.println("entra en ejecutar no cancelado " + est2);
             // if ((est2.equals("ACEPTADO") && !tiempo.equals("")
             if (est2.equals("ACEPTADO") || est2.equals("PENDIENTE") || est2.equals("LISTO") || est2.equals("CANCELADO")) {
-                int Npedido = pedidoActual.getPedido();
+                int Npedido = numPedido;
                 //     mal=false;
                 String idrestaurant = ((Global) this.getApplication()).getIdRest();
                 String url = urlInsertar;
@@ -4956,7 +4945,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                         } else if (error.toString().toLowerCase().contains("noconnectionerror")) {
                             Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
 
                         }
                         error.printStackTrace();
@@ -5261,6 +5250,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         String url = URL; /// luego volver a cambiar el 14 por idDisp
         Log.d("url", url);
         Log.d("textChange", url);
+        ArrayList<Mesa> arrayMesas = new ArrayList<>();
 
 
         if (!idZona.equals("") && !idDisp.equals("")) {
@@ -5606,7 +5596,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                                 if (est.equals("ACEPTADO")) {
                                                     ListElement elemento = new ListElement("#ED40B616", num, mesa, resources.getString(R.string.botonAceptado), false, resultdate, instruccionesGenerales, client, importe, listaP, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
                                                     elements.add(elemento);
-                                                    addMesa(elemento);
                                                 } else if (est.equals("LISTO")) {
 
                                                     elements.add(new ListElement("#0404cb", num, mesa, resources.getString(R.string.botonListo), false, resultdate, instruccionesGenerales, client, importe, listaP, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS));
@@ -5636,7 +5625,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                                             newElements.add(num);
                                                         }
 
-                                                        System.out.println("elements size es " + elements.size() + " onResume");
 
                                                         SharedPreferences sharedPreferences1 = getPreferences(Context.MODE_PRIVATE);
                                                         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
@@ -5646,8 +5634,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                                                         ListElement elemento = new ListElement("#000000", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
                                                         elements.add(elemento);
-                                                        addMesa(elemento);
-                                                        System.out.println("elements size es " + elements.size());
 
                                                         listaPedidosParpadeo.add(String.valueOf(num));
                                                         hayNuevosPedidos = true;
@@ -5669,14 +5655,12 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                                         if (esta) {
                                                             elemento = new ListElement("#FFFFFF", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
                                                             elements.add(new ListElement("#FFFFFF", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS));
-                                                            addMesa(elemento);
 
                                                             listaPedidosParpadeo.add(String.valueOf(num));
                                                         } else {
                                                             System.out.println("entra en el else");
                                                             elemento = new ListElement("#F3E62525", num, mesa, resources.getString(R.string.botonPendiente), false, resultdate, instruccionesGenerales, client, importe, listaP, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
                                                             elements.add(elemento);
-                                                            addMesa(elemento);
                                                         }
                                                     }
                                                 }
@@ -5734,8 +5718,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                 }
 
 
-                                System.out.println("elements size es " + elements.size());
-
                                 if (updateReconect) {
                                     int num2 = Integer.valueOf(elements.get(elements.size() - 1).getPedido());
                                     System.out.println("websocket reconnect list sizes " + elementsSize + " " + num2);
@@ -5758,7 +5740,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                     }
                                     updateReconect = false;
                                 }
-                                System.out.println("elements size es " + elements.size() + primerPeticionGetPedidos);
 
                                 if (primerPeticionGetPedidos) {
                                     if (modo == 1) {
@@ -5768,14 +5749,12 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                                     }
                                     setElementsInRecyclerview();
                                 }
-                                System.out.println("elements size es " + elements.size() + primerPeticionGetPedidos);
 
                                 primerPeticionGetPedidos = false;
 
 
                                 // setElementsInRecyclerview();
                                 // listAdapter.notifyDataSetChanged();
-                                System.out.println("elements size es " + elements.size());
                                 //listAdapter.filtrar(estado, newText);
 
                                 System.out.println("elementss " + elements.size());
@@ -5792,26 +5771,17 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                                     }
                                 }
+                                System.out.println("listaMesas " + listaMesas.size());
+
+                                listaPedidosAListaMesas(elements, listaMesas);
                                 adapterMesas.copiarLista();
                                 adapterPedidos2.notifyDataSetChanged();
-                                adapterMesas.notifyDataSetChanged();
                                 adapterMesas.reorganizar();
-                                if (mesaActual != null ) {
-                                    try {
-                                        int pos = adapterMesas.getPositionOfItem(mesaActual.getNombre());
-                                        if(pos != -1) {
-                                            recyclerMesas.getChildAt(pos).callOnClick();
-                                        }
-                                    } catch (NullPointerException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                System.out.println("listaMesas " + listaMesas.size());
-                                //adapterPedidos2.cambiarestado(estado);
+
+                                setObserverActualizarVistaPedidos();
+
                                 adapterPedidos2.filtrarPorTexto(newText);
 
-
-                                System.out.println("elements size es " + elements.size());
 
                                 hayNuevosPedidos = false;
 
@@ -5846,6 +5816,51 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         }
     }
 
+    private void listaPedidosAListaMesas(List<ListElement> pedidos, ArrayList<Mesa> mesas) {
+        for (int i = 1; i < pedidos.size(); i++) {
+            ListElement pedido = pedidos.get(i);
+            if (pedido.getStatus().equals(resources.getString(R.string.botonAceptado)) || pedido.getStatus().equals(resources.getString(R.string.botonPendiente))) {
+                addMesa(pedido);
+            }
+
+        }
+
+        for (int i = 0; i < listaMesas.size(); i++) {
+            System.out.println("mesas añadidas " + listaMesas.get(i).getNombre());
+        }
+    }
+
+
+    private void setObserverActualizarVistaPedidos() {
+        // observador que sirve para que una vez se reorganicen el orden de las mesas, se llame a la mesa en la que estabas
+
+        ViewTreeObserver observer = recyclerMesas.getViewTreeObserver();
+        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+
+                if (mesaActual != null) {
+                    try {
+                        System.out.println("nombre mesa actual = " + mesaActual.getNombre());
+
+                        int pos = adapterMesas.getPositionOfItem(mesaActual.getNombre());
+                        System.out.println("posicion mesa actual = " + pos);
+                        if (pos != -1) {
+                            clickarMesa(mesaActual);
+                        }
+                    } catch (NullPointerException e) {
+                        System.out.println("error null " + e.toString());
+                        e.printStackTrace();
+                    }
+                }
+                recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                return true;
+            }
+        });
+
+
+    }
+
 
     private void addMesa(ListElement elemento) {
         String ubi = elemento.getMesa();
@@ -5871,6 +5886,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         }
 
         if (!encontrada) {
+            System.out.println("nueva mesa " + ubi);
             Mesa mesa = new Mesa(ubi);
             mesa.addElement(elemento);
             listaMesas.add(mesa);
@@ -5878,25 +5894,20 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
     }
 
     private boolean estaYaEnLista(int numPedido, String estadoActual) {
-        System.out.println("entra en ya esta en lista " + numPedido + " " + estadoActual + " " + elements.size());
         boolean esta = false;
         int indiceFinal = 0;
         for (int i = 0; i < elements.size(); i++) {
             ListElement element = elements.get(i);
-            System.out.println("elemento " + element.getPedido() + " " + numPedido);
             if (element.getPedido() == numPedido) {
                 String est = cambiarEstadoIdiomaABase(element.getStatus());
                 if (est.equals(estadoActual)) {
                     return true;
                 } else {
-                    System.out.println("esta en elements y borrar");
-
                     elements.remove(i);
                     return false;
                 }
             }
         }
-        System.out.println("no esta en elements " + numPedido + " " + estadoActual);
 
 
         return false;
@@ -6077,12 +6088,15 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
     private void cambiarModo() {
         modo = sharedTakeAway.getInt("FLAG_MODO_PEDIDOS", 1);
+        if (getEsMovil()) {
+            modo = 1;
+        }
         constraintInfoPedido.setVisibility(View.GONE);
-        if(pedidoActual!=null) {
+        if (pedidoActual != null) {
             pedidoActual.setActual(false);
         }
         pedidoActual = null;
-        if(mesaActual!=null) {
+        if (mesaActual != null) {
             mesaActual.setSeleccionada(false);
         }
         mesaActual = null;
@@ -6094,7 +6108,9 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             recyclerMesas.setVisibility(View.GONE);
             recyclerPedidosI2.setVisibility(View.VISIBLE);
             layoutscrollFiltros.setVisibility(View.VISIBLE);
-            layoutContDispositivo.setMinHeight((int) (140 * resources.getDisplayMetrics().density));
+            if (!getEsMovil()) {
+                layoutContDispositivo.setMinHeight((int) (140 * resources.getDisplayMetrics().density));
+            }
             layoutTopModoMesas.setVisibility(View.GONE);
             layoutTopModoPedidos.setVisibility(View.VISIBLE);
             layoutPedidosModoMesa.setVisibility(View.GONE);
@@ -6117,6 +6133,17 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         }
     }
 
+    private void quitarMesa(){
+        for(int i = 0; i < listaMesas.size();i++){
+            Mesa m = listaMesas.get(i);
+            if(m.getNombre().equals(mesaActual.getNombre())){
+                listaMesas.remove(i);
+            }
+        }
+        constraintInfoPedido.setVisibility(View.GONE);
+
+    }
+
     private void setRecyclerPedidosMesa() {
 
         recyclerPedidosMesa.setHasFixedSize(true);
@@ -6137,26 +6164,29 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
             @Override
             public void cancelar(ListElement item, int position) {
+                pedidoActual = item;
                 crearDialogCancelar(item, new DevolucionCallback() {
                     @Override
                     public void onDevolucionExitosa(JSONObject resp) {
                         for (int i = 0; i < listaMesas.size(); i++) {
                             Mesa m = listaMesas.get(i);
                             boolean quitado = m.removeElementNumPedido(item.getPedido());
-                            System.out.println("elemento quitado "+quitado +" de la mesa "+m.getNombre());
                         }
                         listaPedidosMesa.remove(position);
-
                         adapterPedidosMesa.notifyDataSetChanged();
                         adapterMesas.notifyDataSetChanged();
 
+                        if(listaPedidosMesa.size()<=0){
+                            quitarMesa();
+
+                        }
 
                     }
 
                     @Override
                     public void onDevolucionFallida(String mensajeError) {
                         //mostrar mensaje de error
-                        Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, mensajeError, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -6262,6 +6292,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
     private void setRecyclerMesas() {
 
+        listaMesas.add(new Mesa(nombreDisp)); // objeto que sirve para la parte del search en la version vertical de tablet
         recyclerMesas.setHasFixedSize(true);
         recyclerMesas.setLayoutManager(new LinearLayoutManager(this));
         adapterMesas = new AdapterListaMesas(listaMesas, this, new AdapterListaMesas.OnItemClickListener() {
@@ -6271,40 +6302,58 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                 //recyclerPedidosMesa.scrollToPosition(0);
 
                 quitarElementosNuevos(item);
-
+                System.out.println("clickado 1");
+                recyclerPedidosMesa.scrollToPosition(0);
                 item.quitarPrimeraVez();
                 posMesaClickada = position;
-                pedidoActual = item.getElement(0);
-                mesaActual = item;
-                listaPedidosMesa.clear();
-                listaPedidosMesa.addAll(item.getLista());
-                System.out.println("lista pedidos mesa size " + listaPedidosMesa.size());
-                adapterPedidosMesa.notifyDataSetChanged();
-                tvNombreMesaTop.setText(item.getNombre());
-
-                quitarMesasSeleccionadas();
-                item.setSeleccionada(true);
-                mostrarElementosMesa();
-                ArrayList<ProductoTakeAway> lista = getProductosMesa(item);
-                listaProductosPedido.clear();
-                listaProductosPedido.addAll(lista);
-                adapterProductos2.notifyDataSetChanged();
-
-                adapterMesas.notifyDataSetChanged();
+                clickarMesa(item);
 
             }
+
+            @Override
+            public void onSearchClick() {
+                System.out.println("onSearchClick adapterMesas");
+                quitarMesasSeleccionadas();
+                mesaActual = null;
+                pedidoActual = null;
+                adapterMesas.notifyDataSetChanged();
+            }
         });
+
+
         recyclerMesas.setAdapter(adapterMesas);
         adapterMesas.notifyDataSetChanged();
 
         setHandlerParpadeoMesas();
     }
 
-    private void quitarElementosNuevos(Mesa mesa){
-        for(int i = 0; i < mesa.listaSize();i++){
+
+    private void clickarMesa(Mesa item) {
+
+        pedidoActual = item.getElement(0);
+        mesaActual = item;
+        listaPedidosMesa.clear();
+        listaPedidosMesa.addAll(item.getLista());
+        System.out.println("lista pedidos mesa size " + listaPedidosMesa.size());
+        adapterPedidosMesa.notifyDataSetChanged();
+        tvNombreMesaTop.setText(item.getNombre());
+
+        quitarMesasSeleccionadas();
+        item.setSeleccionada(true);
+        mostrarElementosMesa();
+        ArrayList<ProductoTakeAway> lista = getProductosMesa(item);
+        listaProductosPedido.clear();
+        listaProductosPedido.addAll(lista);
+        adapterProductos2.notifyDataSetChanged();
+
+        adapterMesas.notifyDataSetChanged();
+    }
+
+    private void quitarElementosNuevos(Mesa mesa) {
+        for (int i = 0; i < mesa.listaSize(); i++) {
             ListElement elemento = mesa.getElement(i);
-            if(newElements.contains(elemento.getPedido())){
-                System.out.println("el pedido "+elemento.getPedido()+" es nuevo");
+            if (newElements.contains(elemento.getPedido())) {
+                System.out.println("el pedido " + elemento.getPedido() + " es nuevo");
                 boolean b = newElements.remove((Object) elemento.getPedido());
             }
         }
@@ -6368,8 +6417,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             Glide.with(this)
                     .load(img)
                     .into(imgRest2);
-
-
         } else {
             CardView cardlogo = findViewById(R.id.cardLogo);
             cardlogo.setVisibility(View.GONE);
@@ -6501,7 +6548,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         botonSiguienteEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ejecutar(estadoSiguiente(pedidoActual.getStatus()), "", activity);
+                ejecutar(estadoSiguiente(pedidoActual.getStatus()), "", pedidoActual.getPedido(), activity);
                 //cambiarPedidoAlSiguienteEstado();
 
 
@@ -6778,6 +6825,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             if (i < mesaActual.listaSize() - 1) {
                 peticionLimpieza(pedido, new DevolucionCallback() {
                     private int intentos = 3;
+
                     @Override
                     public void onDevolucionExitosa(JSONObject resp) {
 
@@ -6785,12 +6833,12 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onDevolucionFallida(String mensajeError) {
-                        Toast.makeText(activity, "numero de intentos "+intentos, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "numero de intentos " + intentos, Toast.LENGTH_SHORT).show();
 
                         //mirar por que no se llama a la peticionLimpieza al entrar en un fallo de la petición.
                         intentos--;
-                        if(intentos > 0){
-                            peticionLimpieza(pedido,this);
+                        if (intentos > 0) {
+                            peticionLimpieza(pedido, this);
                         }
 
 
@@ -7215,11 +7263,14 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                         imgFlechaIzq.setVisibility(View.GONE);
                         layoutDegradadoBlancoIzq.setVisibility(View.GONE);
+
+
                     } else {
 
                         imgFlechaIzq.setVisibility(View.VISIBLE);
                         layoutDegradadoBlancoIzq.setVisibility(View.VISIBLE);
                         System.out.println("filtro posicion flecha izq visible" + posicionFiltro);
+
 
                     }
 
@@ -7374,7 +7425,11 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             public void onClick(View v) {
                 layoutscrollFiltros.setVisibility(View.INVISIBLE);
 
+                mesaActual = null;
                 pedidoActual = null;
+                quitarMesasSeleccionadas();
+                adapterMesas.notifyDataSetChanged();
+
                 constraintInfoPedido.setVisibility(View.GONE);
                 adapterPedidos2.expandLessAll();
 
@@ -7403,9 +7458,9 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         search.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                if(modo == 1) {
+                if (modo == 1) {
                     layoutscrollFiltros.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     layoutscrollFiltros.setVisibility(View.GONE);
 
                 }
@@ -7499,7 +7554,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             adapterPedidos2.filtrarPorTexto(newText);
 
 
-
             if (pedidoActual != null && !adapterPedidos2.buscarPedido(pedidoActual.getPedido())) {
                 pedidoActual = null;
                 constraintInfoPedido.setVisibility(View.GONE);
@@ -7507,7 +7561,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             }
 
         }
-        if(adapterMesas != null){
+        if (adapterMesas != null) {
             adapterMesas.filtrarPorTexto(newText);
         }
         return false;
@@ -7515,7 +7569,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
 
     private void retractarPedido() {
-        ejecutar("PENDIENTE", "", activity);
+        ejecutar("PENDIENTE", "", pedidoActual.getPedido(), activity);
 
 
     }
@@ -8060,7 +8114,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         }
 
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || dimen < 10) {
+        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || !getEsMovil()) {
             constraintInfoPedido.setVisibility(View.VISIBLE);
         } else {
             constraintInfoPedido.setVisibility(View.VISIBLE);
@@ -8080,7 +8134,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
                 System.out.println("altura instrucciones generales " + (tvInstruccionesGenerales.getHeight()) + " " + botonTacharProductos.getHeight());
 
                 if (tvInstruccionesGenerales.getHeight() > limiteMin) {
-                    if (dimen > 10) {
+                    if (getEsMovil()) {
 
                         customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 10 * resources.getDisplayMetrics().density);
 
@@ -8119,7 +8173,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                         System.out.println("altura instrucciones generales " + (tvInstruccionesGenerales.getHeight() * resources.getDisplayMetrics().density) + " " + 45 * resources.getDisplayMetrics().density);
                         if (tvInstruccionesGenerales.getHeight() > limiteMin) {
-                            if (dimen > 10) {
+                            if (getEsMovil()) {
 
                                 customLayout.setAltura(tvInstruccionesGenerales.getHeight() + 20 * resources.getDisplayMetrics().density);
 
@@ -8160,7 +8214,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
     private void cambiarMargenTopRecyclerProductos() {
 
-        if (esMovil) {
+        if (getEsMovil()) {
             ConstraintLayout layoutInfoCliente = findViewById(R.id.layoutInfoCliente);
             layoutInfoCliente.post(new Runnable() {
                 @Override
@@ -8177,16 +8231,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
     }
 
-    private boolean esMovil;
-
-    private void verEsMovil() {
-        int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
-        if (dimen > 10) {
-            esMovil = true;
-        } else {
-            esMovil = false;
-        }
-    }
 
     private void modificarCirculo(String estado) {
         ponerCirculoA0();
@@ -8381,7 +8425,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             //  layoutContDispositivo.setLayoutParams(paramCont);
 
 
-            if (dimen < 10) {
+            if (!getEsMovil()) {
                 nombreDispositivo.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
 
                 ConstraintSet set = new ConstraintSet();
@@ -8474,7 +8518,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             cardViewListaContenido.setLayoutParams(params);
 
 
-            if (dimen < 10) {
+            if (!getEsMovil()) {
                 System.out.println("confChange mirar filtro");
                 nombreDispositivo.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
                 ConstraintSet set = new ConstraintSet();
@@ -8579,7 +8623,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
         modScroll();
         recyclerPedidosI2.setAdapter(adapterPedidos2);
         adapterPedidos2.cambiarestado(estado);
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && dimen < 10) {
+        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && !getEsMovil()) {
             // adapterPedidos2.cambiarEstadoFiltro();
             AdapterList2.ViewHolder2 holder = adapterPedidos2.getHolder();
 
@@ -8588,6 +8632,7 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             }
         }
 
+        recyclerMesas.setAdapter(adapterMesas);
         if (pedidoActual != null) {
             int pos = adapterPedidos2.posicionPedido(pedidoActual.getPedido());
             System.out.println("no es nulo " + pos);
@@ -8852,7 +8897,8 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
 
                     writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedido.getPedido() + " - " + "Cancelled" + ": " + txt, activity);
 
-                    ejecutar(getString(R.string.botonCancelado), info, callback);
+                    System.out.println("info de cancelar " + info);
+                    ejecutar(getString(R.string.botonCancelado), info, pedidoActual.getPedido(), callback);
 
 
                     // editPedidosLocal.putStringSet("pedidosLocal", set);
@@ -9008,11 +9054,6 @@ public class Lista extends AppCompatActivity implements SearchView.OnQueryTextLi
             }
         });
         System.out.println("elementss " + elements.size());
-    }
-
-
-    private void modoTacharProductos() {
-
     }
 
     private void registerLauncher() {

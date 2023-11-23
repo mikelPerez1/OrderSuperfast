@@ -1,15 +1,13 @@
 package com.OrderSuperfast.Modelo.Clases;
 
-import com.OrderSuperfast.Vista.ListaProductoPedido;
-
 import java.io.Serializable;
 import java.util.Date;
 
 public class ListElement implements Serializable {
-    public String color;
-    public int pedido;
-    public String mesa;
-    public String status;
+    private String color;
+    private int pedido;
+    private String mesa;
+    private String status;
     private boolean primeraVez;
     private boolean actual;
     private final Date fecha;

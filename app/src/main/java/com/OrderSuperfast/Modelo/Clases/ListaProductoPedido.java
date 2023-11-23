@@ -1,4 +1,4 @@
-package com.OrderSuperfast.Vista;
+package com.OrderSuperfast.Modelo.Clases;
 
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ListaProductoPedido implements Serializable {
     private ArrayList<ProductoPedido> lista;
 
-    ListaProductoPedido(ArrayList<ProductoPedido> l){
+    public ListaProductoPedido(ArrayList<ProductoPedido> l){
         this.lista=l;
     }
 

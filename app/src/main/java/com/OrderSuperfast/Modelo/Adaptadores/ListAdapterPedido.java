@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.ListElementPedido;
+import com.OrderSuperfast.Modelo.Clases.ListElementPedido;
 import com.OrderSuperfast.R;
 
 import java.util.List;

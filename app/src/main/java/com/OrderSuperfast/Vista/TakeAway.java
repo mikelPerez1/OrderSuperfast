@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -74,7 +73,7 @@ import android.widget.Toast;
 
 
 import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.DevolucionCallback;
+import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Clases.Importe;
 import com.OrderSuperfast.Modelo.Clases.ListTakeAway;
 import com.OrderSuperfast.Map;
@@ -138,7 +137,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener, DevolucionCallback {
+public class TakeAway extends VistaGeneral implements OnMapReadyCallback, SearchView.OnQueryTextListener, DevolucionCallback {
 
     private static final String urlDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/setCantidad/";
     private static final String urlDatosDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/getCantidad/";
@@ -621,9 +620,7 @@ public class TakeAway extends AppCompatActivity implements OnMapReadyCallback, S
         ajustesTakeAway.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TakeAway.this, AjustesTakeAway.class);
-                i.putExtra("takeAwayActivado", takeAwayActivado);
-                launcher.launch(i);
+               
             }
         });
 

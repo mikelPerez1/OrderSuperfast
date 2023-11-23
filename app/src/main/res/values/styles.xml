@@ -61,6 +61,14 @@
         <item name="colorControlNormal">@color/black</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+
+
+
+        <!-- No backgrounds, titles or window float -->
+
+    </style>
+
 
 
 

@@ -1,5 +1,6 @@
 package com.OrderSuperfast.Modelo.Clases;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -9,7 +10,7 @@ import com.OrderSuperfast.Vista.MainActivity;
 
 public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText {
 
-    private MainActivity context1;
+    private Activity context1;
 
     public CustomEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -18,7 +19,7 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
     }
 
 
-    public void setMainActivity(MainActivity a) {
+    public void setMainActivity(Activity a) {
         this.context1 = a;
     }
 
@@ -38,7 +39,9 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
 
             );
 
-            context1.desplazarPagina();
+            if(context1 instanceof MainActivity){
+                ((MainActivity) context1).desplazarPagina();
+            }
             this.clearFocus();
 
         }

@@ -8,7 +8,7 @@
     tools:context=".Vista.EscanearQR">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/barraHorizontal"
+        android:id="@+id/barra"
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:elevation="19dp"
@@ -111,12 +111,29 @@
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
+        app:layout_constraintStart_toEndOf="@+id/barra"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/botonModificarQr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"
+                android:text="Modificar QR"
+                android:background="@drawable/borde"
+                android:padding="15dp"
+                android:textSize="@dimen/text_size_medium2_takeAway"
+                app:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -124,7 +141,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.32999998">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"

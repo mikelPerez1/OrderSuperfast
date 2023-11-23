@@ -1,4 +1,4 @@
-package com.OrderSuperfast;
+package com.OrderSuperfast.Modelo.Clases;
 
 import java.io.Serializable;
 

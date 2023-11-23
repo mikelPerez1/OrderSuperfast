@@ -1,8 +1,12 @@
 package com.OrderSuperfast.Modelo.Adaptadores;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +25,7 @@ import com.OrderSuperfast.Modelo.Clases.Opcion;
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.Modelo.Clases.ProductoTakeAway;
 import com.OrderSuperfast.R;
+import com.OrderSuperfast.Vista.Lista;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +119,7 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         TextView tvNumPedido, tvNombreCliente, tvInstrucciones;
         RecyclerView recyclerProductosPedido;
         private AdapterProductosTakeAway adapterProductos = null;
-        private ImageView imgPedidoCancelar, imgPedidoReembolsar;
+        private ImageView imgPedidoCancelar, imgPedidoReembolsar, imgLlamar;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -123,6 +129,7 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             recyclerProductosPedido = itemView.findViewById(R.id.recyclerProductosPedidoMesa);
             imgPedidoCancelar = itemView.findViewById(R.id.imgPedidoCancelar);
             imgPedidoReembolsar = itemView.findViewById(R.id.imgPedidoReembolsar);
+            imgLlamar = itemView.findViewById(R.id.imgLlamar);
 
         }
 
@@ -140,9 +147,16 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 tvInstrucciones.setText(instrucciones);
             }
 
+            String tipoCliente = item.getCliente().getTipo();
+            if(tipoCliente.equalsIgnoreCase("invitado")){
+                imgLlamar.setVisibility(View.GONE);
+            }else {
+                imgLlamar.setVisibility(View.VISIBLE);
+            }
 
             ArrayList<ProductoTakeAway> listaProductos = getProductosDelPedido(item.getListaProductos().getLista());
 
+            //prueba para ver como se vería con mas productos
             /*
             listaProductos.add(0, new ProductoTakeAway(4, "Salmón aguaciro recien pescado del mar \n + Bacon \n + Pepinillos de la huerta recien recolectados", 2));
             listaProductos.add(0, new ProductoTakeAway(4, "Hamburguesa mediterranea El Buho Rojo (Explosion de sabores picantes)", 2));
@@ -180,8 +194,14 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             adapterProductos.setTacharHabilitado(tacharProductos);
             adapterProductos.setModomesa();
 
+            LinearLayoutManager manager = new LinearLayoutManager(context){
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
             recyclerProductosPedido.setHasFixedSize(true);
-            recyclerProductosPedido.setLayoutManager(new LinearLayoutManager(context));
+            recyclerProductosPedido.setLayoutManager(manager);
             recyclerProductosPedido.setAdapter(adapterProductos);
 
 
@@ -196,6 +216,22 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 @Override
                 public void onClick(View v) {
                     listener.cancelar(item,position);
+                }
+            });
+
+            imgLlamar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String telefono = item.getCliente().getPrefijo_telefono()+item.getCliente().getNumero_telefono();
+                    Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + telefono));
+                    if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE) !=
+                            PackageManager.PERMISSION_GRANTED) {
+
+                        ((Activity) context).requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 200);
+
+                    } else {
+                        ((Activity) context).startActivity(i);
+                    }
                 }
             });
 

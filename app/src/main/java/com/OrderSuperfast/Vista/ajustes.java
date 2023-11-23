@@ -48,32 +48,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ajustes extends AppCompatActivity {
+public class ajustes extends VistaGeneral {
 
-    private Spinner spinnerIdiomas;
-    private String idioma;
-    private Button botonGuardar;
-    private String[] idiomas, idiomasSelect;
+
     private final ajustes activity = this;
     private SharedPreferences sharedPreferencesIdiomas;
-    private SharedPreferences.Editor idiomasEditor;
     private final ajustes context = this;
-    private ImageView bandera, imgSonido, imgNavBack, imgLocalmode, imgChangeSound, imgVibration;
+    private ImageView bandera, imgSonido, imgNavBack;
     private TextView textIngles, textEsp, textFr, textAleman, textPort;
     private LocaleListCompat llc;
-    private AlertDialog.Builder dialogBuilder, builderImpresoras;
-    private AlertDialog dialog, dialogSonido, dialogImpresoras;
-    private boolean sonido, localmode;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private boolean sonido;
     private String idiomaActual = "";
     private Display display;
     private int inset;
     private MediaPlayer mp;
     private String sonidoString = "";
-    private boolean vibracion;
-    int i = 0, j = 0;
     private String tono1, tono2, tono3, tono4, tono5;
-    private ConstraintLayout constraintBuscarImpresoras, layoutSeleccionarProductosParaFiltrar;
-    private Handler handlerMusica = new Handler(), handlerBarraProgreso = new Handler();
+    private ConstraintLayout layoutSeleccionarProductosParaFiltrar;
+    private Handler handlerMusica = new Handler();
     private View overlayAjustes;
     private ConstraintLayout barra;
 
@@ -91,7 +85,6 @@ public class ajustes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = getSharedPreferences("idioma", Context.MODE_PRIVATE);
         idiomaActual = sharedPreferences.getString("id", "es");
-        idiomasEditor = sharedPreferences.edit();
         String idiomaId = sharedPreferences.getString("id", "");
 
 
@@ -166,14 +159,6 @@ public class ajustes extends AppCompatActivity {
         tono5 = getString(R.string.tono5);
 
 
-        bandera = findViewById(R.id.imageBanderaAjustes);
-        bandera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buildPopupIdiomas();
-            }
-        });
-
 
         imgNavBack = findViewById(R.id.NavigationBarBack);
         imgNavBack.setOnClickListener(new View.OnClickListener() {
@@ -183,40 +168,8 @@ public class ajustes extends AppCompatActivity {
             }
         });
 
-        if (!idiomaId.equals("")) {
-            System.out.println("idioma id " + idiomaId);
-            switch (idiomaId) {
-                case "en":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.usaflag));
-                    //   loginIniciarBtn.setText("Log in");
 
-
-                    break;
-                case "es":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.spainflag));
-                    System.out.println("espanish");
-                    //   loginIniciarBtn.setText("Iniciar sesión");
-
-                    break;
-
-                case "fr":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.franceflag));
-                    System.out.println("franches");
-                    break;
-
-                case "de":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.germanyflag));
-                    System.out.println("aleman");
-                    break;
-
-                case "pt":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.portugalflag));
-                    System.out.println("portugal");
-                    break;
-            }
-        }
-
-        botonGuardar = findViewById(R.id.botonGuardarAjustes);
+        Button botonGuardar = findViewById(R.id.botonGuardarAjustes);
         botonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,8 +193,6 @@ public class ajustes extends AppCompatActivity {
                 SharedPreferences.Editor sonidoEditor = sharedSonido.edit();
                 sonidoEditor.putBoolean("sonido", sonido);
                 sonidoEditor.commit();
-                sonidoEditor.putBoolean("vibracion", vibracion);
-                sonidoEditor.commit();
 
 
                 if (!sonidoString.equals("")) {
@@ -250,7 +201,6 @@ public class ajustes extends AppCompatActivity {
                 }
 
 
-                //  sonidoEditor.putBoolean("localmode",localmode);
                 //    sonidoEditor.commit();
                 //   Intent i=new Intent(ajustes.this,MainActivity.class);
                 //  startActivity(i);
@@ -265,20 +215,9 @@ public class ajustes extends AppCompatActivity {
 
 
 
-
-
-        ConstraintLayout constraintVibracion = findViewById(R.id.constraintLayout6);
-        if (!hasVibrator()) {
-            constraintVibracion.setVisibility(View.GONE);
-        }
-
-
         imgSonido = findViewById(R.id.imageSonidoAjustes);
-        imgLocalmode = findViewById(R.id.imageviewLocalMode);
         SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
         sonido = sharedSonido.getBoolean("sonido", true);
-        vibracion = sharedSonido.getBoolean("vibracion", false);
-        localmode = sharedSonido.getBoolean("localmode", false);
 
 
 
@@ -356,233 +295,7 @@ public class ajustes extends AppCompatActivity {
         finish();
     }
 
-    public void cambiarBandera() {
-        String idioma1 = ((Global) this.getApplication()).getIdioma();
-        if (!idioma1.equals("")) {
-            switch (idioma1) {
-                case "en":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.usaflag));
-                    //   loginIniciarBtn.setText("Log in");
-                    System.out.println("ingleso");
 
-                    break;
-                case "es":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.spainflag));
-                    System.out.println("espanish");
-                    //   loginIniciarBtn.setText("Iniciar sesión");
-
-                    break;
-
-                case "fr":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.franceflag));
-                    System.out.println("franches");
-                    break;
-
-                case "de":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.germanyflag));
-                    System.out.println("aleman");
-                    break;
-
-                case "pt":
-                    bandera.setImageDrawable(getResources().getDrawable(R.drawable.portugalflag));
-                    System.out.println("portugal");
-                    break;
-            }
-        }
-    }
-
-    public void buildPopupIdiomas() {
-
-
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View contactPopupView = getLayoutInflater().inflate(R.layout.popup_idiomas, null);
-
-
-        String idioma = sharedPreferencesIdiomas.getString("id", "");
-
-        textAleman = contactPopupView.findViewById(R.id.textAleman);
-        textEsp = contactPopupView.findViewById(R.id.textEspañol);
-        textFr = contactPopupView.findViewById(R.id.textFrances);
-        textIngles = contactPopupView.findViewById(R.id.textIngles);
-        textPort = contactPopupView.findViewById(R.id.textPortugues);
-
-        textAleman.setText(getResources().getString(R.string.germ));
-        textIngles.setText(getResources().getString(R.string.en));
-        textEsp.setText(getResources().getString(R.string.esp));
-        textPort.setText(getResources().getString(R.string.port));
-        textFr.setText(getResources().getString(R.string.fr));
-
-
-        CardView cIngles = contactPopupView.findViewById(R.id.cardIdiomasIngles);
-        CardView cEsp = contactPopupView.findViewById(R.id.cardIdiomasEspañol);
-        CardView cFrance = contactPopupView.findViewById(R.id.cardIdiomasFrances);
-        CardView cPort = contactPopupView.findViewById(R.id.cardIdiomasPortugues);
-        CardView cAlem = contactPopupView.findViewById(R.id.cardIdiomasAleman);
-
-
-        View vPort = contactPopupView.findViewById(R.id.viewPort);
-
-        cEsp.setVisibility(View.VISIBLE);
-        cFrance.setVisibility(View.VISIBLE);
-        cPort.setVisibility(View.VISIBLE);
-        cAlem.setVisibility(View.VISIBLE);
-        cIngles.setVisibility(View.VISIBLE);
-        vPort.setVisibility(View.VISIBLE);
-
-        //String idiomaActual=((Global) context.getApplication()).getIdioma();
-
-
-        if (idiomaActual.equals("es")) {
-            cEsp.setVisibility(View.GONE);
-        } else if (idiomaActual.equals("fr")) {
-            cFrance.setVisibility(View.GONE);
-        } else if (idiomaActual.equals("pt")) {
-            cPort.setVisibility(View.GONE);
-        } else if (idiomaActual.equals("de")) {
-            cAlem.setVisibility(View.GONE);
-            vPort.setVisibility(View.INVISIBLE);
-
-        } else {
-            cIngles.setVisibility(View.GONE);
-        }
-
-
-        cIngles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                //  startActivityForResult(new Intent(Settings.ACTION_LOCALE_SETTINGS), 0);
-
-
-                //   LocaleHelper.setLocale(context, "en");
-                ((Global) context.getApplication()).setIdioma("en");
-                cambiarBandera();
-
-                dialog.cancel();
-
-
-            }
-        });
-
-        cEsp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                //   LocaleHelper.setLocale(context, "es");
-                ((Global) context.getApplication()).setIdioma("es");
-                cambiarBandera();
-                dialog.cancel();
-
-
-            }
-        });
-
-        cFrance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                //startActivityForResult(new Intent(Settings.ACTION_LOCALE_SETTINGS), 2);
-
-/*
-                    llc = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration());
-                    esta=false;
-                    for (int i=0; i<llc.size(); i++){
-                        if(llc.get(i).getLanguage().equals("fr")){
-                            esta=true;
-                        }
-                        System.out.println(llc.get(i).getLanguage());
-                    }
-                    if(esta) {
-                        LocaleHelper.setLocale(context, "fr");
-                        idiomasEditor.putString("id", "fr");
-                        idiomasEditor.commit();
-                        dialog.cancel();
-                        recreate();
-                    }
-
- */
-
-
-                //  LocaleHelper.setLocale(context, "fr");
-                ((Global) context.getApplication()).setIdioma("fr");
-                cambiarBandera();
-
-                dialog.cancel();
-
-
-            }
-        });
-
-        cAlem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //    LocaleHelper.setLocale(context, "de");
-                ((Global) context.getApplication()).setIdioma("de");
-                cambiarBandera();
-
-                dialog.cancel();
-
-
-            }
-        });
-
-        cPort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // LocaleHelper.setLocale(context, "pt");
-                ((Global) context.getApplication()).setIdioma("pt");
-                cambiarBandera();
-
-                dialog.cancel();
-
-
-            }
-        });
-
-
-        dialogBuilder.setView(contactPopupView);
-        dialog = dialogBuilder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dialog.getWindow().
-                setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-        dialog.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        dialog.show();
-        dialog.getWindow().
-                clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-            }
-        });
-
-
-        Window window = dialog.getWindow();
-        window.setLayout(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-
-    }
 
 
     private Resources resources;
@@ -595,12 +308,9 @@ public class ajustes extends AppCompatActivity {
     private RadioButton r1, r2, r3, r4, r5,rNoSound;
     private RadioButton radioEsp, radioEn, radioPort, radioFr, radioAle;
     private RadioGroup radioGroup;
-    private LinearLayout linearRadioGroup;
     private RadioButton selectedRadioButton;
     private RadioButton selectedLanguage;
-    private int dimen;
-    private String idiomaElegido = "";
-    private Switch switchSonido, switchVibracion;
+    private Switch switchSonido;
 
     private void initElementos() {
         resources = getResources();
@@ -630,7 +340,6 @@ public class ajustes extends AppCompatActivity {
         r4 = findViewById(R.id.radioButton4);
         r5 = findViewById(R.id.radioButton5);
         rNoSound=findViewById(R.id.radioNoSound);
-        linearRadioGroup = findViewById(R.id.linearRadioGroup);
         layoutAjustesInfo = findViewById(R.id.layoutAjustesInfo);
         layoutCamposAjustes = findViewById(R.id.layoutCamposAjustes);
         layoutContenido = findViewById(R.id.layoutContenido);
@@ -644,20 +353,11 @@ public class ajustes extends AppCompatActivity {
         imgPlaySonido = findViewById(R.id.imgPlaySonido);
 
         switchSonido = findViewById(R.id.switchSonido);
-        switchVibracion = findViewById(R.id.switchVibracion);
 
-        dimen = (int) resources.getDimension(R.dimen.scrollHeight);
         setSonidoChecked();
         setIdiomaChecked();
         setListeners2();
-        /*
-        if (dimen > 10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            cambiarConstraints();
-            setListeners2();
-        } else {
-            setListeners();
-        }
-         */
+
         initInterface2();
     }
 
@@ -715,12 +415,7 @@ public class ajustes extends AppCompatActivity {
             }
         });
 
-        switchVibracion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibracion = switchVibracion.isChecked();
-            }
-        });
+
 
 
         imgPlaySonido.setOnClickListener(new View.OnClickListener() {

@@ -1,11 +1,9 @@
 package com.OrderSuperfast.Vista;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -15,11 +13,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -27,9 +20,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,34 +29,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.os.ConfigurationCompat;
-import androidx.core.os.LocaleListCompat;
 
 import com.OrderSuperfast.AndroidBug5497Workaround;
 import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.Modelo.Clases.Dispositivo;
-import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
+import com.OrderSuperfast.Controlador.ControladorLogin;
+import com.OrderSuperfast.Controlador.Interfaces.CallbackZonas;
+import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.LocaleHelper;
 import com.OrderSuperfast.Modelo.Clases.CustomEditText;
+import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
+import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -77,63 +61,29 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.conn.util.InetAddressUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import okhttp3.OkHttpClient;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends VistaGeneral {
 
     private MainActivity activity = this;
-    private CustomEditText loginUsername;
-    private CustomEditText loginPassword;
-    private Button loginIniciarBtn;
-    private static final int CODE = 16;
-    private final int codigo = 245;
-    private final String urlLogin = "https://app.ordersuperfast.es/android/v1/login/";
-    private JSONArray dispositivos;
-    private String idRest;
-    boolean correcto = false;
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-    private String logoRest = "";
     private SharedPreferences sharedPreferencesIdiomas;
-    private SharedPreferences.Editor idiomasEditor;
-    private final MainActivity context = this;
-    private ImageView bandera, imgAjustes, imgAtras;
-    private TextView textIngles, textEsp, textFr, textAleman, textPort;
-    private LocaleListCompat llc;
     private int inset = 0;
-    private Display display;
-    private ConstraintLayout constraintMainCuenta;
-    private final String SHARED_PREFERENCES_NAME = "dispos";
-    private ArrayList<DispositivoZona> listaZonas;
-    private boolean peticionCompletada = true;
-    private ConstraintLayout overLayout, desplegableOpciones, layoutOpcionesGenerales;
     private boolean onAnimation = false;
-    private int updateType = AppUpdateType.FLEXIBLE;
     private AppUpdateManager appUpdateManager;
-    private CheckBox checkbox;
-    private String nombreRest = "";
-
-    //Primer método que se ejecuta en la actividad
-    //Primer método que se ejecuta en la actividad
-
+    private ConstraintLayout constraintMainCuenta;
+    private ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void onResume() {
@@ -285,9 +235,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sharedPreferencesIdiomas = getSharedPreferences("idioma", Context.MODE_PRIVATE);
-        idiomasEditor = sharedPreferencesIdiomas.edit();
-
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         this.getWindow().setStatusBarColor(getColor(R.color.white));
@@ -310,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         } else {
-          //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -325,7 +272,11 @@ public class MainActivity extends AppCompatActivity {
         mirarActualizacionesApp();
 
         checkForUpdates();
-        desplegableOpciones = findViewById(R.id.desplegableOpciones);
+
+        tipoDispositivo();
+        ControladorLogin controlador = new ControladorLogin(this);
+
+        ConstraintLayout desplegableOpciones = findViewById(R.id.desplegableOpciones);
         desplegableOpciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -333,9 +284,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        overLayout = findViewById(R.id.overLayout);
-        layoutOpcionesGenerales = findViewById(R.id.layoutOpcionesGenerales);
-        checkbox = findViewById(R.id.checkBox);
+        ConstraintLayout overLayout = findViewById(R.id.overLayout);
+        CheckBox checkbox = findViewById(R.id.checkBox);
+
+        ConstraintLayout layoutOpcionesGenerales = findViewById(R.id.layoutOpcionesGenerales);
 
         cambiarDimenContenido();
 
@@ -343,8 +295,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, ajustes.class);
-                startActivity(i);
-                ocultarDesplegable();
+                launcher.launch(i);
+                ocultarDesplegable(overLayout, desplegableOpciones);
             }
         });
 
@@ -358,8 +310,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, EscanearQR.class);
-                startActivity(i);
-                ocultarDesplegable();
+                launcher.launch(i);
+                ocultarDesplegable(overLayout, desplegableOpciones);
             }
         });
 
@@ -369,23 +321,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onBackPressed();
 
-                // prueba para ir a la actividad del takeaway
 
-                //Intent i = new Intent(MainActivity.this, TakeAway.class);
-                // startActivity(i);
             }
         });
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setWindowAnimations(0);
-        eliminarShared();
         //////// cambio de los insets para que se vea fullscreen entero sin que ocupe información/////////
-        display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         // obtenerPaisDesdeIP();
         System.out.println("ROTACION " + display.getRotation());
         ConstraintLayout l = findViewById(R.id.mainContainer);
         ConstraintLayout layoutNavi = findViewById(R.id.constraintNavigationPedidos);
         LinearLayout constraintNav = findViewById(R.id.linearLayoutNaviPedidos);
         ConstraintLayout cardViewListaContenido = findViewById(R.id.cardViewListaContenido);
+
+        ponerInsets(layoutNavi);
+        //////////////////////
+        /*
         SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
         inset = prefInset.getInt("inset", 0);
         if (inset > 0) {
@@ -423,23 +375,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-        //new ObtenerIpPublica().execute();
+
+         */
 
         /////////////////////////////////////////
-        loginIniciarBtn = findViewById(R.id.loginIniciarBtn);
-        bandera = findViewById(R.id.imageBanderas);
+        Button loginIniciarBtn = findViewById(R.id.loginIniciarBtn);
+        ImageView bandera = findViewById(R.id.imageBanderas);
         Button selectIdioma = findViewById(R.id.botonSeleccionarIdiomas);
 
 
         bandera.setVisibility(View.INVISIBLE);
         selectIdioma.setVisibility(View.INVISIBLE);
 
-
-        SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove("savedDisps");
-
-        MainActivity.this.deleteDatabase("BDLocal.db");
 
         ImageView imageAjustes = findViewById(R.id.imageAjustes);
         imageAjustes.setOnClickListener(new View.OnClickListener() {
@@ -456,35 +403,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         /////////custom editTexts para que aparezca la barra de navegación al aparecer el teclado y se vaya al quitar el teclado////////
-        loginUsername = findViewById(R.id.loginUsername);
+        CustomEditText loginUsername = findViewById(R.id.loginUsername);
         loginUsername.setMainActivity(this);
-        loginPassword = findViewById(R.id.loginPassword);
+        CustomEditText loginPassword = findViewById(R.id.loginPassword);
         loginPassword.setMainActivity(this);
 
-        SharedPreferences prefs = getSharedPreferences("cuenta", Context.MODE_PRIVATE);
-        editor = prefs.edit();
-        editor.remove("saveIdRest");
-        editor.remove("idDisp");
-
-        imgAjustes = findViewById(R.id.NavigationBarAjustes);
+        ImageView imgAjustes = findViewById(R.id.NavigationBarAjustes);
         imgAjustes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarDesplegableOpciones();
+                mostrarDesplegableOpciones(overLayout, desplegableOpciones);
             }
         });
 
         overLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ocultarDesplegable();
+                ocultarDesplegable(overLayout, desplegableOpciones);
             }
         });
 
-        String user = prefs.getString("user", "");
-        String password = prefs.getString("password", "");
-        user = decodificar(user, true);
-        password = decodificar(password, false);
+        Pair<String, String> cuenta = controlador.getCuentaGuardada();
+
+        String user = cuenta.first;
+        String password = cuenta.second;
         loginUsername.setText(user);
         loginPassword.setText(password);
 
@@ -527,23 +469,11 @@ public class MainActivity extends AppCompatActivity {
         /////////////////////////////////////
 
 
-        prefs = getSharedPreferences("pedidos", Context.MODE_PRIVATE);
-        editor = prefs.edit();
-        editor.putString("saved_text", "");
-
-        editor.commit();
-
-
-        SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.remove("savedDisps");
-        ed.commit();
-
-
         loginIniciarBtn.setOnClickListener(
                 (v) -> {
                     //Aqui va mi acción
                     try {
-                        CheckLogin();
+                        CheckLogin(controlador, checkbox.isChecked());
                     } catch (Error e) {
                         e.printStackTrace();
                     }
@@ -552,7 +482,13 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
-        //crearSolicitudUbicacion();
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            System.out.println("result launcher " + result.getResultCode());
+            if (result.getResultCode() == 300) {
+                recreate();
+            }
+        });
+
 
     }
 
@@ -588,6 +524,7 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+        System.out.println("vuelta ajustes");
         if (requestCode == 100) {
             if (resultCode != RESULT_OK) {
                 Toast.makeText(activity, "Update required", Toast.LENGTH_SHORT).show();
@@ -598,27 +535,12 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
 
-            System.out.println("ONACTIVITYRESULT CODE " + requestCode);
-
-            switch (requestCode) {
-                case 1:
-                    cambiarLeng("es");
-                    break;
-
-                case 2:
-                    cambiarLeng("fr");
-                    break;
-                case 3:
-                    cambiarLeng("pt");
-                    break;
-                case 4:
-                    cambiarLeng("de");
-                    break;
-            }
-
-
             recreate();
         }
+
+    }
+
+    private void registerLauncher(ActivityResultLauncher<Intent> launcher) {
 
     }
 
@@ -628,32 +550,14 @@ public class MainActivity extends AppCompatActivity {
         appUpdateManager.unregisterListener(listener);
     }
 
-    private void cambiarLeng(String idIdioma) {
-        llc = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration());
-        boolean esta = false;
-        for (int i = 0; i < llc.size(); i++) {
-            if (llc.get(i).getLanguage().equals(idIdioma)) {
-                esta = true;
-            }
-            System.out.println(llc.get(i).getLanguage());
-        }
-        if (esta) {
-            LocaleHelper.setLocale(context, idIdioma);
-            idiomasEditor.putString("id", idIdioma);
-            idiomasEditor.commit();
-            recreate();
-
-        }
-
-    }
 
     //contro+o para overide elementos de clase padre
 
     public void desplazarPagina() {
-      //  if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) constraintMainCuenta.getLayoutParams();
-            params.verticalBias = 0.5f; // here is one modification for example. modify anything else you want :)
-            constraintMainCuenta.setLayoutParams(params);
+        //  if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) constraintMainCuenta.getLayoutParams();
+        params.verticalBias = 0.5f; // here is one modification for example. modify anything else you want :)
+        constraintMainCuenta.setLayoutParams(params);
         //}
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -668,437 +572,194 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void CheckLogin() {
+    public void CheckLogin(ControladorLogin controlador, boolean checkboxChecked) {
         //coge el usuario y la contraseña y los envía a la función de codificar para codificar dichos Strings
         TextView tUsername = findViewById(R.id.loginUsername);
         TextView tPassword = findViewById(R.id.loginPassword);
         String u = tUsername.getText().toString();
         String c = tPassword.getText().toString();
 
-        Pair<String, String> par = codificar(u, c); // la funcíon codificar recive 2 Strings, el usuario y contraseña y devuelve un Par que contiene el usuario y contraseña codificados
-        String nombreCod = par.first;
-        String passCod = par.second;
-        String url = urlLogin;
+
+        controlador.peticionLogin(u, c, checkboxChecked, new CallbackZonas() {
+            @Override
+            public void onDevolucionExitosa(Zonas resp) {
+                zonas.reemplazarLista(resp.getLista());
+
+                Intent intent = new Intent(MainActivity.this, Devices.class);
+
+                launcher.launch(intent);
+                finish();
+            }
 
 
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("username", nombreCod);
-            jsonBody.put("password", passCod);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onDevolucionFallida(String mensajeError) {
+                Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Manejar la respuesta del servidor en formato JSON
-                        // Aquí puedes procesar la respuesta recibida del servidor
-                        System.out.println("respuesta login " + response);
-                        try {
-                            JSONObject respuesta = response;//se recibe la respuesta
+            }
+        });
+
+        ///////////////////////////////////////
+        /*
+        if(true) {
+            Pair<String, String> par = codificar(u, c); // la funcíon codificar recive 2 Strings, el usuario y contraseña y devuelve un Par que contiene el usuario y contraseña codificados
+            String nombreCod = par.first;
+            String passCod = par.second;
+            String url = urlLogin;
+
+
+            JSONObject jsonBody = new JSONObject();
+            try {
+                jsonBody.put("username", nombreCod);
+                jsonBody.put("password", passCod);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Manejar la respuesta del servidor en formato JSON
+                            // Aquí puedes procesar la respuesta recibida del servidor
+                            System.out.println("respuesta login " + response);
+                            try {
+                                JSONObject respuesta = response;//se recibe la respuesta
 //                            String status = response.getString("status");
-                            //  System.out.println("estado "+status);
-                            Iterator<String> keys2 = response.keys();
-                            while (keys2.hasNext()) {
-                                String k = keys2.next();
-                                System.out.println("key " + k);
-                                System.out.println(" respuesta " + response.getString(k));
-                            }
-                            if ("OK".equals("OK")) {
-                                Iterator<String> keys = response.keys();
-                                while (keys.hasNext()) {
-                                    String clave = keys.next();
-                                    System.out.println("respuesta " + clave);
-                                    if (clave.equals("id_restaurante")) {
-                                        idRest = respuesta.getString(clave); //si idRest es un string vacío, significa que no existe dicha cuenta
-                                    } else if (clave.equals("nombre_restaurante")) {
-                                        nombreRest = respuesta.getString(clave);
-                                    } else if (clave.equals("logo")) {
-                                        try {
-                                            if (respuesta.getString(clave) != null && !respuesta.getString(clave).equals(null)) {
-                                                logoRest = respuesta.getString(clave);
+                                //  System.out.println("estado "+status);
+                                Iterator<String> keys2 = response.keys();
+                                while (keys2.hasNext()) {
+                                    String k = keys2.next();
+                                    System.out.println("key " + k);
+                                    System.out.println(" respuesta " + response.getString(k));
+                                }
+                                if ("OK".equals("OK")) {
+                                    Iterator<String> keys = response.keys();
+                                    while (keys.hasNext()) {
+                                        String clave = keys.next();
+                                        System.out.println("respuesta " + clave);
+                                        if (clave.equals("id_restaurante")) {
+                                            idRest = respuesta.getString(clave); //si idRest es un string vacío, significa que no existe dicha cuenta
+                                        } else if (clave.equals("nombre_restaurante")) {
+                                            nombreRest = respuesta.getString(clave);
+                                        } else if (clave.equals("logo")) {
+                                            try {
+                                                if (respuesta.getString(clave) != null && !respuesta.getString(clave).equals(null)) {
+                                                    logoRest = respuesta.getString(clave);
+                                                }
+                                            } catch (Exception e) {
+                                                logoRest = "";
                                             }
-                                        }
-                                        catch (Exception e){
-                                            logoRest="";
-                                        }
-                                    } else if (clave.equals("zonas")) {
-                                        JSONArray arrayZonas = respuesta.getJSONArray(clave);
-                                        System.out.println("respuesta zonas " + arrayZonas);
+                                        } else if (clave.equals("zonas")) {
+                                            JSONArray arrayZonas = respuesta.getJSONArray(clave);
+                                            System.out.println("respuesta zonas " + arrayZonas);
 
-                                        listaZonas = new ArrayList<>();
-                                        for (int i = 0; i < arrayZonas.length(); i++) {
-                                            JSONObject zona = arrayZonas.getJSONObject(i);
-                                            Iterator<String> keysZonas = zona.keys();
-                                            String idzona = "";
-                                            String nombreZona = "";
-                                            ArrayList<Dispositivo> listaDispos = new ArrayList<>();
-                                            while (keysZonas.hasNext()) {
-                                                String claveZona = keysZonas.next();
+                                            listaZonas = new ArrayList<>();
+                                            for (int i = 0; i < arrayZonas.length(); i++) {
+                                                JSONObject zona = arrayZonas.getJSONObject(i);
+                                                Iterator<String> keysZonas = zona.keys();
+                                                String idzona = "";
+                                                String nombreZona = "";
+                                                ArrayList<Dispositivo> listaDispos = new ArrayList<>();
+                                                while (keysZonas.hasNext()) {
+                                                    String claveZona = keysZonas.next();
 
 
-                                                if (claveZona.equals("id_zona")) {
-                                                    idzona = zona.getString(claveZona);
+                                                    if (claveZona.equals("id_zona")) {
+                                                        idzona = zona.getString(claveZona);
 
-                                                } else if (claveZona.equals("nombre")) {
-                                                    if (zona.getString(claveZona).toLowerCase().equals("zona prueba")) {
-                                                        nombreZona = "Comedor 2";
-                                                    } else {
-                                                        nombreZona = zona.getString(claveZona);
-                                                    }
-                                                } else if (claveZona.equals("dispositivos")) {
-                                                    System.out.println("entra zonas");
-                                                    JSONArray jsonArrayDispos = zona.getJSONArray(claveZona);
-                                                    for (int j = 0; j < jsonArrayDispos.length(); j++) {
-                                                        JSONObject dispo = jsonArrayDispos.getJSONObject(j);
-                                                        Iterator<String> keysDispos = dispo.keys();
-                                                        String idDisp = "";
-                                                        String nombreDisp = "";
-                                                        while (keysDispos.hasNext()) {
-                                                            String claveDispo = keysDispos.next();
-
-                                                            if (claveDispo.equals("id_dispositivo")) {
-                                                                idDisp = dispo.getString(claveDispo);
-                                                            } else if (claveDispo.equals("nombre")) {
-                                                                nombreDisp = dispo.getString(claveDispo);
-                                                            }
+                                                    } else if (claveZona.equals("nombre")) {
+                                                        if (zona.getString(claveZona).toLowerCase().equals("zona prueba")) {
+                                                            nombreZona = "Comedor 2";
+                                                        } else {
+                                                            nombreZona = zona.getString(claveZona);
                                                         }
-                                                        System.out.println("getDispZona " + nombreDisp);
-                                                        Dispositivo disp = new Dispositivo(idDisp, nombreDisp);
-                                                        listaDispos.add(disp);
+                                                    } else if (claveZona.equals("dispositivos")) {
+                                                        System.out.println("entra zonas");
+                                                        JSONArray jsonArrayDispos = zona.getJSONArray(claveZona);
+                                                        for (int j = 0; j < jsonArrayDispos.length(); j++) {
+                                                            JSONObject dispo = jsonArrayDispos.getJSONObject(j);
+                                                            Iterator<String> keysDispos = dispo.keys();
+                                                            String idDisp = "";
+                                                            String nombreDisp = "";
+                                                            while (keysDispos.hasNext()) {
+                                                                String claveDispo = keysDispos.next();
+
+                                                                if (claveDispo.equals("id_dispositivo")) {
+                                                                    idDisp = dispo.getString(claveDispo);
+                                                                } else if (claveDispo.equals("nombre")) {
+                                                                    nombreDisp = dispo.getString(claveDispo);
+                                                                }
+                                                            }
+                                                            System.out.println("getDispZona " + nombreDisp);
+                                                            Dispositivo disp = new Dispositivo(idDisp, nombreDisp);
+                                                            listaDispos.add(disp);
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            boolean esTakeAway = false;
-                                            if (nombreZona.equals("TakeAway")) {
-                                                esTakeAway = true;
-                                            }
+                                                boolean esTakeAway = false;
+                                                if (nombreZona.equals("TakeAway")) {
+                                                    esTakeAway = true;
+                                                }
 
-                                            DispositivoZona dispZona = new DispositivoZona(listaDispos, nombreZona, idzona, esTakeAway, true);
-                                            listaZonas.add(dispZona);
-                                        }
-                                    }else if(respuesta.getString(clave).equals("ERROR")){
-                                        try{
-                                            Toast.makeText(activity, respuesta.getString("details"), Toast.LENGTH_SHORT).show();
-                                        }catch (Exception e){
-                                            e.printStackTrace();
+                                                DispositivoZona dispZona = new DispositivoZona(listaDispos, nombreZona, idzona, esTakeAway, true);
+                                                listaZonas.add(dispZona);
+                                            }
+                                        } else if (respuesta.getString(clave).equals("ERROR")) {
+                                            try {
+                                                Toast.makeText(activity, respuesta.getString("details"), Toast.LENGTH_SHORT).show();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     }
-                                }
-                                if (idRest != null && !idRest.equals("")) {
-                                    Log.d("id", idRest);  //si existe la cuenta, se cogen los datos y se llama a la función login
-                                    //   logoRest.put("logo", respuesta.get("logo"));
-                                    //  dispositivos = respuesta.getJSONArray("dispositivos");
-                                    //  System.out.println("dispos son " + dispositivos);
-                                    correcto = true;
-                                    login();
-                                } else {
-                                   // Toast.makeText(MainActivity.this, getResources().getString(R.string.cuentaIncorrecta), Toast.LENGTH_SHORT).show();
+                                    if (idRest != null && !idRest.equals("")) {
+                                        Log.d("id", idRest);  //si existe la cuenta, se cogen los datos y se llama a la función login
+                                        //   logoRest.put("logo", respuesta.get("logo"));
+                                        //  dispositivos = respuesta.getJSONArray("dispositivos");
+                                        //  System.out.println("dispos son " + dispositivos);
+                                        correcto = true;
+                                        login();
+                                    } else {
+                                        // Toast.makeText(MainActivity.this, getResources().getString(R.string.cuentaIncorrecta), Toast.LENGTH_SHORT).show();
 
+                                    }
                                 }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
                             }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            peticionCompletada = true;
 
                         }
-                        peticionCompletada = true;
 
-                    }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("error", "Error de conexión");
-                        System.out.println("respuesta login " + error.toString());
-                        peticionCompletada = true;
-                        Toast.makeText(MainActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("error", "Error de conexión");
+                            System.out.println("respuesta login " + error.toString());
+                            peticionCompletada = true;
+                            Toast.makeText(MainActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
 // Agregar la petición a la cola
-        if (peticionCompletada) {
-            Volley.newRequestQueue(this).add(jsonObjectRequest);
-        }
-
-    }
-
-
-    public Pair<String, String> codificar(String u, String c) {
-        int clave = 245;
-        int claveUsername = 44827;
-        int clavePassword = 1126;
-        int desplazamiento = clave % 62;
-        int desplazamientoUsername = claveUsername % 62;
-        int desplazamientoPassword = clavePassword % 62;
-        int newPos = 0;
-        List<String> array = Arrays.asList(u, c);
-
-        String letras = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < letras.length(); i++) {
-            map.put(letras.charAt(i), i);
-        }
-
-        StringBuilder textoCodificadoBuilder = new StringBuilder();
-        String usernameCod = "";
-        String passwordCod = "";
-        for (int j = 0; j < array.size(); j++) {
-            String texto = array.get(j);
-            for (int i = 0; i < texto.length(); i++) {
-                char caracter = texto.charAt(i);
-                Integer pos = map.get(caracter);
-
-                if (pos == null) {
-                    textoCodificadoBuilder.append(caracter);
-                } else {
-
-                    if (j == 0) {
-                        newPos = (pos + desplazamientoUsername) % letras.length();
-                    } else if (j == 1) {
-                        newPos = (pos + desplazamientoPassword) % letras.length();
-
-                    }
-                    //int newPos = (pos + desplazamiento) % letras.length();
-                    textoCodificadoBuilder.append(letras.charAt(newPos));
-                }
-            }
-
-            String textoCodificado = textoCodificadoBuilder.toString();
-            Log.d("codificacion", textoCodificado);
-            textoCodificadoBuilder.setLength(0);
-
-            if (j == 0) {
-                usernameCod = textoCodificado;
-            } else if (j == 1) {
-                passwordCod = textoCodificado;
+            if (peticionCompletada) {
+                Volley.newRequestQueue(this).add(jsonObjectRequest);
             }
         }
 
-        return new Pair<>(usernameCod, passwordCod);
-
-    }
-
-    private String decodificar(String texto, boolean idrest) {
-        int codigo;
-        int claveUsername = 44827;
-        int clavePassword = 1126;
-        if (idrest) {
-            codigo = 14;
-            codigo = claveUsername;
-        } else {
-            codigo = 245;
-            codigo = clavePassword;
-        }
-        int desplazamiento = codigo % 62;
-
-        String letras = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        StringBuilder textoDescodificado = new StringBuilder();
-        if (texto != null) {
-            for (int i = 0; i < texto.length(); i++) {
-                char caracter = texto.charAt(i);
-                int pos = letras.indexOf(caracter);
-
-                if (pos == -1) {
-                    textoDescodificado.append(caracter);
-                } else {
-                    int newPos = (pos - desplazamiento) % letras.length();
-                    if (newPos < 0) {
-                        newPos += letras.length();
-                    }
-                    textoDescodificado.append(letras.charAt(newPos));
-                }
-            }
-        }
-
-        return textoDescodificado.toString();
-    }
-
-    public void login() {
-        //String deco = decodificar(idRest, true);
-
-        System.out.println("ID RESTAURANTE: ");
-        ((Global) this.getApplication()).setIdRest(idRest);
-
-
-        SharedPreferences sharedPreferences = getSharedPreferences("ids", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("saveIdRest", idRest);
-        editor.apply();
-
-        sharedPreferences = getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
-
-
-        String img = logoRest;
-        editor.putString("nombreRestaurante",nombreRest);
-        editor.putString("imagen", img);
-
-        editor.apply();
-
-
-        String user = loginUsername.getText().toString();
-        String pass = loginPassword.getText().toString();
-
-        if (correcto) {
-            ((Global) this.getApplication()).setUsuario(user);
-//            ((Global) this.getApplication()).setDispos(dispositivos.toString());
-            ((Global) this.getApplication()).removeListaZonas();
-            for (int i = 0; i < listaZonas.size(); i++) {
-                ((Global) this.getApplication()).anadirZona(listaZonas.get(i));
-                String idPadre = listaZonas.get(i).getId();
-                ArrayList<Dispositivo> lista = listaZonas.get(i).getArray();
-                for (int j = 0; j < lista.size(); j++) {
-                    Dispositivo d = lista.get(j);
-                    DispositivoZona dz = new DispositivoZona(d.getNombre(), d.getId(), false);
-                    dz.setIdPadre(idPadre);
-                    ((Global) this.getApplication()).anadirZona(dz);
-
-                }
-                idPadre = "";
-                System.out.println(listaZonas.get(i).getNombre());
-            }
-
-            guardarZonasPref();
-
-
-            Pair<String, String> datos = codificar(user, pass);
-            SharedPreferences prefs = getSharedPreferences("cuenta", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editorCuenta = prefs.edit();
-
-            if (checkbox.isChecked()) {
-                editorCuenta.putString("user", datos.first);
-                editorCuenta.putString("password", datos.second);
-                System.out.println("checkbox true");
-            } else {
-                editorCuenta.putString("user", "");
-                editorCuenta.putString("password", "");
-                System.out.println("checkbox false ");
-            }
-            editorCuenta.apply();
-
-            Intent intent = new Intent(MainActivity.this, Devices.class);
-
-            startActivity(intent);
-            finish();
-            if (!prefs.getString("user", "").equals(datos.first) && !prefs.getString("password", "").equals(datos.second)) {
-
-                /*
-                new AlertDialog.Builder(this)
-                        .setTitle(getResources().getString(R.string.textoGuardarContraseña))
-                        .setPositiveButton(getResources().getString(R.string.si), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("user", datos.first);
-                                editor.putString("password", datos.second);
-                                editor.apply();
-                                Intent intent = new Intent(MainActivity.this, Devices.class);
-                                //intent.putExtra("dispositivos", dispositivos.toString());
-
-                                startActivity(intent);
-                                finish();
-                            }
-                        })
-                        .setNeutralButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(MainActivity.this, Devices.class);
-                                //  intent.putExtra("dispositivos", dispositivos.toString());
-                                startActivity(intent);
-                                finish();
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_input_add)
-                        .show();
-
-                 */
-
-            } else {
-                //  Intent intent = new Intent(MainActivity.this, Devices.class);
-                //  intent.putExtra("dispositivos", dispositivos.toString());
-                // System.out.println("dispositivos = " + dispositivos.toString());
-                //  startActivity(intent);
-                //  finish();
-
-            }
-        }
-    }
-
-
-    private void guardarZonasPref() {
-
-        SharedPreferences sharedZonas = getSharedPreferences("dispos", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorZonas = sharedZonas.edit();
-
-        JSONObject dispJson;
-        JSONObject zonaJson;
-        JSONArray array = new JSONArray();
-        JSONArray jsonArrayDisp = new JSONArray();
-        try {
-
-            for (int i = 0; i < listaZonas.size(); i++) {
-                /*
-
-                jsonArrayDisp=new JSONArray();
-                DispositivoZona dz = listaZonas.get(i);
-                ArrayList<Dispositivo> arrayDisp = dz.getArray();
-                zonaJson=new JSONObject();
-                zonaJson.put("id",dz.getId());
-                zonaJson.put("nombre",dz.getNombre());
-                zonaJson.put("esZona",dz.getEsZona());
-                array.put(zonaJson);
-                for (int j = 0; j < arrayDisp.size(); j++) {
-                    dispJson = new JSONObject();
-                    dispJson.put("id", arrayDisp.get(j).getId());
-                    dispJson.put("nombre", arrayDisp.get(j).getNombre());
-
-                    jsonArrayDisp.put(dispJson);
-                }
-                */
-                jsonArrayDisp = new JSONArray();
-                DispositivoZona dz = listaZonas.get(i);
-                ArrayList<Dispositivo> arrayDisp = dz.getArray();
-                for (int j = 0; j < arrayDisp.size(); j++) {
-                    dispJson = new JSONObject();
-                    dispJson.put("id", arrayDisp.get(j).getId());
-                    dispJson.put("nombre", arrayDisp.get(j).getNombre());
-
-                    jsonArrayDisp.put(dispJson);
-                }
-
-                zonaJson = new JSONObject();
-                zonaJson.put("id", dz.getId());
-                zonaJson.put("nombre", dz.getNombre());
-                zonaJson.put("dispositivos", jsonArrayDisp);
-                zonaJson.put("esTakeAway", dz.getEsZona());
-                zonaJson.put("takeAwayActivado", dz.getEsZona());
-                array.put(zonaJson);
-
-
-            }
-
-            editorZonas.putString("zonas", array.toString());
-            editorZonas.apply();
-
-        } catch (JSONException e) {
-
-        }
-
-    }
-
-    private void eliminarShared() {
-        SharedPreferences sharedDevices = getSharedPreferences("devices", Context.MODE_PRIVATE);
-        SharedPreferences.Editor deviceEditor = sharedDevices.edit();
-        deviceEditor.remove("listaDispositivos");
-        deviceEditor.apply();
+         */
+        /////////////////
     }
 
 
     ///////////////////////////// PERMISOS DE UBICACIÓN /////////////////
+    //comentado por que de momento no utilizamos lo de la ubicacion
+    /*
 
     private void crearSolicitudUbicacion() {
         LocationRequest.Builder locationRequest = null;
@@ -1160,7 +821,7 @@ public class MainActivity extends AppCompatActivity {
                             LatLng loc = new LatLng(latitude, longitude);
 
 // Agregar un marcador en la ubicación especificada
-                            /*
+
                             googleMap.addMarker(new MarkerOptions()
                                     .position(loc)
                                     .title("Mi ubicación")
@@ -1169,7 +830,7 @@ public class MainActivity extends AppCompatActivity {
                             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(loc, 17);
                             googleMap.moveCamera(cameraUpdate);
 
-                             */
+
 
                             SharedPreferences preferenciasMapa = getSharedPreferences("mapa", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editorMapa = preferenciasMapa.edit();
@@ -1241,7 +902,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void mostrarDesplegableOpciones() {
+    */
+    /////////////////
+
+    private void mostrarDesplegableOpciones(ConstraintLayout overLayout, ConstraintLayout
+            desplegableOpciones) {
 
         System.out.println("onAnimation mostrar " + onAnimation);
         if (!onAnimation) {
@@ -1253,10 +918,6 @@ public class MainActivity extends AppCompatActivity {
                 desplegableOpciones.setPivotX(0f);
                 desplegableOpciones.setPivotY(0f);
                 ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleX", 0f, 1f);
-                //ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleY", 0f, 1f);
-                // ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationX", -50f, 0f);
-                // ObjectAnimator translationYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationY", 60f, 0f);
-                //   ObjectAnimator rotationAnimation = ObjectAnimator.ofFloat(imgAjustes, "rotation", 0, 180);
                 ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(desplegableOpciones, "alpha", 0f, 1f);
 
                 AnimatorSet animatorSet = new AnimatorSet();
@@ -1284,10 +945,6 @@ public class MainActivity extends AppCompatActivity {
                 desplegableOpciones.setPivotX(desplegableOpciones.getWidth());
                 desplegableOpciones.setPivotY(desplegableOpciones.getHeight());
                 ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleX", 0f, 1f);
-                ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleY", 0f, 1f);
-                ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationX", 50f, 0f);
-                ObjectAnimator translationYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationY", 50f, 0f);
-                ObjectAnimator rotationAnimation = ObjectAnimator.ofFloat(imgAjustes, "rotation", 0, 180);
                 ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(desplegableOpciones, "alpha", 0f, 1f);
 
 
@@ -1320,7 +977,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void ocultarDesplegable() {
+    private void ocultarDesplegable(ConstraintLayout overLayout, ConstraintLayout
+            desplegableOpciones) {
         if (!onAnimation) {
             overLayout.setVisibility(View.GONE);
             ObjectAnimator scaleXAnimator = null;
@@ -1332,21 +990,12 @@ public class MainActivity extends AppCompatActivity {
                 desplegableOpciones.setPivotX(0f);
                 desplegableOpciones.setPivotY(0f);
                 scaleXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleX", 1f, 0f);
-                scaleYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleY", 1f, 0f);
-                translationXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationX", 0f, -50f);
-                translationYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationY", 0f, 60f);
-                rotationAnimation = ObjectAnimator.ofFloat(imgAjustes, "rotation", 180, 0);
 
 
             } else {
                 desplegableOpciones.setPivotX(desplegableOpciones.getWidth());
                 desplegableOpciones.setPivotY(desplegableOpciones.getHeight());
                 scaleXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleX", 1f, 0f);
-                scaleYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "scaleY", 1f, 0f);
-                translationXAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationX", 0f, 50f);
-                translationYAnimator = ObjectAnimator.ofFloat(desplegableOpciones, "translationY", 0f, 50f);
-                rotationAnimation = ObjectAnimator.ofFloat(imgAjustes, "rotation", 180, 0);
-
 
             }
 
@@ -1380,10 +1029,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void appUpdate() {
-
-    }
-
+    //funciones para la actualizacion de la app
     InstallStateUpdatedListener listener = state -> {
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
             // After the update is downloaded, show a notification
@@ -1462,67 +1108,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void getAppVersion(String accessToken, String packageName) {
-
-        try {
-            // Configura el cliente OkHttpClient
-            OkHttpClient client = new OkHttpClient();
-
-            // Construye la solicitud HTTP
-            String url = String.format("https://www.googleapis.com/androidpublisher/v3/applications/%s/edits", packageName);
-
-            okhttp3.Request request = new okhttp3.Request.Builder()
-                    .url(url)
-                    .header("Authorization", "Bearer " + accessToken)
-                    .build();
-
-            // Realiza la llamada a la API
-            okhttp3.Response response = client.newCall(request).execute();
-
-            // Procesa la respuesta de la API
-            if (response.isSuccessful()) {
-                String responseBody = response.body().string();
-                // Aquí debes analizar el JSON de responseBody para obtener la información que necesitas, como la versión de la aplicación
-                System.out.println("Respuesta de la API: " + responseBody);
-            } else {
-                System.out.println("Error al obtener la información: " + response.code() + " - " + response.message());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-/*
-    private void logGP() throws PackageManager.NameNotFoundException {
-        // A device definition is required to log in
-        // See resources for a list of available devices
-        PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        String currentVersion = packageInfo.versionName;
-        String url = "https://apk-dl.com/"+packageInfo.packageName;
-        StringRequest jsonObjectRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("respuesta version "+response);
-
-
-                    Pattern pattern = Pattern.compile("Version:\\s+(.*)\\s+\\((\\d+)\\)");
-                    Matcher matcher = pattern.matcher(response);
-                    if (matcher.find()) {
-                        System.out.println("version name : " + matcher.group(1));
-                        System.out.println("version code : " + matcher.group(2));
-                    }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("error "+error);
-            }
-        });
-
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
-
- */
-
     private void cambiarDimenContenido() {
         Resources resources = getResources();
         ConstraintLayout layoutCont = findViewById(R.id.layoutCont);
@@ -1542,5 +1127,13 @@ public class MainActivity extends AppCompatActivity {
             // layoutCont.setScaleY(1.2f);
         }
 
+    }
+
+    private void tipoDispositivo() {
+        if (getResources().getDimension(R.dimen.scrollHeight) > 10) {
+            setEsMovil(true);
+        } else {
+            setEsMovil(false);
+        }
     }
 }

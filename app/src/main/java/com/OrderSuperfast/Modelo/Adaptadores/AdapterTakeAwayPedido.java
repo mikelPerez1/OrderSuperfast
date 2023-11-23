@@ -24,7 +24,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.ListElementPedido;
+import com.OrderSuperfast.Modelo.Clases.ListElementPedido;
 import com.OrderSuperfast.Modelo.Clases.Opcion;
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.Modelo.Clases.ProductoTakeAway;

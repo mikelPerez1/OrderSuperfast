@@ -32,11 +32,6 @@
             android:name=".Vista.GuardarFiltrarProductos"
             android:exported="false" />
         <activity
-            android:name=".Vista.AjustesTakeAway"
-            android:configChanges="orientation"
-            android:exported="false"
-            android:launchMode="standard" />
-        <activity
             android:name=".Vista.TakeAway"
             android:configChanges="orientation|screenSize|locale"
             android:exported="false"

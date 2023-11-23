@@ -8,13 +8,17 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
 import com.OrderSuperfast.Modelo.Clases.Mesa;
 import com.OrderSuperfast.R;
 
@@ -23,19 +27,21 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.ViewHolder> {
+public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Mesa> mData = new ArrayList<>();
     private List<Mesa> Original = new ArrayList<>();
     private final Context context;
     final AdapterListaMesas.OnItemClickListener listener;
     private AdapterListaMesas.ViewHolder holder;
     private boolean parpadeo = false;
+    private ViewHolder2 holder2;
 
 
     private final Resources resources;
 
     public interface OnItemClickListener {
         void onItemClick(Mesa item, int position);
+        void onSearchClick();
 
 
     }
@@ -48,7 +54,6 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
         this.mData = itemList;
         this.listener = listener;
         resources = context.getResources();
-        System.out.println("mesa adapter creado");
     }
 
 
@@ -57,23 +62,28 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
         this.Original.addAll(mData);
     }
 
+    public ViewHolder2 getHolder2(){
+        return this.holder2;
+    }
+
 
     public void filtrarPorTexto(String texto) {
 
         if (texto.equals("")) {
             mData.clear();
             mData.addAll(Original);
+            System.out.println("size original "+ Original.size());
             notifyDataSetChanged();
             return;
         }
 
-        while (mData.size() > 0) {
-            mData.remove(0);
+        while (mData.size() > 1) {
+            mData.remove(1);
         }
         //mData.add(Original.get(0));
         System.out.println("filtrar texto " + Original.size());
 
-        for (int i = 0; i < Original.size(); i++) {
+        for (int i = 1; i < Original.size(); i++) {
             Mesa p = Original.get(i);
           //  if (p.getEsPlaceHolder()) {
               //  mData.add(0, p);
@@ -158,8 +168,8 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
     }
 
     public void reorganizar() {
-
-        Collections.sort(mData, new Comparator<Mesa>() {
+        final Mesa firstItem = mData.get(0); // Guardar el primer elemento
+        Collections.sort(mData.subList(1, mData.size()), new Comparator<Mesa>() {
             @Override
             public int compare(Mesa o1, Mesa o2) {
                 if (o1.hayPedidoNuevo()) {
@@ -172,7 +182,10 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
             }
         });
 
+        mData.set(0, firstItem); // Restaurar el primer elemento a su posición original
+
         notifyDataSetChanged();
+
 
     }
 
@@ -188,14 +201,28 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
 
 
     @Override
-    public AdapterListaMesas.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+        if(position==0){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_mesa, parent, false);
+        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if(viewType == 0){
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_top_lista_mesas, parent, false);
+                return new AdapterListaMesas.ViewHolder2(view);
+            }else {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_mesa_vertical, parent, false);
+            }
 
         } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_mesa_vertical, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_mesa, parent, false);
 
         }
 
@@ -203,13 +230,17 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
         return new AdapterListaMesas.ViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull AdapterListaMesas.ViewHolder holder, int position) {
-        holder.bindData(mData.get(position), position);
-        this.holder = holder;
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof AdapterListaMesas.ViewHolder){
+            ((AdapterListaMesas.ViewHolder) holder).bindData(mData.get(position),position);
+        }else if(holder instanceof  AdapterListaMesas.ViewHolder2){
+            ((AdapterListaMesas.ViewHolder2) holder).bindData(mData.get(position),position);
+            holder2 = (AdapterListaMesas.ViewHolder2) holder;
+        }
 
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -228,7 +259,11 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
 
 
         void bindData(final Mesa item, int position) {
+            if(position == 0){
+                itemView.getLayoutParams().height=0;
+            }
 
+            System.out.println("elements in array "+mData.size());
             tvNombreMesa.setText(item.getNombre());
             fondoSeleccionada(item.getSeleccionada());
             boolean hayPedidosNuevos = item.hayPedidoNuevo();
@@ -244,7 +279,6 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
 
 
         private void fondoSeleccionada(boolean pBool) {
-
             if (pBool) {
                 cardPedido.setCardBackgroundColor(resources.getColor(R.color.grisClaro, context.getTheme()));
             } else {
@@ -254,7 +288,6 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
         }
 
         private void parpadeoPedido(boolean hayPedidosNuevos) {
-
             if (hayPedidosNuevos && parpadeo) {
                 pedidoSeleccionado.setBackgroundColor(Color.BLACK);
             } else {
@@ -262,6 +295,80 @@ public class AdapterListaMesas extends RecyclerView.Adapter<AdapterListaMesas.Vi
             }
         }
     }
+
+
+    public class ViewHolder2 extends RecyclerView.ViewHolder implements androidx.appcompat.widget.SearchView.OnQueryTextListener {
+
+        TextView nombreDispositivo;
+        CustomSvSearch search;
+
+
+
+        ViewHolder2(View itemView) {
+            super(itemView);
+            nombreDispositivo = itemView.findViewById(R.id.tvNombreDispositivo);
+            search = itemView.findViewById(R.id.svSearchi2);
+
+        }
+
+
+        void bindData(final Mesa item, int position) {
+            nombreDispositivo.setText(item.getNombre());
+            setSearchListeners();
+
+        }
+
+        private void setSearchListeners(){
+
+            search.setOnQueryTextListener(this);
+            ImageView bot = search.findViewById(androidx.appcompat.R.id.search_close_btn);
+
+            bot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    search.setIconified(true);
+                    search.setIconified(true);
+
+
+                }
+            });
+
+            search.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    search.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+                    listener.onSearchClick();
+                }
+            });
+
+            search.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    search.getLayoutParams().width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+
+                    return false;
+                }
+            });
+
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            filtrarPorTexto(newText);
+            return false;
+        }
+
+
+
+    }
+
+
 }
 
 
