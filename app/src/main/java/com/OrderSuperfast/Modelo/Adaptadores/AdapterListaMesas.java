@@ -152,19 +152,20 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void delete() {
 
-        while (mData.size() > 0) {
-            mData.remove(0);
-        }
-        while (Original.size() > 0) {
-            Original.remove(0);
-        }
-
+        mData.clear();
+        Original.clear();
     }
 
-    public void copiarLista2() {
-        mData = new ArrayList<>();
-        mData.addAll(Original);
 
+    public Mesa buscarMesa(String nombre){
+        for(int i = 0; i < mData.size();i++){
+            Mesa m = mData.get(i);
+            String mesaNombre = m.getNombre();
+            if(mesaNombre.equals(nombre)){
+                return m;
+            }
+        }
+        return null;
     }
 
     public void reorganizar() {
@@ -265,6 +266,7 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             System.out.println("elements in array "+mData.size());
             tvNombreMesa.setText(item.getNombre());
+            System.out.println("adapter mesa seleccionada "+item.getNombre()+" "+item.getSeleccionada());
             fondoSeleccionada(item.getSeleccionada());
             boolean hayPedidosNuevos = item.hayPedidoNuevo();
             parpadeoPedido(hayPedidosNuevos);

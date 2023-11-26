@@ -300,7 +300,7 @@ public class ajustes extends VistaGeneral {
 
     private Resources resources;
     private ConstraintLayout layoutCampoSonido, layoutCampoIdioma, layoutCampoImpresora, layoutSonido, layoutIdioma, layoutImpresora;
-    private ConstraintLayout laytMute, layoutVibracon, layoutBack;
+    private ConstraintLayout layoutBack;
     private ConstraintLayout layoutContenido, layoutCamposAjustes, layoutAjustesInfo,layoutConfiguracionAjustes;
     private TextView textCampoSonido, textCampoIdioma, textCampoImpresora;
     private View barraSonido, barraIdioma, barraImpresora;

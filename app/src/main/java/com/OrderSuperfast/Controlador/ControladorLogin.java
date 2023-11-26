@@ -13,6 +13,7 @@ import com.OrderSuperfast.Modelo.Clases.Dispositivo;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
 import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
+import com.OrderSuperfast.Vista.VistaGeneral;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ControladorLogin extends AppCompatActivity {
+public class ControladorLogin extends VistaGeneral {
     private final String urlLogin = "https://app.ordersuperfast.es/android/v1/login/";
     private Context context;
 
@@ -112,7 +113,7 @@ public class ControladorLogin extends AppCompatActivity {
 
                                                 } else if (claveZona.equals("nombre")) {
                                                     if (zona.getString(claveZona).toLowerCase().equals("zona prueba")) {
-                                                        nombreZona = "Comedor 2";
+                                                        nombreZona = zona.getString(claveZona);
                                                     } else {
                                                         nombreZona = zona.getString(claveZona);
                                                     }
@@ -157,6 +158,7 @@ public class ControladorLogin extends AppCompatActivity {
                                     }
                                 }
                                 if (idRest != null && !idRest.equals("")) {
+                                    idRestaurante = idRest;
                                     login(nombre,password,idRest,logoRest,nombreRest,checkboxChecked,zonas,callback);
                                 } else {
                                     callback.onDevolucionFallida(context.getResources().getString(R.string.cuentaIncorrecta));

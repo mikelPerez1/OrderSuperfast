@@ -8,6 +8,8 @@
         <entry key="app/src/main/res/drawable/background_gris.xml" value="0.306" />
         <entry key="app/src/main/res/drawable/background_gris_redondeado_con_borde.xml" value="0.3575" />
         <entry key="app/src/main/res/drawable/background_pedido_mesa.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/background_redondeado_gris_claro_suave.xml" value="0.2445" />
+        <entry key="app/src/main/res/drawable/background_redondo_gris.xml" value="0.2445" />
         <entry key="app/src/main/res/drawable/background_redondo_izq.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/background_redondo_izq_gris.xml" value="0.3575" />
         <entry key="app/src/main/res/drawable/borde.xml" value="0.2735" />
@@ -34,7 +36,7 @@
         <entry key="app/src/main/res/layout/layout_categoria_vertical.xml" value="0.23086789226165028" />
         <entry key="app/src/main/res/layout/layout_mesa.xml" value="0.29157759726378796" />
         <entry key="app/src/main/res/layout/layout_mesa_vertical.xml" value="0.23001282599401454" />
-        <entry key="app/src/main/res/layout/layout_pedido_mesa.xml" value="0.28844926611359284" />
+        <entry key="app/src/main/res/layout/layout_pedido_mesa.xml" value="0.181529924692826" />
         <entry key="app/src/main/res/layout/layout_top_lista.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/layout_top_lista_mesas.xml" value="0.19495510902094912" />
         <entry key="app/src/main/res/layout/layout_zona_vincular.xml" value="0.67" />
@@ -45,7 +47,7 @@
         <entry key="app/src/main/res/layout/popup_devolucion_productos.xml" value="0.20982142857142858" />
         <entry key="app/src/main/res/layout/popup_idiomas.xml" value="0.16171875" />
         <entry key="app/src/main/res/layout/popup_mas_informacion.xml" value="0.13980333475844378" />
-        <entry key="app/src/main/res/layout/popup_modificar_qr.xml" value="0.37777777777777777" />
+        <entry key="app/src/main/res/layout/popup_modificar_qr.xml" value="0.41914722445695896" />
         <entry key="app/src/main/res/layout/productos_take_away.xml" value="0.5" />
       </map>
     </option>

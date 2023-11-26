@@ -115,7 +115,7 @@ public class ControladorEscanerQR {
                 System.out.println(response);
                 try {
                     if(response.getString("status").equals("OK")){
-                        Toast.makeText(myContext, "Changes have been saved", Toast.LENGTH_SHORT).show();
+                        callbackBoolean.onPeticionExitosa(true);
                     }else{
                         //mostrar el error
                         Toast.makeText(myContext, response.getString("details"), Toast.LENGTH_SHORT).show();
@@ -148,6 +148,7 @@ public class ControladorEscanerQR {
         if(!zonaClickada){
             idZona = "NULL";
         }else if(idZonaInicial.equals(idZona)){
+            callbackBoolean.onPeticionExitosa(true);
             return;
         }
         try {
@@ -165,7 +166,7 @@ public class ControladorEscanerQR {
                 System.out.println("respuesta cambiar vinculacion "+response);
                 try {
                     if(response.getString("status").equals("OK")){
-                        Toast.makeText(myContext, "Changes have been saved", Toast.LENGTH_SHORT).show();
+                        callbackBoolean.onPeticionExitosa(true);
                     }else{
                         //mostrar el error
                         Toast.makeText(myContext, response.getString("details"), Toast.LENGTH_SHORT).show();

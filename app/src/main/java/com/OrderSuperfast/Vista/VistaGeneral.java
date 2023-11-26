@@ -22,6 +22,11 @@ public class VistaGeneral extends AppCompatActivity{
 
     private static boolean esMovil = true;
     protected static Zonas zonas = new Zonas();
+    protected static String idRestaurante;
+    protected static String idZona;
+    protected static String nombreZona;
+    protected static String idDisp;
+    protected static String nombreDisp;
 
 
     protected void ponerInsets(ConstraintLayout layout){

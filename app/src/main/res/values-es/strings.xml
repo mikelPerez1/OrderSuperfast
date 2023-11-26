@@ -185,7 +185,7 @@
     <string name="errorDevolucionMayor">Cantidad mayor a la permitida</string>
     <string name="textoTachar">Tachar</string>
     <string name="textoVincularQR_Zona"><![CDATA[<u>Vincular QR a zona</u>]]></string>
-    <string name="editTextHintVinculacion">Nombre del QR actual: %s</string>
+    <string name="editTextHintVinculacion">%s</string>
 
 
 </resources>

@@ -45,7 +45,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/borde"
                     android:padding="15dp"
-                    android:text="@string/textoConfirmar"
+                    android:text="@string/guardarCambios"
                     android:textSize="@dimen/text_size_medium2_takeAway"
                     app:backgroundTint="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -56,6 +56,8 @@
                     android:id="@+id/constraintLayout64"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -134,33 +136,35 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout41"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout64"
-                    tools:layout_editor_absoluteX="15dp">
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout64"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout64"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout64">
 
                     <TextView
                         android:id="@+id/textView93"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Nombre del QR nuevo: "
+                        android:text="Ubicación: "
                         android:textColor="@color/black"
-
-                        android:visibility="gone"
+                        android:textSize="@dimen/text_size_medium2_takeAway"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.OrderSuperfast.Modelo.Clases.CustomEditText
                         android:id="@+id/editNombreQr"
-                        android:layout_width="wrap_content"
+                        android:layout_width="210dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="14dp"
                         android:ems="10"
                         android:hint="Nuevo nombre del QR"
                         android:inputType="textPersonName"
+                        android:padding="7dp"
                         app:layout_constraintStart_toEndOf="@+id/textView93"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,10 @@
 package com.OrderSuperfast.Modelo.Adaptadores;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +15,13 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +54,7 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         void onItemClick(ListElement item, int position);
         void reembolso(ListElement item);
         void cancelar(ListElement item,int position);
+        void cambiarEstadoPedido(ListElement item);
     }
 
     public interface reembolsarPedidoListener{
@@ -116,10 +124,14 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvNumPedido, tvNombreCliente, tvInstrucciones;
-        RecyclerView recyclerProductosPedido;
+        private TextView tvNumPedido, tvNombreCliente, tvInstrucciones;
+        private RecyclerView recyclerProductosPedido;
+        private CardView card;
         private AdapterProductosTakeAway adapterProductos = null;
-        private ImageView imgPedidoCancelar, imgPedidoReembolsar, imgLlamar;
+        private ImageView imgPedidoCancelar, imgPedidoReembolsar, imgLlamar,arrowUp;
+        private Button botonSiguienteEstado;
+        private ConstraintLayout desplegableFlecha,layoutCancelar,layoutDevolver,layoutReiniciarPedido;
+        private boolean onAnimation = false;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -130,6 +142,13 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             imgPedidoCancelar = itemView.findViewById(R.id.imgPedidoCancelar);
             imgPedidoReembolsar = itemView.findViewById(R.id.imgPedidoReembolsar);
             imgLlamar = itemView.findViewById(R.id.imgLlamar);
+            card = itemView.findViewById(R.id.card);
+            botonSiguienteEstado = itemView.findViewById(R.id.botonSiguienteEstado);
+            arrowUp = itemView.findViewById(R.id.arrowUp);
+            desplegableFlecha = itemView.findViewById(R.id.desplegable);
+            layoutCancelar = itemView.findViewById(R.id.layoutCancelar);
+            layoutDevolver = itemView.findViewById(R.id.layoutRefund);
+            layoutReiniciarPedido = itemView.findViewById(R.id.layoutRetractarPedido);
 
         }
 
@@ -147,14 +166,40 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 tvInstrucciones.setText(instrucciones);
             }
 
+            if(position == 0){
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+                params.setMarginStart((int) (20 * resources.getDisplayMetrics().density));
+                card.setLayoutParams(params);
+
+            }else{
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+                params.setMarginStart((int) (10 * resources.getDisplayMetrics().density));
+                card.setLayoutParams(params);
+            }
+
+            if(position == mData.size()-1){
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+                params.setMarginEnd((int) (20 * resources.getDisplayMetrics().density));
+                card.setLayoutParams(params);
+            }else{
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+                params.setMarginEnd((int) (10 * resources.getDisplayMetrics().density));
+                card.setLayoutParams(params);
+            }
+
             String tipoCliente = item.getCliente().getTipo();
             if(tipoCliente.equalsIgnoreCase("invitado")){
                 imgLlamar.setVisibility(View.GONE);
             }else {
-                imgLlamar.setVisibility(View.VISIBLE);
+                imgLlamar.setVisibility(View.GONE);
             }
 
             ArrayList<ProductoTakeAway> listaProductos = getProductosDelPedido(item.getListaProductos().getLista());
+
+            for(int i = 0; i < listaProductos.size();i++){
+                ProductoTakeAway producto = listaProductos.get(i);
+                System.out.println("Producto de listaProductos pedido "+item.getPedido()+" "+producto.getProducto());
+            }
 
             //prueba para ver como se vería con mas productos
             /*
@@ -166,6 +211,30 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             listaProductos.add(0, new ProductoTakeAway(4, "Hamburguesa moruna El Buho Rojo (mejor hamburguesa de españa) \n + Bacon  ", 2));
 
              */
+
+
+            botonSiguienteEstado.setText(estadoSiguiente(item.getStatus()));
+            if(item.getStatus().equals(resources.getString(R.string.botonListo)) || item.getStatus().equals(resources.getString(R.string.botonCancelado))){
+                botonSiguienteEstado.setVisibility(View.GONE);
+            }else{
+                botonSiguienteEstado.setVisibility(View.VISIBLE);
+            }
+            botonSiguienteEstado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.cambiarEstadoPedido(item);
+                }
+            });
+
+
+            arrowUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    animacionDesplegableFlecha(1);
+                }
+            });
+
+
             adapterProductos = new AdapterProductosTakeAway(listaProductos, (Activity) context, new AdapterProductosTakeAway.OnItemClickListener() {
                 @Override
                 public void onItemClick(ProductoTakeAway itemProd, int position) {
@@ -279,6 +348,78 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 listaProductosTakeAway.add(productoParaArray);
             }
             return listaProductosTakeAway;
+
+        }
+
+
+        private String estadoSiguiente(String est) {
+
+            if (est.equals("PENDIENTE") || est.equals(resources.getString(R.string.botonPendiente))) {
+                return "ACEPTADO";
+            } else if (est.equals("ACEPTADO") || est.equals(resources.getString(R.string.botonAceptado))) {
+                return "LISTO";
+            } else {
+                return "";
+            }
+
+
+        }
+
+
+        private void animacionDesplegableFlecha(int Flag){
+
+            System.out.println("funcion animacion adaptador");
+
+            desplegableFlecha.setPivotX(desplegableFlecha.getWidth());
+            desplegableFlecha.setPivotY(desplegableFlecha.getHeight());
+
+
+            //overLayoutInfoCliente.setVisibility(View.VISIBLE);
+            ValueAnimator anim = ValueAnimator.ofInt(arrowUp.getHeight(), desplegableFlecha.getHeight());
+            anim.setDuration(150); // Duración de la animación en milisegundos
+
+            anim.addUpdateListener(animation -> {
+                // Obtener el nuevo valor de altura en cada fotograma y aplicarlo al elemento
+                int newHeight = (int) animation.getAnimatedValue();
+                desplegableFlecha.getLayoutParams().height = newHeight;
+                desplegableFlecha.requestLayout(); // Solicitar que se vuelva a dibujar el elemento con la nueva altura
+            });
+
+            ValueAnimator anim2 = ValueAnimator.ofInt(arrowUp.getWidth(), desplegableFlecha.getWidth());
+            anim2.setDuration(150); // Duración de la animación en milisegundos
+
+            anim2.addUpdateListener(animation -> {
+                // Obtener el nuevo valor de altura en cada fotograma y aplicarlo al elemento
+                int newWidth = (int) animation.getAnimatedValue();
+                desplegableFlecha.getLayoutParams().width = newWidth;
+                desplegableFlecha.requestLayout(); // Solicitar que se vuelva a dibujar el elemento con la nueva altura
+            });
+
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(anim, anim2);
+            animatorSet.setDuration(500);
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    System.out.println("animation end");
+                    onAnimation = false;
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    System.out.println("animation Start");
+                    onAnimation = true;
+                    desplegableFlecha.setVisibility(View.VISIBLE);
+                    desplegableFlecha.setBackground(resources.getDrawable(R.drawable.borde_gris_claro,context.getTheme()));
+                    //desplegableFlecha.setBackgroundColor(resources.getColor(R.color.grisClaroSuave,context.getTheme()));
+                    super.onAnimationStart(animation);
+                }
+            });
+            animatorSet.start();
+
+
 
         }
 
