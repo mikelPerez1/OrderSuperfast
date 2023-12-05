@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +19,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -32,10 +32,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationRequest;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,7 +46,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -67,7 +63,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,7 +71,6 @@ import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Clases.Importe;
 import com.OrderSuperfast.Modelo.Clases.ListTakeAway;
-import com.OrderSuperfast.Map;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevolucionProductos;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterProductosTakeAway;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterTakeAway2;
@@ -97,14 +91,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
+
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 
 import org.json.JSONArray;
@@ -137,7 +124,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class TakeAway extends VistaGeneral implements OnMapReadyCallback, SearchView.OnQueryTextListener, DevolucionCallback {
+public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextListener, DevolucionCallback {
 
     private static final String urlDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/setCantidad/";
     private static final String urlDatosDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/getCantidad/";
@@ -206,8 +193,8 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
 
 
     /////// atributos relacionados con google maps y obtener la ubicacion/tiempo
-    private GoogleMap googleMap;
-    private MapView mapView;
+    // private GoogleMap googleMap;
+    // private MapView mapView;
     private boolean tieneReparto;
     private Location location;
     private double latitud = 0, longitud = 0;
@@ -281,7 +268,7 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     System.out.println("map origin address 1");
-                    peticionUbicacionActual();
+                    //peticionUbicacionActual();
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
@@ -527,7 +514,6 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
                     if (constraintCuerpoNoti != null && constraintCuerpoNoti.getVisibility() == View.VISIBLE) {
                         imageViewExpandir.callOnClick();
                     }
-                    crearPopupClickado(item);
                 } else {
 
                     adapterTakeAway.expandLessAll(item);
@@ -620,7 +606,7 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
         ajustesTakeAway.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               
+
             }
         });
 
@@ -765,6 +751,7 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
 
     }
 
+    /*
     private void crearSolicitudUbicacion2() {
         LocationRequest.Builder locationRequest = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
@@ -819,7 +806,7 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
                             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(loc, 17);
                             googleMap.moveCamera(cameraUpdate);
 
-                             */
+
 
                             SharedPreferences preferenciasMapa = getSharedPreferences("mapa", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editorMapa = preferenciasMapa.edit();
@@ -856,6 +843,8 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
             fusedLocationClient.requestLocationUpdates(request, locationCallback, null);
         }
     }
+
+     */
 
 
     public String getDistance(final double lat1, final double lon1, final double lat2, final double lon2) {
@@ -971,7 +960,6 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
                     if (constraintCuerpoNoti != null && constraintCuerpoNoti.getVisibility() == View.VISIBLE) {
                         imageViewExpandir.callOnClick();
                     }
-                    crearPopupClickado(item);
                 } else {
 
                     adapterTakeAway.expandLessAll(item);
@@ -1054,7 +1042,6 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
             }
 
         }
-        crearDialogTakeAway(false);
 
 
         /*
@@ -1080,81 +1067,6 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
 
     }
 
-    private void alertar() {
-
-        if (popupAlerta == null || !popupAlerta.isShowing()) {
-
-
-            root = findViewById(R.id.rootLayout);
-            View popupView = getLayoutInflater().inflate(R.layout.notificacion_take_away_simple, null);
-
-
-            popupAlerta = new PopupWindow(popupView, 800, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-            ImageView botonCerrar = popupView.findViewById(R.id.imageViewCerrar);
-            TextView textViewNotiSimple = popupView.findViewById(R.id.textViewNotiSimple);
-
-            textViewNotiSimple.setText(resources.getString(R.string.alertaTakeAway));
-
-            botonCerrar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupAlerta.dismiss();
-                }
-            });
-
-            popupView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            prevX = (int) event.getRawX();
-                            offsetX = popupAlerta.getContentView().getLeft();
-                            break;
-
-                        case MotionEvent.ACTION_MOVE:
-                            int currX = (int) event.getRawX();
-                            int dx = prevX - currX;
-                            int newX = popupAlerta.getContentView().getLeft() + dx;
-                            if (newX > offsetX) {
-                                newX = offsetX; // si la nueva posición está a la izquierda de la posición original, actualiza la posición a su posición original
-                            }
-                            double d = 1000 - ((offsetX - newX));
-                            System.out.println("alpha " + d);
-                            popupView.setAlpha((float) d / 1000);
-
-                            popupAlerta.update(newX, 0, -1, -1, true);
-                            break;
-
-                        case MotionEvent.ACTION_UP:
-                            int totalMoved = (int) event.getRawX() - prevX;
-                            if (totalMoved > threshold) {
-                                popupAlerta.dismiss();
-
-                            }
-                            break;
-
-                        default:
-                            return false;
-                    }
-
-                    return true;
-                }
-            });
-
-
-            popupAlerta.setAnimationStyle(androidx.appcompat.R.style.Animation_AppCompat_Dialog);
-            popupAlerta.setOutsideTouchable(false);
-            int[] location = new int[2];
-            root.getLocationOnScreen(location);
-            int x = popupView.getWidth();
-            int y = location[1];
-            popupAlerta.showAtLocation(root, Gravity.TOP | Gravity.RIGHT, 35, 0);
-
-
-        }
-
-
-    }
 
     private void borrarLista(ArrayList array) {
 
@@ -1197,409 +1109,6 @@ public class TakeAway extends VistaGeneral implements OnMapReadyCallback, Search
         }
     }
 
-    private void crearPopupClickado(TakeAwayPedido p) {
-        pedido = p;
-        //root = findViewById(R.id.rootLayout);
-        System.out.println("entra en crearPopupClicado");
-        if (colaTakeAway.size() <= 0) {
-            if (popupWindow != null) {
-                popupWindow.dismiss();
-            }
-            popupWindow = null;
-        }
-        for (int j = 0; j < colaTakeAway.size(); j++) {
-            System.out.println("Falta2 " + colaTakeAway.get(j).getNumOrden());
-        }
-        View popupView2 = getLayoutInflater().inflate(R.layout.notificacion_take_away, null);
-        for (int i = 0; i < colaTakeAway.size(); i++) {
-            System.out.println("Falta dialog size " + colaTakeAway.size());
-            TakeAwayPedido pedidoNoti = colaTakeAway.get(i);
-            System.out.println("Falta dialog " + pedidoNoti.getNumOrden() + " " + p.getNumOrden());
-            if (pedidoNoti.getNumOrden() == p.getNumOrden()) {
-                colaTakeAway.remove(i);
-                if (popupWindow != null && popupWindow.isShowing() && i == 0) {
-                    System.out.println("Falta dialog size entra " + colaTakeAway.size());
-                    popupWindow.dismiss();
-                    notificacionActiva = false;
-                    crearSiguienteDialogSiFalta();
-                }
-
-            }
-        }
-        pedido = p;
-
-// Crear una instancia de PopupWindow
-
-        /////////
-
-
-        /////////////////////
-
-
-        popupClick = new PopupWindow(popupView2, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-
-
-        popupView2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        prevX = (int) event.getRawX();
-                        offsetX = popupClick.getContentView().getLeft();
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        int currX = (int) event.getRawX();
-                        int dx = currX - prevX;
-                        int newX = popupClick.getContentView().getLeft() + dx;
-                        if (newX < offsetX) {
-                            newX = offsetX; // si la nueva posición está a la izquierda de la posición original, actualiza la posición a su posición original
-                        }
-
-                        double d = 1000 - (Math.abs(offsetX - newX));
-                        System.out.println("alpha " + d);
-                        popupView2.setAlpha((float) d / 1000);
-
-
-                        //  double d = ((double) (newX - offsetX) / 1000) + 1;
-                        // System.out.println("alpha " + d);
-                        //popupView.setAlpha((float) d);
-
-                        popupClick.update(newX, 0, -1, -1, true);
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        float totalMoved = event.getRawX() - prevX;
-                        if (totalMoved > threshold) {
-                            popupClick.dismiss();
-
-                        } else {
-                            popupClick.update(0, 0, -1, -1, true);
-                            popupView2.setAlpha(1f);
-
-                        }
-                        break;
-
-                    default:
-                        return false;
-                }
-
-                return true;
-            }
-        });
-
-
-        ImageView tiempoMenos = popupView2.findViewById(R.id.takeAwayNotificationRemoveTime);
-        ImageView tiempoMas = popupView2.findViewById(R.id.takeAwayNotificationAddTime);
-        ImageView closeNoti2 = popupView2.findViewById(R.id.closeNoti);
-        TextView txtTiempo = popupView2.findViewById(R.id.textViewTiempo);
-        TextView txtRechazar = popupView2.findViewById(R.id.textRechazar);
-        Button botonAceptar = popupView2.findViewById(R.id.botonAceptar);
-        TextView nombreCliente = popupView2.findViewById(R.id.nombreCliente);
-        TextView direccion = popupView2.findViewById(R.id.textDireccion);
-        TextView comentarios = popupView2.findViewById(R.id.textViewComentarios);
-        TextView tipoCliente = popupView2.findViewById(R.id.tipoCliente);
-        TextView faltaPagar = popupView2.findViewById(R.id.estaPagado);
-        TextView textViewTop = popupView2.findViewById(R.id.textViewTop);
-        ScrollView scroller = popupView2.findViewById(R.id.scrollNoti);
-        CardView cardTipoPedido = popupView2.findViewById(R.id.cardTipoCliente);
-        ConstraintLayout layoutTiempoDelivery = popupView2.findViewById(R.id.constraintLayoutTiempoDelivery);
-        TextView textViewEsTakeAway = popupView2.findViewById(R.id.textViewEsTakeAway);
-        TextView horaProgramada = popupView2.findViewById(R.id.textViewHoraProgramada);
-
-        if (pedido.getDatosTakeAway().getEsDelivery()) {
-            textViewEsTakeAway.setVisibility(View.VISIBLE);
-        } else {
-            textViewEsTakeAway.setVisibility(View.GONE);
-        }
-
-        if (tieneReparto && !pedido.getDatosTakeAway().getTipo().equals("programado")) {
-            layoutTiempoDelivery.setVisibility(View.VISIBLE);
-        }
-
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            int dp = (int) resources.getDimension(R.dimen.scrollHeight);
-            if (dp > 10) {
-                scroller.getLayoutParams().height = dp;
-            }
-        }
-
-        ImageView imageViewExpandir2 = popupView2.findViewById(R.id.imageViewExpandir);
-        ConstraintLayout constraintCuerpoNoti2 = popupView2.findViewById(R.id.constraintCuerpoNoti);
-        ConstraintLayout constraintTopNoti2 = popupView2.findViewById(R.id.constraintInfoNuevaNoti);
-
-
-  /*
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scroller.getLayoutParams();
-
-            if(resources.getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE){
-                layoutParams.matchConstraintMaxHeight = (int) resources.getDimension(R.dimen.maxHeightScrollview);
-            }else{
-                layoutParams.matchConstraintMaxHeight = (int) resources.getDimension(R.dimen.maxHeightScrollviewVertical);
-
-            }
-constraintLayout.layoutPara
-
-            scroller.setLayoutParams(layoutParams);
-   */
-        RecyclerView recyclerProd = popupView2.findViewById(R.id.recyclerComanda);
-
-        nombreCliente.setText(pedido.getDatosTakeAway().getNombre() + " " + pedido.getDatosTakeAway().getPrimer_apellido() + " " + pedido.getDatosTakeAway().getSegundo_apellido());
-        if (pedido.getDatosTakeAway().getDireccion().equals("")) {
-
-            direccion.setVisibility(View.GONE);
-        } else {
-            direccion.setText(modifyDireccion(pedido.getDatosTakeAway().getDireccion()));
-            direccion.setVisibility(View.VISIBLE);
-
-        }
-
-        textViewTop.setText("Nº pedido: " + pedido.getNumOrden());
-        comentarios.setText(pedido.getInstruccionesGenerales().isEmpty() ? resources.getString(R.string.noInstruccionesEspeciales) : pedido.getInstruccionesGenerales());
-        String tipo = cambiarIdiomaTipoCliente(pedido.getCliente().getTipo());
-
-        String[] strings = new String[2];
-        strings[0] = String.valueOf(tipo.charAt(0));
-
-        strings[1] = tipo.substring(1, tipo.length());
-
-        tipoCliente.setText(strings[0].toUpperCase() + strings[1]);
-        if (pedido.getDatosTakeAway().getTipo().equals("programado")) {
-            cardTipoPedido.setCardBackgroundColor(resources.getColor(R.color.light_blue_translucido, activity.getTheme()));
-            faltaPagar.setTextColor(resources.getColor(R.color.blue2, activity.getTheme()));
-
-            String fecha = cambiarFechaPorDia(pedido.getDatosTakeAway().getFecha_recogida());
-            fecha += " " + pedido.getDatosTakeAway().getTramo_inicio() + " - " + pedido.getDatosTakeAway().getTramo_fin();
-            horaProgramada.setText(fecha);
-            horaProgramada.setVisibility(View.VISIBLE);
-
-        } else {
-            cardTipoPedido.setCardBackgroundColor(resources.getColor(R.color.amarilloTranslucido, activity.getTheme()));
-            faltaPagar.setTextColor(resources.getColor(R.color.colorcancelado, activity.getTheme()));
-            horaProgramada.setVisibility(View.INVISIBLE);
-        }
-        faltaPagar.setText(cambiarIdiomaTipoPedido(pedido.getDatosTakeAway().getTipo()));
-
-        recyclerProd.setHasFixedSize(true);
-        recyclerProd.setLayoutManager(new LinearLayoutManager(this));
-        TextView totalPagarTop = popupView2.findViewById(R.id.totalPagarTop);
-        ArrayList<ProductoTakeAway> arrayProductos = new ArrayList<>();
-        ArrayList<ProductoPedido> listaProd = pedido.getListaProductos();
-        ArrayList<Opcion> listaOpciones = new ArrayList<>();
-        for (int i = 0; i < listaProd.size(); i++) {
-            listaOpciones = new ArrayList<>();
-            ProductoPedido pedido;
-            pedido = listaProd.get(i);
-            String producto = pedido.getNombre();
-            String cantidad = pedido.getCantidad();
-            listaOpciones = pedido.getListaOpciones();
-            System.out.println("asd " + producto + " " + cantidad);
-            for (int j = 0; j < listaOpciones.size(); j++) {
-                Opcion opc = listaOpciones.get(j);
-                producto += "\n + " + opc.getNombreElemento();
-                System.out.println("opciones de " + pedido.getNombre());
-            }
-
-            ProductoTakeAway productoParaArray = new ProductoTakeAway(Integer.valueOf(cantidad), producto, 0);
-            arrayProductos.add(productoParaArray);
-        }
-
-        /*
-        try {
-            JSONArray productosJson = pruebaProductosNoti;
-            double precio = 0;
-            double precioExtras = 0;
-            String nombreProducto = "";
-            int cantidadProducto;
-            JSONArray opciones;
-            String nombreOpciones = "";
-            JSONObject opcion;
-            JSONObject productoActual;
-            int numPlatos = 0;
-
-            for (int i = 0; i < productosJson.length(); i++) {
-                productoActual = productosJson.getJSONObject(i);
-                cantidadProducto = Integer.valueOf(productoActual.getString("cantidad"));
-                nombreProducto = productoActual.getString("nombre");
-                opciones = productoActual.getJSONArray("opciones");
-                precio = productoActual.getDouble("precio");
-                nombreOpciones = "";
-                numPlatos += 1 * cantidadProducto;
-                precioExtras = 0;
-                for (int j = 0; j < opciones.length(); j++) {
-                    opcion = opciones.getJSONObject(j);
-                    nombreOpciones += "\n + " + opcion.getString("nombre");
-                    if (opcion.getString("tipo").equals("extra")) {
-                        precioExtras += opcion.getDouble("precio");
-
-                    }
-                    if (opcion.getString("tipo").equals("fijo")) {
-                        precio = opcion.getDouble("precio");
-                    }
-                }
-                nombreProducto += nombreOpciones;
-                precio += precioExtras;
-
-                totalPagarTop.setText(precio + "€");
-
-
-                ProductoTakeAway productoParaArray = new ProductoTakeAway(cantidadProducto, nombreProducto, precio);
-                arrayProductos.add(productoParaArray);
-
-            }
-        } catch (JSONException e) {
-
-        }
-
- */
-
-        if (pedido.getBloqueado()) {
-            botonAceptar.setVisibility(View.GONE);
-            txtRechazar.setVisibility(View.GONE);
-        }
-
-        System.out.println("Muchos productos " + arrayProductos.size());
-
-
-        AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this, new AdapterProductosTakeAway.OnItemClickListener() {
-            @Override
-            public void onItemClick(ProductoTakeAway item, int position) {
-
-            }
-        });
-
-        recyclerProd.setAdapter(adapterProductos);
-
-
-        tiempoMenos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int tiempo = Integer.valueOf(txtTiempo.getText().toString());
-                tiempo--;
-                txtTiempo.setText(String.valueOf(tiempo));
-            }
-        });
-
-        tiempoMas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int tiempo = Integer.valueOf(txtTiempo.getText().toString());
-                tiempo++;
-                txtTiempo.setText(String.valueOf(tiempo));
-            }
-        });
-
-        txtRechazar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //pedido.setEstado("CANCELADO");
-                crearDialogCancelar(pedido, popupClick);
-
-
-                for (int i = 0; i < colaTakeAway.size(); i++) {
-                    TakeAwayPedido p1 = colaTakeAway.get(i);
-                    if (p1.getNumOrden() == pedido.getNumOrden()) {
-                        colaTakeAway.remove(i);
-                    }
-                }
-
-                //peticionGetDatosDevolucion(pedido.getNumOrden());
-
-
-                //   crearSiguienteDialogSiFalta();
-
-                    /*
-                    try {
-                        guardarListas();
-                    } catch (JSONException e) {
-                        System.out.println("error guardando listas");
-                        e.printStackTrace();
-                    }
-
-                     */
-
-            }
-        });
-
-        botonAceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pedido.getDatosTakeAway().getEsDelivery() && !pedido.getDatosTakeAway().getTipo().equals("programado")) {
-                    String arrayString = pruebaProductosNoti.toString();
-                    String time = txtTiempo.getText().toString();
-                    pedido.getDatosTakeAway().setTiempoProducirComida(Integer.valueOf(time));
-                }
-
-                //  pedido.setTiempo(Integer.valueOf(time));
-                //removeElementLista(pedido.getNumOrden(), listaPendientes);
-                // pedido.setEstado("ACEPTADO");
-                pedidoAceptado = pedido;
-
-                /*
-
-                if(pedido.getEsDelivery()){
-                    String address = pedido.getDireccion();
-                    getDestination(address);
-                }
-                 */
-                //quitar
-                String address = "Iparragirre Etorbidea,75A, Santurtzi";
-                if (tieneReparto) {
-                    getDestination(pedido.getDatosTakeAway().getDireccion(), pedido.getNumOrden());
-                } else {
-                    cambiarEstadoPedido(pedido, estado_aceptado);
-                }
-                /////
-                //pedido.setTiempoProducirComida(Integer.valueOf(time));
-
-                //listaPreparacion.add(pedido);
-                //mandarImprimir(pedido);
-
-                //  rehacerListaPedidos(estadoActual);
-                /*
-                comprobarNumPedidosListas();
-                ordenarSegunFecha(listaPedidosTotales);
-                actualizarListaPedidos();
-
-                 */
-                popupClick.dismiss();
-                notificacionActiva = false;
-                // agregarElementoALista(pedido, "listaPendientes");
-
-                //pedido = null;
-
-                crearSiguienteDialogSiFalta();
-
-                /*
-                try {
-                    guardarListas();
-                } catch (JSONException e) {
-                    System.out.println("error guardando listas");
-                    e.printStackTrace();
-                }
-
-                 */
-            }
-        });
-
-
-// Configurar la posición y el tamaño del PopupWindow
-        popupClick.setAnimationStyle(androidx.appcompat.R.style.Animation_AppCompat_Dialog);
-        popupClick.setOutsideTouchable(false);
-        int[] location = new int[2];
-        root.getLocationOnScreen(location);
-        int x = popupView2.getWidth();
-        int y = location[1];
-        popupClick.showAtLocation(root, Gravity.CENTER, 0, 0);
-
-        constraintCuerpoNoti2.setVisibility(View.VISIBLE);
-        closeNoti2.setVisibility(View.GONE);
-        constraintTopNoti2.setVisibility(View.GONE);
-        imageViewExpandir2.setImageDrawable(getResources().getDrawable(R.drawable.expandless));
-        imageViewExpandir2.setVisibility(View.GONE);
-
-
-    }
 
     private String cambiarIdiomaTipoCliente(String tipo) {
         if (tipo.equals("cliente")) {
@@ -1619,371 +1128,6 @@ constraintLayout.layoutPara
 
     }
 
-
-    private void crearDialogTakeAway(boolean clickado) {
-
-
-        if (!notificacionActiva) {
-            if (colaTakeAway.size() > 0) {
-                pedido = colaTakeAway.get(0);
-                notificacionActiva = true;
-                View popupView = getLayoutInflater().inflate(R.layout.notificacion_take_away, null);
-
-// Crear una instancia de PopupWindow
-
-                /////////
-
-
-                /////////////////////
-
-
-                popupWindow = new PopupWindow(popupView, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                popupView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                prevX = (int) event.getRawX();
-                                offsetX = popupWindow.getContentView().getLeft();
-                                break;
-
-                            case MotionEvent.ACTION_MOVE:
-                                int currX = (int) event.getRawX();
-                                int dx = currX - prevX;
-                                int newX = popupWindow.getContentView().getLeft() + dx;
-                                if (newX < offsetX) {
-                                    newX = offsetX; // si la nueva posición está a la izquierda de la posición original, actualiza la posición a su posición original
-                                }
-
-                                double d = 1000 - (Math.abs(offsetX - newX));
-                                System.out.println("alpha " + d);
-                                popupView.setAlpha((float) d / 1000);
-
-
-                                //  double d = ((double) (newX - offsetX) / 1000) + 1;
-                                // System.out.println("alpha " + d);
-                                //popupView.setAlcrearpha((float) d);
-
-                                if (constraintCuerpoNoti.getVisibility() == View.VISIBLE) {
-                                    popupWindow.update(newX, 0, -1, -1, true);
-                                }
-                                break;
-
-                            case MotionEvent.ACTION_UP:
-
-                                float totalMoved = event.getRawX() - prevX;
-                                if (totalMoved > threshold) {
-                                    popupWindow.dismiss();
-                                    if (colaTakeAway.size() > 0) {
-                                        colaTakeAway.remove(0);
-                                    }
-                                    notificacionActiva = false;
-                                    pedido = null;
-                                    crearSiguienteDialogSiFalta();
-                                } else {
-                                    popupWindow.update(0, 0, -1, -1, true);
-                                    popupView.setAlpha(1f);
-
-                                }
-                                break;
-
-                            default:
-                                return false;
-                        }
-
-                        return true;
-                    }
-                });
-
-
-                ImageView tiempoMenos = popupView.findViewById(R.id.takeAwayNotificationRemoveTime);
-                ImageView tiempoMas = popupView.findViewById(R.id.takeAwayNotificationAddTime);
-                ImageView closeNoti = popupView.findViewById(R.id.closeNoti);
-                TextView txtTiempo = popupView.findViewById(R.id.textViewTiempo);
-                TextView txtRechazar = popupView.findViewById(R.id.textRechazar);
-                Button botonAceptar = popupView.findViewById(R.id.botonAceptar);
-                TextView nombreCliente = popupView.findViewById(R.id.nombreCliente);
-                TextView direccion = popupView.findViewById(R.id.textDireccion);
-                TextView comentarios = popupView.findViewById(R.id.textViewComentarios);
-                TextView tipoCliente = popupView.findViewById(R.id.tipoCliente);
-                TextView faltaPagar = popupView.findViewById(R.id.estaPagado);
-                TextView textViewTop = popupView.findViewById(R.id.textViewTop);
-                ScrollView scroller = popupView.findViewById(R.id.scrollNoti);
-                CardView cardTipoPedido = popupView.findViewById(R.id.cardTipoCliente);
-                ConstraintLayout layoutTiempoDelivery = popupView.findViewById(R.id.constraintLayoutTiempoDelivery);
-                TextView horaProgramada = popupView.findViewById(R.id.textViewHoraProgramada);
-                TextView textViewEsTakeAway = popupView.findViewById(R.id.textViewEsTakeAway);
-
-                if (pedido.getDatosTakeAway().getEsDelivery()) {
-                    textViewEsTakeAway.setVisibility(View.VISIBLE);
-                } else {
-                    textViewEsTakeAway.setVisibility(View.GONE);
-                }
-
-                if (tieneReparto) {
-                    layoutTiempoDelivery.setVisibility(View.VISIBLE);
-                }
-
-                if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    int dp = (int) resources.getDimension(R.dimen.scrollHeight);
-                    if (dp > 10) {
-                        scroller.getLayoutParams().height = dp;
-                    }
-                }
-
-                imageViewExpandir = popupView.findViewById(R.id.imageViewExpandir);
-                constraintCuerpoNoti = popupView.findViewById(R.id.constraintCuerpoNoti);
-                constraintTopNoti = popupView.findViewById(R.id.constraintInfoNuevaNoti);
-
-
-                RecyclerView recyclerProd = popupView.findViewById(R.id.recyclerComanda);
-
-                nombreCliente.setText(pedido.getDatosTakeAway().getNombre() + " " + pedido.getDatosTakeAway().getPrimer_apellido() + " " + pedido.getDatosTakeAway().getSegundo_apellido());
-                if (pedido.getDatosTakeAway().getDireccion().equals("")) {
-                    direccion.setVisibility(View.GONE);
-                } else {
-                    direccion.setText(modifyDireccion(pedido.getDatosTakeAway().getDireccion()));
-                    direccion.setVisibility(View.VISIBLE);
-
-                }
-                textViewTop.setText("Nº pedido: " + pedido.getNumOrden());
-                comentarios.setText(pedido.getInstruccionesGenerales().isEmpty() ? resources.getString(R.string.noInstruccionesEspeciales) : pedido.getInstruccionesGenerales());
-                String tipo = cambiarIdiomaTipoCliente(pedido.getCliente().getTipo());
-                String[] strings = new String[2];
-                strings[0] = String.valueOf(tipo.charAt(0));
-
-                strings[1] = tipo.substring(1, tipo.length());
-
-                tipoCliente.setText(strings[0].toUpperCase() + strings[1]);
-                faltaPagar.setText(cambiarIdiomaTipoPedido(pedido.getDatosTakeAway().getTipo()));
-                if (pedido.getDatosTakeAway().getTipo().equals("programado")) {
-                    cardTipoPedido.setCardBackgroundColor(resources.getColor(R.color.light_blue_translucido, activity.getTheme()));
-                    faltaPagar.setTextColor(resources.getColor(R.color.blue2, activity.getTheme()));
-
-                    String fecha = cambiarFechaPorDia(pedido.getDatosTakeAway().getFecha_recogida());
-                    fecha += " " + pedido.getDatosTakeAway().getTramo_inicio() + " - " + pedido.getDatosTakeAway().getTramo_fin();
-                    horaProgramada.setText(fecha);
-                    horaProgramada.setVisibility(View.VISIBLE);
-
-                } else {
-                    cardTipoPedido.setCardBackgroundColor(resources.getColor(R.color.amarilloTranslucido, activity.getTheme()));
-                    faltaPagar.setTextColor(resources.getColor(R.color.colorcancelado, activity.getTheme()));
-                }
-
-                if (pedido.getBloqueado()) {
-                    botonAceptar.setVisibility(View.GONE);
-                    txtRechazar.setVisibility(View.GONE);
-                }
-
-                recyclerProd.setHasFixedSize(true);
-                recyclerProd.setLayoutManager(new LinearLayoutManager(this));
-                TextView totalPagarTop = popupView.findViewById(R.id.totalPagarTop);
-                ArrayList<ProductoTakeAway> arrayProductos = new ArrayList<>();
-                ArrayList<ProductoPedido> listaProd = pedido.getListaProductos();
-                for (int i = 0; i < listaProd.size(); i++) {
-                    ProductoPedido pedido;
-                    pedido = listaProd.get(i);
-                    String producto = pedido.getNombre();
-                    String cantidad = pedido.getCantidad();
-                    ArrayList<Opcion> listaOpciones = pedido.getListaOpciones();
-                    System.out.println("asd " + producto + " " + cantidad);
-                    for (int j = 0; j < listaOpciones.size(); j++) {
-                        Opcion opc = listaOpciones.get(j);
-                        producto += "\n + " + opc.getNombreElemento();
-                    }
-
-                    ProductoTakeAway productoParaArray = new ProductoTakeAway(Integer.valueOf(cantidad), producto, 0);
-                    arrayProductos.add(productoParaArray);
-                }
-
-
-                System.out.println("Muchos productos " + arrayProductos.size());
-
-
-                AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this, new AdapterProductosTakeAway.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(ProductoTakeAway item, int position) {
-
-                    }
-                });
-                recyclerProd.setAdapter(adapterProductos);
-
-
-                imageViewExpandir.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (constraintCuerpoNoti.getVisibility() == View.GONE) {
-                            if (popupClick != null && popupClick.isShowing()) {
-                                popupClick.dismiss();
-                            }
-                            popupWindow.dismiss();
-
-
-                            // popupWindow.setOutsideTouchable(false);
-                            //int[] location = new int[2];
-                            //root.getLocationOnScreen(location);
-                            popupWindow.showAtLocation(root, Gravity.CENTER, 0, 0);
-
-                            constraintCuerpoNoti.setVisibility(View.VISIBLE);
-                            closeNoti.setVisibility(View.GONE);
-                            constraintTopNoti.setVisibility(View.GONE);
-                            imageViewExpandir.setImageDrawable(getResources().getDrawable(R.drawable.expandless, getTheme()));
-                        } else {
-                            popupWindow.dismiss();
-                            popupWindow.setOutsideTouchable(false);
-                            int[] location = new int[2];
-                            root.getLocationOnScreen(location);
-                            popupWindow.showAtLocation(root, Gravity.TOP | Gravity.RIGHT, 0, 0);
-                            constraintTopNoti.setVisibility(View.VISIBLE);
-                            closeNoti.setVisibility(View.VISIBLE);
-                            constraintCuerpoNoti.setVisibility(View.GONE);
-                            imageViewExpandir.setImageDrawable(getResources().getDrawable(R.drawable.expand, getTheme()));
-
-                        }
-                    }
-                });
-
-
-                closeNoti.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        if (colaTakeAway.size() > 0) {
-                            colaTakeAway.remove(0);
-                        }
-                        notificacionActiva = false;
-                        pedido = null;
-                        crearSiguienteDialogSiFalta();
-
-
-                    }
-                });
-
-                tiempoMenos.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int tiempo = Integer.valueOf(txtTiempo.getText().toString());
-                        tiempo--;
-                        txtTiempo.setText(String.valueOf(tiempo));
-                    }
-                });
-
-                tiempoMas.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int tiempo = Integer.valueOf(txtTiempo.getText().toString());
-                        tiempo++;
-                        txtTiempo.setText(String.valueOf(tiempo));
-                    }
-                });
-
-                txtRechazar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        //removeElementLista(pedido.getNumOrden(), listaPendientes);
-                        /*
-                        pedido.setEstado("CANCELADO");
-                        cambiarEstadoPedido(pedido);
-                        pedido.setExpandido(false);
-                        listaCancelados.add(pedido);
-
-                      //  rehacerListaPedidos(estadoActual);
-                        comprobarNumPedidosListas();
-                        ordenarSegunFecha(listaPedidosTotales);
-
-                        actualizarListaPedidos();
-                        popupWindow.dismiss();
-
-                         */
-
-                        //pedido.setEstado("CANCELADO");
-                        crearDialogCancelar(pedido, popupWindow);
-
-                        if (colaTakeAway.size() > 0) {
-                            colaTakeAway.remove(0);
-                        }
-                        notificacionActiva = false;
-//                    agregarElementoALista(pedido, "listaCancelados");
-                        pedido = null;
-
-                        crearSiguienteDialogSiFalta();
-
-                    /*
-                    try {
-                        guardarListas();
-                    } catch (JSONException e) {
-                        System.out.println("error guardando listas");
-                        e.printStackTrace();
-                    }
-
-                     */
-
-                    }
-                });
-
-                botonAceptar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String arrayString = pruebaProductosNoti.toString();
-                        String time = txtTiempo.getText().toString();
-                        //pedido.setTiempo(Integer.valueOf(time));
-                        //removeElementLista(pedido.getNumOrden(), listaPendientes);
-                        //pedido.setEstado("ACEPTADO");
-                        pedidoAceptado = pedido;
-                        /*
-
-                if(pedido.getEsDelivery()){
-                    String address = pedido.getDireccion();
-                    getDestination(address);
-                }
-                 */
-                        //quitar
-                        String address = "Iparragirre Etorbidea,75A, Santurtzi";
-                        if (tieneReparto) {
-                            getDestination(pedido.getDatosTakeAway().getDireccion(), pedido.getNumOrden());
-                        } else {
-                            cambiarEstadoPedido(pedido, estado_aceptado);
-                        }
-                        /////
-                        //  cambiarEstadoPedido(pedido, estado_aceptado);
-                        //listaPreparacion.add(pedido);
-
-                        //rehacerListaPedidos(estadoActual);
-                        /*
-                        comprobarNumPedidosListas();
-                        ordenarSegunFecha(listaPedidosTotales);
-                        actualizarListaPedidos();
-
-                         */
-                        popupWindow.dismiss();
-                        if (colaTakeAway.size() > 0) {
-                            colaTakeAway.remove(0);
-                        }
-                        notificacionActiva = false;
-                        //  agregarElementoALista(pedido, "listaPendientes");
-                        pedido = null;
-                        crearSiguienteDialogSiFalta();
-
-                    }
-                });
-
-
-// Configurar la posición y el tamaño del PopupWindow
-                popupWindow.setAnimationStyle(androidx.appcompat.R.style.Animation_AppCompat_Dialog);
-                popupWindow.setOutsideTouchable(false);
-                int[] location = new int[2];
-                root.getLocationOnScreen(location);
-                int x = popupView.getWidth();
-                int y = location[1];
-                popupWindow.showAtLocation(root, Gravity.TOP | Gravity.RIGHT, 0, 0);
-                notificacionActiva = true;
-
-
-            }
-        }
-
-    }
 
     private void ponerInsetsI2() {
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -2419,6 +1563,12 @@ constraintLayout.layoutPara
         View backAnimation = layoutDevolver.findViewById(R.id.backAnimation);
         ConstraintLayout constraintAnimation = layoutDevolver.findViewById(R.id.layoutBackAnimation);
         ImageView imgBack = layoutDevolver.findViewById(R.id.imgBackReembolso);
+        ConstraintLayout layoutConstraintMaxScroll = layoutDevolver.findViewById(R.id.layoutConstraintMaxScroll);
+        NestedScrollView nestedScrollDevolucion = layoutDevolver.findViewById(R.id.nestedScrollDevolucion);
+        layoutConstraintMaxScroll.setMaxHeight((int) (getScreenHeight() * 0.7));
+        ConstraintLayout.LayoutParams param = (ConstraintLayout.LayoutParams) nestedScrollDevolucion.getLayoutParams();
+        param.matchConstraintMaxHeight = (int) (getScreenHeight() * 0.7);
+        nestedScrollDevolucion.setLayoutParams(param);
 
 
         ConstraintLayout layoutInfoDevoluciones = layoutDevolver.findViewById(R.id.layoutInfoDevoluciones);
@@ -2816,7 +1966,7 @@ constraintLayout.layoutPara
                         @Override
                         public void onDevolucionFallida(String mensajeError) {
                             if (mensajeError.equals("Amount higher than allowed")) {
-                                Toast.makeText(activity, resources.getString(R.string.errorDevolucionMayor)+" "+cantActual+" (max " + formatedRest + ")", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, resources.getString(R.string.errorDevolucionMayor) + " " + cantActual + " (max " + formatedRest + ")", Toast.LENGTH_SHORT).show();
                                 dialogDevolucion.cancel();
 
                             } else {
@@ -2849,7 +1999,7 @@ constraintLayout.layoutPara
                         public void onDevolucionFallida(String mensajeError) {
                             if (mensajeError.equals("Amount higher than allowed")) {
                                 String formatedCant = format.format(cant);
-                                Toast.makeText(activity, resources.getString(R.string.errorDevolucionMayor)+" "+formatedCant+" (max " + formatedRest + ")", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, resources.getString(R.string.errorDevolucionMayor) + " " + formatedCant + " (max " + formatedRest + ")", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
@@ -3724,7 +2874,6 @@ constraintLayout.layoutPara
                     listaNotificaciones += p.getNumOrden() + " ";
                     hayNuevosPedidos = true;
                     colaTakeAway.add(p);
-                    crearDialogTakeAway(false);
 
                 }
             }
@@ -4019,42 +3168,6 @@ constraintLayout.layoutPara
 
     }
 
-    @Override
-    public void onMapReady(@NonNull GoogleMap map) {
-        googleMap = map;
-/*
-        LatLng location = new LatLng(latitud, longitud);
-        // Agrega un marcador en la ubicación especificada
-        googleMap.addMarker(new MarkerOptions()
-                .position(location)
-                .title("Mi marcador")
-                .snippet("Descripción del marcador"));
-
- */
-/*
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                // Eliminar el marcador de destino anterior
-                if (destinationMarker != null) {
-                    destinationMarker.remove();
-                }
-
-                // Agregar un nuevo marcador en la ubicación seleccionada
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(latLng)
-                        .title("Destino");
-                destinationMarker = googleMap.addMarker(markerOptions);
-
-                // Obtener el tiempo de viaje desde la ubicación actual hasta el destino
-                getTravelTime(latLng);
-            }
-        });
-
- */
-
-
-    }
 
     @Override
     public void onDevolucionExitosa(JSONObject resp) {
@@ -4628,10 +3741,11 @@ constraintLayout.layoutPara
         } else {
             System.out.println("entra en check permiso concedido");
 
-            peticionUbicacionActual();
+            //peticionUbicacionActual();
         }
     }
 
+    /*
     @SuppressLint("MissingPermission")
     private void peticionUbicacionActual() {
 
@@ -4672,7 +3786,7 @@ constraintLayout.layoutPara
                             LatLng loc = new LatLng(latitude, longitude);
 
 // Agregar un marcador en la ubicación especificada
-                            /*
+
                             googleMap.addMarker(new MarkerOptions()
                                     .position(loc)
                                     .title("Mi ubicación")
@@ -4681,7 +3795,7 @@ constraintLayout.layoutPara
                             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(loc, 17);
                             googleMap.moveCamera(cameraUpdate);
 
-                             */
+
 
                             SharedPreferences preferenciasMapa = getSharedPreferences("mapa", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editorMapa = preferenciasMapa.edit();
@@ -4709,6 +3823,7 @@ constraintLayout.layoutPara
         fusedLocationClient.requestLocationUpdates(request, locationCallback, null);
     }
 
+    */
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void actualizarHandlers() {
@@ -5307,7 +4422,7 @@ constraintLayout.layoutPara
         if (tacharProductos) {
             botonTacharProductos.setText(resources.getString(R.string.txtGuardar));
         } else {
-            botonTacharProductos.setText(resources.getString(R.string.textTachar));
+            botonTacharProductos.setText(resources.getString(R.string.textoTachar));
 
         }
     }
@@ -6063,7 +5178,6 @@ constraintLayout.layoutPara
         //tvInstruccionesGenerales.setText(!item.getInstruccionesGenerales().equals("") ? item.getInstruccionesGenerales() : "Toda la comida a la vez y que vengan con 3 servilletas. Además que tenga 2 cucharas y venga en bandeja. asdada sdad asdad asdasdadas ");
 
 
-
         botonSiguienteEstado.setText(textBotonEstadoSiguiente());
         if (!item.getCliente().getNumero_telefono().equals("") && item.getCliente().getNumero_telefono() != null) {
             layoutLlamar.setVisibility(View.VISIBLE);
@@ -6080,7 +5194,6 @@ constraintLayout.layoutPara
         arrowUp.setVisibility(View.VISIBLE);
         backDesplegable.setVisibility(View.VISIBLE);
         layoutOpcionesPedido.setVisibility(View.VISIBLE);
-
 
 
         if (item.getEstado().equals("ACEPTADO") || item.getEstado().equals(resources.getString(R.string.botonAceptado))) {
@@ -6132,7 +5245,6 @@ constraintLayout.layoutPara
         }, 100);
 
 
-
         recyclerProductosI2.post(new Runnable() {
             @Override
             public void run() {
@@ -6148,7 +5260,7 @@ constraintLayout.layoutPara
                         if (tvInstruccionesGenerales.getHeight() > limiteMin) {
                             if (dimen > 10) {
 
-                                customLayout.setAltura(tvInstruccionesGenerales.getHeight() + - 20 * resources.getDisplayMetrics().density);
+                                customLayout.setAltura(tvInstruccionesGenerales.getHeight() + -20 * resources.getDisplayMetrics().density);
 
                             } else {
                                 customLayout.setAltura(tvInstruccionesGenerales.getHeight() - 40 * resources.getDisplayMetrics().density);
@@ -6187,7 +5299,7 @@ constraintLayout.layoutPara
 
     private void modificarCirculo(String estado) {
         ponerCirculoA0();
-        int colorPendiente = resources.getColor(R.color.rojo, this.getTheme());
+        int colorPendiente = resources.getColor(R.color.color_pendiente, this.getTheme());
         int colorAceptado = resources.getColor(R.color.verdeOrderSuperfast, this.getTheme());
         int colorListo = resources.getColor(R.color.verdeOscuro, this.getTheme());
         int colorCancelado = resources.getColor(R.color.colorcancelado, this.getTheme());
@@ -6278,17 +5390,17 @@ constraintLayout.layoutPara
     }
 
 
-    private void cambiarMargenTopRecyclerProductos(){
+    private void cambiarMargenTopRecyclerProductos() {
 
-        if(esMovil) {
+        if (esMovil) {
             ConstraintLayout layoutInfoCliente = findViewById(R.id.layoutInfoCliente);
             layoutInfoCliente.post(new Runnable() {
                 @Override
                 public void run() {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) recyclerProductosI2.getLayoutParams();
-                    int margen = (int) (25*resources.getDisplayMetrics().density) + layoutInfoCliente.getHeight();
-                    System.out.println("altura layoutInfoCliente "+tvInstruccionesGenerales.getHeight());
-                    params.setMargins(0,margen,0,0);
+                    int margen = (int) (25 * resources.getDisplayMetrics().density) + layoutInfoCliente.getHeight();
+                    System.out.println("altura layoutInfoCliente " + tvInstruccionesGenerales.getHeight());
+                    params.setMargins(0, margen, 0, 0);
                     recyclerProductosI2.setLayoutParams(params);
                 }
             });
@@ -6298,11 +5410,12 @@ constraintLayout.layoutPara
     }
 
     private boolean esMovil;
-    private void verEsMovil(){
+
+    private void verEsMovil() {
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
-        if(dimen > 10){
+        if (dimen > 10) {
             esMovil = true;
-        }else{
+        } else {
             esMovil = false;
         }
     }

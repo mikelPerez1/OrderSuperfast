@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class ControladorConfiguracion {
+public class ControladorConfiguracion extends ControladorGeneral{
     private Context myContext;
     private HashMap<String, Boolean> mapaProductos = new HashMap<>();
     private ArrayList<ProductoAbstracto> listaProductos,listaProductosEsconder,listaOpcionesEsconder,listaCompleta;

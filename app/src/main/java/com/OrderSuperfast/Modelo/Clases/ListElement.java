@@ -18,6 +18,7 @@ public class ListElement implements Serializable {
     private ListaProductoPedido listaProductos;
     private boolean mostrarProductosOcultados;
     private boolean esPlaceHolder=false;
+    private boolean mostrarDatosCliente = false;
 
     public ListElement(String color, int pedido, String mesa, String status, boolean primera, Date f, String instrucciones,Cliente pCliente,Importe pImporte, ListaProductoPedido pProd,boolean pMostrar) {
         this.color = color;
@@ -119,6 +120,10 @@ public class ListElement implements Serializable {
 
     public boolean getEsPlaceHolder(){return this.esPlaceHolder;}
 
+    public boolean getMostrarDatosClinte(){return this.mostrarDatosCliente;}
+
     //setters
+
+    public void setMostrarDatosCliente(boolean pBool){this.mostrarDatosCliente = pBool;}
 
 }

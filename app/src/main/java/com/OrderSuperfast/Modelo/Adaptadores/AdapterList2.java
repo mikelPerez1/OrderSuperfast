@@ -345,7 +345,13 @@ public class AdapterList2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     System.out.println("fuera del limite");
                 }
             }
-            notifyDataSetChanged();
+            try {
+                notifyDataSetChanged();
+            }catch (IllegalStateException e){
+                System.out.println("Illegal state exception");
+                e.printStackTrace();
+
+            }
 
         }
 
@@ -580,7 +586,7 @@ public class AdapterList2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     if (parpadeo) {
                         pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.black, context.getTheme())));
                     } else {
-                        pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.rojo, context.getTheme())));
+                        pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.color_pendiente, context.getTheme())));
 
                     }
                 } else {
@@ -626,7 +632,7 @@ public class AdapterList2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             System.out.println("estado est 2" + est);
             switch (est) {
                 case "PENDIENTE":
-                    pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.rojo, context.getTheme())));
+                    pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.color_pendiente, context.getTheme())));
                     break;
                 case "ACEPTADO":
                     pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.verdeOrderSuperfast, context.getTheme())));

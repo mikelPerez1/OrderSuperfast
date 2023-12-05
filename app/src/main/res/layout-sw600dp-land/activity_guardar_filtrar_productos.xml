@@ -532,7 +532,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/layoutCategoriasAjustes"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layoutBackModo"
@@ -586,7 +586,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:gravity="center"
-                        android:text="@string/txtRecepcionPedidos"
+                        android:text="@string/textoTituloVisualizacionPedidos"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_big_takeAway"
                         android:textStyle="bold"
@@ -600,7 +600,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="@string/txtExplicacionRecepcionPedidos"
+                        android:text="@string/textoExplicacionModoVisualizacionPedidos"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium_takeAway"
                         app:layout_constraintEnd_toEndOf="@+id/textTituloModo"
@@ -883,7 +883,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/layoutCategoriasAjustes"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"

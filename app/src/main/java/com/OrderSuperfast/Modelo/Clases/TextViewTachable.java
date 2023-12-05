@@ -2,15 +2,13 @@ package com.OrderSuperfast.Modelo.Clases;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.Layout;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.OrderSuperfast.R;
 
-// clase para tachar de un color (rojo en este caso) un textview
+// clase para tachar de un color (color_pendiente en este caso) un textview
 public class TextViewTachable extends androidx.appcompat.widget.AppCompatTextView {
     public Paint paint;
     public boolean addStrike = false;

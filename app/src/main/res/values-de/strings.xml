@@ -183,5 +183,9 @@
     <string name="textoTachar">Tachar</string>
     <string name="textoVincularQR_Zona"><![CDATA[<u>Vincular QR a zona</u>]]></string>
     <string name="editTextHintVinculacion">Nombre del QR actual: %s</string>
+    <string name="textoLimpiarMesa">Limpiar mesa</string>
+    <string name="textoAceptar">Aceptar</string>
+    <string name="textoExplicacionModoVisualizacionPedidos">Selecciona si se desea que los pedidos se muestren en modo individual o agrupados según los QR desde donde se han hecho los pedidos</string>
+    <string name="textoTituloVisualizacionPedidos">Visualización de los pedidos</string>
 
 </resources>

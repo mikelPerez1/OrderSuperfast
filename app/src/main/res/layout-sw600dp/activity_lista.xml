@@ -373,7 +373,7 @@
                                                     android:text="@string/textoPendiente"
                                                     android:textColor="@color/white"
 
-                                                    android:textSize="@dimen/text_size_medium2_takeAway"
+                                                    android:textSize="18sp"
                                                     android:textStyle="bold"
                                                     app:layout_constraintBottom_toBottomOf="parent"
                                                     app:layout_constraintEnd_toEndOf="parent"
@@ -414,7 +414,7 @@
 
                                                     android:text="@string/textoAceptado"
                                                     android:textColor="@color/white"
-                                                    android:textSize="@dimen/text_size_medium2_takeAway"
+                                                    android:textSize="18sp"
                                                     android:textStyle="bold"
                                                     app:layout_constraintBottom_toBottomOf="parent"
                                                     app:layout_constraintEnd_toEndOf="parent"
@@ -458,7 +458,7 @@
 
                                                     android:text="@string/textoListo"
                                                     android:textColor="@color/white"
-                                                    android:textSize="@dimen/text_size_medium2_takeAway"
+                                                    android:textSize="18sp"
                                                     android:textStyle="bold"
                                                     app:layout_constraintBottom_toBottomOf="parent"
                                                     app:layout_constraintEnd_toEndOf="parent"
@@ -500,7 +500,7 @@
 
                                                     android:text="@string/textoCancelado"
                                                     android:textColor="@color/white"
-                                                    android:textSize="@dimen/text_size_medium2_takeAway"
+                                                    android:textSize="18sp"
                                                     android:textStyle="bold"
                                                     app:layout_constraintBottom_toBottomOf="parent"
                                                     app:layout_constraintEnd_toEndOf="parent"
@@ -783,15 +783,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:visibility="gone"
-                            tools:visibility="visible">
+                            tools:visibility="gone">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/botonLimpiarMesa"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
@@ -799,23 +799,26 @@
                                     android:id="@+id/tvNombreMesaTop"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="-4dp"
                                     android:text="TextView"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/text_size_big_takeAway"
+                                    android:textStyle="bold"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <Button
                                     android:id="@+id/botonTacharModoMesas"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="50dp"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="5dp"
                                     android:background="@drawable/background_semi_redondeado_negro"
                                     android:padding="5dp"
                                     android:text="@string/textoTachar"
                                     android:textAllCaps="false"
                                     android:textColor="@color/black"
                                     app:backgroundTint="@color/white"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/tvNombreMesaTop"
                                     app:tint="@color/black" />
@@ -823,18 +826,19 @@
 
                             <Button
                                 android:id="@+id/botonLimpiarMesa"
-                                android:layout_width="180dp"
-                                android:layout_height="0dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
                                 android:layout_marginEnd="20dp"
                                 android:layout_marginBottom="20dp"
-
+                                android:singleLine="false"
+                                android:ellipsize="none"
                                 android:background="@drawable/borde"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
-                                android:text="Limpiar mesa"
+                                android:text="@string/textoLimpiarMesa"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_medium2_takeAway"
+                                android:textSize="@dimen/text_size_medium_takeAway"
                                 android:textStyle="bold"
                                 app:backgroundTint="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -846,7 +850,7 @@
                             android:id="@+id/layoutTopModoPedidos"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            tools:visibility="gone">
+                            tools:visibility="visible">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/constraintLayout37"
@@ -956,14 +960,14 @@
 
                             <Button
                                 android:id="@+id/botonSiguienteEstado"
-                                android:layout_width="180dp"
-                                android:layout_height="70dp"
+                                android:layout_width="140dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginEnd="20dp"
                                 android:background="@drawable/borde"
                                 android:text="Siguiente estado"
                                 android:textColor="@color/black"
 
-                                android:textSize="@dimen/text_size_medium2_takeAway"
+                                android:textSize="18sp"
                                 android:textStyle="bold"
                                 app:backgroundTint="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"

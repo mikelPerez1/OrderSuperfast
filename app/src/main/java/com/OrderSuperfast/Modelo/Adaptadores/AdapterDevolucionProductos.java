@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.OrderSuperfast.Modelo.Clases.Opcion;
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.R;
 import com.OrderSuperfast.Modelo.Clases.TextViewTachable;
@@ -109,7 +110,9 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
 
         void bindData(final ProductoPedido item, int position) {
 
-            nombreProducto.setText(item.getNombre());
+            String nombre = getNombreProducto(item);
+
+            nombreProducto.setText(nombre);
 
             int cantidad_maxima = cantidadDevueltaProductos.get(item.getId())!=null ? cantidadDevueltaProductos.get(item.getId()): Integer.valueOf(item.getCantidad());
             System.out.println("lista productos elem position "+item.getNombre()+" "+cantidad_maxima);
@@ -235,6 +238,24 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
                 }
             });
 
+        }
+
+        private String getNombreProducto(ProductoPedido item){
+            String nombreCompleto = "";
+
+            nombreCompleto += item.getNombre();
+
+            ArrayList<Opcion> opciones = item.getListaOpciones();
+            for(int i = 0; i < opciones.size();i++){
+                Opcion op = opciones.get(i);
+                nombreCompleto += "\n    + "+op.getNombreElemento();
+            }
+
+            if(!item.getInstrucciones().equals("")){
+                nombreCompleto+="\n    ["+item.getInstrucciones()+"]";
+            }
+
+            return nombreCompleto;
         }
 
     }

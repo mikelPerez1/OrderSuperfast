@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-public class ControladorLista {
+public class ControladorLista extends ControladorGeneral{
 
     private Context myContext;
     private ArrayList<Integer> newElements = new ArrayList<>();

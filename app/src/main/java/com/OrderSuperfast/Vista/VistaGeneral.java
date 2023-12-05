@@ -1,8 +1,10 @@
 package com.OrderSuperfast.Vista;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Surface;
 import android.view.ViewGroup;
@@ -12,11 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
 import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class VistaGeneral extends AppCompatActivity{
 
@@ -93,5 +97,39 @@ public class VistaGeneral extends AppCompatActivity{
 
             }
         }
+    }
+
+    protected int getScreenHeight(){
+        // Obtener el servicio WindowManager
+        WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
+        if (windowManager != null) {
+            // Crear un objeto DisplayMetrics para almacenar la información de la pantalla
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+
+            // Obtener los detalles de la pantalla actual
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+
+            // Obtener la altura de la pantalla en píxeles
+            int screenHeight = displayMetrics.heightPixels;
+            return screenHeight;
+
+
+            // Loguear la altura de la pantalla
+        }
+
+        return -1;
+
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
+        String idioma = sharedPreferencesIdiomas.getString("id", "");
+
+        Locale localeToSwitchTo = new Locale(idioma);
+        ContextWrapper localeUpdatedContext = ContextUtils.updateLocale(newBase, localeToSwitchTo);
+        super.attachBaseContext(localeUpdatedContext);
     }
 }

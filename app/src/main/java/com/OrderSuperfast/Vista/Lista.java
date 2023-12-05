@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -31,6 +32,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -69,6 +71,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,7 +83,6 @@ import com.OrderSuperfast.Modelo.Clases.ListElementPedido;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevolucionProductos;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterList2;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterListaMesas;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterListaNotiSimple;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterPedidosMesa;
 import com.OrderSuperfast.Modelo.Adaptadores.AdapterProductosTakeAway;
 import com.OrderSuperfast.Modelo.Adaptadores.ListAdapter;
@@ -90,6 +92,7 @@ import com.OrderSuperfast.Modelo.Clases.CustomEditTextNumbers;
 import com.OrderSuperfast.Modelo.Clases.CustomLayoutManager;
 import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
 import com.OrderSuperfast.Modelo.Clases.ListElement;
+import com.OrderSuperfast.Modelo.Clases.ListaMesas;
 import com.OrderSuperfast.Modelo.Clases.ListaProductoPedido;
 import com.OrderSuperfast.Modelo.Clases.Mesa;
 import com.OrderSuperfast.Modelo.Clases.Opcion;
@@ -110,7 +113,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -154,14 +156,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     int anchuraSv = -1;
     private AlertDialog dialogCancelar, dialogAtrasPedido, dialogDevolucion;
     RecyclerView recyclerView, recyclerDatosPedido;
-    //estos ints son para saber que filtro esta activo. Cuando esta activo el int relacionado con dicho filtro se pondra en 1 y los demás se pondran en 0.
-    private int k = 0; // int para el filtro de aceptado
-    private int j = 0; // int para el filtro de pendiente
-    private int l = 0; // int para el filtro de listo
-    private int n = 0; // int para el filtro de cancelado
-    private int o = 0; // int para el filtro de operativo
-    ////////
-    private int z = 0;
     private int s = 0; // para saber la primera vez que entra al init() para obtener los datos de los pedidos.
     private boolean actualizado = false;
     private WebSocket webSocket;
@@ -256,7 +250,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private SharedPreferences preferenciasProductos;
 
     RecyclerView recyclerProd;
-    AdapterListaNotiSimple adapterListaSimple;
     private final ArrayList<Integer> arrayPrueba = new ArrayList<>();
 
     private boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS;
@@ -1804,6 +1797,12 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         ConstraintLayout layoutInfoDevoluciones = layoutDevolver.findViewById(R.id.layoutInfoDevoluciones);
         TextView tvCantRestMax = layoutDevolver.findViewById(R.id.tvCantRestMax);
         ImageView botonDevolucionProductos = layoutDevolver.findViewById(R.id.botonDevolucionProductos);
+        ConstraintLayout layoutConstraintMaxScroll = layoutDevolver.findViewById(R.id.layoutConstraintMaxScroll);
+        NestedScrollView nestedScrollDevolucion = layoutDevolver.findViewById(R.id.nestedScrollDevolucion);
+        layoutConstraintMaxScroll.setMaxHeight((int) (getScreenHeight() * 0.7));
+        ConstraintLayout.LayoutParams param = (ConstraintLayout.LayoutParams) nestedScrollDevolucion.getLayoutParams();
+        param.matchConstraintMaxHeight = (int) (getScreenHeight() * 0.7);
+        nestedScrollDevolucion.setLayoutParams(param);
 
         ImageView imgBack = layoutDevolver.findViewById(R.id.imgBackReembolso);
         View backAnimation = layoutDevolver.findViewById(R.id.backAnimation);
@@ -1812,6 +1811,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         CustomEditTextNumbers editTextCantidad = layoutDevolver.findViewById(R.id.customEditTextNumbers);
         editTextCantidad.setActivity(activity);
+
 
         FLAG_PESTAÑA = 2;
         //parsear las cantidades y ponerle 2 decimales
@@ -2417,7 +2417,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         });
         animacion = false;
-        z = 0;
+
 
         listAdapter.filtrar(estado, newText);
         recyclerView.setAdapter(listAdapter);
@@ -2821,58 +2821,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     }
 
-    private void añadirNotiALista() {
-        /*
-        arrayPrueba.add(24);
-
-        if (popupListaNoti != null) {
-            listaEsDesplazable();
-            adapterListaSimple.notifyDataSetChanged();
-        } else {
-            crearListaNotiSimple();
-        }
-
-         */
-    }
-
-
-    private void popUpBotonCerrarNotis() {
-
-        if (popupBotonCerrar == null || !popupBotonCerrar.isShowing()) {
-            ConstraintLayout root = findViewById(R.id.layoutPrincipal);
-            View popupView = getLayoutInflater().inflate(R.layout.cerrar_notis, null);
-
-
-            Button botonCerrarTodasNotis = popupView.findViewById(R.id.botonCerrarTodo);
-            botonCerrarTodasNotis.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    while (arrayPrueba.size() > 0) {
-                        arrayPrueba.remove(0);
-                    }
-                    adapterListaSimple.notifyDataSetChanged();
-                    if (popupListaNoti != null && popupListaNoti.isShowing()) {
-                        popupListaNoti.dismiss();
-                    }
-                    if (popupBotonCerrar != null && popupBotonCerrar.isShowing()) {
-                        popupBotonCerrar.dismiss();
-                    }
-                    popupBotonCerrar = null;
-                    popupListaNoti = null;
-                }
-            });
-
-
-            popupBotonCerrar = new PopupWindow(popupView, 500, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-            //popupBotonCerrar.setAnimationStyle(androidx.appcompat.R.style.Animation_AppCompat_Dialog);
-            popupBotonCerrar.setOutsideTouchable(false);
-            int[] location = new int[2];
-            root.getLocationOnScreen(location);
-
-            popupBotonCerrar.showAtLocation(root, Gravity.BOTTOM | Gravity.RIGHT, 0, 0);
-        }
-
-    }
 
     private void listaEsDesplazable() {
         int itemHeight = (int) resources.getDimension(R.dimen.heightItem);
@@ -2893,46 +2841,15 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 popupBotonCerrar.dismiss();
                 System.out.println("popupWindow showing" + popupBotonCerrar.isShowing());
 
-                añadirBotonListaNotis();
-
 
             } else {
-                System.out.println("ENTRA EN NO ES MAYOR");
-                quitarBotonListaNotis();
-                popUpBotonCerrarNotis();
+
             }
         } else {
             popupBotonCerrar.dismiss();
             popupListaNoti.dismiss();
         }
 
-    }
-
-    private void añadirBotonListaNotis() {
-        for (int i = 0; i < arrayPrueba.size(); i++) {
-            if (arrayPrueba.get(i) == 999) {
-                arrayPrueba.remove(i);
-                break;
-            }
-        }
-        arrayPrueba.add(999);
-        adapterListaSimple.notifyDataSetChanged();
-        if (popupBotonCerrar != null && popupBotonCerrar.isShowing()) {
-            // Dismiss the PopupWindow
-            popupBotonCerrar.dismiss();
-
-        }
-
-    }
-
-    private void quitarBotonListaNotis() {
-        for (int i = 0; i < arrayPrueba.size(); i++) {
-            if (arrayPrueba.get(i) == 999) {
-                arrayPrueba.remove(i);
-                break;
-            }
-        }
-        adapterListaSimple.notifyDataSetChanged();
     }
 
 
@@ -3174,6 +3091,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             //   textoTiempoTranscurrido.setVisibility(View.INVISIBLE);
         }
 
+
         TextView nombreCliente = findViewById(R.id.Nombre);
         TextView correo = findViewById(R.id.Correo);
         ImageButton botonTelefono = findViewById(R.id.Botontelefono);
@@ -3245,6 +3163,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         recyclerDatosPedido.setLayoutManager(manager);
         recyclerDatosPedido.setAdapter(ListAdapterPedido);
 
+
     }
 
 
@@ -3304,8 +3223,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
     public void actualizarListaPost() {
-
-
         listAdapter = new ListAdapter(elements, this, animacion, new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ListElement item) {
@@ -3315,8 +3232,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         });
         animacion = false;
-        z = 0;
-
         recyclerView.setAdapter(listAdapter);
         listAdapter.filtrar(estado, newText);
         // listAdapter.filtrarVarios(filtros,newText);
@@ -4036,297 +3951,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     }
 
-    /*
-
-    @Override//
-    public boolean onQueryTextChange(String ntext) {
-
-        //if(ntext.equals("") && newText.length()>ntext.length()){
-        //        svSearch.setIconified(true);
-        //  }
-
-        System.out.println("texto " + ntext + " estado " + estado);
-        newText = ntext.toLowerCase();
-        //listAdapter.filtrarVarios(filtros,newText);
-        if (listAdapter != null) {
-            listAdapter.filtrar(estado, newText);
-        } else {
-            if (!actualizarUnaVez) {
-                SharedPreferences sharedId = getSharedPreferences("ids", Context.MODE_PRIVATE);
-                ((Global) this.getApplication()).setIdRest(sharedId.getString("saveIdRest", "0"));
-
-                // actualizar();
-                Log.d("textChange", "actualizar si el adapter es null " + ((Global) this.getApplication()).getIdRest());
-            }
-        }
-        return false;
-    }
-
-
-     */
-/*
-    private void crearSiguienteDialogSiFalta() {
-        if (colaTakeAway.size() > 0) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            crearDialogTakeAway();
-        }
-    }
-
-
-    private void crearDialogTakeAway() {
-
-        if (!notificacionActiva) {
-
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-            TakeAwayPedido pedido = colaTakeAway.remove();
-
-            int height = displayMetrics.heightPixels;
-            int width = displayMetrics.widthPixels;
-            ConstraintLayout root = findViewById(R.id.rootLayout);
-            View popupView = getLayoutInflater().inflate(R.layout.notificacion_take_away, null);
-
-// Crear una instancia de PopupWindow
-
-            /////////
-
-
-            /////////////////////
-
-
-            PopupWindow popupWindow = new PopupWindow(popupView, 900, 1200);
-
-
-            popupView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            prevX = (int) event.getRawX();
-                            offsetX = popupWindow.getContentView().getLeft();
-                            break;
-
-                        case MotionEvent.ACTION_MOVE:
-                            int currX = (int) event.getRawX();
-                            int dx = prevX - currX;
-                            int newX = popupWindow.getContentView().getLeft() + dx;
-                            if (newX > offsetX) {
-                                newX = offsetX; // si la nueva posición está a la izquierda de la posición original, actualiza la posición a su posición original
-                            }
-                            double d = 1000 - ((offsetX - newX));
-                            System.out.println("alpha " + d);
-                            popupView.setAlpha((float) d / 1000);
-
-                            popupWindow.update(newX, 0, -1, -1, true);
-                            break;
-
-                        case MotionEvent.ACTION_UP:
-                            int totalMoved = (int) event.getRawX() - prevX;
-                            if (totalMoved > threshold) {
-                                popupWindow.dismiss();
-                                notificacionActiva = false;
-                                crearSiguienteDialogSiFalta();
-                            }
-                            break;
-
-                        default:
-                            return false;
-                    }
-
-                    return true;
-                }
-            });
-
-
-            ImageView tiempoMenos = popupView.findViewById(R.id.takeAwayNotificationRemoveTime);
-            ImageView tiempoMas = popupView.findViewById(R.id.takeAwayNotificationAddTime);
-            TextView txtTiempo = popupView.findViewById(R.id.textViewTiempo);
-            TextView txtRechazar = popupView.findViewById(R.id.textRechazar);
-            Button botonAceptar = popupView.findViewById(R.id.botonAceptar);
-            TextView nombreCliente = popupView.findViewById(R.id.nombreCliente);
-            TextView direccion = popupView.findViewById(R.id.textDireccion);
-            TextView comentarios = popupView.findViewById(R.id.textViewComentarios);
-            TextView tipoCliente = popupView.findViewById(R.id.tipoCliente);
-            TextView faltaPagar = popupView.findViewById(R.id.estaPagado);
-
-            ImageView imageViewExpandir = popupView.findViewById(R.id.imageViewExpandir);
-            ConstraintLayout constraintCuerpoNoti = popupView.findViewById(R.id.constraintCuerpoNoti);
-            ConstraintLayout constraintTopNoti = popupView.findViewById(R.id.constraintInfoNuevaNoti);
-
-
-            RecyclerView recyclerProd = popupView.findViewById(R.id.recyclerComanda);
-            nombreCliente.setText(pedido.getCliente().getNombre());
-            direccion.setText(pedido.getDireccion());
-            comentarios.setText(pedido.getComentarios());
-            tipoCliente.setText(pedido.getCliente().getTipo());
-            recyclerProd.setHasFixedSize(true);
-            recyclerProd.setLayoutManager(new LinearLayoutManager(this));
-            TextView totalPagarTop = popupView.findViewById(R.id.totalPagarTop);
-            ArrayList<ProductoTakeAway> arrayProductos = new ArrayList<>();
-
-            try {
-                JSONArray productosJson = new JSONArray(pedido.getProductos());
-                double precio = 0;
-                double precioExtras = 0;
-                String nombreProducto = "";
-                int cantidadProducto;
-                JSONArray opciones;
-                String nombreOpciones = "";
-                JSONObject opcion;
-                JSONObject productoActual;
-                int numPlatos = 0;
-
-                for (int i = 0; i < productosJson.length(); i++) {
-                    productoActual = productosJson.getJSONObject(i);
-                    cantidadProducto = Integer.valueOf(productoActual.getString("cantidad"));
-                    nombreProducto = productoActual.getString("nombre");
-                    opciones = productoActual.getJSONArray("opciones");
-                    precio = productoActual.getDouble("precio");
-                    nombreOpciones = "";
-                    numPlatos += 1 * cantidadProducto;
-                    precioExtras = 0;
-                    for (int j = 0; j < opciones.length(); j++) {
-                        opcion = opciones.getJSONObject(j);
-                        nombreOpciones += "\n + " + opcion.getString("nombre");
-                        if (opcion.getString("tipo").equals("extra")) {
-                            precioExtras += opcion.getDouble("precio");
-
-                        }
-                        if (opcion.getString("tipo").equals("fijo")) {
-                            precio = opcion.getDouble("precio");
-                        }
-                    }
-                    nombreProducto += nombreOpciones;
-                    precio += precioExtras;
-
-                    totalPagarTop.setText(precio + "€");
-
-
-                    ProductoTakeAway productoParaArray = new ProductoTakeAway(cantidadProducto, nombreProducto, precio);
-                    arrayProductos.add(productoParaArray);
-
-
-                }
-            } catch (JSONException e) {
-
-            }
-
-            System.out.println("Muchos productos " + arrayProductos.size());
-
-
-            AdapterProductosTakeAway adapterProductos = new AdapterProductosTakeAway(arrayProductos, this, new AdapterProductosTakeAway.OnItemClickListener() {
-                @Override
-                public void onItemClick(ProductoTakeAway item) {
-
-                }
-            });
-
-            recyclerProd.setAdapter(adapterProductos);
-
-
-            imageViewExpandir.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (constraintCuerpoNoti.getVisibility() == View.GONE) {
-                        constraintCuerpoNoti.setVisibility(View.VISIBLE);
-                        constraintTopNoti.setVisibility(View.GONE);
-                        imageViewExpandir.setImageDrawable(getResources().getDrawable(R.drawable.expandless));
-                    } else {
-                        constraintTopNoti.setVisibility(View.VISIBLE);
-                        constraintCuerpoNoti.setVisibility(View.GONE);
-                        imageViewExpandir.setImageDrawable(getResources().getDrawable(R.drawable.expand));
-
-                    }
-                }
-            });
-
-            tiempoMenos.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int tiempo = Integer.valueOf(txtTiempo.getText().toString());
-                    tiempo--;
-                    txtTiempo.setText(String.valueOf(tiempo));
-                }
-            });
-
-            tiempoMas.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int tiempo = Integer.valueOf(txtTiempo.getText().toString());
-                    tiempo++;
-                    txtTiempo.setText(String.valueOf(tiempo));
-                }
-            });
-
-            txtRechazar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupWindow.dismiss();
-                    notificacionActiva = false;
-                    crearSiguienteDialogSiFalta();
-
-                }
-            });
-
-            botonAceptar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String time = txtTiempo.getText().toString();
-                    pedido.setTiempo(Integer.valueOf(time));
-
-                    popupWindow.dismiss();
-                    notificacionActiva = false;
-                    crearSiguienteDialogSiFalta();
-                }
-            });
-
-
-
-
-        final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                // Aquí se detecta el gesto de deslizamiento y se realiza una acción en consecuencia
-                System.out.println("deslizar");
-                popupWindow.dismiss();
-                return super.onFling(e1, e2, velocityX, velocityY);
-            }
-
-        });
-
-
-
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                System.out.println("deslizar " +event);
-
-                return gestureDetector.onTouchEvent(event);
-            }
-        });
-
-
-
-
-// Configurar la posición y el tamaño del PopupWindow
-            popupWindow.setAnimationStyle(androidx.appcompat.R.style.Animation_AppCompat_Dialog);
-            popupWindow.setOutsideTouchable(false);
-            int[] location = new int[2];
-            root.getLocationOnScreen(location);
-            int x = popupView.getWidth();
-            int y = location[1];
-            popupWindow.showAtLocation(root, Gravity.TOP | Gravity.RIGHT, 0, 0);
-            notificacionActiva = true;
-        }
-
-    }
-
-    */
 
     private void instantiateWebSocket() {
 
@@ -4904,6 +4528,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
                                                 adapterPedidos2.notifyDataSetChanged();
                                             }
+                                            if (est2.equals(estado_listo) && modo == 2) {
+                                                setPedidosMesa(mesaActual.getNombre(), numPedido);
+                                            }
                                             callback.onDevolucionExitosa(response);
                                         } else if (clave.equals("status") && response.getString(clave).equals("ERROR")) {
                                             //peticionGetTakeAway();
@@ -5066,7 +4693,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             int tFinalInt = tiempoTranscurrido(tiempoFinalString, hora.get(hora.size() - 1).first);
             tFinalInt = tFinalInt - tiempoTrans;
             if (tFinalInt <= 0) {
-                //    textoTiempoTranscurrido.setTextColor(getColor(R.color.rojo));
+                //    textoTiempoTranscurrido.setTextColor(getColor(R.color.color_pendiente));
             } else {
                 //     textoTiempoTranscurrido.setTextColor(getColor(R.color.black));
 
@@ -5268,6 +4895,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 e.printStackTrace();
             }
 
+            System.out.println("jsonBody " + jsonBody);
+
 
 // Crear la petición POST
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody,
@@ -5412,6 +5041,10 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                                                 } else if (claves.equals("ubicacion")) {
                                                     mesa = pedido.getString(claves);
                                                     mesa = normalizarTexto(mesa);
+                                                    if (!nombreMesas.contains(mesa)) {
+                                                        System.out.println("mesa nombre " + mesa);
+                                                        nombreMesas.add(mesa);
+                                                    }
                                                 } else if (claves.equals("estado_cocina")) {
                                                     est = pedido.getString(claves);
                                                 } else if (claves.equals("instrucciones")) {
@@ -5595,9 +5228,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                                                 Importe importe = new Importe(metodo_pago, total, impuesto, service_charge, propina);
                                                 ListaProductoPedido listaP = new ListaProductoPedido(listaProductos);
 
-                                                if (!nombreMesas.contains(mesa)) {
-                                                    nombreMesas.add(mesa);
-                                                }
+
                                                 System.out.println("lista productos size " + listaP.getLista().size());
                                                 System.out.println("listElement " + num + " " + est);
 
@@ -5768,6 +5399,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                                 System.out.println("elementss " + elements.size());
                                 if (bol) {
                                     setRecycler();
+                                    cambiarOrientacionRecyclerPedidos();
                                     if (pedidoActual != null) {
                                         buscarPedidoActual(pedidoActual.getPedido());
                                     }
@@ -5783,8 +5415,11 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
                                 listaPedidosAListaMesas(elements, listaMesas, nombreMesas);
                                 adapterMesas.copiarLista();
+
                                 adapterPedidos2.notifyDataSetChanged();
+
                                 adapterMesas.reorganizar();
+                                adapterMesas.reFiltrar();
 
                                 setObserverActualizarVistaPedidos();
 
@@ -5827,13 +5462,17 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private ArrayList<Integer> getPedidosMesa(String mesa) {
         ArrayList<Integer> array = new ArrayList<>();
         String pedidosMesa = sharedTakeAway.getString("pedidos_mesa_" + mesa, null);
-        if (pedidosMesa != null) {
+        if (pedidosMesa != null && !pedidosMesa.equals("")) {
             String[] numPedidos = pedidosMesa.split(",");
+
             for (int i = 0; i < numPedidos.length; i++) {
                 int num = Integer.valueOf(numPedidos[i]);
                 array.add(num);
+
             }
         }
+
+        System.out.println("numpedidos size " + array.size());
 
         return array;
     }
@@ -5852,17 +5491,26 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 }
             }
 
-            if(!esta){
-                pedidosMesa += ","+numPedido;
-                editorTakeAway.putString("pedidos_mesa_" + mesa,pedidosMesa);
+            if (!esta) {
+                pedidosMesa += "," + numPedido;
+                editorTakeAway.putString("pedidos_mesa_" + mesa, pedidosMesa);
+                editorTakeAway.apply();
             }
+        } else {
+            pedidosMesa = "" + numPedido;
+            editorTakeAway.putString("pedidos_mesa_" + mesa, pedidosMesa);
+            editorTakeAway.apply();
+
         }
 
     }
 
+    //TODO falta la peticion para obtener todas las mesas del dispositivo
     private void listaPedidosAListaMesas(List<ListElement> pedidos, ArrayList<Mesa> mesas, ArrayList<String> nombreMesas) {
         ArrayList<Mesa> arrayProvisional = new ArrayList<>();
-        arrayProvisional.add(new Mesa(nombreDisp));
+        if (!getEsMovil()) {
+            arrayProvisional.add(new Mesa(nombreDisp));
+        }
         for (int i = 1; i < pedidos.size(); i++) {
             ListElement pedido = pedidos.get(i);
             //if (pedido.getStatus().equals(resources.getString(R.string.botonAceptado)) || pedido.getStatus().equals(resources.getString(R.string.botonPendiente))) {
@@ -5876,11 +5524,48 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
 
 
+        arrayProvisional.add(new Mesa("Mesa 21"));
+        arrayProvisional.add(new Mesa("Terraza frontal mesa 2"));
+
+
+        //cambiarListaMesas(listaMesas,arrayProvisional);
+        //adapterMesas.notifyDataSetChanged();
         listaMesas.clear();
         listaMesas.addAll(arrayProvisional);
-        for (int i = 0; i < listaMesas.size(); i++) {
-            System.out.println("mesas añadidas " + listaMesas.get(i).getNombre());
+
+    }
+
+
+    private void cambiarListaMesas(ArrayList<Mesa> Original, ArrayList<Mesa> array) {
+        ListaMesas listaOriginal = new ListaMesas(Original);
+        ListaMesas listaPoner = new ListaMesas(array);
+        for (int i = 0; i < listaPoner.getSize(); i++) {
+            Mesa mesaArray = listaPoner.getMesa(i);
+            Mesa mesaOriginal = listaOriginal.estaMesa(mesaArray.getNombre());
+            if (mesaOriginal != null) {
+                if (mesaOriginal.listaSize() == mesaArray.listaSize()) {
+                    for (int j = 0; j < mesaArray.listaSize(); j++) {
+                        ListElement elementoArray = mesaArray.getElement(j);
+
+                        ListElement elementoOriginal = mesaOriginal.estaElemento(elementoArray.getPedido());
+                        if (elementoOriginal != null && !elementoArray.getStatus().equals(elementoOriginal.getStatus())) {
+
+                            elementoOriginal = elementoArray;
+
+                        } else {
+                            System.out.println("Elemento igual ");
+                        }
+                    }
+                } else {
+                    mesaOriginal.getLista().clear();
+                    mesaOriginal.getLista().addAll(mesaArray.getLista());
+                }
+            } else {
+                listaOriginal.add(mesaArray);
+            }
+
         }
+
     }
 
 
@@ -5927,11 +5612,15 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                     ListElement pedido = mesa.getElement(j);
 
                     if (pedido.getPedido() == elemento.getPedido()) {
+                        System.out.println("pedido num " + pedido.getPedido() + " ya esta");
                         pedidoYaEsta = true;
                         break;
                     }
                 }
+
                 if (!pedidoYaEsta && (elemento.getStatus().equals(resources.getString(R.string.botonAceptado)) || elemento.getStatus().equals(resources.getString(R.string.botonPendiente)) || pedidosMesa.contains(elemento.getPedido()))) {
+
+                    System.out.println("pedido " + elemento.getPedido() + " añadido a mesa " + mesa.getNombre());
                     mesa.addElement(elemento);
                 }
                 break;
@@ -5945,14 +5634,17 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 System.out.println("set mesa seleccionada " + mesa.getNombre());
                 mesa.setSeleccionada(true);
             }
-            mesa.addElement(elemento);
+
+            if (elemento.getStatus().equals(resources.getString(R.string.botonAceptado)) || elemento.getStatus().equals(resources.getString(R.string.botonPendiente)) || pedidosMesa.contains(elemento.getPedido())) {
+
+                System.out.println("pedido " + elemento.getPedido() + " añadido a mesa " + mesa.getNombre());
+                mesa.addElement(elemento);
+            }
             array.add(mesa);
         }
     }
 
     private boolean estaYaEnLista(int numPedido, String estadoActual) {
-        boolean esta = false;
-        int indiceFinal = 0;
         for (int i = 0; i < elements.size(); i++) {
             ListElement element = elements.get(i);
             if (element.getPedido() == numPedido) {
@@ -6129,6 +5821,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         recyclerPedidosMesa = findViewById(R.id.recyclerPedidosModoMesa);
         tvNombreMesaTop = findViewById(R.id.tvNombreMesaTop);
 
+
         cambiarModo();
         setRestaurantImages();
         setRecycler();
@@ -6144,11 +5837,15 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
     private void cambiarModo() {
+
         int modoPrevio = modo;
         modo = sharedTakeAway.getInt("FLAG_MODO_PEDIDOS", 1);
+        /*
         if (getEsMovil()) {
             modo = 1;
         }
+
+         */
 
         if (pedidoActual != null) {
             pedidoActual.setActual(false);
@@ -6213,7 +5910,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         recyclerPedidosMesa.setLayoutManager(manager);
 
-        adapterPedidosMesa = new AdapterPedidosMesa(listaPedidosMesa, this, productosAcutalesPedido, new AdapterPedidosMesa.OnItemClickListener() {
+        adapterPedidosMesa = new AdapterPedidosMesa(listaPedidosMesa, this, getEsMovil(), productosAcutalesPedido, new AdapterPedidosMesa.OnItemClickListener() {
             @Override
             public void onItemClick(ListElement item, int position) {
 
@@ -6222,6 +5919,11 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             @Override
             public void reembolso(ListElement item) {
                 peticionGetDatosDevolucion(item);
+            }
+
+            @Override
+            public void reiniciarPedido(ListElement item) {
+                peticionReiniciarPedido(item.getPedido());
             }
 
             @Override
@@ -6252,18 +5954,21 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                     }
                 });
 
+
             }
 
             @Override
-            public void cambiarEstadoPedido(ListElement item) {
+            public void cambiarEstadoPedido(ListElement item, int position) {
                 String siguienteEstado = estadoSiguiente(item.getStatus());
+                pedidoActual = item;
                 ejecutar(siguienteEstado, "", item.getPedido(), new DevolucionCallback() {
                     @Override
                     public void onDevolucionExitosa(JSONObject resp) {
-                        Toast.makeText(activity, "Pedido cambiado con exito", Toast.LENGTH_SHORT).show();
-                        if(siguienteEstado.equals(estado_listo)){
-                            setPedidosMesa(item.getMesa(),item.getPedido());
+                        //Toast.makeText(activity, "Pedido cambiado con exito", Toast.LENGTH_SHORT).show();
+                        if (siguienteEstado.equals(estado_listo)) {
+                            setPedidosMesa(item.getMesa(), item.getPedido());
                         }
+                        adapterPedidosMesa.notifyItemChanged(position);
                     }
 
                     @Override
@@ -6275,98 +5980,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         });
         recyclerPedidosMesa.setAdapter(adapterPedidosMesa);
         adapterPedidosMesa.notifyDataSetChanged();
-
-
-        recyclerPedidosMesa.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            private boolean mostrarIzq = false;
-            private boolean mostrarDer = false;
-            private ConstraintLayout layoutDesvanecerseIzq = findViewById(R.id.layoutDesvanecerIzq);
-            private ConstraintLayout layoutDesvanecerseDer = findViewById(R.id.layoutDesvanecerDer);
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int first = manager.findFirstCompletelyVisibleItemPosition();
-                int last = manager.findLastCompletelyVisibleItemPosition();
-
-
-                if (first == 0) {
-                    if (mostrarIzq) {
-                        animacionBackgroundDesvanecer(layoutDesvanecerseIzq, false);
-                        mostrarIzq = false;
-                        System.out.println("recycler pedidos mesa scroll animacion quitar " + first + " " + last);
-
-                    }
-                } else {
-                    if (!mostrarIzq) {
-                        animacionBackgroundDesvanecer(layoutDesvanecerseIzq, true);
-                        mostrarIzq = true;
-                        System.out.println("recycler pedidos mesa scroll animacion mostrar " + first + " " + last);
-
-                    }
-
-                }
-
-                if (last == listaPedidosMesa.size() - 1) {
-                    if (mostrarDer) {
-                        animacionBackgroundDesvanecer(layoutDesvanecerseDer, false);
-                        mostrarDer = false;
-                    }
-                } else {
-                    if (!mostrarDer) {
-                        animacionBackgroundDesvanecer(layoutDesvanecerseDer, true);
-                        mostrarDer = true;
-                    }
-
-                }
-            }
-
-
-            private void animacionBackgroundDesvanecer(View v, boolean mostrar) {
-
-                ObjectAnimator alphaAnimator;
-                if (mostrar) {
-                    alphaAnimator = ObjectAnimator.ofFloat(v, "alpha", 0f, 1f);
-                } else {
-                    alphaAnimator = ObjectAnimator.ofFloat(v, "alpha", 1f, 0f);
-                }
-
-                AnimatorSet set = new AnimatorSet();
-                set.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        if (mostrar) {
-                            v.setVisibility(View.VISIBLE);
-                        } else {
-                            v.setVisibility(View.INVISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
-                        v.setVisibility(View.VISIBLE);
-
-                    }
-                });
-
-                set.setDuration(200);
-                set.play(alphaAnimator);
-                set.start();
-
-
-            }
-
-
-        });
-
+        setAdapterPedidosMesaScrollListener(manager);
 
     }
 
@@ -6376,18 +5990,59 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         listaMesas.add(new Mesa(nombreDisp)); // objeto que sirve para la parte del search en la version vertical de tablet
         recyclerMesas.setHasFixedSize(true);
         recyclerMesas.setLayoutManager(new LinearLayoutManager(this));
-        adapterMesas = new AdapterListaMesas(listaMesas, this, new AdapterListaMesas.OnItemClickListener() {
+        adapterMesas = new AdapterListaMesas(listaMesas, this, getEsMovil(), new AdapterListaMesas.OnItemClickListener() {
             @Override
             public void onItemClick(Mesa item, int position) {
 
                 //recyclerPedidosMesa.scrollToPosition(0);
 
+
+                //TODO cambiar este par de lineas para que solo salte cuando se clicka en una mesa diferente a la que estas actualmente
+                //esto de momento esta mal, lo que hace es que si clickas en la misma mesa no se resetee el flag de animacion pero si que desaparece el desplegable
+
+
+                //
                 quitarElementosNuevos(item);
                 System.out.println("clickado 1");
                 recyclerPedidosMesa.scrollToPosition(0);
                 item.quitarPrimeraVez();
                 posMesaClickada = position;
+
+
+                /*
+                if( (modo==2 && getEsMovil())){
+                    constraintInfoPedido.setVisibility(View.VISIBLE);
+                    findViewById(R.id.layoutPedidosModoMesa).setVisibility(View.VISIBLE);
+                    constraintPartePedidos.getLayoutParams().height=400;
+                    System.out.println("visible recycler "+recyclerPedidosMesa.getVisibility());
+
+                    ConstraintLayout constraintContenido = findViewById(R.id.constraintContenido);
+                    ConstraintSet set = new ConstraintSet();
+                    set.clone(constraintContenido);
+
+                    set.connect(constraintInfoPedido.getId(),ConstraintSet.TOP,constraintPartePedidos.getId(),ConstraintSet.BOTTOM);
+                    set.connect(constraintInfoPedido.getId(),ConstraintSet.START,ConstraintSet.PARENT_ID,ConstraintSet.START);
+                    set.connect(constraintInfoPedido.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END);
+                    set.applyTo(constraintContenido);
+
+
+                    constraintInfoPedido.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+
+                    LinearLayoutManager manager = new LinearLayoutManager(activity);
+                    recyclerPedidosMesa.setLayoutManager(manager);
+
+                }
+
+                 */
                 clickarMesa(item);
+
+                if (adapterPedidosMesa != null && mesaActual != null && !mesaActual.getNombre().equals(item.getNombre())) {
+
+                }
+                if (adapterPedidosMesa != null) {
+                    adapterPedidosMesa.reiniciarConf();
+                }
+
 
             }
 
@@ -6411,7 +6066,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     private void clickarMesa(Mesa item) {
 
-        pedidoActual = item.getElement(0);
+        if (item.listaSize() > 0) {
+            pedidoActual = item.getElement(0);
+        }
         mesaActual = item;
         listaPedidosMesa.clear();
         listaPedidosMesa.addAll(item.getLista());
@@ -6426,6 +6083,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         ArrayList<ProductoTakeAway> lista = getProductosMesa(item);
         listaProductosPedido.clear();
         listaProductosPedido.addAll(lista);
+        if (adapterPedidosMesa != null) {
+            adapterPedidosMesa.reorganizarPedidos();
+        }
         adapterProductos2.notifyDataSetChanged();
 
         adapterMesas.notifyDataSetChanged();
@@ -6730,6 +6390,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
         Button botonLimpiarMesa = findViewById(R.id.botonLimpiarMesa);
+        botonLimpiarMesa.setText(Html.fromHtml(resources.getString(R.string.textoLimpiarMesa)));
         botonLimpiarMesa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -6904,10 +6565,10 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     private void limpiarMesa() {
         int maxIntentos = 3;
-
-        for (int i = 0; i < mesaActual.listaSize(); i++) {
-            ListElement pedido = mesaActual.getElement(i);
-            if (i < mesaActual.listaSize() - 1) {
+        Mesa mesa = mesaActual;
+        for (int i = 0; i < mesa.listaSize(); i++) {
+            ListElement pedido = mesa.getElement(i);
+            if (i < mesa.listaSize() - 1) {
                 final DevolucionCallback externalCallback = new DevolucionCallback() {
                     private int intentos = maxIntentos;
 
@@ -6946,19 +6607,20 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 };
 
                 peticionLimpieza(pedido, externalCallback);
-            } else if (i == mesaActual.listaSize() - 1) {
-                //TODO Poner los intentos de repetir la petición para el último tambien
-
+            } else if (i == mesa.listaSize() - 1) {
                 peticionLimpieza(pedido, new DevolucionCallback() {
                     private int intentos = maxIntentos;
 
                     @Override
                     public void onDevolucionExitosa(JSONObject resp) {
-                        boolean mesaRemovida = removeMesa(mesaActual.getNombre());
+                        boolean mesaRemovida = removeMesa(mesa.getNombre());
                         if (mesaRemovida) {
-                            constraintInfoPedido.setVisibility(View.GONE);
+                            // constraintInfoPedido.setVisibility(View.GONE);
                         }
-                        adapterMesas.notifyDataSetChanged();
+                        limpiarMesaPreference(mesa.getNombre());
+
+                        //adapterMesas.notifyDataSetChanged();
+                        adapterMesas.reorganizar();
                         adapterPedidosMesa.notifyDataSetChanged();
                     }
 
@@ -6994,12 +6656,22 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
     }
 
+    //funcion que quita de sharedPreferences la mesa con los pedidos listos guardados para simular un limpiar mesa
+    private void limpiarMesaPreference(String nombreMesa) {
+        //editorTakeAway.putString("pedidos_mesa_" + nombreMesa, "");
+        editorTakeAway.remove("pedidos_mesa_" + nombreMesa);
+        editorTakeAway.apply();
+
+    }
+
     private boolean removeMesa(String nombreMesa) {
 
         for (int i = 0; i < listaMesas.size(); i++) {
             Mesa mesa = listaMesas.get(i);
             if (mesa.getNombre().equals(nombreMesa)) {
-                listaMesas.remove(i);
+                listaMesas.get(i).reset();
+                listaPedidosMesa.clear();
+                //listaMesas.remove(i);
                 return true;
             }
         }
@@ -7068,7 +6740,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         if (tacharProductos) {
             v.setText(resources.getString(R.string.txtGuardar));
         } else {
-            v.setText(resources.getString(R.string.textTachar));
+            v.setText(resources.getString(R.string.textoTachar));
 
         }
     }
@@ -7137,13 +6809,13 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         ///
 
 
-        if (((x < rX || x > rX2 || y < rY || y > rY2) && !(x > rXtachar && x < rXtachar2 && y > rYtachar && y < rYtachar2)) || (x > rXdesplegable && x < rXdesplegable2 && y > rYdesplegable && y < rYdesplegable2)) {
+        if ((((x < rX || x > rX2 || y < rY || y > rY2) && !(x > rXtachar && x < rXtachar2 && y > rYtachar && y < rYtachar2)) || (x > rXdesplegable && x < rXdesplegable2 && y > rYdesplegable && y < rYdesplegable2)) && !desplazandoRecycler) {
             if (tacharProductos) {
                 revertirTachadoProductos();
                 tacharProductos = false;
                 cambiarIconoTachar(v);
                 if (modo == 2) {
-                    adapterPedidosMesa.setTacharHabilitado(false);
+                    adapterPedidosMesa.cancelarTachar(false);
                     adapterPedidosMesa.notifyDataSetChanged();
                 } else {
                     adapterProductos2.setTacharHabilitado(false);
@@ -7697,8 +7369,10 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     private void retractarPedido() {
         ejecutar("PENDIENTE", "", pedidoActual.getPedido(), activity);
+    }
 
-
+    private void peticionReiniciarPedido(int numPedido) {
+        ejecutar("PENDIENTE", "", numPedido, activity);
     }
 
     private void mostrarDesplegable() {
@@ -8152,6 +7826,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
         recyclerProductosI2.setAdapter(adapterProductos2);
+        addScrollListenerRecycler(recyclerProductosI2);
     }
 
 
@@ -8241,7 +7916,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
 
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || !getEsMovil()) {
+        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || !getEsMovil() || (modo == 2 && getEsMovil())) {
             constraintInfoPedido.setVisibility(View.VISIBLE);
         } else {
             constraintInfoPedido.setVisibility(View.VISIBLE);
@@ -8361,7 +8036,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     private void modificarCirculo(String estado) {
         ponerCirculoA0();
-        int colorPendiente = resources.getColor(R.color.rojo, this.getTheme());
+        int colorPendiente = resources.getColor(R.color.color_pendiente, this.getTheme());
         int colorAceptado = resources.getColor(R.color.verdeOrderSuperfast, this.getTheme());
         int colorListo = resources.getColor(R.color.verdeOscuro, this.getTheme());
         int colorCancelado = resources.getColor(R.color.colorcancelado, this.getTheme());
@@ -8530,6 +8205,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
         if (newConf == Configuration.ORIENTATION_LANDSCAPE) {
+            System.out.println("cambiar a modo vertical esMovil horizontal " + getEsMovil());
+
             overIcon = findViewById(R.id.overIconHorizontal);
             overBack = findViewById(R.id.overBackHorizontal);
             setListenersOverBarra();
@@ -8605,6 +8282,52 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 filtroListo.getLayoutParams().width = d;
                 filtroCancelado.getLayoutParams().width = d;
 
+
+                // cambia de posicion la parte de info pedidos en el modo mesa
+                if (modo == 2) {
+                    constraintInfoPedido.setVisibility(View.VISIBLE);
+                    findViewById(R.id.layoutPedidosModoMesa).setVisibility(View.VISIBLE);
+                    constraintPartePedidos.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_PARENT; //pendiente de revisar la altura
+                    System.out.println("visible recycler " + recyclerPedidosMesa.getVisibility());
+
+                    ConstraintLayout constraintContenido = findViewById(R.id.constraintContenido);
+                    ConstraintSet set = new ConstraintSet();
+                    set.clone(constraintContenido);
+
+                    set.connect(constraintInfoPedido.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+                    set.connect(constraintInfoPedido.getId(), ConstraintSet.START, constraintPartePedidos.getId(), ConstraintSet.END);
+                    set.connect(constraintInfoPedido.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+                    set.applyTo(constraintContenido);
+
+                    LinearLayoutManager managerMesas = new LinearLayoutManager(activity);
+                    recyclerMesas.setLayoutManager(managerMesas);
+
+
+                    constraintInfoPedido.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+                    LinearLayoutManager manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+                    recyclerPedidosMesa.setLayoutManager(manager);
+                    recyclerPedidosMesa.setAdapter(adapterPedidosMesa);
+                    adapterPedidosMesa.setLayoutType(201);
+
+
+                    ConstraintLayout layoutDesvanecerDer = findViewById(R.id.layoutDesvanecerDer);
+                    ConstraintLayout layoutDesvanecerIzq = findViewById(R.id.layoutDesvanecerIzq);
+
+                    layoutDesvanecerDer.getLayoutParams().width = (int) (80 * resources.getDisplayMetrics().density);
+                    layoutDesvanecerDer.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+
+                    layoutDesvanecerIzq.getLayoutParams().width = (int) (80 * resources.getDisplayMetrics().density);
+                    layoutDesvanecerIzq.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+
+                    layoutDesvanecerDer.setBackground(resources.getDrawable(R.drawable.background_desvanecer, this.getTheme()));
+                    layoutDesvanecerIzq.setBackground(resources.getDrawable(R.drawable.background_desvanecer, this.getTheme()));
+
+                    setAdapterPedidosMesaScrollListener(manager);
+                    adapterPedidosMesa.notifyDataSetChanged();
+                    recyclerPedidosMesa.invalidate();
+
+                }
+
             }
 
             /*
@@ -8645,6 +8368,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             cardViewListaContenido.setLayoutParams(params);
 
 
+            System.out.println("cambiar a modo vertical esMovil  vertical " + getEsMovil());
             if (!getEsMovil()) {
                 System.out.println("confChange mirar filtro");
                 nombreDispositivo.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
@@ -8664,6 +8388,10 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 set.clear(R.id.recyclerviewTakeAway2, ConstraintSet.TOP);
 
 
+                set.connect(R.id.layoutContDispositivo, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+                set.clear(R.id.layoutContDispositivo, ConstraintSet.END);
+
+
                 set.connect(R.id.recyclerviewTakeAway2, ConstraintSet.START, R.id.layoutContDispositivo, ConstraintSet.END);
                 set.connect(R.id.recyclerviewTakeAway2, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
 
@@ -8675,9 +8403,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 set.connect(R.id.recyclerMesas, ConstraintSet.START, R.id.layoutContDispositivo, ConstraintSet.END);
                 set.connect(R.id.recyclerMesas, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
 
-
-                set.connect(R.id.layoutContDispositivo, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
-                set.clear(R.id.layoutContDispositivo, ConstraintSet.END);
 
                 set.applyTo(layoutContScrollTop);
 
@@ -8712,6 +8437,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 search.setLayoutParams(p2);
 
 
+                System.out.println("cambiar a modo vertical");
                 cambiarAModoVerticalTablet();
                 AdapterList2.ViewHolder2 holder = adapterPedidos2.getHolder();
                 if (holder != null) {
@@ -8739,13 +8465,63 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 paramSearch.setMarginEnd(0);
                 search.setLayoutParams(paramSearch);
 
+                if ((modo == 2 && getEsMovil())) {
+                    constraintInfoPedido.setVisibility(View.VISIBLE);
+                    findViewById(R.id.layoutPedidosModoMesa).setVisibility(View.VISIBLE);
+                    constraintPartePedidos.getLayoutParams().height = 400; //pendiente de revisar la altura
+                    System.out.println("visible recycler " + recyclerPedidosMesa.getVisibility());
+
+                    ConstraintLayout constraintContenido = findViewById(R.id.constraintContenido);
+                    ConstraintSet set = new ConstraintSet();
+                    set.clone(constraintContenido);
+
+                    set.connect(constraintInfoPedido.getId(), ConstraintSet.TOP, constraintPartePedidos.getId(), ConstraintSet.BOTTOM);
+                    set.connect(constraintInfoPedido.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+                    set.connect(constraintInfoPedido.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+                    set.applyTo(constraintContenido);
+
+
+                    LinearLayoutManager managerMesas = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+                    recyclerMesas.setLayoutManager(managerMesas);
+
+                    constraintInfoPedido.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+
+
+                    LinearLayoutManager manager = new LinearLayoutManager(activity);
+                    recyclerPedidosMesa.setLayoutManager(manager);
+                    recyclerPedidosMesa.setAdapter(adapterPedidosMesa);
+                    adapterPedidosMesa.setLayoutType(200);
+
+                    ConstraintLayout layoutDesvanecerDer = findViewById(R.id.layoutDesvanecerDer);
+                    ConstraintLayout layoutDesvanecerIzq = findViewById(R.id.layoutDesvanecerIzq);
+
+                    layoutDesvanecerDer.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+                    layoutDesvanecerDer.getLayoutParams().height = (int) (80 * resources.getDisplayMetrics().density);
+
+                    layoutDesvanecerIzq.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+                    layoutDesvanecerIzq.getLayoutParams().height = (int) (80 * resources.getDisplayMetrics().density);
+
+                    layoutDesvanecerDer.setBackground(resources.getDrawable(R.drawable.background_desvanecer_vertical, this.getTheme()));
+                    layoutDesvanecerIzq.setBackground(resources.getDrawable(R.drawable.background_desvanecer_vertical, this.getTheme()));
+
+                    setAdapterPedidosMesaScrollListener(manager);
+                    adapterPedidosMesa.notifyDataSetChanged();
+                    recyclerPedidosMesa.scrollToPosition(0);
+
+
+                }
 
                 cambiarAnchuraFiltrosMovil();
+
+                LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+                recyclerMesas.setLayoutManager(manager);
+
 
             }
 
 
         }
+
 
         modScroll();
         recyclerPedidosI2.setAdapter(adapterPedidos2);
@@ -8760,6 +8536,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
 
         recyclerMesas.setAdapter(adapterMesas);
+        quitarFiltrado();
         if (pedidoActual != null) {
             int pos = adapterPedidos2.posicionPedido(pedidoActual.getPedido());
             System.out.println("no es nulo " + pos);
@@ -8817,7 +8594,180 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             System.out.println("es nulo");
         }
 
+        //TODO hacer que cuando se pase de horizontal a vertical en tablet, se quede la mesa que estaba puesta
+       /*
+        if (mesaActual != null && recyclerMesas != null) {
+            int pos = adapterMesas.getPositionOfItem(mesaActual.getNombre());
+            View v = recyclerMesas.getChildAt(pos);
+            if(v != null){
+                v.callOnClick();
+            }
+
+        }
+
+        */
+
+
     }
+
+    private void quitarFiltrado() {
+        //TODO igual tendria que meter aqui tambien el filtrado del adaptador de los pedidos en modo normal
+        if (adapterMesas != null) {
+            adapterMesas.quitarFiltrado();
+        }
+    }
+
+    private boolean desplazandoRecycler = false;
+
+    private void setAdapterPedidosMesaScrollListener(LinearLayoutManager manager) {
+
+        addScrollListenerRecycler(recyclerPedidosMesa);
+
+
+        recyclerPedidosMesa.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private boolean mostrarIzq = false;
+            private boolean mostrarDer = false;
+            private ConstraintLayout layoutDesvanecerseIzq = findViewById(R.id.layoutDesvanecerIzq);
+            private ConstraintLayout layoutDesvanecerseDer = findViewById(R.id.layoutDesvanecerDer);
+
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int first = manager.findFirstCompletelyVisibleItemPosition();
+                int last = manager.findLastCompletelyVisibleItemPosition();
+                System.out.println("scrolled pedidos de mesa " + first + "   " + last);
+
+
+                if (first == 0) {
+                    if (mostrarIzq) {
+                        animacionBackgroundDesvanecer(layoutDesvanecerseIzq, false);
+                        mostrarIzq = false;
+                        System.out.println("recycler pedidos mesa scroll animacion quitar " + first + " " + last);
+
+                    }
+                } else {
+                    if (!mostrarIzq) {
+                        animacionBackgroundDesvanecer(layoutDesvanecerseIzq, true);
+                        mostrarIzq = true;
+                        System.out.println("recycler pedidos mesa scroll animacion mostrar " + first + " " + last);
+
+                    }
+
+                }
+
+                if (last == listaPedidosMesa.size() - 1) {
+                    if (mostrarDer) {
+                        animacionBackgroundDesvanecer(layoutDesvanecerseDer, false);
+                        mostrarDer = false;
+                    }
+                } else {
+                    if (!mostrarDer) {
+                        animacionBackgroundDesvanecer(layoutDesvanecerseDer, true);
+                        mostrarDer = true;
+                    }
+
+                }
+            }
+
+
+            private void animacionBackgroundDesvanecer(View v, boolean mostrar) {
+
+                ObjectAnimator alphaAnimator;
+                if (mostrar) {
+                    alphaAnimator = ObjectAnimator.ofFloat(v, "alpha", 0f, 1f);
+                } else {
+                    alphaAnimator = ObjectAnimator.ofFloat(v, "alpha", 1f, 0f);
+                }
+
+                AnimatorSet set = new AnimatorSet();
+                set.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (mostrar) {
+                            v.setVisibility(View.VISIBLE);
+                        } else {
+                            v.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        v.setVisibility(View.VISIBLE);
+
+                    }
+                });
+
+                set.setDuration(200);
+                set.play(alphaAnimator);
+                set.start();
+
+
+            }
+
+
+        });
+
+    }
+
+    private void addScrollListenerRecycler(RecyclerView rv) {
+        rv.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+            GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(@NonNull MotionEvent e) {
+
+                    desplazandoRecycler = false;
+                    System.out.println("desplazamiento recycler " + desplazandoRecycler);
+                    return super.onSingleTapUp(e);
+                }
+
+
+                @Override
+                public boolean onDown(@NonNull MotionEvent e) {
+                    desplazandoRecycler = true;
+                    System.out.println("desplazamiento recycler " + desplazandoRecycler);
+
+                    return super.onDown(e);
+                }
+            });
+
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                // gestureDetector.onTouchEvent(e);
+
+                if (e.getAction() == MotionEvent.ACTION_UP) {
+                    // Aquí se detecta el levantamiento del dedo
+                    desplazandoRecycler = false;
+                    System.out.println("Desplazamiento recycler: " + desplazandoRecycler);
+                } else if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                    // Aquí se detecta el levantamiento del dedo
+                    desplazandoRecycler = true;
+                    System.out.println("Desplazamiento recycler: " + desplazandoRecycler);
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+    }
+
 
     private void cambiarAnchuraFiltrosMovil() {
         System.out.println("entra en cambiar anchura filtros movil");
@@ -9216,6 +9166,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 removeElements();
                 adapterPedidos2.notifyDataSetChanged();
                 adapterMesas.notifyDataSetChanged();
+                cambiarOrientacionRecyclerPedidos();
+
                 //  setRecycler();
 
 
@@ -9233,6 +9185,18 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
             }
         });
+    }
+
+    private void cambiarOrientacionRecyclerPedidos() {
+        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            System.out.println("modo vertical");
+            cambiarAModoVerticalTablet();
+        } else {
+            System.out.println("modo horizontal");
+
+            cambiarAModoHorizontalTablet();
+        }
+
     }
 
     private void irActivityLog() {

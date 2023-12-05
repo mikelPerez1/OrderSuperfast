@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ControladorDevices {
+public class ControladorDevices extends ControladorGeneral{
     private Context myContext;
 
 
@@ -88,13 +88,20 @@ public class ControladorDevices {
 
     }
 
-    public void guardarZonaYDIspositivo(String idDisp, String nombreDisp, String idZona, String nombreZona){
+    public void guardarZonaYDIspositivo(String pIdDisp, String pNombreDisp, String pIdZona, String pNombreZona){
+        idDisp = pIdDisp;
+        nombreDisp = pNombreDisp;
+        idZona = pIdZona;
+        nombreZona = pNombreZona;
+
+
+
         SharedPreferences sharedPreferences = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("idDisp", idDisp);
-        editor.putString("idZona", idZona);
-        editor.putString("textDisp", nombreDisp);
-        editor.putString("textZona", nombreZona);
+        editor.putString("idDisp", pIdDisp);
+        editor.putString("idZona", pIdZona);
+        editor.putString("textDisp", pNombreDisp);
+        editor.putString("textZona", pNombreZona);
 
         editor.apply();
     }

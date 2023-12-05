@@ -109,7 +109,7 @@
 
     <dimen name="dimen225to275">200dp</dimen>
     <dimen name="dimen10to20">10dp</dimen>
-    <dimen name="dimen250to300">250dp</dimen>
+    <dimen name="dimen250to300">235dp</dimen>
     <dimen name="dimen10">10dp</dimen>
     <dimen name="paddingHorizontalRecycler">100dp</dimen>
     <dimen name="paddingVerticalRecycler">5dp</dimen>

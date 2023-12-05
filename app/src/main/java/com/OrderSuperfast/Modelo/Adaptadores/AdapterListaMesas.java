@@ -19,9 +19,11 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
+import com.OrderSuperfast.Modelo.Clases.ListElement;
 import com.OrderSuperfast.Modelo.Clases.Mesa;
 import com.OrderSuperfast.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,34 +37,47 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
     private AdapterListaMesas.ViewHolder holder;
     private boolean parpadeo = false;
     private ViewHolder2 holder2;
-
+    private boolean esMovil;
+    private int posLinea;
 
     private final Resources resources;
+    private String textoFiltrando = "";
 
     public interface OnItemClickListener {
         void onItemClick(Mesa item, int position);
+
         void onSearchClick();
 
 
     }
 
+    public void quitarFiltrado(){
+        textoFiltrando = "";
+        filtrarPorTexto(textoFiltrando);
+    }
 
-    public AdapterListaMesas(List<Mesa> itemList, Activity context, AdapterListaMesas.OnItemClickListener listener) {
+    public void reFiltrar(){
+        if(!textoFiltrando.equals("")) {
+            filtrarPorTexto(textoFiltrando);
+        }
+    }
+
+    public AdapterListaMesas(List<Mesa> itemList, Activity context, boolean esMovil, AdapterListaMesas.OnItemClickListener listener) {
         this.context = context;
         this.Original = itemList;
-
+        this.esMovil = esMovil;
         this.mData = itemList;
         this.listener = listener;
         resources = context.getResources();
     }
 
 
-    public void copiarLista(){
+    public void copiarLista() {
         this.Original = new ArrayList<>();
         this.Original.addAll(mData);
     }
 
-    public ViewHolder2 getHolder2(){
+    public ViewHolder2 getHolder2() {
         return this.holder2;
     }
 
@@ -72,35 +87,39 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (texto.equals("")) {
             mData.clear();
             mData.addAll(Original);
-            System.out.println("size original "+ Original.size());
+            System.out.println("size original " + Original.size());
             notifyDataSetChanged();
             return;
         }
 
-        while (mData.size() > 1) {
-            mData.remove(1);
+        if (!esMovil) {
+            while (mData.size() > 1) {
+                mData.remove(1);
+            }
+        } else {
+            mData.clear();
         }
         //mData.add(Original.get(0));
         System.out.println("filtrar texto " + Original.size());
 
         for (int i = 1; i < Original.size(); i++) {
             Mesa p = Original.get(i);
-          //  if (p.getEsPlaceHolder()) {
-              //  mData.add(0, p);
-          //  } else {
-                boolean contiene = contieneTexto(p, texto);
-                if (contiene) {
-                    System.out.println("filtrar contiene " + contiene);
-                    System.out.println("size mdata " + mData.size());
-                    mData.add(p);
+            //  if (p.getEsPlaceHolder()) {
+            //  mData.add(0, p);
+            //  } else {
+            boolean contiene = contieneTexto(p, texto);
+            if (contiene) {
+                System.out.println("filtrar contiene " + contiene);
+                System.out.println("size mdata " + mData.size());
+                mData.add(p);
 
-                }
-           // }
+            }
+            // }
         }
+        reorganizar();
         notifyDataSetChanged();
 
     }
-
 
 
     private boolean contieneTexto(Mesa item, String texto) {
@@ -108,10 +127,9 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
         String numPedidos = "";
         for (int i = 0; i < item.listaSize(); i++) {
             listaNumPedidos.add(String.valueOf(item.getElement(i).getPedido()).toLowerCase());
-            numPedidos += String.valueOf(item.getElement(i).getPedido()).toLowerCase()+", ";
+            numPedidos += String.valueOf(item.getElement(i).getPedido()).toLowerCase() + ", ";
 
         }
-        System.out.println("texto filtrar mesa "+texto +" "+item.getNombre()+" "+listaNumPedidos.get(0));
 
         /*
         if (item.getEsPlaceHolder()) {
@@ -140,10 +158,10 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
         return false;
     }
 
-    public int getPositionOfItem(String nombreMesa){
-        for(int i = 0; i < mData.size();i++){
+    public int getPositionOfItem(String nombreMesa) {
+        for (int i = 0; i < mData.size(); i++) {
             Mesa m = mData.get(i);
-            if(m.getNombre().equals(nombreMesa)){
+            if (m.getNombre().equals(nombreMesa)) {
                 return i;
             }
         }
@@ -157,11 +175,11 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    public Mesa buscarMesa(String nombre){
-        for(int i = 0; i < mData.size();i++){
+    public Mesa buscarMesa(String nombre) {
+        for (int i = 0; i < mData.size(); i++) {
             Mesa m = mData.get(i);
             String mesaNombre = m.getNombre();
-            if(mesaNombre.equals(nombre)){
+            if (mesaNombre.equals(nombre)) {
                 return m;
             }
         }
@@ -169,25 +187,98 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void reorganizar() {
-        final Mesa firstItem = mData.get(0); // Guardar el primer elemento
-        Collections.sort(mData.subList(1, mData.size()), new Comparator<Mesa>() {
+
+        int inic;
+        if (esMovil) {
+            inic = 0;
+        } else {
+            inic = 1;
+        }
+        final Mesa firstItem = mData.size() > 0 ? mData.get(0) : null;
+        Collections.sort(mData.subList(inic, mData.size()), new Comparator<Mesa>() {
             @Override
             public int compare(Mesa o1, Mesa o2) {
+                int isActive = sortByIsActive(o1.listaSize(), o2.listaSize(), o1.getNombre(), o2.getNombre());
+                if (isActive != 0) {
+                    return isActive;
+                }
                 if (o1.hayPedidoNuevo()) {
                     return -1;
                 } else if (o2.hayPedidoNuevo()) {
                     return 1;
                 } else {
-                    return 0;
+                    return sortByOrders(o1.getLista(), o2.getLista());
                 }
             }
         });
 
-        mData.set(0, firstItem); // Restaurar el primer elemento a su posición original
+        posLinea = -1;
+        for (int i = 0; i < mData.size(); i++) {
+            Mesa m = mData.get(i);
+            if (m.listaSize() == 0 && posLinea == -1 && i != 0) {
+                posLinea = i;
+            }
+        }
 
+        if (!esMovil && firstItem != null) {
+            mData.set(0, firstItem); // Restaurar el primer elemento a su posición original
+        }
         notifyDataSetChanged();
 
 
+    }
+
+    private int sortByName(String name1, String name2) {
+        return name1.compareTo(name2);
+    }
+
+    private int sortByOrders(ArrayList<ListElement> array1, ArrayList<ListElement> array2) {
+        int numPedido1 = -1, numPedido2 = -1;
+        int orden = 0;
+
+        for (int i = 0; i < array1.size(); i++) {
+            ListElement elemento = array1.get(i);
+            if (elemento.getStatus().equals("PENDIENTE") || elemento.getStatus().equals(resources.getString(R.string.botonPendiente))) {
+                numPedido1 = elemento.getPedido();
+                break;
+            }
+        }
+        for (int i = 0; i < array2.size(); i++) {
+            ListElement elemento = array2.get(i);
+            if (elemento.getStatus().equals("PENDIENTE") || elemento.getStatus().equals(resources.getString(R.string.botonPendiente))) {
+                numPedido2 = elemento.getPedido();
+                break;
+            }
+        }
+
+        if (numPedido1 == -1 && numPedido2 == -1) {
+            orden = 0;
+        } else if (numPedido1 != -1 && numPedido2 == -1) {
+            orden = -1;
+        } else if (numPedido1 == -1 && numPedido2 != -1) {
+            orden = 1;
+        } else if (numPedido1 >= numPedido2) {
+            orden = 1;
+        } else if (numPedido1 < numPedido2) {
+            orden = -1;
+        }
+
+
+        return orden;
+
+    }
+
+    private int sortByIsActive(int size1, int size2, String name1, String name2) {
+        if (size1 == 0 && size2 == 0) {
+
+            return sortByName(name1, name2);
+        } else if (size1 > 0 && size2 > 0) {
+            return 0;
+        } else if (size1 > 0 && size2 == 0) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     public void cambiarParpadeo() {
@@ -203,9 +294,9 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        if(position==0){
+        if (position == 0) {
             return 0;
-        }else{
+        } else {
             return 1;
         }
     }
@@ -215,10 +306,12 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
         View view;
 
         if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if(viewType == 0){
+            if (esMovil) {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_mesa_wrap, parent, false);
+            } else if (viewType == 0) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_top_lista_mesas, parent, false);
                 return new AdapterListaMesas.ViewHolder2(view);
-            }else {
+            } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_mesa_vertical, parent, false);
             }
 
@@ -233,22 +326,22 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof AdapterListaMesas.ViewHolder){
-            ((AdapterListaMesas.ViewHolder) holder).bindData(mData.get(position),position);
-        }else if(holder instanceof  AdapterListaMesas.ViewHolder2){
-            ((AdapterListaMesas.ViewHolder2) holder).bindData(mData.get(position),position);
+        if (holder instanceof AdapterListaMesas.ViewHolder) {
+            ((AdapterListaMesas.ViewHolder) holder).bindData(mData.get(position), position);
+        } else if (holder instanceof AdapterListaMesas.ViewHolder2) {
+            ((AdapterListaMesas.ViewHolder2) holder).bindData(mData.get(position), position);
             holder2 = (AdapterListaMesas.ViewHolder2) holder;
         }
 
     }
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvNombreMesa;
         CardView cardPedido;
-        ConstraintLayout pedidoSeleccionado;
+        ConstraintLayout pedidoSeleccionado, lineaDiv;
+        int color;
 
 
         ViewHolder(View itemView) {
@@ -256,20 +349,29 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
             tvNombreMesa = itemView.findViewById(R.id.tvNombreMesa);
             cardPedido = itemView.findViewById(R.id.cardPedido);
             pedidoSeleccionado = itemView.findViewById(R.id.pedidoSeleccionado);
+            lineaDiv = itemView.findViewById(R.id.lineaDiv);
         }
 
 
         void bindData(final Mesa item, int position) {
-            if(position == 0){
-                itemView.getLayoutParams().height=0;
+            if (position == 0 && !esMovil) {
+                itemView.getLayoutParams().height = 0;
             }
 
-            System.out.println("elements in array "+mData.size());
+            if (position == posLinea) {
+                lineaDiv.setVisibility(View.VISIBLE);
+            } else {
+                lineaDiv.setVisibility(View.GONE);
+            }
+
+
+            int color = setColorBarra(item.getLista());
+            System.out.println("elements in array " + mData.size());
             tvNombreMesa.setText(item.getNombre());
-            System.out.println("adapter mesa seleccionada "+item.getNombre()+" "+item.getSeleccionada());
+            System.out.println("adapter mesa seleccionada " + item.getNombre() + " " + item.getSeleccionada());
             fondoSeleccionada(item.getSeleccionada());
             boolean hayPedidosNuevos = item.hayPedidoNuevo();
-            parpadeoPedido(hayPedidosNuevos);
+            parpadeoPedido(hayPedidosNuevos, color);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -289,12 +391,33 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         }
 
-        private void parpadeoPedido(boolean hayPedidosNuevos) {
+        private void parpadeoPedido(boolean hayPedidosNuevos, int color) {
             if (hayPedidosNuevos && parpadeo) {
                 pedidoSeleccionado.setBackgroundColor(Color.BLACK);
             } else {
-                pedidoSeleccionado.setBackgroundColor(resources.getColor(R.color.verdeOrderSuperfast, context.getTheme()));
+                pedidoSeleccionado.setBackgroundColor(resources.getColor(color, context.getTheme()));
             }
+        }
+
+        private int setColorBarra(ArrayList<ListElement> array) {
+            int color;
+            if (array.size() == 0) {
+                color = R.color.black;
+            } else {
+                boolean pedidoEnEspera = false;
+                for (int i = 0; i < array.size(); i++) {
+                    ListElement elemento = array.get(i);
+                    if (elemento.getStatus().equals("PENDIENTE") || elemento.getStatus().equals(resources.getString(R.string.botonPendiente)) || elemento.getStatus().equals("ACEPTADO") || elemento.getStatus().equals(resources.getString(R.string.botonAceptado))) {
+                        pedidoEnEspera = true;
+                    }
+                }
+                if (pedidoEnEspera) {
+                    color = R.color.verdeOrderSuperfast;
+                } else {
+                    color = R.color.verdeOscuro;
+                }
+            }
+            return color;
         }
     }
 
@@ -303,7 +426,6 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         TextView nombreDispositivo;
         CustomSvSearch search;
-
 
 
         ViewHolder2(View itemView) {
@@ -320,7 +442,8 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         }
 
-        private void setSearchListeners(){
+        private void setSearchListeners() {
+            search.setListaActivity((Activity) context);
 
             search.setOnQueryTextListener(this);
             ImageView bot = search.findViewById(androidx.appcompat.R.id.search_close_btn);
@@ -362,10 +485,10 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         @Override
         public boolean onQueryTextChange(String newText) {
+            textoFiltrando = newText;
             filtrarPorTexto(newText);
             return false;
         }
-
 
 
     }

@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
         app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -446,7 +446,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:visibility="gone">
+                tools:visibility="visible">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -532,7 +532,7 @@
                                                 android:text="@string/textoPendiente"
                                                 android:textColor="@color/white"
 
-                                                android:textSize="@dimen/text_size_medium2_takeAway"
+                                                android:textSize="18sp"
                                                 android:textStyle="bold"
                                                 app:layout_constraintBottom_toBottomOf="parent"
                                                 app:layout_constraintEnd_toEndOf="parent"
@@ -573,7 +573,7 @@
 
                                                 android:text="@string/textoAceptado"
                                                 android:textColor="@color/white"
-                                                android:textSize="@dimen/text_size_medium2_takeAway"
+                                                android:textSize="18sp"
                                                 android:textStyle="bold"
                                                 app:layout_constraintBottom_toBottomOf="parent"
                                                 app:layout_constraintEnd_toEndOf="parent"
@@ -617,7 +617,7 @@
 
                                                 android:text="@string/textoListo"
                                                 android:textColor="@color/white"
-                                                android:textSize="@dimen/text_size_medium2_takeAway"
+                                                android:textSize="18sp"
                                                 android:textStyle="bold"
                                                 app:layout_constraintBottom_toBottomOf="parent"
                                                 app:layout_constraintEnd_toEndOf="parent"
@@ -659,7 +659,7 @@
 
                                                 android:text="@string/textoCancelado"
                                                 android:textColor="@color/white"
-                                                android:textSize="@dimen/text_size_medium2_takeAway"
+                                                android:textSize="18sp"
                                                 android:textStyle="bold"
                                                 app:layout_constraintBottom_toBottomOf="parent"
                                                 app:layout_constraintEnd_toEndOf="parent"

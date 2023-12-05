@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ControladorLogin extends VistaGeneral {
+public class ControladorLogin extends ControladorGeneral{
     private final String urlLogin = "https://app.ordersuperfast.es/android/v1/login/";
     private Context context;
 

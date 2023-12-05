@@ -11,7 +11,9 @@
     <color name="naranja">#F8B202</color>
     <color name="colorcancelado">#ffc000</color>
     <color name="naranjaOscuro">#ffc000</color>
+    <color name="color_cancelado">#F3E62525</color>
     <color name="rojo">#F3E62525</color>
+    <color name="color_pendiente">#ffc000</color>
     <color name="verde">#ED40B616</color>
     <color name="verdeOscuro">#0000c0</color>
     <color name="amarillo">#FFD562</color>

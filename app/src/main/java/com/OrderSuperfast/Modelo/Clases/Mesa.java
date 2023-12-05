@@ -55,6 +55,16 @@ public class Mesa {
         return listaPedidos.get(position);
     }
 
+    public ListElement estaElemento(int numPedido){
+        for(int i = 0; i<listaPedidos.size();i++){
+            ListElement pedido = listaPedidos.get(i);
+            if(pedido.getPedido() == numPedido){
+                return pedido;
+            }
+        }
+        return null;
+    }
+
     public void reset() {
         this.listaPedidos.clear();
     }

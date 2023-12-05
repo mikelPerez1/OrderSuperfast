@@ -93,7 +93,7 @@
 
     <dimen name="dimen225to275">275dp</dimen>
     <dimen name="dimen10to20">20dp</dimen>
-    <dimen name="dimen250to300">300dp</dimen>
+    <dimen name="dimen250to300">260dp</dimen>
     <dimen name="paddingHorizontalRecycler">100dp</dimen>
     <dimen name="paddingVerticalRecycler">100dp</dimen>
     <dimen name="dimen280Tablet">270dp</dimen>

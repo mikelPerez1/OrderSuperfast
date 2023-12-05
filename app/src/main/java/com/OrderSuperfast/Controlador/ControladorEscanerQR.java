@@ -15,7 +15,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ControladorEscanerQR {
+public class ControladorEscanerQR extends ControladorGeneral{
     private static final String urlPeticion = "https://app.ordersuperfast.es/android/v1/qr/getData/";
     private static final String urlCambiarDatosQR = "https://app.ordersuperfast.es/android/v1/qr/setName/";
     private static final String urlCambiarDatosZona = "https://app.ordersuperfast.es/android/v1/qr/setZona/";

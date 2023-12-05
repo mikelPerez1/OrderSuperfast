@@ -20,6 +20,8 @@ import com.OrderSuperfast.Modelo.Clases.ProductoTakeAway;
 import com.OrderSuperfast.R;
 import com.OrderSuperfast.Modelo.Clases.TextViewTachable;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +62,9 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         this.tachadoHabilitado = pTachar;
     }
 
-    public void setModomesa(){this.modoMesa=true;}
+    public void setModomesa() {
+        this.modoMesa = true;
+    }
 
     public AdapterProductosTakeAway(List<ProductoTakeAway> itemList, Activity context, OnItemClickListener listener) {
         this.mInflater = LayoutInflater.from(context);
@@ -140,7 +144,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
         void bindData(final ProductoTakeAway item, int position) {
 
-            cantidad.setText("x" + item.getCantidad()+" ");
+            cantidad.setText("x" + item.getCantidad() + " ");
             precio.setText(item.getPrecio() + "€");
             //productos.setText(item.getProducto());
 
@@ -155,16 +159,15 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
             if (item.getSeleccionado()) {
                 layoutProducto.setBackgroundColor(resources.getColor(R.color.azulSuave, context.getTheme()));
-
             } else {
                 layoutProducto.setBackgroundColor(Color.TRANSPARENT);
-
             }
-            System.out.println("producto tachado adapter "+modoMesa);
+
+            System.out.println("producto tachado adapter " + modoMesa);
             if (estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado)) || modoMesa) { // para que el tachon solo salga en pedidos aceptados
 
 
-                if (item.getTachado()) {
+                if (item.getTachado() || item.getSeleccionado()) {
                     productos.setStrike(true);
                     productos.setText(item.getProducto().split("\n")[0]);
                     imageViewTachonCantidad.setVisibility(View.VISIBLE);
@@ -172,7 +175,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                     for (int i = layoutProducto.getChildCount() - 1; i >= 0; i--) {
                         View child = layoutProducto.getChildAt(i);
                         String tag = (String) child.getTag();
-                        System.out.println("item tachado "+item.getProducto()+" "+tag);
+                        System.out.println("item tachado " + item.getProducto() + " " + tag);
 
                         if (tag != null && !tag.equals("Producto_0") && tag.contains("Producto_")) {
                             // Si el ID del elemento no es igual al ID de "cantidad", elimínalo
@@ -270,7 +273,6 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             tv.setLayoutParams(params);
 
 
-
             ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) tv.getLayoutParams();
             p.horizontalBias = 0.0f;
             tv.setLayoutParams(p);
@@ -320,7 +322,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             } else {
                 System.out.println("producto dividido no" + position + " " + item.getProducto());
 
-                for (int i = layoutProducto.getChildCount()-1; i >=0; i--) {
+                for (int i = layoutProducto.getChildCount() - 1; i >= 0; i--) {
                     View child = layoutProducto.getChildAt(i);
                     String tag = (String) child.getTag();
                     if (tag != null && tag.contains("Producto_")) {
@@ -353,7 +355,6 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                 params.setMarginStart((int) (10 * resources.getDisplayMetrics().density));
                 params.setMarginEnd((int) (15 * resources.getDisplayMetrics().density));
                 tv.setLayoutParams(params);
-
 
 
                 p = (ConstraintLayout.LayoutParams) tv.getLayoutParams();

@@ -351,7 +351,7 @@ public class AdapterTakeAway2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                 return;
             }else {
 
-                cardPedido.getLayoutParams().height=(int) resources.getDimension(R.dimen.dimen120);
+                //cardPedido.getLayoutParams().height=(int) resources.getDimension(R.dimen.dimen120);
 
                 System.out.println("Data holder 1 put");
 
@@ -383,7 +383,7 @@ public class AdapterTakeAway2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (parpadeo) {
                         pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.black, context.getTheme())));
                     } else {
-                        pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.rojo, context.getTheme())));
+                        pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.color_pendiente, context.getTheme())));
 
                     }
                 } else {
@@ -412,7 +412,7 @@ public class AdapterTakeAway2 extends RecyclerView.Adapter<RecyclerView.ViewHold
             String est = item.getEstado();
             switch (est) {
                 case "PENDIENTE":
-                    pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.rojo, context.getTheme())));
+                    pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.color_pendiente, context.getTheme())));
                     break;
                 case "ACEPTADO":
                     pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.verdeOrderSuperfast, context.getTheme())));

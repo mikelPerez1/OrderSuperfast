@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ControladorLog {
+public class ControladorLog extends ControladorGeneral{
 
     private logActivity myContext;
 

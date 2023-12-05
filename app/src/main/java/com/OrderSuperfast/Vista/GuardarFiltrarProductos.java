@@ -1047,7 +1047,7 @@ public class GuardarFiltrarProductos extends VistaGeneral {
                     mostrarLayout(layoutRecepcionPedidos);
                 } else if (cat.equals(resources.getString(R.string.anticipacionPedidosProgramadosTexto))) {
                     mostrarLayout(layoutTemporizador);
-                } else if (cat.equals("Modo")) {
+                } else if (cat.equals(getString(R.string.textoTituloVisualizacionPedidos))) {
                     mostrarLayout(layoutModoPedidos);
                 }
 
@@ -1075,10 +1075,10 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         listCategorias.add(cat2);
         Categoria cat3 = new Categoria(resources.getString(R.string.anticipacionPedidosProgramadosTexto), 2);
         listCategorias.add(cat3);
-        if (resources.getDimension(R.dimen.scrollHeight) < 10) {
-            Categoria cat4 = new Categoria("Modo", 3);
+        //if (!getEsMovil()) {
+            Categoria cat4 = new Categoria(getString(R.string.textoTituloVisualizacionPedidos), 3);
             listCategorias.add(cat4);
-        }
+       // }
 
         setRecyclerCategorias();
     }
