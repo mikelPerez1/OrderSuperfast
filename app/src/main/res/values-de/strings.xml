@@ -187,5 +187,7 @@
     <string name="textoAceptar">Aceptar</string>
     <string name="textoExplicacionModoVisualizacionPedidos">Selecciona si se desea que los pedidos se muestren en modo individual o agrupados según los QR desde donde se han hecho los pedidos</string>
     <string name="textoTituloVisualizacionPedidos">Visualización de los pedidos</string>
+    <string name="pedidosIndividual">Individual</string>
+    <string name="pedidosAgrupados">Agrupados</string>
 
 </resources>

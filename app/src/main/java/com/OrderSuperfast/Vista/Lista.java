@@ -5524,8 +5524,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
 
 
-        arrayProvisional.add(new Mesa("Mesa 21"));
-        arrayProvisional.add(new Mesa("Terraza frontal mesa 2"));
+        //arrayProvisional.add(new Mesa("Mesa 21"));
+        //arrayProvisional.add(new Mesa("Terraza frontal mesa 2"));
 
 
         //cambiarListaMesas(listaMesas,arrayProvisional);

@@ -190,6 +190,8 @@
     <string name="textoAceptar">Accept</string>
     <string name="textoExplicacionModoVisualizacionPedidos">Select whether you want the orders to be displayed individually or grouped according to the QRs from which the orders have been placed.</string>
     <string name="textoTituloVisualizacionPedidos">Display of the orders</string>
+    <string name="pedidosIndividual">Single</string>
+    <string name="pedidosAgrupados">Grouped</string>
 
 
 </resources>
