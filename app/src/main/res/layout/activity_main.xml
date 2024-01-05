@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardViewListaContenido"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutEscanear"

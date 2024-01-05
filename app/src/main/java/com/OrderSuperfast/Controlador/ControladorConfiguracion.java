@@ -35,6 +35,11 @@ public class ControladorConfiguracion extends ControladorGeneral{
     private static final String urlActualizarVisibles = "https://app.ordersuperfast.es/android/v1/carta/productosYOpciones/actualizarVisibles/";
 
 
+    /**
+     * Crea un Controlador de Configuración asociado con un contexto específico e inicializa listas internas.
+     *
+     * @param mContext El contexto asociado a este Controlador de Configuración.
+     */
     public ControladorConfiguracion(Context mContext) {
         this.myContext = mContext;
         listaProductos = new ArrayList<>();
@@ -62,6 +67,12 @@ public class ControladorConfiguracion extends ControladorGeneral{
         return this.listaCompleta;
     }
 
+    /**
+     * Inicializa un HashMap con datos recuperados de las preferencias compartidas del restaurante.
+     *
+     * @param idRestaurante El identificador único del restaurante para recuperar la información.
+     * @throws JSONException Si ocurre un error al parsear los datos como JSON.
+     */
     public void inicializarHash(String idRestaurante) throws JSONException {
         SharedPreferences preferenciasProductos = myContext.getSharedPreferences("pedidos_"+idRestaurante,Context.MODE_PRIVATE);
         String arrayString = preferenciasProductos.getString("listaMostrar", "");
@@ -80,6 +91,12 @@ public class ControladorConfiguracion extends ControladorGeneral{
     }
 
 
+    /**
+     * Realiza una solicitud a la API para obtener productos y opciones asociadas al restaurante actual.
+     * Actualiza las listas internas de productos y opciones con la respuesta obtenida.
+     *
+     * @param callback El objeto DevolucionCallback para manejar la devolución exitosa o errores.
+     */
     public void getProductos(DevolucionCallback callback) {
 
         SharedPreferences sharedIds = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
@@ -240,6 +257,14 @@ public class ControladorConfiguracion extends ControladorGeneral{
     }
 
 
+    /**
+     * Agrega elementos a las listas correspondientes para modificar la visibilidad de productos u opciones.
+     *
+     * @param item El objeto ProductoAbstracto que se va a agregar a la lista.
+     * @param flag El indicador de bandera para determinar qué lista se va a actualizar:
+     *             - FLAG_ESCONDER_PRODUCTOS para la lista de productos.
+     *             - FLAG_ESCONDER_OPCIONES para la lista de opciones.
+     */
     public void añadirElementosACambiar(ProductoAbstracto item,int flag){
         if (flag == FLAG_ESCONDER_PRODUCTOS) {
             try {
@@ -298,6 +323,11 @@ public class ControladorConfiguracion extends ControladorGeneral{
     }
 
 
+    /**
+     * Guarda el nuevo tiempo para el temporizador de pedidos programados en SharedPreferences.
+     *
+     * @param tiempo El nuevo tiempo a guardar para el temporizador de pedidos programados.
+     */
     public void guardarNuevoTemporizador(int tiempo){
         SharedPreferences sharedTakeAway = myContext.getSharedPreferences("takeAway",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedTakeAway.edit();
@@ -305,6 +335,13 @@ public class ControladorConfiguracion extends ControladorGeneral{
         editor.apply();
     }
 
+    /**
+     * Realiza una petición para obtener el estado de recepción de pedidos Take Away para un restaurante y una zona específicos.
+     *
+     * @param idRestaurante El identificador del restaurante del cual se quiere obtener el estado de recepción de pedidos.
+     * @param idZona El identificador de la zona para la cual se quiere obtener el estado de recepción de pedidos.
+     * @param callback El callback que manejará la respuesta de la petición.
+     */
     public void peticionObtenerEstadoRecepcionPedidos(String idRestaurante, String idZona, CallbackBoolean callback) {
         JSONObject jsonBody = new JSONObject();
         try {
@@ -347,6 +384,14 @@ public class ControladorConfiguracion extends ControladorGeneral{
     }
 
 
+    /**
+     * Realiza una petición para cambiar el estado de recepción de pedidos Take Away de un restaurante y una zona específicos.
+     *
+     * @param FLAG_PESTAÑA Indica la pestaña en la que se quiere cambiar el estado de recepción de pedidos.
+     * @param recibiendoPedidos Indica si se están recibiendo pedidos (true) o no (false).
+     * @param idRestaurante El identificador del restaurante al que se refiere la petición.
+     * @param idZona El identificador de la zona asociada a la petición.
+     */
     public void peticionCambiarEstadoRecepcionPedidos(int FLAG_PESTAÑA,boolean recibiendoPedidos,String idRestaurante,String idZona) {
         JSONObject jsonBody = new JSONObject();
         if ((FLAG_PESTAÑA == 1 && recibiendoPedidos) || (FLAG_PESTAÑA == 2 && !recibiendoPedidos)) {
@@ -395,6 +440,14 @@ public class ControladorConfiguracion extends ControladorGeneral{
     }
 
 
+    /**
+     * Realiza una petición para cambiar la visibilidad de productos y elementos asociados a un restaurante, una zona y un dispositivo específicos.
+     *
+     * @param idRestaurante El identificador del restaurante al que se refiere la petición.
+     * @param idZona El identificador de la zona asociada a la petición.
+     * @param idDisp El identificador del dispositivo relacionado con la petición.
+     * @param callbackBoolean La interfaz de devolución de llamada para manejar la respuesta de la petición.
+     */
     public void peticionCambiarVisibleProducto(String idRestaurante,String idZona,String idDisp,CallbackBoolean callbackBoolean) {
         System.out.println("params " + elementosACambiar.size());
 
@@ -468,6 +521,12 @@ public class ControladorConfiguracion extends ControladorGeneral{
     }
 
 
+    /**
+     * Modifica la lista de productos para mostrar u ocultar según la bandera indicada, y actualiza las preferencias.
+     *
+     * @param idRestaurante El identificador del restaurante al que se refiere la lista de productos.
+     * @param FLAG_MOSTRAR_PRODUCTOS_OCULTADOS La bandera booleana que indica si se deben mostrar o no los productos ocultados.
+     */
     public void modificarListaProductosMostrar(String idRestaurante,boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS) {
         SharedPreferences preferenciasProductos = myContext.getSharedPreferences("pedidos_" + idRestaurante, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferenciasProductos.edit();

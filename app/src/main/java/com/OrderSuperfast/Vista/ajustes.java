@@ -71,6 +71,13 @@ public class ajustes extends VistaGeneral {
     private View overlayAjustes;
     private ConstraintLayout barra;
 
+    /**
+     * La función adjunta un nuevo contexto base al contexto actual y actualiza la configuración
+     * regional según el idioma almacenado en las preferencias compartidas.
+     *
+     * @param newBase El parámetro `newBase` es el contexto base de la actividad o aplicación.
+     *                Proporciona acceso a los recursos y otras operaciones relacionadas con el contexto.
+     */
     @Override
     protected void attachBaseContext(Context newBase) {
         sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
@@ -81,6 +88,15 @@ public class ajustes extends VistaGeneral {
         super.attachBaseContext(localeUpdatedContext);
     }
 
+    /**
+     * Este es el método `onCreate` de una actividad de Android que inicializa varios elementos y
+     * maneja los clics en los botones para guardar la configuración.
+     *
+     * @param savedInstanceState El parámetro saveInstanceState es un objeto Bundle que contiene los
+     *                           datos guardados del estado anterior de la actividad. Se utiliza para restaurar el estado
+     *                           anterior de la actividad cuando se recrea, como después de un cambio de configuración (por
+     *                           ejemplo, rotación de pantalla) o cuando el sistema destruye y recrea la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = getSharedPreferences("idioma", Context.MODE_PRIVATE);
@@ -159,7 +175,6 @@ public class ajustes extends VistaGeneral {
         tono5 = getString(R.string.tono5);
 
 
-
         imgNavBack = findViewById(R.id.NavigationBarBack);
         imgNavBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +191,7 @@ public class ajustes extends VistaGeneral {
                 //idiomaActual = ((Global) context.getApplication()).getIdioma();
 
 
-                System.out.println("sonido ajuste "+sonidoString);
+                System.out.println("sonido ajuste " + sonidoString);
 
                 if (idiomaActual != null && !idiomaActual.equals("")) {
                     SharedPreferences sharedPreferences1 = getSharedPreferences("idioma", Context.MODE_PRIVATE);
@@ -214,27 +229,21 @@ public class ajustes extends VistaGeneral {
         });
 
 
-
         imgSonido = findViewById(R.id.imageSonidoAjustes);
         SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
         sonido = sharedSonido.getBoolean("sonido", true);
 
 
-
-
-
-
-
-
-
     }
 
 
-    public boolean hasVibrator() {
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        return vibrator.hasVibrator();
-    }
-
+    /**
+     * La función "tonoActual" toma un parámetro de cadena "tono" y devuelve un valor entero basado en
+     * la cadena dada.
+     *
+     * @param tono El parámetro "tono" es un String que representa el nombre de un tono.
+     * @return El método devuelve el valor de la variable "real".
+     */
     private int tonoActual(String tono) {
         int actual;
 
@@ -250,15 +259,24 @@ public class ajustes extends VistaGeneral {
         } else if (tono.equals("tono2")) {
             actual = 5;
 
-        } else if(tono.equals("clockalarm")){
+        } else if (tono.equals("clockalarm")) {
             actual = 1;
-        }else{
-            actual=0;
+        } else {
+            actual = 0;
         }
         return actual;
     }
 
 
+    /**
+     * La función "nombreTono" toma una entrada de cadena y devuelve un nombre correspondiente basado
+     * en el valor de entrada.
+     *
+     * @param txt El parámetro "txt" es una cadena que representa el texto que se va a comparar con
+     *            diferentes tonos.
+     * @return El método devuelve un valor de cadena, que es el nombre del tono según el texto de
+     * entrada.
+     */
     private String nombreTono(String txt) {
         String nombre;
 
@@ -281,9 +299,14 @@ public class ajustes extends VistaGeneral {
 
     }
 
+    /**
+     * La función comprueba si el dispositivo está en orientación vertical y si un diseño específico es
+     * visible y, de ser así, oculta el diseño; de lo contrario, llama al método onBackPressed() de la
+     * superclase, establece la variable "idioma" en una cadena vacía y finaliza la actividad.
+     */
     @Override
     public void onBackPressed() {
-        if(resources.getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT && layoutConfiguracionAjustes.getVisibility()==View.VISIBLE){
+        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && layoutConfiguracionAjustes.getVisibility() == View.VISIBLE) {
             layoutConfiguracionAjustes.setVisibility(View.INVISIBLE);
             return;
         }
@@ -296,22 +319,24 @@ public class ajustes extends VistaGeneral {
     }
 
 
-
-
     private Resources resources;
     private ConstraintLayout layoutCampoSonido, layoutCampoIdioma, layoutCampoImpresora, layoutSonido, layoutIdioma, layoutImpresora;
     private ConstraintLayout layoutBack;
-    private ConstraintLayout layoutContenido, layoutCamposAjustes, layoutAjustesInfo,layoutConfiguracionAjustes;
+    private ConstraintLayout layoutContenido, layoutCamposAjustes, layoutAjustesInfo, layoutConfiguracionAjustes;
     private TextView textCampoSonido, textCampoIdioma, textCampoImpresora;
     private View barraSonido, barraIdioma, barraImpresora;
     private ImageView imgPlaySonido;
-    private RadioButton r1, r2, r3, r4, r5,rNoSound;
+    private RadioButton r1, r2, r3, r4, r5, rNoSound;
     private RadioButton radioEsp, radioEn, radioPort, radioFr, radioAle;
     private RadioGroup radioGroup;
     private RadioButton selectedRadioButton;
     private RadioButton selectedLanguage;
     private Switch switchSonido;
 
+    /**
+     * La función inicializa varios elementos y establece escuchas para una interfaz de configuración
+     * en un programa Java.
+     */
     private void initElementos() {
         resources = getResources();
 
@@ -339,7 +364,7 @@ public class ajustes extends VistaGeneral {
         r3 = findViewById(R.id.radioButton3);
         r4 = findViewById(R.id.radioButton4);
         r5 = findViewById(R.id.radioButton5);
-        rNoSound=findViewById(R.id.radioNoSound);
+        rNoSound = findViewById(R.id.radioNoSound);
         layoutAjustesInfo = findViewById(R.id.layoutAjustesInfo);
         layoutCamposAjustes = findViewById(R.id.layoutCamposAjustes);
         layoutContenido = findViewById(R.id.layoutContenido);
@@ -362,173 +387,10 @@ public class ajustes extends VistaGeneral {
     }
 
 
-    private void setListeners() {
-
-        layoutBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        layoutCampoSonido.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                quitarLayoutAjustes();
-                quitarCamposSeleccionados();
-                layoutSonido.setVisibility(View.VISIBLE);
-                barraSonido.setVisibility(View.VISIBLE);
-                textCampoSonido.setTextColor(resources.getColor(R.color.blue2, activity.getTheme()));
-
-            }
-        });
-
-        layoutCampoIdioma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                quitarLayoutAjustes();
-                quitarCamposSeleccionados();
-                layoutIdioma.setVisibility(View.VISIBLE);
-                barraIdioma.setVisibility(View.VISIBLE);
-                textCampoIdioma.setTextColor(resources.getColor(R.color.blue2, activity.getTheme()));
-
-            }
-        });
-
-        layoutCampoImpresora.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                quitarLayoutAjustes();
-                quitarCamposSeleccionados();
-                layoutImpresora.setVisibility(View.VISIBLE);
-                barraImpresora.setVisibility(View.VISIBLE);
-                textCampoImpresora.setTextColor(resources.getColor(R.color.blue2, activity.getTheme()));
-
-            }
-        });
-
-        switchSonido.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean mute = switchSonido.isChecked();
-                sonido = !mute;
-            }
-        });
-
-
-
-
-        imgPlaySonido.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int radioId = radioGroup.getCheckedRadioButtonId();
-                if (selectedRadioButton != null && selectedRadioButton.getId()!=rNoSound.getId()) {
-                    System.out.println("radio id " + selectedRadioButton.getText().toString());
-
-                    if (mp != null) {
-                        mp.stop();
-                    }
-
-
-                    handlerMusica.removeCallbacksAndMessages(null);
-                    RadioButton radioButton = selectedRadioButton;
-                    String txt = nombreTono(radioButton.getText().toString());
-                    System.out.println("radio tono " + txt);
-                    int resId = getResources().getIdentifier(txt, "raw", getPackageName());
-                    mp = MediaPlayer.create(activity, resId);
-                    mp.start();
-                    handlerMusica = new Handler();
-
-                    /////////Hanlder para parar la música da los 2 segundos ////
-                    /// es posible que se meta en un futuro la posibilidad de aumentar/disminuir el tiempo en el que está sonando la música ////
-
-
-                    handlerMusica.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mp.stop();
-                        }
-                    }, 2000);
-                }
-            }
-        });
-
-
-        r1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-
-        r2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-
-        r3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-        r4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-
-        r5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-
-        rNoSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-
-        radioEsp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLanguageSelected(v);
-            }
-        });
-        radioEn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLanguageSelected(v);
-            }
-        });
-        radioPort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLanguageSelected(v);
-            }
-        });
-        radioFr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLanguageSelected(v);
-            }
-        });
-        radioAle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLanguageSelected(v);
-            }
-        });
-
-
-    }
-
+    /**
+     * La función "setListeners2" configura varios detectores de clics para diferentes vistas en una
+     * aplicación de Android.
+     */
     private void setListeners2() {
 
         layoutBack.setOnClickListener(new View.OnClickListener() {
@@ -585,7 +447,7 @@ public class ajustes extends VistaGeneral {
             @Override
             public void onClick(View v) {
                 int radioId = radioGroup.getCheckedRadioButtonId();
-                if (selectedRadioButton != null && selectedRadioButton.getId()!=rNoSound.getId()) {
+                if (selectedRadioButton != null && selectedRadioButton.getId() != rNoSound.getId()) {
                     System.out.println("radio id 2" + selectedRadioButton.getText().toString());
 
                     if (mp != null) {
@@ -598,7 +460,7 @@ public class ajustes extends VistaGeneral {
                     String txt = nombreTono(radioButton.getText().toString());
                     System.out.println("radio tono " + txt);
                     int resId = getResources().getIdentifier(txt, "raw", getPackageName());
-                    System.out.println("resid "+resId);
+                    System.out.println("resid " + resId);
                     mp = MediaPlayer.create(activity, resId);
                     mp.start();
                     handlerMusica = new Handler();
@@ -692,18 +554,10 @@ public class ajustes extends VistaGeneral {
         });
     }
 
-    private void cambiarConstraints() {
-        ConstraintSet set = new ConstraintSet();
-        set.clone(layoutContenido);
-        set.connect(R.id.layoutCamposAjustes, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-        set.connect(R.id.layoutAjustesInfo, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        set.applyTo(layoutContenido);
 
-        layoutAjustesInfo.setVisibility(View.GONE);
-        layoutCamposAjustes.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
-
-    }
-
+    /**
+     * Oculta los campos seleccionados y restablece los colores del texto asociados.
+     */
     private void quitarCamposSeleccionados() {
         barraSonido.setVisibility(View.GONE);
         textCampoSonido.setTextColor(resources.getColor(R.color.black, this.getTheme()));
@@ -713,6 +567,9 @@ public class ajustes extends VistaGeneral {
         textCampoImpresora.setTextColor(resources.getColor(R.color.black, this.getTheme()));
     }
 
+    /**
+     * Oculta los layouts relacionados con ajustes: sonido, idioma e impresora.
+     */
     private void quitarLayoutAjustes() {
         layoutSonido.setVisibility(View.GONE);
         layoutIdioma.setVisibility(View.GONE);
@@ -720,9 +577,18 @@ public class ajustes extends VistaGeneral {
     }
 
 
+    /**
+     * Maneja los eventos de clic en los botones de radio.
+     *
+     * @param view La vista del botón de radio seleccionado.
+     */
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
+
+        // Deselecciona todos los botones de radio
         quitarCheckedRadio();
+
+        // Establece el botón de radio como seleccionado
         ((RadioButton) view).setChecked(checked);
 
         switch (view.getId()) {
@@ -737,21 +603,18 @@ public class ajustes extends VistaGeneral {
                     selectedRadioButton = (RadioButton) view;
                     sonidoString = nombreTono(r2.getText().toString());
                 }
-
                 break;
             case R.id.radioButton3:
                 if (checked) {
                     selectedRadioButton = (RadioButton) view;
                     sonidoString = nombreTono(r3.getText().toString());
                 }
-
                 break;
             case R.id.radioButton4:
                 if (checked) {
                     selectedRadioButton = (RadioButton) view;
                     sonidoString = nombreTono(r4.getText().toString());
                 }
-
                 break;
             case R.id.radioButton5:
                 if (checked) {
@@ -759,117 +622,154 @@ public class ajustes extends VistaGeneral {
                     sonidoString = nombreTono(r5.getText().toString());
                 }
                 break;
-
             case R.id.radioNoSound:
-                if(checked){
+                if (checked) {
                     selectedRadioButton = (RadioButton) view;
-                    sonidoString="noSound";
-
+                    sonidoString = "noSound";
                 }
-
                 break;
         }
-
     }
 
+
+    /**
+     * Maneja los eventos de selección de idioma.
+     *
+     * @param view La vista del botón de radio de idioma seleccionado.
+     */
     public void onLanguageSelected(View view) {
         boolean checked = ((RadioButton) view).isChecked();
-        quitarCheckedIdioma();
-        ((RadioButton) view).setChecked(checked);
-        System.out.println("selected language ");
 
+        // Desmarca todos los botones de radio de idioma
+        quitarCheckedIdioma();
+
+        // Marca el botón de radio de idioma como seleccionado
+        ((RadioButton) view).setChecked(checked);
+
+        // Imprime un mensaje en la consola para señalar la selección de idioma
+        System.out.println("Idioma seleccionado");
+
+        // Maneja la acción según el botón de radio de idioma seleccionado
         switch (view.getId()) {
             case R.id.radioEsp:
                 if (checked) {
                     selectedLanguage = (RadioButton) view;
-                    idiomaActual = "es";
+                    idiomaActual = "es"; // Idioma español
                 }
                 break;
             case R.id.radioEn:
                 if (checked) {
                     selectedLanguage = (RadioButton) view;
-                    idiomaActual = "en";
+                    idiomaActual = "en"; // Idioma inglés
                 }
                 break;
             case R.id.radioPort:
                 if (checked) {
                     selectedLanguage = (RadioButton) view;
-                    idiomaActual = "pt";
+                    idiomaActual = "pt"; // Idioma portugués
                 }
                 break;
             case R.id.radioFr:
                 if (checked) {
                     selectedLanguage = (RadioButton) view;
-                    idiomaActual = "fr";
+                    idiomaActual = "fr"; // Idioma francés
                 }
                 break;
             case R.id.radioAle:
                 if (checked) {
                     selectedLanguage = (RadioButton) view;
-                    idiomaActual = "de";
+                    idiomaActual = "de"; // Idioma alemán
                 }
                 break;
         }
-        System.out.println("selected language " + idiomaActual);
-
-
+        // Imprime el idioma seleccionado en la consola
+        System.out.println("Idioma seleccionado: " + idiomaActual);
     }
 
+
+    /**
+     * Desmarca todos los botones de radio de tono de sonido.
+     */
     private void quitarCheckedRadio() {
+        // Desmarca todos los botones de radio de tono de sonido
         r1.setChecked(false);
         r2.setChecked(false);
         r3.setChecked(false);
         r4.setChecked(false);
         r5.setChecked(false);
         rNoSound.setChecked(false);
-
-
     }
 
+
+    /**
+     * Desmarca todos los botones de radio de idioma.
+     */
     private void quitarCheckedIdioma() {
+        // Desmarca todos los botones de radio de idioma
         radioEsp.setChecked(false);
         radioEn.setChecked(false);
         radioPort.setChecked(false);
         radioFr.setChecked(false);
         radioAle.setChecked(false);
-
     }
 
+
+    /**
+     * Establece el botón de radio correspondiente al tono de sonido actualmente seleccionado.
+     * Lee la configuración actual del tono de sonido desde las preferencias compartidas y
+     * marca el botón de radio correspondiente a ese tono de sonido.
+     */
     private void setSonidoChecked() {
+        // Obtiene las preferencias compartidas para el sonido
         SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+
+        // Obtiene el sonido actual almacenado en las preferencias compartidas
         String sonidoActual = sharedSonido.getString("sonidoUri", "clockalarm");
+
+        // Determina el tono de sonido elegido basado en el sonido actual almacenado
         int tono_elegido = tonoActual(sonidoActual);
+
+        // Encuentra el botón de radio correspondiente al tono de sonido y lo marca como seleccionado
         RadioButton rb;
         if (tono_elegido == 2) {
             rb = findViewById(R.id.radioButton2);
-
         } else if (tono_elegido == 3) {
             rb = findViewById(R.id.radioButton3);
-
         } else if (tono_elegido == 4) {
             rb = findViewById(R.id.radioButton4);
-
         } else if (tono_elegido == 5) {
             rb = findViewById(R.id.radioButton5);
-
-        } else if(tono_elegido==1){
+        } else if (tono_elegido == 1) {
             rb = findViewById(R.id.radioButton);
-
-        }else{
+        } else {
             rb = findViewById(R.id.radioNoSound);
         }
+
+        // Marca el botón de radio correspondiente al tono de sonido como seleccionado
         rb.setChecked(true);
         selectedRadioButton = rb;
     }
 
+
+    /**
+     * Configura el botón de radio asociado al idioma actualmente seleccionado en las preferencias.
+     * Busca el idioma actual en las preferencias y marca el botón de radio correspondiente como seleccionado.
+     * Si no se encuentra un idioma guardado, establece el idioma por defecto como español.
+     */
     private void setIdiomaChecked() {
+        // Obtiene el idioma guardado en las preferencias compartidas
         String idioma = sharedPreferencesIdiomas.getString("id", "");
-        if(idioma.equals("")){idioma="";}
-        System.out.println("idioma es "+idioma);
 
+        // Si no se ha guardado ningún idioma, establece un valor predeterminado (en este caso, ningún valor)
+        if (idioma.equals("")) {
+            idioma = "";
+        }
+
+        // Imprime el idioma actual para depurar (opcional)
+        System.out.println("idioma es " + idioma);
+
+        // Configura el botón de radio correspondiente al idioma encontrado en las preferencias
         switch (idioma) {
-
-
             case "en":
                 quitarCheckedIdioma();
                 radioEn.setChecked(true);
@@ -890,36 +790,56 @@ public class ajustes extends VistaGeneral {
                 quitarCheckedIdioma();
                 radioAle.setChecked(true);
                 break;
-
             default:
+                // Si no se encuentra un idioma guardado, establece español como idioma predeterminado
                 quitarCheckedIdioma();
                 radioEsp.setChecked(true);
-                System.out.println("idioma es "+idioma);
+                System.out.println("idioma es " + idioma);
                 break;
         }
     }
 
+
     ///////////////////////////////
     private List<Categoria> listCategorias = new ArrayList<>();
     private ImageView imgBack;
-    private CardView cardCatSonido,cardCatIdioma;
-    private ConstraintLayout layoutSelected,layoutSelected2;
+    private CardView cardCatSonido, cardCatIdioma;
+    private ConstraintLayout layoutSelected, layoutSelected2;
     private ScrollView scroll;
 
-    private void initInterface2(){
-        imgBack=findViewById(R.id.imgBack);
+    /**
+     * Inicializa los elementos visuales y configuraciones de la interfaz de ajustes.
+     * Encuentra y asigna elementos visuales como botones de retorno, tarjetas de ajustes de sonido e idioma,
+     * diseños seleccionados y vistas desplazables.
+     * Inicializa la lista de categorías relacionadas con los ajustes.
+     * Configura el adaptador para el RecyclerView.
+     * Establece los listeners para los elementos interactivos en la interfaz.
+     */
+    private void initInterface2() {
+        // Encuentra y asigna elementos visuales de la interfaz
+        imgBack = findViewById(R.id.imgBack);
         cardCatSonido = findViewById(R.id.cardCatSonido);
-        cardCatIdioma= findViewById(R.id.cardCatIdioma);
+        cardCatIdioma = findViewById(R.id.cardCatIdioma);
         layoutSelected = findViewById(R.id.layoutSelected);
-        layoutSelected2=findViewById(R.id.layoutSelected2);
-        scroll=findViewById(R.id.scrollAjustes);
-        initListCategorias();
-        setRecyclerCat();
-        setListenerI2();
+        layoutSelected2 = findViewById(R.id.layoutSelected2);
+        scroll = findViewById(R.id.scrollAjustes);
 
+        // Inicializa la lista de categorías relacionadas con los ajustes
+        initListCategorias();
+
+        // Configura el adaptador para el RecyclerView
+        setRecyclerCat();
+
+        // Establece los listeners para los elementos interactivos en la interfaz
+        setListenerI2();
     }
 
-    private void setListenerI2(){
+
+    /**
+     * Establece los listeners de clic para elementos específicos en la interfaz de ajustes.
+     */
+    private void setListenerI2() {
+        // Listener de clic para el botón de retroceso
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -927,10 +847,12 @@ public class ajustes extends VistaGeneral {
             }
         });
 
-        if(cardCatSonido!=null) {
+        // Listener de clic para la tarjeta de ajustes de sonido
+        if (cardCatSonido != null) {
             cardCatSonido.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Muestra el diseño de ajustes de sonido y oculta el diseño de idioma
                     layoutSonido.setVisibility(View.VISIBLE);
                     layoutIdioma.setVisibility(View.GONE);
                     layoutSelected.setVisibility(View.VISIBLE);
@@ -939,10 +861,12 @@ public class ajustes extends VistaGeneral {
             });
         }
 
-        if(cardCatIdioma != null) {
+        // Listener de clic para la tarjeta de ajustes de idioma
+        if (cardCatIdioma != null) {
             cardCatIdioma.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Muestra el diseño de ajustes de idioma y oculta el diseño de sonido
                     layoutSonido.setVisibility(View.GONE);
                     layoutIdioma.setVisibility(View.VISIBLE);
                     layoutSelected.setVisibility(View.INVISIBLE);
@@ -952,48 +876,62 @@ public class ajustes extends VistaGeneral {
         }
     }
 
-    private void initListCategorias(){
-        Categoria cat1 = new Categoria(resources.getString(R.string.ajusteSonido),0);
+
+    /**
+     * Inicializa la lista de categorías con las configuraciones de ajustes de sonido e idioma.
+     */
+    private void initListCategorias() {
+        // Crea y agrega una categoría para los ajustes de sonido a la lista de categorías
+        Categoria cat1 = new Categoria(resources.getString(R.string.ajusteSonido), 0);
         listCategorias.add(cat1);
-        Categoria cat2=new Categoria(resources.getString(R.string.ajusteIdioma),1);
+
+        // Crea y agrega una categoría para los ajustes de idioma a la lista de categorías
+        Categoria cat2 = new Categoria(resources.getString(R.string.ajusteIdioma), 1);
         listCategorias.add(cat2);
     }
+
 
     private RecyclerView recyclerCategorias;
     private AdapterCategoria adapterCat;
 
-    private void setRecyclerCat(){
-        recyclerCategorias=findViewById(R.id.recyclerCategoriasAjustes);
+    /**
+     * Configura el RecyclerView para mostrar las categorías de ajustes.
+     */
+    private void setRecyclerCat() {
+        // Obtiene la referencia al RecyclerView del layout
+        recyclerCategorias = findViewById(R.id.recyclerCategoriasAjustes);
         recyclerCategorias.setHasFixedSize(true);
-     //   if(resources.getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerCategorias.setLayoutManager(new LinearLayoutManager(this));
-   //     }else {
-      //      recyclerCategorias.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
-     //   }
+        // Establece el LayoutManager del RecyclerView
+        recyclerCategorias.setLayoutManager(new LinearLayoutManager(this));
 
+        // Crea un adaptador personalizado para las categorías y asigna un listener para los clics en los elementos
         adapterCat = new AdapterCategoria(listCategorias, this, new AdapterCategoria.OnItemClickListener() {
             @Override
             public void onItemClick(Categoria item, int position) {
                 String cat = item.getNombre();
-                scroll.scrollTo(0,0);
+                scroll.scrollTo(0, 0);
 
-                if(cat.equals(resources.getString(R.string.ajusteSonido))){
+                // Muestra u oculta los elementos según la categoría seleccionada
+                if (cat.equals(resources.getString(R.string.ajusteSonido))) {
                     layoutSonido.setVisibility(View.VISIBLE);
                     layoutIdioma.setVisibility(View.GONE);
-                }else if(cat.equals(resources.getString(R.string.ajusteIdioma))){
+                } else if (cat.equals(resources.getString(R.string.ajusteIdioma))) {
                     layoutSonido.setVisibility(View.GONE);
                     layoutIdioma.setVisibility(View.VISIBLE);
                 }
+
                 System.out.println("Scroll");
 
-                if(resources.getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT){
+                // Si la orientación del dispositivo es vertical, muestra el layout de configuración de ajustes
+                if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     layoutConfiguracionAjustes.setVisibility(View.VISIBLE);
                 }
             }
         });
 
+        // Establece el adaptador en el RecyclerView
         recyclerCategorias.setAdapter(adapterCat);
-
     }
+
 }

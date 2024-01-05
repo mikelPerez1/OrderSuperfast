@@ -26,12 +26,15 @@ import java.util.List;
 import com.OrderSuperfast.R;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
 
-public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHolder> {
+/**
+ * Clase que maneja la vista de las zonas y dispositivos que se muestran en un RecyclerView
+ */
+public class AdapterDevices extends RecyclerView.Adapter<AdapterDevices.ViewHolder> {
 
     private ArrayList<DispositivoZona> midata = new ArrayList<>(), original = new ArrayList<>();
     private final LayoutInflater mInflaterDispositivo;
     private final Context context;
-    final DeviceAdapter2.OnItemClickListener listener;
+    final AdapterDevices.OnItemClickListener listener;
     private final ArrayList<Pair<String, String>> lista;
     private int altura;
     private RecyclerView.ItemAnimator animator = new DefaultItemAnimator();
@@ -55,12 +58,20 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
     private boolean animando = false;
 
 
-    public DeviceAdapter2(ArrayList<DispositivoZona> itemList, int alt, Context context, DeviceAdapter2.OnItemClickListener listener, LinearLayoutManager pManager) {
+    /**
+     * @param itemList lista de items sobre el que trabaja el adaptador
+     * @param pAltura no se utiliza
+     * @param context Contexto de la actividad
+     * @param listener
+     * @param pManager LinearLayoutManager que se utiliza para hacer scroll hasta un elemento
+     * constructora de la clase AdapterDevices
+     */
+    public AdapterDevices(ArrayList<DispositivoZona> itemList, int pAltura, Context context, AdapterDevices.OnItemClickListener listener, LinearLayoutManager pManager) {
         this.mInflaterDispositivo = LayoutInflater.from(context);
         this.context = context;
         this.original = itemList;
         this.midata.addAll(original);
-        altura = alt;
+        altura = pAltura;
         this.listener = listener;
         this.lista = new ArrayList<>();
         resetZonas();
@@ -88,6 +99,10 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
     }
 
 
+    /**
+     * @param position posicion del elemento de la lista midata
+     * @return devuelve un int que indica el tipo de layout que se utiliza para el elemento en la posicion position
+     */
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
@@ -102,17 +117,16 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
     }
 
-    public void changeDataToDisps(int pos) {
 
-    }
-
+    /**
+     * Función que oculta los dispositivos y deja solo mostrandose las zonas
+     */
     private void resetZonas() {
         midata.clear();
         midata.addAll(original);
         System.out.println("deviceAdapter deviceZonas " + midata.size());
         for (int i = midata.size() - 1; i >= 0; i--) {
             if (!midata.get(i).getEsZona()) {
-                // midata.remove((i));
                 midata.get(i).setAnimation(false);
             } else {
                 ultimaZona = i;
@@ -123,6 +137,10 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
     }
 
 
+    /**
+     * @param item
+     * Función que oculta los dispositivos de una zona mediante una animación
+     */
     private void cerrarZonas(DispositivoZona item) {
         System.out.println("size midata" + midata.size());
         boolean sonDispositivos = false;
@@ -159,7 +177,11 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
         notifyDataSetChanged();
     }
 
-    private void resetZonasMenos1(DispositivoZona item) {
+    /**
+     * @param item
+     * Función que muestra los dispositivos de una zona mediante una animación
+     */
+    private void clickarZona(DispositivoZona item) {
         //midata.clear();
         //  midata.addAll(original);
         System.out.println("size midata" + midata.size());
@@ -217,8 +239,14 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
     }
 
 
+    /**
+     * @param parent
+     * @param viewType usado para diferenciar los distintos layout que usa cada elemento
+     * @return devuelve una nueva instancia del ViewHolder del adaptador utilizando el layout del elemento
+     * Función que elige el layout que tiene cada elemento de la lista
+     */
     @Override
-    public DeviceAdapter2.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterDevices.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_zona, parent, false);
         View view2 = mInflaterDispositivo.from(parent.getContext()).inflate(R.layout.layout_disp, parent, false);
         switch (viewType) {
@@ -226,30 +254,19 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
             case 1:
                 System.out.println("entra en case1");
 
-                return new DeviceAdapter2.ViewHolder(view);
+                return new AdapterDevices.ViewHolder(view);
             case 2:
                 System.out.println("entra en case2");
 
-                return new DeviceAdapter2.ViewHolder(view2);
+                return new AdapterDevices.ViewHolder(view2);
 
             case 3:
                 View v = mInflaterDispositivo.from(parent.getContext()).inflate(R.layout.layout_texto_restaurante, parent, false);
-                return new DeviceAdapter2.ViewHolder(v);
+                return new AdapterDevices.ViewHolder(v);
 
         }
-        return new DeviceAdapter2.ViewHolder(view);
+        return new AdapterDevices.ViewHolder(view);
 
-    }
-
-    private int getCuantosCerrar() {
-        int num = 0;
-        for (int i = 0; i < midata.size(); i++) {
-            DispositivoZona dz = midata.get(i);
-            if (dz.getCerrar()) {
-                num++;
-            }
-        }
-        return num;
     }
 
     private void setHeightTo0(View view, int position) {
@@ -257,7 +274,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(final DeviceAdapter2.ViewHolder holder, int position) {
+    public void onBindViewHolder(final AdapterDevices.ViewHolder holder, int position) {
 
 
         if (getItemViewType(position) == 2 && midata.get(position).getCerrar()) {
@@ -314,22 +331,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
 
         boolean esfinal = false;
-         /*
-        if (position == midata.size() - 1) {
-            esfinal = true;
-            View lastItem = holder.itemView;
 
-            if (altura > 126) {
-                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(20, 500, 20, 20);
-                lastItem.setLayoutParams(params);
-            }
-        }
-        System.out.println("ALTURA" + altura);
-
-        altura = altura - 126;
-
-         */
 
         holder.bindData(midata.get(position), esfinal, position);
     }
@@ -347,6 +349,10 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
         ConstraintLayout layoutPorciento;
 
 
+        /**
+         * @param itemView
+         * Constructora del ViewHolder
+         */
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -359,6 +365,12 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
         }
 
+        /**
+         * @param item
+         * @param esfinal booleano para saber si es el último elemento
+         * @param position posición del elemento en la lista
+         * Función que modifica la vista del layout del elemento
+         */
         void bindData(final DispositivoZona item, boolean esfinal, int position) {
 
             if (position == 0) {
@@ -476,7 +488,7 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
                             if (!item.getClickado()) {
 
-                                resetZonasMenos1(item);
+                                clickarZona(item);
                                 item.setClickado(true);
                                 //linearManager.scrollToPositionWithOffset(position,0);
 
@@ -504,6 +516,10 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
             }
         }
 
+        /**
+         * @param item
+         * cambia el atributo clickado a false del elemento de la lista
+         */
         private void setItemsNoClickados(DispositivoZona item) {
             for (int i = 0; i < midata.size(); i++) {
                 DispositivoZona dz = midata.get(i);
@@ -514,26 +530,18 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
 
         }
 
-        private void setItemsNoClickadosTodos() {
-            for (int i = 0; i < midata.size(); i++) {
-                DispositivoZona dz = midata.get(i);
-                dz.setClickado(false);
-            }
-
-        }
-
 
     }
 
-    public void clickItemWithId(String id) {
-        for (int i = 0; i < midata.size(); i++) {
-            DispositivoZona dz = midata.get(i);
-            if (dz.getId().equals(id)) {
-                zonaClickada = id;
-            }
-        }
-    }
 
+    /**
+     * @param view La vista que se va a animar
+     * @param position La posición de un elemento en la vista
+     *
+     * Crea y ejecuta una animación para desplegar una vista al hacer clic en una determinada posición.
+     * Esta función se utiliza para animar la transición o la aparición de una vista cuando se hace clic
+     * en una posición específica en la interfaz de usuario.
+     */
     private void startAnimation(View view, int position) {
         view.setVisibility(View.VISIBLE);
         int dim = (int) resources.getDimension(R.dimen.anchura80dp);
@@ -593,6 +601,14 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
         anim.start(); // Iniciar la animación
     }
 
+    /**
+     * @param view La vista que se va a animar
+     * @param position La posición de un elemento en la vista
+     *
+     * Crea y ejecuta una animación para ocultar una vista al hacer clic en una determinada posición.
+     * Esta función se utiliza para animar la transición o la desaparición de una vista cuando se hace clic
+     * en una posición específica en la interfaz de usuario.
+     */
     private void closeAnimation(View view, int position) {
         view.setVisibility(View.VISIBLE);
 
@@ -651,11 +667,16 @@ public class DeviceAdapter2 extends RecyclerView.Adapter<DeviceAdapter2.ViewHold
     }
 
 
+    /**
+     * @param view La vista que se va a animar
+     * @param position La posición de un elemento en la vista
+     *
+     */
     private void noAnimation(View view, int position) {
         view.setVisibility(View.VISIBLE);
 
         ValueAnimator anim = ValueAnimator.ofInt((int) resources.getDimension(R.dimen.anchura80dp), 0);
-        anim.setDuration(150); // Duración de la animación en milisegundos (1 segundo en este caso)
+        anim.setDuration(150); // Duración de la animación en milisegundos
 
         anim.addUpdateListener(animation -> {
             // Obtener el nuevo valor de altura en cada fotograma y aplicarlo al elemento

@@ -117,7 +117,6 @@ public class logActivity extends VistaGeneral {
         }
 
         ControladorLog controlador = new ControladorLog(this);
-        controlador.getLines();
 
        // removeOlderLines();
         //String logResult = readFromFile(this);

@@ -40,7 +40,16 @@ public class ControladorLogin extends ControladorGeneral{
     }
 
 
-
+    /**
+     * @param nombre Nombre del usuario
+     * @param password Contraseña del usuario
+     * @param checkboxChecked Booleano que sirve para ver si el usuario quiere guardar el nombre y la contraseña que acaba de poner
+     * @param callback Una instancia de la interfaz de retorno de llamada ({@link CallbackZonas}) que maneja
+     *                 el resultado del intento de inicio de sesión, ya sea éxito o fracaso.
+     *                 Se utiliza para notificar el resultado de la operación al usuario.
+     *                 Requiere implementar métodos como onSuccess() y onError() para manejar los diferentes casos.
+     * @see CallbackZonas
+     */
     public void peticionLogin(String nombre, String password,boolean checkboxChecked, CallbackZonas callback) {
 
         Pair<String, String> par = codificar(nombre, password); // la funcíon codificar recive 2 Strings, el usuario y contraseña y devuelve un Par que contiene el usuario y contraseña codificados
@@ -191,6 +200,18 @@ public class ControladorLogin extends ControladorGeneral{
     }
 
 
+    /**
+     * Realiza el proceso de inicio de sesión y guarda información relacionada con el usuario y el restaurante.
+     *
+     * @param user El nombre de usuario para iniciar sesión.
+     * @param pass La contraseña asociada al usuario.
+     * @param idRest El identificador del restaurante.
+     * @param logoRest La URL o identificador de la imagen del logotipo del restaurante.
+     * @param nombreRest El nombre del restaurante.
+     * @param checkboxChecked Booleano que indica si se debe guardar la información del usuario y restaurante para futuros accesos.
+     * @param zonas Objeto Zonas que contiene información sobre las zonas asociadas al restaurante.
+     * @param callback Interfaz CallbackZonas para manejar el resultado del inicio de sesión y devolución de información de zonas.
+     */
     private void login(String user,String pass,String idRest, String logoRest, String nombreRest, boolean checkboxChecked,Zonas zonas, CallbackZonas callback) {
         //String deco = decodificar(idRest, true);
 
@@ -235,12 +256,29 @@ public class ControladorLogin extends ControladorGeneral{
 
     }
 
+    /**
+     * Elimina los dispositivos guardados almacenados en las preferencias compartidas.
+     * Esta función borra la información de los dispositivos guardados almacenados previamente
+     * en las preferencias compartidas relacionadas con los dispositivos.
+     * Utiliza este método para limpiar la información de dispositivos guardada si es necesario.
+     */
     private void eliminarDisposGuardados(){
         SharedPreferences sharedZonas = context.getSharedPreferences("dispos", Context.MODE_PRIVATE);
         SharedPreferences.Editor editorZonas = sharedZonas.edit();
         editorZonas.remove("savedDisps");
     }
 
+    /**
+     * Guarda la información de zonas y dispositivos en las preferencias compartidas.
+     *
+     * Este método toma un objeto Zonas y guarda la información relacionada con las zonas
+     * y sus dispositivos asociados en las preferencias compartidas. Cada zona contiene
+     * información sobre su identificador, nombre, lista de dispositivos, y configuraciones
+     * específicas (como esTakeAway y takeAwayActivado).
+     *
+     * @param zonas Objeto Zonas que contiene información sobre las zonas y dispositivos a guardar
+     *              en las preferencias compartidas.
+     */
     private void guardarZonasPref(Zonas zonas) {
 
 
@@ -287,6 +325,15 @@ public class ControladorLogin extends ControladorGeneral{
     }
 
 
+    /**
+     * Codifica el nombre de usuario y la contraseña utilizando un algoritmo de codificación específico.
+     * Este método codifica el nombre de usuario y la contraseña proporcionados usando un algoritmo
+     * que implica desplazamientos y transformaciones de caracteres.
+     *
+     * @param u El nombre de usuario a codificar.
+     * @param c La contraseña asociada al nombre de usuario.
+     * @return Un par de cadenas codificadas que representan el nombre de usuario y la contraseña codificados.
+     */
     private Pair<String, String> codificar(String u, String c) {
         int clave = 245;
         int claveUsername = 44827;
@@ -342,6 +389,13 @@ public class ControladorLogin extends ControladorGeneral{
 
     }
 
+    /**
+     * Decodifica un texto utilizando un algoritmo específico de descifrado.
+     *
+     * @param texto El texto que se va a decodificar.
+     * @param textUser Booleano que indica si el texto es un nombre de usuario codificado (true) o una contraseña codificada (false).
+     * @return El texto decodificado utilizando un algoritmo específico de descifrado.
+     */
     private String decodificar(String texto, boolean textUser) {
         int codigo;
         int claveUsername = 44827;
@@ -376,6 +430,11 @@ public class ControladorLogin extends ControladorGeneral{
     }
 
 
+    /**
+     * Elimina la información de dispositivos almacenada en preferencias compartidas.
+     * Este método elimina la lista de dispositivos almacenada previamente en las preferencias compartidas
+     * relacionadas con los dispositivos. Utilízalo para limpiar la información de dispositivos almacenada si es necesario.
+     */
     private void eliminarShared() {
         SharedPreferences sharedDevices = context.getSharedPreferences("devices", Context.MODE_PRIVATE);
         SharedPreferences.Editor deviceEditor = sharedDevices.edit();
@@ -383,6 +442,13 @@ public class ControladorLogin extends ControladorGeneral{
         deviceEditor.apply();
     }
 
+    /**
+     * Obtiene y decodifica la cuenta de usuario guardada en preferencias compartidas.
+     * Este método busca y decodifica la cuenta de usuario guardada, eliminando previamente
+     * información relacionada con dispositivos y preferencias compartidas asociadas a la cuenta.
+     *
+     * @return Un par de cadenas que representan el nombre de usuario y la contraseña decodificados.
+     */
     public Pair<String,String> getCuentaGuardada(){
         eliminarShared();
         eliminarDisposGuardados();
@@ -398,9 +464,6 @@ public class ControladorLogin extends ControladorGeneral{
 
         Pair<String,String> pair = new Pair(usuario,contraseña);
         return pair;
-
-
-
     }
 
 }

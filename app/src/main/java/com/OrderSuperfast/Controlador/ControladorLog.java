@@ -25,11 +25,22 @@ public class ControladorLog extends ControladorGeneral{
 
     private logActivity myContext;
 
+    /**
+     * Crea un Controlador de Log asociado con la actividad de registro (logActivity).
+     *
+     * @param mContext El contexto de la actividad de registro (logActivity) al que se asocia este Controlador de Log.
+     */
     public ControladorLog(logActivity mContext){
         this.myContext = mContext;
+        removeOlderLines();
     }
 
 
+    /**
+     * Elimina líneas antiguas de un archivo de registro que contienen mensajes con fechas anteriores a seis meses.
+     * Las líneas del archivo de registro que contienen mensajes con fechas anteriores a seis meses son excluidas
+     * del archivo, manteniendo solo los registros recientes.
+     */
     private void removeOlderLines() {
         System.out.println("date old enough 3");
         try {
@@ -91,6 +102,12 @@ public class ControladorLog extends ControladorGeneral{
     }
 
 
+    /**
+     * Lee información de un archivo y procesa los datos para su presentación en una vista específica.
+     *
+     * @param context El contexto asociado a la operación de lectura del archivo.
+     * @return Una cadena formateada con los datos del archivo para mostrar en una vista.
+     */
     private String readFromFile(Context context) {
 
         String ret = "";
@@ -184,10 +201,7 @@ public class ControladorLog extends ControladorGeneral{
     }
 
 
-    public void getLines(){
-        removeOlderLines();
-        String logResult = readFromFile(myContext);
-    }
+
 
 
 }

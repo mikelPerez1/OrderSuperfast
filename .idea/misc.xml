@@ -52,6 +52,7 @@
         <entry key="app/src/main/res/layout/pedido_take_away_2.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/pedido_take_away_2_tablet.xml" value="0.1996579734929457" />
         <entry key="app/src/main/res/layout/popup_cancelar.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/popup_cerrar_sesion.xml" value="0.15220179563916203" />
         <entry key="app/src/main/res/layout/popup_devolucion_dinero.xml" value="0.33" />
         <entry key="app/src/main/res/layout/popup_devolucion_productos.xml" value="0.20982142857142858" />
         <entry key="app/src/main/res/layout/popup_idiomas.xml" value="0.16171875" />

@@ -34,6 +34,8 @@ public class VistaGeneral extends AppCompatActivity{
 
 
     protected void ponerInsets(ConstraintLayout layout){
+        //ya que utiliza pantalla completa, algunos dispositivos pueden tener una camara o algún elemento que impide la visualización correcta de la pantalla.
+        // Esta funcion le aplica unos margenes al lado donde tenga dicho elemento para que no afecte la visualización.
         SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
         int inset = prefInset.getInt("inset", 0);
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -124,7 +126,7 @@ public class VistaGeneral extends AppCompatActivity{
 
 
     @Override
-    protected void attachBaseContext(Context newBase) {
+    protected void attachBaseContext(Context newBase) { //pone el idioma que se usa
         SharedPreferences sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
         String idioma = sharedPreferencesIdiomas.getString("id", "");
 

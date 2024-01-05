@@ -16,9 +16,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
-import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -28,7 +26,6 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,19 +35,18 @@ import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorDevices;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
 import com.OrderSuperfast.Modelo.Clases.Zonas;
-import com.OrderSuperfast.Modelo.Clases.customLinearLayout;
 import com.OrderSuperfast.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-import com.OrderSuperfast.Modelo.Adaptadores.DeviceAdapter2;
+import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevices;
 
 public class Devices extends VistaGeneral{
 
 
-    private DeviceAdapter2 deviceAdapter2;
+    private AdapterDevices adapterDevices;
     private final Devices activity = this;
     private RecyclerView recyclerView;
     private ArrayList<DispositivoZona> listaArrayZonas = new ArrayList<>();
@@ -70,6 +66,9 @@ public class Devices extends VistaGeneral{
     }
 
 
+    /**
+     * @param savedInstanceState 
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().getDecorView().setSystemUiVisibility(
@@ -207,7 +206,6 @@ public class Devices extends VistaGeneral{
 
         recyclerView.setHasFixedSize(true);
         int n = (int) (getResources().getDimension(R.dimen.paddingDevices));
-        customLinearLayout linearL = new customLinearLayout(this, n);
         linearManager = new LinearLayoutManager(this);
         // linearLayoutManager.
         //   linearLayoutManager.setStackFromEnd(true);
@@ -220,13 +218,21 @@ public class Devices extends VistaGeneral{
 
 
 
-        adaptadorExperimental();
+        setAdaptadorDispositivos();
 
 
     }
 
-    private void adaptadorExperimental() {
-        deviceAdapter2 = new DeviceAdapter2(listaArrayZonas, 0, this, new DeviceAdapter2.OnItemClickListener() {
+    /**
+     * crea una instancia de AdapterDevices y se la asigna al RecyclerView.
+     */
+    private void setAdaptadorDispositivos() {
+        adapterDevices = new AdapterDevices(listaArrayZonas, 0, this, new AdapterDevices.OnItemClickListener() {
+            /**
+             * @param item
+             * @param position
+             * Si se clicka en un dispositivo se pasa a la siguiente pantalla donde se mostranán los pedidos asociados a la zona y dispositivo seleccionados
+             */
             @Override
             public void onItemClick(DispositivoZona item, int position) {
 
@@ -261,11 +267,14 @@ public class Devices extends VistaGeneral{
         }, linearManager);
 
 
-        recyclerView.setAdapter(deviceAdapter2);
+        recyclerView.setAdapter(adapterDevices);
 
     }
 
 
+    /**
+     * Borrar datos persistentes al quitar la aplicación
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -309,19 +318,27 @@ public class Devices extends VistaGeneral{
         Zonas zonas = controlador.getListaZonas();
         listaArrayZonas.clear();
         listaArrayZonas.addAll(zonas.getLista());
-        adaptadorExperimental();
-        deviceAdapter2.notifyDataSetChanged();
+        setAdaptadorDispositivos();
+        adapterDevices.notifyDataSetChanged();
 
 
     }
 
 
+    /**
+     * Se Reescribe la función onBackPressed para que no se pueda ir a la pantalla anterior a no ser de que se haga click en el ImageView de la flecha atrás
+     */
     @Override
     public void onBackPressed() {
 
     }
 
 
+    /**
+     * @param overLayout un layout que sirve para oscurecerla pantalla menos el desplegable
+     * @param desplegableOpciones Layout al que se le aplica la animación
+     * Función que, mediante una animación, despliega el apartado donde aparecen varias opciones
+     */
     private void mostrarDesplegableOpciones(ConstraintLayout overLayout,ConstraintLayout desplegableOpciones) {
         System.out.println("onAnimation mostrar " + onAnimation);
         if (!onAnimation) {
@@ -393,6 +410,11 @@ public class Devices extends VistaGeneral{
 
     }
 
+    /**
+     * @param overLayout un layout que sirve para oscurecerla pantalla menos el desplegable
+     * @param desplegableOpciones Layout al que se le aplica la animación
+     * Función que, mediante una animación, oculta el desplegable donde aparecen varias opciones
+     */
     private void ocultarDesplegable(ConstraintLayout overLayout, ConstraintLayout desplegableOpciones) {
         System.out.println("onAnimation esconder " + onAnimation);
 
@@ -443,6 +465,9 @@ public class Devices extends VistaGeneral{
         }
     }
 
+    /**
+     * función que crea un AlertDialog personalizado que pregunta al usuario si está seguro de cerrar la sesión junto con los botones "Si" y "No" para que el usuario elija
+     */
     private void crearDialogCerrarSesion() {
 
         AlertDialog dialogCerrarSesion;
@@ -509,7 +534,10 @@ public class Devices extends VistaGeneral{
 
     }
 
-  
+
+    /**
+     * función para detectar si se ha hecho algún cambio en las opciones de la aplicación, en cuyo caso se recrea la actividad para aplicar dichos cambios
+     */
     private void registerLauncher() {
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 

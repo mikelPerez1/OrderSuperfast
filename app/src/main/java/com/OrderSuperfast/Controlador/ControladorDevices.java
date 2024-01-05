@@ -18,11 +18,23 @@ public class ControladorDevices extends ControladorGeneral{
     private Context myContext;
 
 
+    /**
+     * Crea un Controlador de Dispositivos asociado con un contexto específico.
+     *
+     * @param mContext El contexto asociado con este Controlador de Dispositivos.
+     */
     public ControladorDevices(Context mContext) {
         myContext = mContext;
     }
 
 
+    /**
+     * Recupera la lista de zonas y dispositivos almacenados en preferencias compartidas.
+     * Este método lee y procesa la información sobre zonas y dispositivos guardados en preferencias compartidas,
+     * generando un objeto Zonas con la información recuperada.
+     *
+     * @return Un objeto Zonas que contiene información sobre las zonas y dispositivos almacenados en preferencias compartidas.
+     */
     public Zonas getListaZonas() {
 
         SharedPreferences sharedPreferences = myContext.getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
@@ -70,6 +82,11 @@ public class ControladorDevices extends ControladorGeneral{
         return zonas;
     }
 
+    /**
+     * Elimina los datos de dispositivos guardados al cerrar la sesión del usuario.
+     * Este método elimina la información de dispositivos almacenada en preferencias compartidas
+     * al momento de cerrar la sesión del usuario.
+     */
     public void cerrarSesion(){
         SharedPreferences sharedPreferences = myContext.getSharedPreferences("dispos", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -78,6 +95,12 @@ public class ControladorDevices extends ControladorGeneral{
 
     }
 
+    /**
+     * Guarda la información del dispositivo y la zona seleccionados en las preferencias compartidas.
+     *
+     * @param idDisp El identificador único del dispositivo seleccionado.
+     * @param idZona El identificador único de la zona seleccionada.
+     */
     public void guardarZonaYDispositivo(String idDisp,String idZona){
         SharedPreferences sharedPreferences = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -88,6 +111,14 @@ public class ControladorDevices extends ControladorGeneral{
 
     }
 
+    /**
+     * Guarda la información del dispositivo y la zona seleccionados en las preferencias compartidas.
+     *
+     * @param pIdDisp     El identificador único del dispositivo seleccionado.
+     * @param pNombreDisp El nombre del dispositivo seleccionado.
+     * @param pIdZona     El identificador único de la zona seleccionada.
+     * @param pNombreZona El nombre de la zona seleccionada.
+     */
     public void guardarZonaYDIspositivo(String pIdDisp, String pNombreDisp, String pIdZona, String pNombreZona){
         idDisp = pIdDisp;
         nombreDisp = pNombreDisp;
