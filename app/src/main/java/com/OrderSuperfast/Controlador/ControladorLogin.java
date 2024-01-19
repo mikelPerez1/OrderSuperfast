@@ -7,10 +7,13 @@ import android.util.Pair;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.OrderSuperfast.Controlador.Interfaces.CallbackLogin;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackZonas;
 import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Clases.Dispositivo;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
+import com.OrderSuperfast.Modelo.Clases.Zona;
+import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
 import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
 import com.OrderSuperfast.Vista.VistaGeneral;
@@ -50,7 +53,7 @@ public class ControladorLogin extends ControladorGeneral{
      *                 Requiere implementar métodos como onSuccess() y onError() para manejar los diferentes casos.
      * @see CallbackZonas
      */
-    public void peticionLogin(String nombre, String password,boolean checkboxChecked, CallbackZonas callback) {
+    public void peticionLogin(String nombre, String password,boolean checkboxChecked, CallbackLogin callback) {
 
         Pair<String, String> par = codificar(nombre, password); // la funcíon codificar recive 2 Strings, el usuario y contraseña y devuelve un Par que contiene el usuario y contraseña codificados
         String nombreCod = par.first;
@@ -72,6 +75,7 @@ public class ControladorLogin extends ControladorGeneral{
                         // Aquí puedes procesar la respuesta recibida del servidor
                         System.out.println("respuesta login " + response);
                         try {
+                            ArrayList<ZonaDispositivoAbstracto> listaZonas = new ArrayList<>();
                             Zonas zonas = new Zonas();
                             String idRest = "";
                             String nombreRest = "";
@@ -108,8 +112,8 @@ public class ControladorLogin extends ControladorGeneral{
                                         System.out.println("respuesta zonas " + arrayZonas);
 
                                         for (int i = 0; i < arrayZonas.length(); i++) {
-                                            JSONObject zona = arrayZonas.getJSONObject(i);
-                                            Iterator<String> keysZonas = zona.keys();
+                                            JSONObject jsonZona = arrayZonas.getJSONObject(i);
+                                            Iterator<String> keysZonas = jsonZona.keys();
                                             String idzona = "";
                                             String nombreZona = "";
                                             ArrayList<Dispositivo> listaDispos = new ArrayList<>();
@@ -118,17 +122,17 @@ public class ControladorLogin extends ControladorGeneral{
 
 
                                                 if (claveZona.equals("id_zona")) {
-                                                    idzona = zona.getString(claveZona);
+                                                    idzona = jsonZona.getString(claveZona);
 
                                                 } else if (claveZona.equals("nombre")) {
-                                                    if (zona.getString(claveZona).toLowerCase().equals("zona prueba")) {
-                                                        nombreZona = zona.getString(claveZona);
+                                                    if (jsonZona.getString(claveZona).toLowerCase().equals("zona prueba")) {
+                                                        nombreZona = jsonZona.getString(claveZona);
                                                     } else {
-                                                        nombreZona = zona.getString(claveZona);
+                                                        nombreZona = jsonZona.getString(claveZona);
                                                     }
                                                 } else if (claveZona.equals("dispositivos")) {
                                                     System.out.println("entra zonas");
-                                                    JSONArray jsonArrayDispos = zona.getJSONArray(claveZona);
+                                                    JSONArray jsonArrayDispos = jsonZona.getJSONArray(claveZona);
                                                     for (int j = 0; j < jsonArrayDispos.length(); j++) {
                                                         JSONObject dispo = jsonArrayDispos.getJSONObject(j);
                                                         Iterator<String> keysDispos = dispo.keys();
@@ -144,7 +148,9 @@ public class ControladorLogin extends ControladorGeneral{
                                                             }
                                                         }
                                                         System.out.println("getDispZona " + nombreDisp);
-                                                        Dispositivo disp = new Dispositivo(idDisp, nombreDisp);
+                                                        Dispositivo disp = new Dispositivo(idDisp, nombreDisp,idzona,nombreZona);
+                                                        System.out.println("nombre del dispositivo "+disp.getNombre());
+
                                                         listaDispos.add(disp);
                                                     }
                                                 }
@@ -154,13 +160,17 @@ public class ControladorLogin extends ControladorGeneral{
                                                 esTakeAway = true;
                                             }
 
+                                            Zona zona = new Zona(nombreZona,idzona);
+                                            zona.replaceList(listaDispos);
+                                            System.out.println("zona nombre"+nombreZona);
+                                            listaZonas.add(zona);
                                             DispositivoZona dispZona = new DispositivoZona(listaDispos, nombreZona, idzona, esTakeAway, true);
                                             zonas.addZona(dispZona);
                                         }
                                     } else if (respuesta.getString(clave).equals("ERROR")) {
                                         try {
                                            // Toast.makeText(activity, respuesta.getString("details"), Toast.LENGTH_SHORT).show();
-                                            callback.onDevolucionFallida(respuesta.getString("details"));
+                                            callback.onLoginError(respuesta.getString("details"));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -168,9 +178,11 @@ public class ControladorLogin extends ControladorGeneral{
                                 }
                                 if (idRest != null && !idRest.equals("")) {
                                     idRestaurante = idRest;
-                                    login(nombre,password,idRest,logoRest,nombreRest,checkboxChecked,zonas,callback);
+
+                                    login(nombre,password,idRest,logoRest,nombreRest,checkboxChecked,listaZonas,callback);
+
                                 } else {
-                                    callback.onDevolucionFallida(context.getResources().getString(R.string.cuentaIncorrecta));
+                                    callback.onLoginError(context.getResources().getString(R.string.cuentaIncorrecta));
                                 }
                             }
 
@@ -188,7 +200,7 @@ public class ControladorLogin extends ControladorGeneral{
                     public void onErrorResponse(VolleyError error) {
                         Log.e("error", "Error de conexión");
                         System.out.println("respuesta login " + error.toString());
-                        callback.onDevolucionFallida(error.toString());
+                        callback.onLoginError(error.toString());
                         // Toast.makeText(MainActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -212,8 +224,11 @@ public class ControladorLogin extends ControladorGeneral{
      * @param zonas Objeto Zonas que contiene información sobre las zonas asociadas al restaurante.
      * @param callback Interfaz CallbackZonas para manejar el resultado del inicio de sesión y devolución de información de zonas.
      */
-    private void login(String user,String pass,String idRest, String logoRest, String nombreRest, boolean checkboxChecked,Zonas zonas, CallbackZonas callback) {
+    private void login(String user,String pass,String idRest, String logoRest, String nombreRest, boolean checkboxChecked,ArrayList<ZonaDispositivoAbstracto> zonas, CallbackLogin callback) {
         //String deco = decodificar(idRest, true);
+
+        idRestaurante = idRest;
+        nombreRestaurante = nombreRest;
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("ids", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -224,13 +239,15 @@ public class ControladorLogin extends ControladorGeneral{
         editor = sharedPreferences.edit();
 
 
+
+        //esto habria que cambiarlo por atributos estaticos de la vista en vez de guardarlo en preferencias
         String img = logoRest;
         editor.putString("nombreRestaurante", nombreRest);
         editor.putString("imagen", img);
 
         editor.apply();
 
-        guardarZonasPref(zonas);
+        //guardarZonasPref(zonas);
 
 
         Pair<String, String> datos = codificar(user, pass);
@@ -251,7 +268,7 @@ public class ControladorLogin extends ControladorGeneral{
         //hacer el callback y mandar peticion exitosa
 
 
-        callback.onDevolucionExitosa(zonas);
+        callback.onLoginSuccesss(zonas);
 
 
     }

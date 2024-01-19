@@ -3,7 +3,7 @@ package com.OrderSuperfast.Modelo.Clases;
 import java.util.ArrayList;
 
 public class Mesa {
-    private ArrayList<ListElement> listaPedidos = new ArrayList<>();
+    private ArrayList<PedidoNormal> listaPedidos = new ArrayList<>();
     private String nombre;
     private boolean seleccionada = false;
     private boolean nuevo = false;
@@ -32,7 +32,7 @@ public class Mesa {
     
     //FUNCIONES RELACIONADAS A LA LISTA DE PEDIDOS
     
-    public void addElement(ListElement elemento) {
+    public void addElement(PedidoNormal elemento) {
         this.listaPedidos.add(elemento);
     }
 
@@ -42,8 +42,8 @@ public class Mesa {
 
     public boolean removeElementNumPedido(int num){
         for(int i = 0;i < listaSize();i++){
-            ListElement elemento = listaPedidos.get(i);
-            if(elemento.getPedido() == num){
+            PedidoNormal elemento = listaPedidos.get(i);
+            if(elemento.getNumPedido() == num){
                 listaPedidos.remove(i);
                 return true;
             }
@@ -51,14 +51,14 @@ public class Mesa {
         return false;
     }
 
-    public ListElement getElement(int position) {
+    public PedidoNormal getElement(int position) {
         return listaPedidos.get(position);
     }
 
-    public ListElement estaElemento(int numPedido){
+    public PedidoNormal estaElemento(int numPedido){
         for(int i = 0; i<listaPedidos.size();i++){
-            ListElement pedido = listaPedidos.get(i);
-            if(pedido.getPedido() == numPedido){
+            PedidoNormal pedido = listaPedidos.get(i);
+            if(pedido.getNumPedido() == numPedido){
                 return pedido;
             }
         }
@@ -75,7 +75,7 @@ public class Mesa {
 
     public boolean hayPedidoNuevo(){
         for(int i = 0; i<listaPedidos.size();i++){
-            ListElement pedido = listaPedidos.get(i);
+            PedidoNormal pedido = listaPedidos.get(i);
             if(pedido.getPrimera()){
                 return true;
             }
@@ -83,13 +83,13 @@ public class Mesa {
         return false;
     }
 
-    public ArrayList<ListElement> getLista(){
+    public ArrayList<PedidoNormal> getLista(){
         return this.listaPedidos;
     }
 
     public void quitarPrimeraVez(){
         for (int i = 0; i < listaSize();i++){
-            ListElement elemento = listaPedidos.get(i);
+            PedidoNormal elemento = listaPedidos.get(i);
             elemento.setPrimera(false);
         }
     }

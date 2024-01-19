@@ -3,13 +3,19 @@ package com.OrderSuperfast.Vista;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Surface;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -27,10 +33,43 @@ public class VistaGeneral extends AppCompatActivity{
     private static boolean esMovil = true;
     protected static Zonas zonas = new Zonas();
     protected static String idRestaurante;
+    protected static String nombreRestaurante;
     protected static String idZona;
     protected static String nombreZona;
     protected static String idDisp;
     protected static String nombreDisp;
+    protected static String idioma;
+    protected listener listener;
+    protected ImageView imgBack,imgDesplegable;
+    protected ConstraintLayout overLayoutBarra;
+
+    protected interface listener {
+        void listenerBack();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setFlags();
+        getWindow().setWindowAnimations(0);
+        inflateTopBar();
+
+    }
+
+    protected void setFlags() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+    }
+
+    public static String getIdioma() {
+        return idioma;
+    }
 
 
     protected void ponerInsets(ConstraintLayout layout){
@@ -128,10 +167,45 @@ public class VistaGeneral extends AppCompatActivity{
     @Override
     protected void attachBaseContext(Context newBase) { //pone el idioma que se usa
         SharedPreferences sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
-        String idioma = sharedPreferencesIdiomas.getString("id", "");
-
+        String idiomaNuevo = sharedPreferencesIdiomas.getString("id", "");
+        idioma = idiomaNuevo;
         Locale localeToSwitchTo = new Locale(idioma);
         ContextWrapper localeUpdatedContext = ContextUtils.updateLocale(newBase, localeToSwitchTo);
         super.attachBaseContext(localeUpdatedContext);
     }
+
+
+    protected void inflateTopBar() {
+        ConstraintLayout layoutBarra = findViewById(R.id.barraIzq);
+        if(layoutBarra != null) {
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View v = inflater.inflate(R.layout.layout_barra_izq, layoutBarra, false);
+            layoutBarra.addView(v);
+            setListenerBack();
+            imgBack = v.findViewById(R.id.imgBack);
+            imgDesplegable = v.findViewById(R.id.NavigationBarAjustes);
+            overLayoutBarra = v.findViewById(R.id.overBackHorizontal);
+            setBackListener();
+        }
+    }
+
+    protected void setBackListener() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.listenerBack();
+            }
+        });
+    }
+
+    private void setListenerBack() {
+        listener = new listener() {
+            @Override
+            public void listenerBack() {
+                finish();
+            }
+        };
+    }
+
+
 }

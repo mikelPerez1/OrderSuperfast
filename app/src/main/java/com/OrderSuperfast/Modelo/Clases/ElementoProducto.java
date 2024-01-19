@@ -2,13 +2,16 @@ package com.OrderSuperfast.Modelo.Clases;
 
 import com.OrderSuperfast.Modelo.Clases.ProductoAbstracto;
 
+import java.util.Map;
+
 public class ElementoProducto extends ProductoAbstracto {
     private String tipo;
     private double precio;
 
 
-    public ElementoProducto(String pId, String pNombre, String pTipo,boolean pVisible,String claseTipo){
-        super(pId, pNombre, pTipo, pVisible,claseTipo);
+    public ElementoProducto(String pId, Map<String,String> pNombre, String pTipo, boolean pVisible){
+        super(pId, pNombre, pVisible);
+        this.tipo = pTipo;
     }
 
 

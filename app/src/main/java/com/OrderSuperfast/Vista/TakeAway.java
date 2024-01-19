@@ -71,10 +71,10 @@ import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Clases.Importe;
 import com.OrderSuperfast.Modelo.Clases.ListTakeAway;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevolucionProductos;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterProductosTakeAway;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterTakeAway2;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterTakeAwayPedido;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterDevolucionProductos;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterProductosTakeAway;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterTakeAway2;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterTakeAwayPedido;
 import com.OrderSuperfast.Modelo.Clases.Cliente;
 import com.OrderSuperfast.Modelo.Clases.CustomEditTextNumbers;
 import com.OrderSuperfast.Modelo.Clases.CustomLayoutManager;
@@ -82,7 +82,7 @@ import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
 import com.OrderSuperfast.Modelo.Clases.Opcion;
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.Modelo.Clases.ProductoTakeAway;
-import com.OrderSuperfast.Modelo.Clases.TakeAwayPedido;
+import com.OrderSuperfast.Modelo.Clases.PedidoTakeAway;
 import com.OrderSuperfast.R;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -119,6 +119,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
@@ -130,13 +131,13 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private static final String urlDatosDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/getCantidad/";
     private Activity activity = this;
     private WebSocket webSocket;
-    private final ArrayList<TakeAwayPedido> listaPedidos = new ArrayList<>();
-    private final ArrayList<TakeAwayPedido> listaPedidosTotales = new ArrayList<>();
-    private final ArrayList<TakeAwayPedido> listaPreparacion = new ArrayList<>();
-    private final ArrayList<TakeAwayPedido> listaReparto = new ArrayList<>();
-    private final ArrayList<TakeAwayPedido> listaHecho = new ArrayList<>();
-    private final ArrayList<TakeAwayPedido> listaPendientes = new ArrayList<>();
-    private final ArrayList<TakeAwayPedido> listaCancelados = new ArrayList<>();
+    private final ArrayList<PedidoTakeAway> listaPedidos = new ArrayList<>();
+    private final ArrayList<PedidoTakeAway> listaPedidosTotales = new ArrayList<>();
+    private final ArrayList<PedidoTakeAway> listaPreparacion = new ArrayList<>();
+    private final ArrayList<PedidoTakeAway> listaReparto = new ArrayList<>();
+    private final ArrayList<PedidoTakeAway> listaHecho = new ArrayList<>();
+    private final ArrayList<PedidoTakeAway> listaPendientes = new ArrayList<>();
+    private final ArrayList<PedidoTakeAway> listaCancelados = new ArrayList<>();
     private final ArrayList<Integer> listaTakeAwayNuevos = new ArrayList<>();
     private RecyclerView recyclerPedidosTakeAway, recyclerProductosTakeAway;
     private AdapterTakeAwayPedido adapterTakeAway;
@@ -150,7 +151,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private ConstraintLayout constraintTopNoti, constraintCuerpoNoti, constraintMenuTop, constraintMenuIzq, root;
     private int prevX, offsetX;
     private final int threshold = 200; // distancia en píxeles que debe desplazarse el dedo para cerrar el PopupWindow
-    private ArrayList<TakeAwayPedido> colaTakeAway = new ArrayList<>();
+    private ArrayList<PedidoTakeAway> colaTakeAway = new ArrayList<>();
     private boolean notificacionActiva = false;
     private boolean haEntradoEnFallo = false;
     private boolean fallo = true;
@@ -171,7 +172,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private String idZona;
     private String nombreZona = "";
     private Resources resources;
-    private TakeAwayPedido pedido, pedidoAceptado;
+    private PedidoTakeAway pedido, pedidoAceptado;
     private PopupWindow popupWindow, popupAlerta, popupClick;
     private int minutosMargen;
     private View overlay;
@@ -335,7 +336,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         if (handlerAlertas != null) {
             handlerAlertas.removeCallbacksAndMessages(null);
         }
-        TakeAwayPedido pedido;
+        PedidoTakeAway pedido;
         System.out.println("listas " + listaPendientes.size() + " " + listaPreparacion.size());
         for (int i = 0; i < listaPendientes.size(); i++) {
             pedido = listaPendientes.get(i);
@@ -500,7 +501,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
         adapterTakeAway = new AdapterTakeAwayPedido(listaPedidosTotales, estadoActual, this, new AdapterTakeAwayPedido.OnItemClickListener() {
             @Override
-            public void onItemClick(TakeAwayPedido item, int position) {
+            public void onItemClick(PedidoTakeAway item, int position) {
 
                 adapterTakeAway.expandLessAll(item);
                 System.out.println("item " + item.getEstado());
@@ -534,10 +535,10 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
         }, new AdapterTakeAwayPedido.onButtonClickListener() {
             @Override
-            public void onButtonClick(TakeAwayPedido item) {
+            public void onButtonClick(PedidoTakeAway item) {
 
                 String estadoActualPedido = item.getEstado();
-                int numOrden = item.getNumOrden();
+                int numOrden = item.getNumPedido();
                 if (estadoActualPedido.equals("ACEPTADO")) {
                     item.setEstado("LISTO");
                     eliminarElementoDeLista(listaPreparacion, numOrden, listaHecho, "LISTO");
@@ -560,7 +561,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
             }
         }, new AdapterTakeAwayPedido.onMoreClickListener() {
             @Override
-            public void onMoreClick(TakeAwayPedido item) {
+            public void onMoreClick(PedidoTakeAway item) {
                 //  overlay.setVisibility(View.VISIBLE);
             }
         });
@@ -946,7 +947,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private void nuevoAdaptador() {
         adapterTakeAway = new AdapterTakeAwayPedido(listaPedidosTotales, estadoActual, this, new AdapterTakeAwayPedido.OnItemClickListener() {
             @Override
-            public void onItemClick(TakeAwayPedido item, int position) {
+            public void onItemClick(PedidoTakeAway item, int position) {
 
                 adapterTakeAway.expandLessAll(item);
                 System.out.println("item " + item.getEstado());
@@ -980,10 +981,10 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
         }, new AdapterTakeAwayPedido.onButtonClickListener() {
             @Override
-            public void onButtonClick(TakeAwayPedido item) {
+            public void onButtonClick(PedidoTakeAway item) {
 
                 String estadoActualPedido = item.getEstado();
-                int numOrden = item.getNumOrden();
+                int numOrden = item.getNumPedido();
                 if (estadoActualPedido.equals("ACEPTADO")) {
                     //item.setEstado("LISTO");
                     eliminarElementoDeLista(listaPreparacion, numOrden, listaHecho, "LISTO");
@@ -1006,7 +1007,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
             }
         }, new AdapterTakeAwayPedido.onMoreClickListener() {
             @Override
-            public void onMoreClick(TakeAwayPedido item) {
+            public void onMoreClick(PedidoTakeAway item) {
                 //  overlay.setVisibility(View.VISIBLE);
             }
         });
@@ -1014,9 +1015,9 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         recyclerPedidosTakeAway.setAdapter(adapterTakeAway);
     }
 
-    private boolean estaEnLaLista(ArrayList<TakeAwayPedido> array, int numOrden) {
+    private boolean estaEnLaLista(ArrayList<PedidoTakeAway> array, int numOrden) {
         for (int i = 0; i < array.size(); i++) {
-            if (array.get(i).getNumOrden() == numOrden) {
+            if (array.get(i).getNumPedido() == numOrden) {
                 return true;
             }
         }
@@ -1029,15 +1030,15 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
         for (int i = 0; i < listaPedidosTotales.size(); i++) {
 
-            TakeAwayPedido takeAwayPedido = listaPedidosTotales.get(i);
-            if (takeAwayPedido.getDatosTakeAway().getTipo().equals("programado") && takeAwayPedido.getEstado().equals("PENDIENTE")) {
-                String fechaPedido = takeAwayPedido.getDatosTakeAway().getFecha_recogida();
+            PedidoTakeAway pedidoTakeAway = listaPedidosTotales.get(i);
+            if (pedidoTakeAway.getDatosTakeAway().getTipo().equals("programado") && pedidoTakeAway.getEstado().equals("PENDIENTE")) {
+                String fechaPedido = pedidoTakeAway.getDatosTakeAway().getFecha_recogida();
                 Calendar c = Calendar.getInstance();
 
                 d = new Date(fechaPedido);
                 c.add(Calendar.MINUTE, -minutosMargen);
                 if (c.getTime().before(d)) {
-                    colaTakeAway.add(takeAwayPedido);
+                    colaTakeAway.add(pedidoTakeAway);
                 }
             }
 
@@ -1076,17 +1077,17 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     }
 
 
-    private void eliminarElementoDeLista(ArrayList<TakeAwayPedido> array, int numOrden, ArrayList<TakeAwayPedido> array2, String pEstado) {
-        TakeAwayPedido pedido;
+    private void eliminarElementoDeLista(ArrayList<PedidoTakeAway> array, int numOrden, ArrayList<PedidoTakeAway> array2, String pEstado) {
+        PedidoTakeAway pedido;
 
         for (int i = 0; i < array.size(); i++) {
             pedido = array.get(i);
-            if (pedido.getNumOrden() == numOrden) {
+            if (pedido.getNumPedido() == numOrden) {
                 // cambiarEstadoDePedido(pEstado,numOrden);
 
                 listaPedidos.remove(pedido);
                 array.remove(pedido);
-                Log.d("pedidoTakeaway", String.valueOf(pedido.getNumOrden()));
+                Log.d("pedidoTakeaway", String.valueOf(pedido.getNumPedido()));
                 pedido.setEstado(pEstado);
                 array2.add(pedido);
 
@@ -1159,7 +1160,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         }
     }
 
-    private void crearDialogCancelar(TakeAwayPedido pedido, PopupWindow popWindow) {
+    private void crearDialogCancelar(PedidoTakeAway pedido, PopupWindow popWindow) {
         AlertDialog.Builder dialogBuild = new AlertDialog.Builder(activity);
 
         final View layoutCancelar = getLayoutInflater().inflate(R.layout.popup_cancelar, null);
@@ -1192,7 +1193,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                 if (radioId != -1) {
                     RadioButton radioButton = cancelarRadioGroup.findViewById(radioId);
                     String txt = radioButton.getText().toString();
-                    writeToFile((nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumOrden() + " - " + "Cancelled" + ": " + txt), activity);
+                    writeToFile((nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumPedido() + " - " + "Cancelled" + ": " + txt), activity);
 
                     pedido.setInfoCancelado(txt);
                     //pedido.setEstado("CANCELADO");
@@ -1304,17 +1305,17 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     }
 
 
-    private void ordenarSegunFecha(ArrayList<TakeAwayPedido> array) {
+    private void ordenarSegunFecha(ArrayList<PedidoTakeAway> array) {
 
 
-        Collections.sort(array, new Comparator<TakeAwayPedido>() {
+        Collections.sort(array, new Comparator<PedidoTakeAway>() {
             @Override
-            public int compare(TakeAwayPedido elemento1, TakeAwayPedido elemento2) {
+            public int compare(PedidoTakeAway elemento1, PedidoTakeAway elemento2) {
 
                 if (elemento1.getEsPlaceHolder() || elemento2.getEsPlaceHolder()) {
                     return 0;
                 }
-                System.out.println("comparar entre " + elemento1.getNumOrden() + " y " + elemento2.getNumOrden());
+                System.out.println("comparar entre " + elemento1.getNumPedido() + " y " + elemento2.getNumPedido());
 
 
                 int tiempoDelivery1 = 0;
@@ -1322,18 +1323,18 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                 if (tieneReparto) {
                     if (elemento1.getDatosTakeAway().getEsDelivery()) {
                         tiempoDelivery1 = elemento1.getDatosTakeAway().getTiempoDelivery();
-                        System.out.println("Tiempo delivery " + tiempoDelivery1 + " del elemento " + elemento1.getNumOrden());
+                        System.out.println("Tiempo delivery " + tiempoDelivery1 + " del elemento " + elemento1.getNumPedido());
                     }
                     if (elemento2.getDatosTakeAway().getEsDelivery()) {
                         tiempoDelivery2 = elemento2.getDatosTakeAway().getTiempoDelivery();
-                        System.out.println("Tiempo delivery " + tiempoDelivery2 + " del elemento " + elemento2.getNumOrden());
+                        System.out.println("Tiempo delivery " + tiempoDelivery2 + " del elemento " + elemento2.getNumPedido());
                     }
                 }
 
                 if (elemento1.getDatosTakeAway().getTipo().equals("programado") && elemento2.getDatosTakeAway().getTipo().equals("programado")) {
 
-                    if (elemento1.getNumOrden() == 672) {
-                        System.out.println("comparar elementos " + elemento1.getDatosTakeAway().getFecha_recogida() + " elemento 2 " + elemento2.getNumOrden() + " " + elemento2.getDatosTakeAway().getFecha_recogida());
+                    if (elemento1.getNumPedido() == 672) {
+                        System.out.println("comparar elementos " + elemento1.getDatosTakeAway().getFecha_recogida() + " elemento 2 " + elemento2.getNumPedido() + " " + elemento2.getDatosTakeAway().getFecha_recogida());
                     }
 
                     String[] fechaElemento1 = elemento1.getDatosTakeAway().getFecha_recogida().split("-");
@@ -1352,8 +1353,8 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                     Date d1 = c1.getTime();
                     Date d2 = c2.getTime();
 
-                    System.out.println("d1 = " + elemento1.getNumOrden() + " con fechas " + d1);
-                    System.out.println("d2 = " + elemento2.getNumOrden() + " con fechas " + d2);
+                    System.out.println("d1 = " + elemento1.getNumPedido() + " con fechas " + d1);
+                    System.out.println("d2 = " + elemento2.getNumPedido() + " con fechas " + d2);
                     System.out.println("d1 " + d1 + "comparado a d2 " + d2 + " es " + String.valueOf(d1.compareTo(d2)));
 
                     return d1.compareTo(d2);
@@ -1393,7 +1394,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private void comprobarNumPedidosListas() {
         int numPend = 0, numRep = 0, numAceptado = 0, numHechos = 0, numCancelados = 0;
         for (int i = 0; i < listaPedidosTotales.size(); i++) {
-            TakeAwayPedido pedidoTk = listaPedidosTotales.get(i);
+            PedidoTakeAway pedidoTk = listaPedidosTotales.get(i);
             if (!pedidoTk.getEsPlaceHolder()) {
                 System.out.println(" estado " + pedidoTk.getEstado());
                 switch (pedidoTk.getEstado()) {
@@ -1641,7 +1642,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                 double cantFinal = (double) cantidad_maxima - (double) cantidad_devuelta;
 
                 System.out.println("cantFinal " + cantFinal);
-                peticionEnviarDevolucion(cantFinal, pedidoActual.getNumOrden(), TakeAway.this);
+                peticionEnviarDevolucion(cantFinal, pedidoActual.getNumPedido(), TakeAway.this);
                 dialogDevolucion.cancel();
             }
         });
@@ -1769,14 +1770,17 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         String propina = pedidoActual.getImporte().getPropina();
         if (propina != null && !propina.equals("null") && !propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size() - 1).getId().equals("Propina")) {
             System.out.println("Propina " + propina);
-            ProductoPedido p = new ProductoPedido("Propina", "Propina", "Propina", propina, "0", "1", "", new ArrayList<>(), true);
+            Map<String,String> nombresPropina = new HashMap<>();
+            nombresPropina.put("es","Propina");
+            nombresPropina.put("en","Tip");
+            ProductoPedido p = new ProductoPedido("Propina", "Propina", nombresPropina, propina, "0", 1, "", new ArrayList<>(), true);
             listaProductos.add(p);
 
         }
 
         java.util.Map<String, Float> listaPrecios = new HashMap<>();
         java.util.Map<String, Integer> cantidadDevueltaProductos = new HashMap<>();
-        String arrayString = preferenciasProductos.getString("productos_devueltos_" + pedidoActual.getNumOrden(), "");
+        String arrayString = preferenciasProductos.getString("productos_devueltos_" + pedidoActual.getNumPedido(), "");
         if (!arrayString.equals("")) {
             arrayGuardar = new JSONArray(arrayString);
 
@@ -1955,7 +1959,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                     double cantActual = Double.valueOf(cantidad);
                     System.out.println("jsonbody " + cantActual);
 
-                    peticionEnviarDevolucion(cantActual, pedidoActual.getNumOrden(), new DevolucionCallback() {
+                    peticionEnviarDevolucion(cantActual, pedidoActual.getNumPedido(), new DevolucionCallback() {
                         @Override
                         public void onDevolucionExitosa(JSONObject resp) {
                             Toast.makeText(activity, resources.getString(R.string.toastDevolucion), Toast.LENGTH_SHORT).show();
@@ -1983,12 +1987,12 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
                     });
 
-                    peticionEnviarDevolucion(cant.get(), pedidoActual.getNumOrden(), new DevolucionCallback() {
+                    peticionEnviarDevolucion(cant.get(), pedidoActual.getNumPedido(), new DevolucionCallback() {
                         @Override
                         public void onDevolucionExitosa(JSONObject resp) {
                             // se guarda en local los productos devueltos del pedido
                             SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
-                            productosEditor.putString("productos_devueltos_" + pedidoActual.getNumOrden(), arrayGuardar.toString());
+                            productosEditor.putString("productos_devueltos_" + pedidoActual.getNumPedido(), arrayGuardar.toString());
                             productosEditor.apply();
                             // preferenciasProductos;
                             Toast.makeText(activity, resources.getString(R.string.toastDevolucion), Toast.LENGTH_SHORT).show();
@@ -2053,7 +2057,10 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         String propina = pedidoActual.getImporte().getPropina();
         if (!propina.equals("") && !propina.equals("0") && !listaProductos.get(listaProductos.size() - 1).getId().equals("Propina")) {
             System.out.println("Propina " + propina);
-            ProductoPedido p = new ProductoPedido("Propina", "Propina", "Propina", propina, "0", "1", "", new ArrayList<>(), true);
+            Map<String,String> nombresPropina = new HashMap<>();
+            nombresPropina.put("es","Propina");
+            nombresPropina.put("en","Tip");
+            ProductoPedido p = new ProductoPedido("Propina", "Propina", nombresPropina, propina, "0", 1, "", new ArrayList<>(), true);
             listaProductos.add(p);
         }
         System.out.println("lista productos size " + listaProductos.size());
@@ -2072,7 +2079,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         }
         java.util.Map<String, Float> listaPrecios = new HashMap<>();
         java.util.Map<String, Integer> cantidadDevueltaProductos = new HashMap<>();
-        String arrayString = preferenciasProductos.getString("productos_devueltos_" + pedidoActual.getNumOrden(), "");
+        String arrayString = preferenciasProductos.getString("productos_devueltos_" + pedidoActual.getNumPedido(), "");
         JSONArray arrayGuardar;
         if (!arrayString.equals("")) {
             arrayGuardar = new JSONArray(arrayString);
@@ -2181,12 +2188,12 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                 } else {
                     //hacer la peticion
                     System.out.println("devolucion producto " + cantidad + " " + listaPrecios.toString());
-                    peticionEnviarDevolucion(cantidad, pedido.getNumOrden(), new DevolucionCallback() {
+                    peticionEnviarDevolucion(cantidad, pedido.getNumPedido(), new DevolucionCallback() {
                         @Override
                         public void onDevolucionExitosa(JSONObject resp) {
                             // se guarda en local los productos devueltos del pedido
                             SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
-                            productosEditor.putString("productos_devueltos_" + pedidoActual.getNumOrden(), arrayGuardar.toString());
+                            productosEditor.putString("productos_devueltos_" + pedidoActual.getNumPedido(), arrayGuardar.toString());
                             productosEditor.apply();
                             // preferenciasProductos;
 
@@ -2280,7 +2287,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                     try {
                         if (clave.equals("status") && response.getString(clave).equals("OK")) {
                             Toast.makeText(activity, resources.getString(R.string.toastDevolucion), Toast.LENGTH_SHORT).show();
-                            writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedidoActual.getNumOrden() + " - " + "Refunded " + d + "€", activity);
+                            writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedidoActual.getNumPedido() + " - " + "Refunded " + d + "€", activity);
 
                             //removeElementLista(pedido.getNumOrden(), listaPendientes);
                             //pedido.setEstado("CANCELADO");
@@ -2398,7 +2405,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
             public void onResponse(JSONObject response) {
                 ArrayList<Pair<Integer, ArrayList<String>>> productosTachados = getElementosTachados();
                 if (listaPedidosTotales.size() == 0) {
-                    listaPedidosTotales.add(0, new TakeAwayPedido());
+                    listaPedidosTotales.add(0, new PedidoTakeAway());
                 }
                 System.out.println("lista pedidos totales " + listaPedidosTotales.size());
                 int savedNumMax = sharedPreferencesPedidos.getInt("numMax_" + idRest, -1);
@@ -2422,6 +2429,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                 String fecha = "";
 
                                 String nombre = "";
+                                Map<String,String> nombres = new HashMap<>();
                                 String apellido = "";
                                 String tipo = "";
                                 String correo = "";
@@ -2537,8 +2545,16 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                                     } else if (clave.equals("idCarrito")) {
                                                         idCarrito = prod.getString(clave);
                                                     } else if (clave.equals("nombre")) {
-                                                        nombreProducto = prod.getString(clave);
-                                                        nombreProducto = normalizarTexto(nombreProducto);
+                                                        try{
+                                                            JSONObject jsonNombres = prod.getJSONObject("nombre");
+                                                            nombres = getNombresDeIdiomas(jsonNombres);
+
+                                                        }catch(JSONException e){
+                                                            e.printStackTrace();
+                                                            nombreProducto = prod.getString(clave);
+                                                            nombreProducto = normalizarTexto(nombreProducto);
+                                                            nombres.put("es",nombreProducto);
+                                                        }
                                                     } else if (clave.equals("precio")) {
                                                         precioProducto = prod.getString(clave);
                                                     } else if (clave.equals("impuesto")) {
@@ -2551,9 +2567,9 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                                         JSONArray listaOpciones = prod.getJSONArray(clave);
                                                         JSONObject jsonOpcion;
                                                         String idOpcion = "";
-                                                        String nombreOpcion = "";
+                                                        Map<String,String> nombreOpcion = new HashMap<>();
                                                         String idElemento = "";
-                                                        String nombreElemento = "";
+                                                        Map<String,String> nombreElemento = new HashMap<>();
                                                         String tipoPrecioOpcion = "";
                                                         String precioOpcion = "";
                                                         for (int o = 0; o < listaOpciones.length(); o++) {
@@ -2566,15 +2582,17 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                                                         idOpcion = jsonOpcion.getString(claveOpc);
                                                                         break;
                                                                     case "nombreOpcion":
-                                                                        nombreOpcion = jsonOpcion.getString(claveOpc);
-                                                                        nombreOpcion = normalizarTexto(nombreOpcion);
+                                                                        nombreOpcion = getNombresDeIdiomas(jsonOpcion);
+                                                                        //nombreOpcion = jsonOpcion.getString(claveOpc);
+                                                                        //nombreOpcion = normalizarTexto(nombreOpcion);
                                                                         break;
                                                                     case "idElemento":
                                                                         idElemento = jsonOpcion.getString(claveOpc);
                                                                         break;
                                                                     case "nombreElemento":
-                                                                        nombreElemento = jsonOpcion.getString(claveOpc);
-                                                                        nombreElemento = normalizarTexto(nombreElemento);
+                                                                        nombreElemento = getNombresDeIdiomas(jsonOpcion);
+                                                                        // nombreElemento = jsonOpcion.getString(claveOpc);
+                                                                        //nombreElemento = normalizarTexto(nombreElemento);
                                                                         break;
                                                                     case "tipoPrecio":
                                                                         tipoPrecioOpcion = jsonOpcion.getString(claveOpc);
@@ -2584,13 +2602,13 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                                                         break;
                                                                 }
                                                             }
-                                                            Opcion option = new Opcion(idOpcion, nombreOpcion, idElemento, nombreElemento, tipoPrecioOpcion, precioOpcion);
+                                                            Opcion option = new Opcion(idOpcion, nombreOpcion, idElemento, nombreElemento, tipoPrecioOpcion, precioOpcion,false);
                                                             opciones.add(option);
                                                         }
 
                                                     }
                                                 }
-                                                ProductoPedido productoPedido = new ProductoPedido(idProducto, idCarrito, nombreProducto, precioProducto, impuestoProducto, cantidadProducto, instruccionesProducto, opciones, true);
+                                                ProductoPedido productoPedido = new ProductoPedido(idProducto, idCarrito, nombres, precioProducto, impuestoProducto, Integer.valueOf(cantidadProducto), instruccionesProducto, opciones, true);
                                                 if (estaTachado(num, productosTachados, idProducto)) {
                                                     productoPedido.setTachado(true);
                                                 }
@@ -2644,7 +2662,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                         System.out.println("no esta " + num + " " + est);
                                         if (takeAwayTipo.equals("programado")) {
                                             tk.setFechas(fecha_recogida, tramoI, tramoF);
-                                            TakeAwayPedido takePedido = new TakeAwayPedido(num, est, client, importe, listaProductos, tk, instruccionesGenerales);
+                                            PedidoTakeAway takePedido = new PedidoTakeAway(num, est,false,new Date(fecha), client, importe, listaProductos, tk, instruccionesGenerales);
                                             if (!primeraEntrada) {
                                                 boolean estaEnParpadeo = false;
                                                 for (int l = 0; l < listaPedidosParpadeo.size(); l++) {
@@ -2682,15 +2700,15 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                                         System.out.println("postAtTime ejecutado");
 
                                                         for (int n = 0; n < listaPedidosTotales.size(); n++) {
-                                                            System.out.println("postAtTime pedido " + listaPedidosTotales.get(n).getNumOrden());
+                                                            System.out.println("postAtTime pedido " + listaPedidosTotales.get(n).getNumPedido());
                                                         }
 
                                                     }
                                                 }, tiempoRestante);
 
-                                                boolean estaElHandler = buscarHandlerTk(takePedido.getNumOrden());
+                                                boolean estaElHandler = buscarHandlerTk(takePedido.getNumPedido());
                                                 if (!estaElHandler) {
-                                                    Pair<TakeAwayPedido, Handler> pairHandler = new Pair(takePedido, handlerFecha);
+                                                    Pair<PedidoTakeAway, Handler> pairHandler = new Pair(takePedido, handlerFecha);
                                                     listaHandlersOrdenar.add(pairHandler);
                                                 }
 
@@ -2699,7 +2717,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
                                              */
                                         } else {
-                                            TakeAwayPedido takePedido = new TakeAwayPedido(num, est, client, importe, listaProductos, tk, instruccionesGenerales);
+                                            PedidoTakeAway takePedido = new PedidoTakeAway(num, est,false,new Date(fecha), client, importe, listaProductos, tk, instruccionesGenerales);
                                             if (!primeraEntrada) {
                                                 boolean estaEnParpadeo = false;
                                                 for (int l = 0; l < listaPedidosParpadeo.size(); l++) {
@@ -2755,7 +2773,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                         //boolean estaAnadido = verificarSiYaEsta("PENDIENTE", 9999);
 
                         for (int j = 0; j < listaPedidosTotales.size(); j++) {
-                            System.out.println("prueba error pedido num " + listaPedidosTotales.get(j).getNumOrden());
+                            System.out.println("prueba error pedido num " + listaPedidosTotales.get(j).getNumPedido());
                         }
 
                         if (hayNuevosPedidos) {
@@ -2836,10 +2854,22 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
     }
 
+
+    private HashMap<String,String> getNombresDeIdiomas(JSONObject objeto) throws JSONException {
+        HashMap<String,String> mapNombres = new HashMap<>();
+        Iterator<String> keys = objeto.keys();
+        while (keys.hasNext()) {
+            String clave = keys.next();
+            mapNombres.put(clave,normalizarTexto(objeto.getString(clave)));
+
+        }
+        return mapNombres;
+    }
+
     private boolean verificarSiYaEsta(String est, int numpedido) {
         for (int i = 0; i < listaPedidosTotales.size(); i++) {
-            TakeAwayPedido takeAway = listaPedidosTotales.get(i);
-            if (takeAway.getNumOrden() == numpedido) {
+            PedidoTakeAway takeAway = listaPedidosTotales.get(i);
+            if (takeAway.getNumPedido() == numpedido) {
                 if (!est.equals(takeAway.getEstado())) {
                     System.out.println("quitar de la lista");
                     listaPedidosTotales.remove(i);
@@ -2864,14 +2894,14 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
             String[] numNotis = listaNotificaciones.split(" ");
             for (int i = 0; i < listaPedidosTotales.size(); i++) {
                 existe = false;
-                TakeAwayPedido p = listaPedidosTotales.get(i);
+                PedidoTakeAway p = listaPedidosTotales.get(i);
                 for (int j = 0; j < numNotis.length; j++) {
-                    if (numNotis[j].equals(String.valueOf(p.getNumOrden()))) {
+                    if (numNotis[j].equals(String.valueOf(p.getNumPedido()))) {
                         existe = true;
                     }
                 }
                 if (!existe) {
-                    listaNotificaciones += p.getNumOrden() + " ";
+                    listaNotificaciones += p.getNumPedido() + " ";
                     hayNuevosPedidos = true;
                     colaTakeAway.add(p);
 
@@ -2895,8 +2925,8 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         } else {
             String lista = "";
             for (int i = 0; i < listaPedidosTotales.size(); i++) {
-                TakeAwayPedido p = listaPedidosTotales.get(i);
-                lista += p.getNumOrden() + " ";
+                PedidoTakeAway p = listaPedidosTotales.get(i);
+                lista += p.getNumPedido() + " ";
             }
 
             System.out.println("lista = " + lista);
@@ -3011,12 +3041,12 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     }
 
 
-    private void cambiarEstadoPedido(TakeAwayPedido pedido, String est) {
+    private void cambiarEstadoPedido(PedidoTakeAway pedido, String est) {
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("id_restaurante", idRest);
             jsonBody.put("id_zona", idZona);
-            jsonBody.put("numero_pedido", pedido.getNumOrden());
+            jsonBody.put("numero_pedido", pedido.getNumPedido());
             jsonBody.put("estado", est);
             if (est.equals("CANCELADO")) {
                 JSONObject jsonReason = new JSONObject();
@@ -3055,7 +3085,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                             actualizarListaPedidos();
                             cambiarPedidoAlSiguienteEstado();
                             mostrarDatosTk(pedido);
-                            writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumOrden() + " - " + estadoToIngles(est), activity);
+                            writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumPedido() + " - " + estadoToIngles(est), activity);
 
                             //para que el tachon solo salga en pedidos aceptados
                             if (adapterProductos2 != null) {
@@ -3088,7 +3118,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                     actualizarListaPedidos();
                     cambiarPedidoAlSiguienteEstado();
                     mostrarDatosTk(pedido);
-                    writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumOrden() + " - " + estadoToIngles(est), activity);
+                    writeToFile(nombreZona + " - " + "Take away" + " | " + "Order" + " " + pedido.getNumPedido() + " - " + estadoToIngles(est), activity);
 
                     if (adapterProductos2 != null) {
                         adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
@@ -3419,7 +3449,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
                                         if (!duracionConduciendo.contains("hours")) {
                                             //  pedidoAceptado.setTiempoDelivery(Integer.valueOf(splitter[0]));
                                             System.out.println("pedido set delivery time " + splitter[0]);
-                                            TakeAwayPedido pedido = getPedido(nump);
+                                            PedidoTakeAway pedido = getPedido(nump);
                                             if (pedido != null) {
                                                 int tiempo = Integer.valueOf(splitter[0]);
                                                 boolean tiempoPuesto = setTiempoDelivery(nump, tiempo);
@@ -3571,10 +3601,10 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
     private boolean setTiempoDelivery(int num, int tiempo) {
         int nPedido = 0;
-        TakeAwayPedido pedido;
+        PedidoTakeAway pedido;
         for (int i = 0; i < listaPedidosTotales.size(); i++) {
             pedido = listaPedidosTotales.get(i);
-            nPedido = pedido.getNumOrden();
+            nPedido = pedido.getNumPedido();
             if (nPedido == num) {
                 pedido.setTiempoDelivery(tiempo);
                 pedido.getDatosTakeAway().setTiempoDelivery(tiempo);
@@ -3593,10 +3623,10 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
     private int getTiempoDelivery(int num) {
         int nPedido = 0;
-        TakeAwayPedido pedido;
+        PedidoTakeAway pedido;
         for (int i = 0; i < listaPedidosTotales.size(); i++) {
             pedido = listaPedidosTotales.get(i);
-            nPedido = pedido.getNumOrden();
+            nPedido = pedido.getNumPedido();
             if (nPedido == num) {
                 return pedido.getTiempoDelivery();
             }
@@ -3606,18 +3636,18 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
     private void reestablecerEstadosLista() {
         for (int i = 0; i < listaPedidosTotales.size(); i++) {
-            TakeAwayPedido pedido = listaPedidosTotales.get(i);
+            PedidoTakeAway pedido = listaPedidosTotales.get(i);
             //pedido.setEstado("PENDIENTE");
             cambiarEstadoPedido(pedido, estado_pendiente);
         }
     }
 
-    private TakeAwayPedido getPedido(int num) {
-        TakeAwayPedido p;
+    private PedidoTakeAway getPedido(int num) {
+        PedidoTakeAway p;
 
         for (int j = 0; j < listaPedidosTotales.size(); j++) {
             p = listaPedidosTotales.get(j);
-            if (p.getNumOrden() == num) {
+            if (p.getNumPedido() == num) {
                 return p;
             }
         }
@@ -3830,14 +3860,14 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         System.out.println("entra en actualizar handlers " + listaHandlersOrdenar.size());
         tiempoPedidosProgramados = sharedTakeAways.getInt("tiempoPedidosProgramados", 20);
         for (int i = 0; i < listaHandlersOrdenar.size(); i++) {
-            Pair<TakeAwayPedido, Handler> par = listaHandlersOrdenar.get(i);
+            Pair<PedidoTakeAway, Handler> par = listaHandlersOrdenar.get(i);
             actualizarHandler(par.first, par.second);
 
         }
         ordenarSegunFecha(listaPedidosTotales);
     }
 
-    private void actualizarHandler(TakeAwayPedido item, Handler handler) {
+    private void actualizarHandler(PedidoTakeAway item, Handler handler) {
 
         String[] fechaElemento1 = item.getDatosTakeAway().getFecha_recogida().split("-");
         String[] horaElemento1 = item.getDatosTakeAway().getTramo_inicio().split(":");
@@ -3846,7 +3876,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         c1.set(Integer.valueOf(fechaElemento1[0]), Integer.valueOf(fechaElemento1[1]) - 1, Integer.valueOf(fechaElemento1[2]), Integer.valueOf(horaElemento1[0]), Integer.valueOf(horaElemento1[1]) - tiempoPedidosProgramados);
 
         long tiempoRestante = c1.getTimeInMillis() + 60000 - System.currentTimeMillis();
-        System.out.println("tiempoRestante " + item.getNumOrden() + " " + tiempoRestante);
+        System.out.println("tiempoRestante " + item.getNumPedido() + " " + tiempoRestante);
         if (tiempoRestante >= 0) {
             ordenarSegunFecha(listaPedidosTotales);
             actualizarListaPedidos();
@@ -3882,10 +3912,10 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private boolean buscarHandlerTk(int numOrden) {
 
         for (int i = 0; i < listaHandlersOrdenar.size(); i++) {
-            Pair<TakeAwayPedido, Handler> p = listaHandlersOrdenar.get(i);
-            TakeAwayPedido pedido = p.first;
+            Pair<PedidoTakeAway, Handler> p = listaHandlersOrdenar.get(i);
+            PedidoTakeAway pedido = p.first;
 
-            if (pedido.getNumOrden() == numOrden) {
+            if (pedido.getNumPedido() == numOrden) {
                 return true;
             }
         }
@@ -3906,7 +3936,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private AdapterTakeAway2 adapterPedidos2;
     private AdapterProductosTakeAway adapterProductos2;
     private ArrayList<ProductoTakeAway> listaProductosPedido = new ArrayList<>();
-    private TakeAwayPedido pedidoActual;
+    private PedidoTakeAway pedidoActual;
     private ImageView imgAjustes, imgAjustes2, imgBack, imgBack2, imgCirculo1, imgCirculo2, imgCirculo3, imgCirculo4, arrowUp, imgRest1, imgRest2;
     private ImageView imgMenu, imgCrossCancelado;
     private HorizontalScrollView scrollFiltros;
@@ -3934,7 +3964,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
     private ConstraintLayout linearInstrucciones, layoutEscanear;
 
 
-    private ArrayList<Pair<TakeAwayPedido, Handler>> listaHandlersOrdenar = new ArrayList<>();
+    private ArrayList<Pair<PedidoTakeAway, Handler>> listaHandlersOrdenar = new ArrayList<>();
 
 
     private void obtenerObjetosInterefazNueva() {
@@ -4258,7 +4288,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
             @Override
             public void onClick(View v) {
                 // pop up del refund
-                peticionGetDatosDevolucion(pedidoActual.getNumOrden());
+                peticionGetDatosDevolucion(pedidoActual.getNumPedido());
                 ocultarDesplegablePedido();
 
             }
@@ -4360,7 +4390,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
     private void guardarElementosTachadosDelPedido(ArrayList<ProductoPedido> listaGuardar) throws JSONException {
         System.out.println("GUARDAR ELEMENTOS TACHADOS");
-        int numPedido = pedidoActual.getNumOrden();
+        int numPedido = pedidoActual.getNumPedido();
         JSONObject productosTachado = new JSONObject();
         JSONArray productosGuardar = new JSONArray();
 
@@ -5048,7 +5078,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         recyclerPedidosI2.setHasFixedSize(true);
         adapterPedidos2 = new AdapterTakeAway2(listaPedidosTotales, estadoActual, this, recyclerPedidosI2, "Take away", new AdapterTakeAway2.OnItemClickListener() {
             @Override
-            public void onItemClick(TakeAwayPedido item, int position) {
+            public void onItemClick(PedidoTakeAway item, int position) {
                 pedidoActual = item;
                 mostrarDatosTk(item);
                 //para que el tachon solo salga en pedidos aceptados
@@ -5123,7 +5153,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         layoutRetractarPedido.setVisibility(View.VISIBLE);
     }
 
-    private void ocultarPartesDesplegable(TakeAwayPedido item) {
+    private void ocultarPartesDesplegable(PedidoTakeAway item) {
         if (item.getEstado().equals(estado_aceptado) || item.getEstado().equals(estado_pendiente)) {
             layoutRetractarPedido.setVisibility(View.GONE);
         } else if (item.getEstado().equals(estado_cancelado)) {
@@ -5136,11 +5166,11 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         }
     }
 
-    private void mostrarDatosTk(TakeAwayPedido item) {
+    private void mostrarDatosTk(PedidoTakeAway item) {
         ArrayList<ProductoPedido> listaProductos = item.getListaProductos();
         for (int j = 0; j < listaProductos.size(); j++) {
             ProductoPedido p = listaProductos.get(j);
-            System.out.println("tachado " + p.getNombre() + " " + p.getTachado());
+            System.out.println("tachado " + p.getNombre(getIdioma()) + " " + p.getTachado());
         }
         listaProductosPedido.clear();
         listaProductosPedido.addAll(getProductosDelPedido(listaProductos));
@@ -5159,7 +5189,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
          */
         ////
         //resources.getString(R.string.num_pedido)
-        tvNumPedido.setText(resources.getString(R.string.numero) + " " + item.getNumOrden());
+        tvNumPedido.setText(resources.getString(R.string.numero) + " " + item.getNumPedido());
 
         String name = item.getCliente().getNombre();
         if (name.equals("invitado") || name.equals("Invitado")) {
@@ -5185,7 +5215,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
             layoutLlamar.setVisibility(View.GONE);
         }
 
-        removeFromListaParpadeo(item.getNumOrden());
+        removeFromListaParpadeo(item.getNumPedido());
         item.setParpadeo(false);
         modificarCirculo(item.getEstado());
         mostrarDesplegableCompleto();
@@ -5363,13 +5393,13 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
             pedido = listaProductos.get(i);
 
-            String producto = pedido.getNombre();
-            String cantidad = pedido.getCantidad();
+            String producto = pedido.getNombre(getIdioma());
+            String cantidad = String.valueOf(pedido.getCantidad());
             ArrayList<Opcion> listaOpciones = pedido.getListaOpciones();
 
             for (int j = 0; j < listaOpciones.size(); j++) {
                 Opcion opc = listaOpciones.get(j);
-                producto += "\n + " + opc.getNombreElemento();
+                producto += "\n + " + opc.getNombreElemento(getIdioma());
                 System.out.println("array productos opciones " + producto);
 
             }

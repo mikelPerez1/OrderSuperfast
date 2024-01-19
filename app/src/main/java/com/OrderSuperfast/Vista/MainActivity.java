@@ -37,11 +37,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.OrderSuperfast.AndroidBug5497Workaround;
 import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorLogin;
+import com.OrderSuperfast.Controlador.Interfaces.CallbackLogin;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackZonas;
 import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.LocaleHelper;
 import com.OrderSuperfast.Modelo.Clases.CustomEditText;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
+import com.OrderSuperfast.Modelo.Clases.Zona;
+import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
 import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
 import com.android.volley.Request;
@@ -489,22 +492,25 @@ public class MainActivity extends VistaGeneral {
         String c = tPassword.getText().toString();
 
 
-        controlador.peticionLogin(u, c, checkboxChecked, new CallbackZonas() {
+        controlador.peticionLogin(u, c, checkboxChecked, new CallbackLogin() {
             @Override
-            public void onDevolucionExitosa(Zonas resp) {
+            public void onLoginSuccesss(ArrayList<ZonaDispositivoAbstracto> lista) {
                 //si existe un usuario con dichas credenciales, pasa a la siguiente pantalla
-                zonas.reemplazarLista(resp.getLista());
+
+
                 Intent intent = new Intent(MainActivity.this, Devices.class);
+                intent.putExtra("lista",lista);
                 launcher.launch(intent);
                 finish();
             }
 
-
             @Override
-            public void onDevolucionFallida(String mensajeError) {
-                Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
+            public void onLoginError(String error) {
+                Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
 
             }
+
+
         });
 
 

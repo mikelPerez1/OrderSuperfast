@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -33,15 +34,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorDevices;
-import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
-import com.OrderSuperfast.Modelo.Clases.Zonas;
+import com.OrderSuperfast.Modelo.Clases.Dispositivo;
+import com.OrderSuperfast.Modelo.Clases.Zona;
+import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
 import com.OrderSuperfast.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevices;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterDevices;
 
 public class Devices extends VistaGeneral{
 
@@ -49,7 +51,7 @@ public class Devices extends VistaGeneral{
     private AdapterDevices adapterDevices;
     private final Devices activity = this;
     private RecyclerView recyclerView;
-    private ArrayList<DispositivoZona> listaArrayZonas = new ArrayList<>();
+    private ArrayList<ZonaDispositivoAbstracto> listaArrayZonas = new ArrayList<>();
     private boolean onAnimation = false;
     private LinearLayoutManager linearManager;
     private ActivityResultLauncher<Intent> launcher;
@@ -86,6 +88,10 @@ public class Devices extends VistaGeneral{
         getWindow().setWindowAnimations(0);
 
         controlador = new ControladorDevices(this);
+
+        ArrayList<ZonaDispositivoAbstracto> arrayZonas = (ArrayList<ZonaDispositivoAbstracto>) getIntent().getSerializableExtra("lista");
+        listaArrayZonas = aplanarArray(arrayZonas);
+
 
         ConstraintLayout layoutMainContainer = findViewById(R.id.mainContainer);
         SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
@@ -191,6 +197,9 @@ public class Devices extends VistaGeneral{
         ImageView logoRest = findViewById(R.id.logoRestaurante);
         SharedPreferences sharedPreferences = getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
         String img = sharedPreferences.getString("imagen", "");
+        String nombre = sharedPreferences.getString("nombre","asd");
+        listaArrayZonas.add(0,new Zona(controlador.getNombreRestaurante(),""));
+
 
         if (!img.equals("")) {
             Glide.with(this)
@@ -223,6 +232,21 @@ public class Devices extends VistaGeneral{
 
     }
 
+    private ArrayList<ZonaDispositivoAbstracto> aplanarArray(ArrayList<ZonaDispositivoAbstracto> array){
+        ArrayList<ZonaDispositivoAbstracto> arraySecundario=new ArrayList<>();
+        for(int i =0; i<array.size();i++){
+            Zona zona = (Zona) array.get(i);
+            arraySecundario.add(zona);
+            System.out.println("dispositivos size "+zona.getListSize());
+            for(int j = 0; j<zona.getListSize();j++){
+                Dispositivo dispositivo = zona.getDispositivo(j);
+
+                arraySecundario.add(dispositivo);
+            }
+        }
+        return arraySecundario;
+    }
+
     /**
      * crea una instancia de AdapterDevices y se la asigna al RecyclerView.
      */
@@ -234,23 +258,27 @@ public class Devices extends VistaGeneral{
              * Si se clicka en un dispositivo se pasa a la siguiente pantalla donde se mostranán los pedidos asociados a la zona y dispositivo seleccionados
              */
             @Override
-            public void onItemClick(DispositivoZona item, int position) {
+            public void onItemClick(Dispositivo item, int position) {
 
                 if (item.getNombre().equals("TakeAway")) {
-                    Intent i = new Intent(Devices.this, TakeAway.class);
+                    Intent i = new Intent(Devices.this, Lista.class);
+                    i.putExtra("takeAway",true);
+                    i.putExtra("nombreDispositivo","Take Away");
                     controlador.guardarZonaYDispositivo(item.getId(), item.getIdPadre());
                     launcher.launch(i);
 
                 } else {
 
                     Log.d("prueba", item.getId());
-                    SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    SharedPreferences sharedId = getSharedPreferences("ids", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedId.edit();
                     editor.putString("idDisp", item.getId());
                     editor.putString("textDisp", item.getNombre());
+                    editor.putString("idZona",item.getIdPadre());
+                    editor.putString("textZona",item.getNombrePadre());
                     editor.apply();
 
-                    controlador.guardarZonaYDIspositivo(item.getId(), item.getNombre(), item.getIdPadre(), item.getTienePadre() ? item.getNombrePadre() : "");
+                    //controlador.guardarZonaYDIspositivo(item.getId(), item.getNombre(), item.getIdPadre(), item.getTienePadre() ? item.getNombrePadre() : "");
 
                     //TODO mirar a ver si esto sirve o borrarlo
                     Global global = (Global) activity.getApplication();
@@ -259,6 +287,7 @@ public class Devices extends VistaGeneral{
 
                     Intent i = new Intent(Devices.this, Lista.class);
                     i.putExtra("idDisp", item.getId());
+
                     i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     launcher.launch(i);
                 }
@@ -315,9 +344,9 @@ public class Devices extends VistaGeneral{
 
         super.onResume();
 
-        Zonas zonas = controlador.getListaZonas();
-        listaArrayZonas.clear();
-        listaArrayZonas.addAll(zonas.getLista());
+       // Zonas zonas = controlador.getListaZonas();
+       // listaArrayZonas.clear();
+       // listaArrayZonas.addAll(zonas.getLista());
         setAdaptadorDispositivos();
         adapterDevices.notifyDataSetChanged();
 
@@ -547,6 +576,10 @@ public class Devices extends VistaGeneral{
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }
 
 

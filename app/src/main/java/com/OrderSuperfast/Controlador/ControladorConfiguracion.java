@@ -25,7 +25,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.Map;
+import static com.OrderSuperfast.Vista.VistaGeneral.getIdioma;
 public class ControladorConfiguracion extends ControladorGeneral{
     private Context myContext;
     private HashMap<String, Boolean> mapaProductos = new HashMap<>();
@@ -133,13 +134,15 @@ public class ControladorConfiguracion extends ControladorGeneral{
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject objeto = array.getJSONObject(i);
                                     String id = objeto.getString("id_producto");
+                                    Map<String,String > nombres = getNombresDeIdiomas(objeto,"nombre_producto");
                                     String nombre = objeto.getString("nombre_producto");
+
                                     boolean mostrar = mapaProductos.get(id) != null ? mapaProductos.get(id) : true;
-                                    Producto p = new Producto(nombre, "producto", id, mostrar, true, "producto");
+                                    Producto p = new Producto(nombres, id, mostrar, true);
                                     listaProductos.add(p);
 
                                     boolean esVisible = objeto.getBoolean("visible");
-                                    Producto pEsconder = new Producto(nombre, "producto", id, esVisible, true, "producto");
+                                    Producto pEsconder = new Producto(nombres, id, esVisible, true);
                                     listaProductosEsconder.add(pEsconder);
 
                                 }
@@ -148,22 +151,29 @@ public class ControladorConfiguracion extends ControladorGeneral{
                             case "opciones":
 
                                 JSONArray arrayOpc = response.getJSONArray(clave);
+                                Map<String,String> nombresOpciones;
+                                String nombreOpcion = "";
                                 for (int j = 0; j < arrayOpc.length(); j++) {
                                     JSONObject opcion = arrayOpc.getJSONObject(j);
                                     System.out.println("opcion " + opcion);
+                                    nombresOpciones = getNombresDeIdiomas(opcion,"nombre_opcion");
+
+
+
                                     String idOpc = opcion.getString("id_opcion");
-                                    String nombreOpc = opcion.getString("nombre_opcion");
+
                                     String tipoOpc = opcion.getString("tipo_opcion");
 
                                     ArrayList<ElementoProducto> listaElementos = new ArrayList<>();
                                     JSONArray arrayElementos = opcion.getJSONArray("elementos");
+
                                     for (int k = 0; k < arrayElementos.length(); k++) {
                                         JSONObject elemento = arrayElementos.getJSONObject(k);
                                         String idEl = elemento.getString("id_elemento");
-                                        String nombreEl = elemento.getString("nombre_elemento");
+                                        Map<String,String> nombresElemento = getNombresDeIdiomas(elemento,"nombre_elemento");
                                         String tipoEl = elemento.getString("tipo_precio");
                                         boolean visibleEl = elemento.getBoolean("visible");
-                                        ElementoProducto elem = new ElementoProducto(idEl, nombreEl, tipoEl, visibleEl, "elemento");
+                                        ElementoProducto elem = new ElementoProducto(idEl, nombresElemento, tipoEl, visibleEl);
 
                                         if (tipoEl != null && !tipoEl.equals("null")) {
                                             elem.setTipo(tipoEl);
@@ -180,7 +190,7 @@ public class ControladorConfiguracion extends ControladorGeneral{
                                         listaElementos.add(elem);
                                     }
 
-                                    OpcionProducto op = new OpcionProducto(idOpc, nombreOpc, tipoOpc, listaElementos, "opcion");
+                                    OpcionProducto op = new OpcionProducto(idOpc, nombresOpciones, tipoOpc, listaElementos, "opcion");
 
                                     listaOpcionesEsconder.add(op);
 
@@ -196,7 +206,7 @@ public class ControladorConfiguracion extends ControladorGeneral{
                 Collections.sort(listaProductos, new Comparator<ProductoAbstracto>() {
                     @Override
                     public int compare(ProductoAbstracto o1, ProductoAbstracto o2) {
-                        return o1.getNombre().compareToIgnoreCase(o2.getNombre());
+                        return o1.getNombre(getIdioma()).compareToIgnoreCase(o2.getNombre(getIdioma()));
 
                     }
 
@@ -205,7 +215,7 @@ public class ControladorConfiguracion extends ControladorGeneral{
                 Collections.sort(listaProductosEsconder, new Comparator<ProductoAbstracto>() {
                     @Override
                     public int compare(ProductoAbstracto o1, ProductoAbstracto o2) {
-                        return o1.getNombre().compareToIgnoreCase(o2.getNombre());
+                        return o1.getNombre(getIdioma()).compareToIgnoreCase(o2.getNombre(getIdioma()));
 
                     }
 
@@ -214,14 +224,14 @@ public class ControladorConfiguracion extends ControladorGeneral{
                 Collections.sort(listaOpcionesEsconder, new Comparator<ProductoAbstracto>() {
                     @Override
                     public int compare(ProductoAbstracto o1, ProductoAbstracto o2) {
-                        return o1.getNombre().compareToIgnoreCase(o2.getNombre());
+                        return o1.getNombre(getIdioma()).compareToIgnoreCase(o2.getNombre(getIdioma()));
 
                     }
 
                 });
 
                 for (int i = 0; i < listaOpcionesEsconder.size(); i++) {
-                    System.out.println("nombreOpcion " + listaOpcionesEsconder.get(i).getNombre());
+                    System.out.println("nombreOpcion " + listaOpcionesEsconder.get(i).getNombre(getIdioma()));
                 }
 
                 listaCompleta = new ArrayList<>();
@@ -268,7 +278,7 @@ public class ControladorConfiguracion extends ControladorGeneral{
     public void añadirElementosACambiar(ProductoAbstracto item,int flag){
         if (flag == FLAG_ESCONDER_PRODUCTOS) {
             try {
-                if (item.getClaseTipo().equals("producto")) {
+                if (item instanceof Producto) {
                     String id = item.getId();
                     boolean esVisible = item.getVisible();
                     boolean esta = false;
@@ -295,7 +305,7 @@ public class ControladorConfiguracion extends ControladorGeneral{
 
         } else if (flag == FLAG_ESCONDER_OPCIONES) {
             try {
-                if (item.getClaseTipo().equals("elemento")) {
+                if (item instanceof ElementoProducto) {
                     String id = item.getId();
                     boolean esVisible = item.getVisible();
                     boolean esta = false;

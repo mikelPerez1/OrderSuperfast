@@ -189,5 +189,13 @@
     <string name="textoTituloVisualizacionPedidos">Visualización de los pedidos</string>
     <string name="pedidosIndividual">Individual</string>
     <string name="pedidosAgrupados">Agrupados</string>
+    <string name="txtFinalizarPedido">Finalizar</string>
+    <string name="text_añadir">Añadir</string>
 
+    <string name="txtElegirNumHastaLimite">Escoge hasta %d opciones</string>
+    <string name="elegirNumElementos">Elige %d</string>
+    <string name="elegirNumElementosVarios">Escoge entre %d y %d opciones</string>
+    <string name="hintInstrucciones">Añadir instrucciones...</string>
+    <string name="text_obligatorio">Obligatorio</string>
+    <string name="txtInstruccionesProducto">Instrucciones del producto</string>
 </resources>

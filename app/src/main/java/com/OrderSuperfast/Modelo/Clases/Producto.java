@@ -1,29 +1,22 @@
 package com.OrderSuperfast.Modelo.Clases;
 
+import java.util.Map;
+
 public class Producto extends ProductoAbstracto{
 
 
-    private final String clase;
-
 
     private int num;
-
     private final boolean esProducto;
     private Integer idPadre;
-    private final String primeraLetra;
 
-    public Producto(String name, String clas, String id, boolean visible, boolean esProducto,String claseTipo) {
-        super(id,name,clas,visible,claseTipo);
-        this.clase = clas;
+    public Producto(Map<String,String> name, String id, boolean visible, boolean esProducto) {
+        super(id,name,visible);
         this.num = 0;
         this.esProducto = esProducto;
         this.idPadre = 0;
-        this.primeraLetra = String.valueOf(name.charAt(0));
     }
 
-    public String getPrimeraLetra() {
-        return this.primeraLetra;
-    }
 
     public int getIdPadre() {
         return this.idPadre;
@@ -33,13 +26,7 @@ public class Producto extends ProductoAbstracto{
         this.idPadre = id;
     }
 
-    public boolean getEsProducto() {
-        return this.esProducto;
-    }
 
-    public String getClase() {
-        return this.clase;
-    }
 
 
     public int getNum() {

@@ -36,9 +36,9 @@ import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackBoolean;
 import com.OrderSuperfast.Controlador.ControladorConfiguracion;
 import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterCategoria;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterEsconderProducto;
-import com.OrderSuperfast.Modelo.Clases.Categoria;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterCategoria;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterEsconderProducto;
+import com.OrderSuperfast.Modelo.Clases.Seccion;
 import com.OrderSuperfast.Modelo.Clases.Producto;
 import com.OrderSuperfast.Modelo.Clases.ProductoAbstracto;
 import com.OrderSuperfast.R;
@@ -770,7 +770,7 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     private RecyclerView recyclerCategorias;
     private FastScrollRecyclerView recyclerviewVisualizacion;
     private AdapterCategoria adapterCategoria;
-    private List<Categoria> listCategorias = new ArrayList<>();
+    private List<Seccion> listSeccions = new ArrayList<>();
     private TextView tvTitulo;
     private ImageView imgBack, imgExplicacion;
     private CardView cardCategoriaProductos, cardCategoriaOpciones, cardImgExplicacion;
@@ -1026,9 +1026,9 @@ public class GuardarFiltrarProductos extends VistaGeneral {
 
         */
 
-        adapterCategoria = new AdapterCategoria(listCategorias, this, new AdapterCategoria.OnItemClickListener() {
+        adapterCategoria = new AdapterCategoria(listSeccions, this, new AdapterCategoria.OnItemClickListener() {
             @Override
-            public void onItemClick(Categoria item, int position) {
+            public void onItemClick(Seccion item, int position) {
                 recyclerView.setVisibility(View.VISIBLE);
                 String cat = item.getNombre();
                 esconderLayouts();
@@ -1061,23 +1061,23 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     }
 
     private void initListCategorias() {
-        Categoria cat1 = new Categoria(resources.getString(R.string.productos), 0);
-        listCategorias.add(cat1);
-        Categoria cat2 = new Categoria(resources.getString(R.string.opciones), 1);
-        listCategorias.add(cat2);
+        Seccion cat1 = new Seccion(resources.getString(R.string.productos), 0);
+        listSeccions.add(cat1);
+        Seccion cat2 = new Seccion(resources.getString(R.string.opciones), 1);
+        listSeccions.add(cat2);
         setRecyclerCategorias();
     }
 
     private void initListCategoriasConf() {
-        Categoria cat1 = new Categoria(resources.getString(R.string.tituloProductosOcultos), 0);
-        listCategorias.add(cat1);
-        Categoria cat2 = new Categoria(resources.getString(R.string.txtRecepcionPedidos), 1);
-        listCategorias.add(cat2);
-        Categoria cat3 = new Categoria(resources.getString(R.string.anticipacionPedidosProgramadosTexto), 2);
-        listCategorias.add(cat3);
+        Seccion cat1 = new Seccion(resources.getString(R.string.tituloProductosOcultos), 0);
+        listSeccions.add(cat1);
+        Seccion cat2 = new Seccion(resources.getString(R.string.txtRecepcionPedidos), 1);
+        listSeccions.add(cat2);
+        Seccion cat3 = new Seccion(resources.getString(R.string.anticipacionPedidosProgramadosTexto), 2);
+        listSeccions.add(cat3);
         //if (!getEsMovil()) {
-            Categoria cat4 = new Categoria(getString(R.string.textoTituloVisualizacionPedidos), 3);
-            listCategorias.add(cat4);
+            Seccion cat4 = new Seccion(getString(R.string.textoTituloVisualizacionPedidos), 3);
+            listSeccions.add(cat4);
        // }
 
         setRecyclerCategorias();

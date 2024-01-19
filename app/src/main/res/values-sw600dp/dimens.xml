@@ -119,6 +119,9 @@
 
     <dimen name="limiteMinimoReorganizarTextoProductos">55dp</dimen>
 
+    <dimen name="margenRecyclerNoTakeAway">85dp</dimen>
+    <dimen name="margenRecyclerTakeAway">130dp</dimen>
+
 
 
 </resources>

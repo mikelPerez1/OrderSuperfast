@@ -2,22 +2,17 @@ package com.OrderSuperfast.Vista;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,23 +20,20 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.os.LocaleListCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.LocaleHelper;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterCategoria;
-import com.OrderSuperfast.Modelo.Clases.Categoria;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterCategoria;
+import com.OrderSuperfast.Modelo.Clases.Seccion;
 import com.OrderSuperfast.R;
 
 import java.util.ArrayList;
@@ -801,7 +793,7 @@ public class ajustes extends VistaGeneral {
 
 
     ///////////////////////////////
-    private List<Categoria> listCategorias = new ArrayList<>();
+    private List<Seccion> listSeccions = new ArrayList<>();
     private ImageView imgBack;
     private CardView cardCatSonido, cardCatIdioma;
     private ConstraintLayout layoutSelected, layoutSelected2;
@@ -882,12 +874,12 @@ public class ajustes extends VistaGeneral {
      */
     private void initListCategorias() {
         // Crea y agrega una categoría para los ajustes de sonido a la lista de categorías
-        Categoria cat1 = new Categoria(resources.getString(R.string.ajusteSonido), 0);
-        listCategorias.add(cat1);
+        Seccion cat1 = new Seccion(resources.getString(R.string.ajusteSonido), 0);
+        listSeccions.add(cat1);
 
         // Crea y agrega una categoría para los ajustes de idioma a la lista de categorías
-        Categoria cat2 = new Categoria(resources.getString(R.string.ajusteIdioma), 1);
-        listCategorias.add(cat2);
+        Seccion cat2 = new Seccion(resources.getString(R.string.ajusteIdioma), 1);
+        listSeccions.add(cat2);
     }
 
 
@@ -906,9 +898,9 @@ public class ajustes extends VistaGeneral {
         recyclerCategorias.setLayoutManager(new LinearLayoutManager(this));
 
         // Crea un adaptador personalizado para las categorías y asigna un listener para los clics en los elementos
-        adapterCat = new AdapterCategoria(listCategorias, this, new AdapterCategoria.OnItemClickListener() {
+        adapterCat = new AdapterCategoria(listSeccions, this, new AdapterCategoria.OnItemClickListener() {
             @Override
-            public void onItemClick(Categoria item, int position) {
+            public void onItemClick(Seccion item, int position) {
                 String cat = item.getNombre();
                 scroll.scrollTo(0, 0);
 
