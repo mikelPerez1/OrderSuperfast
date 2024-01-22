@@ -7122,7 +7122,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 adapterMesas.notifyDataSetChanged();
 
                 constraintInfoPedido.setVisibility(View.GONE);
-                adapterPedidos2.expandLessAll();
+                adapterPedidos2.quitarActual();
 
                 ConstraintSet set = new ConstraintSet();
                 set.clone(layoutContDispositivo);
@@ -7247,14 +7247,14 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 if (pedidoActual != null && !((AdapterList2) adapterPedidos2).buscarPedido(pedidoActual.getNumPedido())) {
                     pedidoActual = null;
                     constraintInfoPedido.setVisibility(View.GONE);
-                    ((AdapterList2) adapterPedidos2).expandLessAll();
+                    ((AdapterList2) adapterPedidos2).quitarActual();
                 }
             } else if (adapterPedidos2 instanceof AdapterTakeAway2) {
                 ((AdapterTakeAway2) adapterPedidos2).filtrarPorTexto(newText);
                 if (pedidoActual != null && !((AdapterTakeAway2) adapterPedidos2).buscarPedido(pedidoActual.getNumPedido())) {
                     pedidoActual = null;
                     constraintInfoPedido.setVisibility(View.GONE);
-                    ((AdapterTakeAway2) adapterPedidos2).expandLessAll();
+                    ((AdapterTakeAway2) adapterPedidos2).quitarActual();
                 }
             }
 
@@ -8143,9 +8143,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         ponerInsetsI2();
         estaEnPedido = false;
         if (adapterPedidos2 instanceof AdapterList2) {
-            ((AdapterList2) adapterPedidos2).expandLessAll();
+            ((AdapterList2) adapterPedidos2).quitarActual();
         } else if (adapterPedidos2 instanceof AdapterTakeAway2) {
-            ((AdapterTakeAway2) adapterPedidos2).expandLessAll();
+            ((AdapterTakeAway2) adapterPedidos2).quitarActual();
         }
 
 
@@ -9131,10 +9131,10 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                         if (modo == 1) {
                             if (pedidoActual != null) {
                                 if (adapterPedidos2 instanceof AdapterList2 && ((AdapterList2) adapterPedidos2).buscarPedido(pedidoActual.getNumPedido())) {
-                                    ((AdapterList2) adapterPedidos2).expandLessAll();
+                                    ((AdapterList2) adapterPedidos2).quitarActual();
 
                                 } else if (adapterPedidos2 instanceof AdapterTakeAway2 && ((AdapterTakeAway2) adapterPedidos2).buscarPedido(pedidoActual.getNumPedido())) {
-                                    ((AdapterTakeAway2) adapterPedidos2).expandLessAll();
+                                    ((AdapterTakeAway2) adapterPedidos2).quitarActual();
 
                                 }
                                 constraintInfoPedido.setVisibility(View.GONE);

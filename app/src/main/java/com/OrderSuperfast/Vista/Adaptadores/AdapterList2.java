@@ -298,22 +298,23 @@ public class AdapterList2 extends AdaptadorPedidos {
 
     }
 
-
-    public void expandLessAll(PedidoNormal item) {
-        for (int i = 0; i < Original.size(); i++) {
-            if (item.getNumPedido() != Original.get(i).getNumPedido()) {
-                Original.get(i).setActual(false);
-            }
-        }
-    }
-
-    public void expandLessAll() {
+    /**
+     * La función "quitarActual" establece la propiedad "actual" de todos los elementos de la lista
+     * "Original" en falsa y notifica a los observadores del cambio.
+     */
+    public void quitarActual() {
         for (int i = 0; i < Original.size(); i++) {
             Original.get(i).setActual(false);
         }
         notifyDataSetChanged();
     }
 
+    /**
+     * La función `cambiarestado` se utiliza para cambiar el estado de una lista de elementos y
+     * actualizar RecyclerView en consecuencia.
+     *
+     * @param pEst El parámetro "pEst" es una cadena que representa el nuevo estado que se establecerá.
+     */
     public void cambiarestado(String pEst) {
         estadoActual = pEst;
         Log.v("adapter take away pedido cambiar estado", "take original " + mData.size() + " " + Original.size());
@@ -367,6 +368,19 @@ public class AdapterList2 extends AdaptadorPedidos {
 
     }
 
+    /**
+     * La función toma una cadena como entrada y devuelve un valor de cadena correspondiente según la
+     * entrada.
+     *
+     * @param est El parámetro "est" es una cadena que representa el estado de algo. Puede tener los
+     * valores "PENDIENTE", "ACEPTADO", "LISTO" o "CANCELADO".
+     * @return El método devuelve un valor de cadena. El valor de cadena específico que se devuelve
+     * depende del valor del parámetro de entrada "est". Si "est" es igual a "PENDIENTE", el método
+     * devolverá el valor de cadena del recurso con el ID "botonPendiente". Si "est" es igual a
+     * "ACEPTADO", el método devolverá el valor de cadena del recurso con
+     */
+
+    //moverlo a vistaGeneral igual mejor
     private String getString(String est) {
         if (est.equals("PENDIENTE")) {
             return resources.getString(R.string.botonPendiente);
@@ -381,6 +395,13 @@ public class AdapterList2 extends AdaptadorPedidos {
         }
     }
 
+    /**
+     * La función "masDeDosDias" verifica si la fecha actual es más de dos días después de una fecha
+     * determinada.
+     *
+     * @param f1 El parámetro f1 es un objeto Fecha que representa una fecha y hora específicas.
+     * @return El método devuelve un valor booleano.
+     */
     private boolean masDeDosDias(Date f1) {
         System.out.println("tiempoNuevo" + new Date());
         Calendar calendar = Calendar.getInstance(); // Obtener una instancia de la clase Calendar
@@ -398,6 +419,16 @@ public class AdapterList2 extends AdaptadorPedidos {
 
     }
 
+    /**
+     * La función `filtrar` filtra una lista de objetos `PedidoNormal` basándose en los parámetros
+     * `status` y `text` proporcionados.
+     *
+     * @param status El parámetro "status" es una cadena que representa el estado de un pedido. Puede
+     * tener valores como "ACEPTADO", "PENDIENTE", "LISTO", "CANCELADO", etc.
+     * @param text El parámetro "texto" es una cadena que representa el texto que se utiliza para
+     * filtrar los datos. Se utiliza para comprobar si alguno de los campos del objeto "PedidoNormal"
+     * contiene este texto.
+     */
     public void filtrar(String status, String text) {
         /*
         if (Original.size() == 0) {
@@ -532,6 +563,15 @@ public class AdapterList2 extends AdaptadorPedidos {
     }
 
 
+    /**
+     * La función "parpadeo" actualiza la propiedad "parpadeo" de un elemento específico en una lista
+     * en función de un valor de pedido determinado.
+     *
+     * @param pedido El parámetro "pedido" es un String que representa un número de pedido específico.
+     * @param b El parámetro "b" es un valor booleano que determina si el elemento debe establecerse en
+     * "parpadeo" o no. Si "b" es verdadero, el elemento se establecerá en "parpadeo", de lo contrario
+     * no se establecerá en "parpadeo".
+     */
     public void parpadeo(String pedido, boolean b) {
         for (int i = 0; i < Original.size(); i++) {
             PedidoNormal elemento = Original.get(i);
@@ -617,7 +657,7 @@ public class AdapterList2 extends AdaptadorPedidos {
                         listener.onItemClick(item, position);
                         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
                         if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || (dimen < 10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)) {
-                            expandLessAll(item);
+                            quitarActual();
                             item.setActual(true);
 
                         }
@@ -746,6 +786,10 @@ public class AdapterList2 extends AdaptadorPedidos {
         }
 
 
+        /**
+         * La función `initListenerFiltros()` inicializa los Listeners para varios elementos de la
+         * interfaz de usuario y maneja sus eventos de clic y desplazamiento.
+         */
         private void initListenerFiltros() {
             int dimenFlecha = (int) resources.getDimension(R.dimen.dimen30dp);
             imgFlechaIzq.setOnClickListener(new View.OnClickListener() {
@@ -844,11 +888,23 @@ public class AdapterList2 extends AdaptadorPedidos {
         }
 
 
+        /**
+         * La función clickFiltro llama al método onFilterChange con el parámetro estado dado y luego
+         * llama al método cambiarestado con el mismo parámetro.
+         *
+         * @param estado El parámetro "estado" es una cadena que representa el estado de un filtro.
+         */
         private void clickFiltro(String estado) {
             listener.onFilterChange(estado);
             cambiarestado(estado);
         }
 
+        /**
+         * La función "getEstadoFiltro" devuelve el estado correspondiente según la posición dada.
+         *
+         * @param pos El parámetro "pos" representa la posición del filtro.
+         * @return El método devuelve un valor de cadena.
+         */
         private String getEstadoFiltro(int pos) {
             String est = "";
             if (posicionFiltro == 0) {
@@ -864,6 +920,10 @@ public class AdapterList2 extends AdaptadorPedidos {
             return est;
         }
 
+        /**
+         * La función "posFiltro" asigna un valor a la variable "estadoActual" en base al valor de la
+         * variable "posicionFiltro".
+         */
         private void posFiltro() {
             if (posicionFiltro == 0) {
                 estadoActual = "PENDIENTE";
@@ -876,6 +936,10 @@ public class AdapterList2 extends AdaptadorPedidos {
             }
         }
 
+        /**
+         * La función `getScrollElementVisible()` encuentra el elemento secundario más visible en un
+         * LinearLayout y realiza una acción deseada con él, como desplazarse hasta su posición.
+         */
         private void getScrollElementVisible() {
             View mostVisibleChild = null;
             int maxVisibleWidth = 0;
@@ -922,6 +986,14 @@ public class AdapterList2 extends AdaptadorPedidos {
             }
         }
 
+        /**
+         * La función `getScrollPosition` determina la posición de desplazamiento de una vista
+         * secundaria y realiza las acciones correspondientes según la identificación del niño.
+         *
+         * @param child El parámetro "niño" es un objeto Ver que representa una vista secundaria dentro
+         * de una vista principal. Se utiliza para determinar la posición de desplazamiento en función
+         * del ID de la vista secundaria.
+         */
         private void getScrollPosition(View child) {
             if (child.getId() == filtroPendiente.getId()) {
                 posicionFiltro = 0;
@@ -941,6 +1013,11 @@ public class AdapterList2 extends AdaptadorPedidos {
             clickFiltro(est);
         }
 
+        /**
+         * La función "getFilterPosition" devuelve la posición de un filtro según el estado actual.
+         *
+         * @return El método devuelve la posición del filtro según el estado actual.
+         */
         private int getFilterPosition() {
             int pos = 0;
             if (estadoActual.equals("PENDIENTE")) {
@@ -957,15 +1034,17 @@ public class AdapterList2 extends AdaptadorPedidos {
 
         }
 
-        private void modScroll() {
-            View viewFiltro = getScrollChild(getFilterPosition());
-            int x = getScrollXForChild(scrollFiltros, viewFiltro);
-            scrollFiltros.smoothScrollTo(x, 0);
-            viewFiltro.callOnClick();
-
-
-        }
-
+        /**
+         * La función `animacionMostrarFlecha` anima la visualización de una imagen de flecha junto con
+         * dos diseños de restricciones.
+         *
+         * @param img El parámetro `img` es un objeto `ImageView` que representa la vista de imagen que
+         * se animará.
+         * @param lay El parámetro "lay" es un ConstraintLayout que representa un diseño en la interfaz
+         * de usuario.
+         * @param layGris El parámetro "layGris" es un ConstraintLayout que representa una
+         * superposición o fondo gris.
+         */
         private void animacionMostrarFlecha(ImageView img, ConstraintLayout lay, ConstraintLayout layGris) {
             if ((!animationFiltro && img.getId() == R.id.imgFlechaIzq) || (!animationFiltroDer && img.getId() == R.id.imgFlechaDer)) {
                 ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(img, "alpha", 0f, 1f);
@@ -1015,6 +1094,17 @@ public class AdapterList2 extends AdaptadorPedidos {
             }
         }
 
+        /**
+         * La función animacionOcultarFlecha se utiliza para animar el ocultamiento de un ImageView y
+         * dos ConstraintLayouts.
+         *
+         * @param img ImageView que representa la imagen de la flecha.
+         * @param lay El parámetro "lay" es un ConstraintLayout que representa un diseño en la interfaz
+         * de usuario.
+         * @param layGris El parámetro "layGris" es un ConstraintLayout que representa un diseño
+         * superpuesto gris. Se utiliza en la animación para atenuar la superposición gris junto con la
+         * imagen y otro ConstraintLayout.
+         */
         private void animacionOcultarFlecha(ImageView img, ConstraintLayout lay, ConstraintLayout layGris) {
             if ((!animationFiltro && img.getId() == R.id.imgFlechaIzq) || (!animationFiltroDer && img.getId() == R.id.imgFlechaDer)) {
                 System.out.println("enter animation ocultarFlecha");
@@ -1067,6 +1157,17 @@ public class AdapterList2 extends AdaptadorPedidos {
             }
         }
 
+        /**
+         * La función calcula la posición de desplazamiento para una vista secundaria dentro de una
+         * vista de desplazamiento horizontal.
+         *
+         * @param scrollView El parámetro scrollView es un objeto HorizontalScrollView. Representa la
+         * vista de desplazamiento horizontal que contiene la vista secundaria.
+         * @param child El parámetro secundario es la Vista para la que desea calcular la posición de
+         * desplazamiento. En este caso, es una vista secundaria de HorizontalScrollView.
+         * @return El método devuelve el valor scrollX, que se calcula en función de la posición y el
+         * ancho de la vista secundaria y el ancho de la vista principal HorizontalScrollView.
+         */
         private int getScrollXForChild(HorizontalScrollView scrollView, View child) {
             int parentWidth = scrollView.getWidth();
             int childLeft = child.getLeft();
@@ -1076,6 +1177,14 @@ public class AdapterList2 extends AdaptadorPedidos {
             return Math.max(0, scrollX); // Ensure scrollX is non-negative
         }
 
+        /**
+         * La función devuelve una Vista específica basada en la posición dada.
+         *
+         * @param position El parámetro de posición es un número entero que representa la posición de
+         * la vista deseada en una lista o matriz. En este caso, se utiliza para determinar qué vista
+         * devolver desde la declaración de cambio.
+         * @return El método devuelve un objeto Ver.
+         */
         private View getScrollChild(int position) {
             switch (position) {
                 case 0:

@@ -25,11 +25,11 @@ public abstract class AdaptadorPedidos extends RecyclerView.Adapter<RecyclerView
 
     }
 
-    public void expandLessAll(PedidoTakeAway item) {
+    public void quitarActual(PedidoTakeAway item) {
 
     }
 
-    public void expandLessAll() {
+    public void quitarActual() {
 
     }
 

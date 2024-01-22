@@ -29,7 +29,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
-import com.OrderSuperfast.Modelo.Clases.PedidoNormal;
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
 import com.OrderSuperfast.R;
 import com.OrderSuperfast.Modelo.Clases.PedidoTakeAway;
@@ -308,7 +307,7 @@ public class AdapterTakeAway2 extends AdaptadorPedidos {
 
 
 
-    public void expandLessAll(PedidoTakeAway item) {
+    public void quitarActual(PedidoTakeAway item) {
         for (int i = 0; i < Original.size(); i++) {
             if (item.getNumPedido() != Original.get(i).getNumPedido()) {
                 Original.get(i).setExpandido(false);
@@ -319,7 +318,7 @@ public class AdapterTakeAway2 extends AdaptadorPedidos {
 
     }
 
-    public void expandLessAll() {
+    public void quitarActual() {
         for (int i = 0; i < Original.size(); i++) {
             Original.get(i).setExpandido(false);
         }
@@ -420,7 +419,7 @@ public class AdapterTakeAway2 extends AdaptadorPedidos {
                         listener.onItemClick(item, position);
                         if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                             item.setExpandido(true);
-                            expandLessAll(item);
+                            quitarActual(item);
                         }
 
                         notifyDataSetChanged();

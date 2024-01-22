@@ -397,7 +397,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         search.setIconified(true);
 
         configurationChange(newOrientation);
-        adapterPedidos2.expandLessAll();
+        adapterPedidos2.quitarActual();
         //changeOrientationLayout(newOrientation);
         nuevoAdaptador();
         adapterTakeAway.cambiarestado(estadoActual);
@@ -4648,7 +4648,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
 
                 pedidoActual = null;
                 constraintInfoPedido.setVisibility(View.GONE);
-                adapterPedidos2.expandLessAll();
+                adapterPedidos2.quitarActual();
 
                 ConstraintSet set = new ConstraintSet();
                 set.clone(layoutContDispositivo);
@@ -5455,7 +5455,7 @@ public class TakeAway extends VistaGeneral implements SearchView.OnQueryTextList
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
         ponerInsetsI2();
         estaEnPedido = false;
-        adapterPedidos2.expandLessAll();
+        adapterPedidos2.quitarActual();
 
         cambiarMargenTopRecyclerProductos();
 
