@@ -20,7 +20,7 @@ public class Global extends Application {
     private static String filtroUbi = "";
     private static WebSocket webSocket;
     private static int wb = 0;
-    private static Lista.SocketListener listener;
+    private static VistaPedidos.SocketListener listener;
     private static boolean searchUtilizando = false;
     private static String numPedido = "";
     private static String estadoPedido = "";

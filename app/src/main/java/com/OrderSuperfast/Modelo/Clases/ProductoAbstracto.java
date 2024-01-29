@@ -1,31 +1,35 @@
 package com.OrderSuperfast.Modelo.Clases;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class ProductoAbstracto {
     private String id;
-    private String nombre;
-    private String tipo_precio;
+    private Map<String,String> nombre;
     private boolean visible;
-    private String claseTipo;
 
-    public ProductoAbstracto(String pId, String pNombre, String pTipo,boolean pVisible,String pClase){
+    public ProductoAbstracto(String pId, Map<String,String> pNombre,boolean pVisible){
         this.id=pId;
-        this.nombre=pNombre;
-        this.tipo_precio=pTipo;
+
+        this.nombre = pNombre;
         this.visible=pVisible;
-        this.claseTipo=pClase;
     }
 
 
     //getters
     public String getId(){return this.id;}
 
-    public String getNombre(){return this.nombre;}
-
-    public String getTipo(){return this.tipo_precio;}
+    public String getNombre(String idioma) {
+        if (nombre.containsKey(idioma)) {
+            return nombre.get(idioma);
+        } else {
+            // Devolver el nombre por defecto o manejar el caso sin nombre
+            return nombre.get("es");
+        }
+    }
 
     public boolean getVisible(){return this.visible;}
 
-    public String getClaseTipo(){return this.claseTipo;}
 
 
     //Setters

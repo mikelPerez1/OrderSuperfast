@@ -5,15 +5,14 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.Pair;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.OrderSuperfast.Controlador.Interfaces.CallbackZonas;
-import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
+import com.OrderSuperfast.Controlador.Interfaces.CallbackLogin;
 import com.OrderSuperfast.Modelo.Clases.Dispositivo;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
+import com.OrderSuperfast.Modelo.Clases.SessionSingleton;
+import com.OrderSuperfast.Modelo.Clases.Zona;
+import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
 import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
-import com.OrderSuperfast.Vista.VistaGeneral;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -33,10 +32,9 @@ import java.util.Map;
 
 public class ControladorLogin extends ControladorGeneral{
     private final String urlLogin = "https://app.ordersuperfast.es/android/v1/login/";
-    private Context context;
 
     public ControladorLogin(Context mContext){
-        context = mContext;
+        super(mContext);
     }
 
 
@@ -44,13 +42,14 @@ public class ControladorLogin extends ControladorGeneral{
      * @param nombre Nombre del usuario
      * @param password Contraseña del usuario
      * @param checkboxChecked Booleano que sirve para ver si el usuario quiere guardar el nombre y la contraseña que acaba de poner
-     * @param callback Una instancia de la interfaz de retorno de llamada ({@link CallbackZonas}) que maneja
+     * @param callback Una instancia de la interfaz de retorno de llamada ({@link CallbackLogin}) que maneja
      *                 el resultado del intento de inicio de sesión, ya sea éxito o fracaso.
      *                 Se utiliza para notificar el resultado de la operación al usuario.
      *                 Requiere implementar métodos como onSuccess() y onError() para manejar los diferentes casos.
-     * @see CallbackZonas
+     * @see CallbackLogin
+     *
      */
-    public void peticionLogin(String nombre, String password,boolean checkboxChecked, CallbackZonas callback) {
+    public void peticionLogin(String nombre, String password,boolean checkboxChecked, CallbackLogin callback) {
 
         Pair<String, String> par = codificar(nombre, password); // la funcíon codificar recive 2 Strings, el usuario y contraseña y devuelve un Par que contiene el usuario y contraseña codificados
         String nombreCod = par.first;
@@ -72,6 +71,7 @@ public class ControladorLogin extends ControladorGeneral{
                         // Aquí puedes procesar la respuesta recibida del servidor
                         System.out.println("respuesta login " + response);
                         try {
+                            ArrayList<ZonaDispositivoAbstracto> listaZonas = new ArrayList<>();
                             Zonas zonas = new Zonas();
                             String idRest = "";
                             String nombreRest = "";
@@ -108,8 +108,8 @@ public class ControladorLogin extends ControladorGeneral{
                                         System.out.println("respuesta zonas " + arrayZonas);
 
                                         for (int i = 0; i < arrayZonas.length(); i++) {
-                                            JSONObject zona = arrayZonas.getJSONObject(i);
-                                            Iterator<String> keysZonas = zona.keys();
+                                            JSONObject jsonZona = arrayZonas.getJSONObject(i);
+                                            Iterator<String> keysZonas = jsonZona.keys();
                                             String idzona = "";
                                             String nombreZona = "";
                                             ArrayList<Dispositivo> listaDispos = new ArrayList<>();
@@ -118,17 +118,17 @@ public class ControladorLogin extends ControladorGeneral{
 
 
                                                 if (claveZona.equals("id_zona")) {
-                                                    idzona = zona.getString(claveZona);
+                                                    idzona = jsonZona.getString(claveZona);
 
                                                 } else if (claveZona.equals("nombre")) {
-                                                    if (zona.getString(claveZona).toLowerCase().equals("zona prueba")) {
-                                                        nombreZona = zona.getString(claveZona);
+                                                    if (jsonZona.getString(claveZona).toLowerCase().equals("zona prueba")) {
+                                                        nombreZona = jsonZona.getString(claveZona);
                                                     } else {
-                                                        nombreZona = zona.getString(claveZona);
+                                                        nombreZona = jsonZona.getString(claveZona);
                                                     }
                                                 } else if (claveZona.equals("dispositivos")) {
                                                     System.out.println("entra zonas");
-                                                    JSONArray jsonArrayDispos = zona.getJSONArray(claveZona);
+                                                    JSONArray jsonArrayDispos = jsonZona.getJSONArray(claveZona);
                                                     for (int j = 0; j < jsonArrayDispos.length(); j++) {
                                                         JSONObject dispo = jsonArrayDispos.getJSONObject(j);
                                                         Iterator<String> keysDispos = dispo.keys();
@@ -144,7 +144,9 @@ public class ControladorLogin extends ControladorGeneral{
                                                             }
                                                         }
                                                         System.out.println("getDispZona " + nombreDisp);
-                                                        Dispositivo disp = new Dispositivo(idDisp, nombreDisp);
+                                                        Dispositivo disp = new Dispositivo(idDisp, nombreDisp,idzona,nombreZona);
+                                                        System.out.println("nombre del dispositivo "+disp.getNombre());
+
                                                         listaDispos.add(disp);
                                                     }
                                                 }
@@ -154,23 +156,33 @@ public class ControladorLogin extends ControladorGeneral{
                                                 esTakeAway = true;
                                             }
 
+                                            Zona zona = new Zona(nombreZona,idzona);
+                                            zona.replaceList(listaDispos);
+                                            System.out.println("zona nombre"+nombreZona);
+                                            listaZonas.add(zona);
                                             DispositivoZona dispZona = new DispositivoZona(listaDispos, nombreZona, idzona, esTakeAway, true);
                                             zonas.addZona(dispZona);
                                         }
                                     } else if (respuesta.getString(clave).equals("ERROR")) {
                                         try {
                                            // Toast.makeText(activity, respuesta.getString("details"), Toast.LENGTH_SHORT).show();
-                                            callback.onDevolucionFallida(respuesta.getString("details"));
+                                            callback.onLoginError(respuesta.getString("details"));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 }
                                 if (idRest != null && !idRest.equals("")) {
-                                    idRestaurante = idRest;
-                                    login(nombre,password,idRest,logoRest,nombreRest,checkboxChecked,zonas,callback);
+                                   // getSessionSingleton().resetInstance();
+                                    SessionSingleton sesion = getSessionSingleton();
+                                    sesion.setRestaurantId(idRest);
+                                    sesion.setRestaurantName(nombreRest);
+                                    sesion.setRestaurantImage(logoRest);
+
+                                    login(nombre,password,idRest,logoRest,nombreRest,checkboxChecked,listaZonas,callback);
+
                                 } else {
-                                    callback.onDevolucionFallida(context.getResources().getString(R.string.cuentaIncorrecta));
+                                    callback.onLoginError(myContext.getResources().getString(R.string.cuentaIncorrecta));
                                 }
                             }
 
@@ -188,14 +200,14 @@ public class ControladorLogin extends ControladorGeneral{
                     public void onErrorResponse(VolleyError error) {
                         Log.e("error", "Error de conexión");
                         System.out.println("respuesta login " + error.toString());
-                        callback.onDevolucionFallida(error.toString());
+                        callback.onLoginError(error.toString());
                         // Toast.makeText(MainActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
                     }
                 });
 
 // Agregar la petición a la cola
 
-        Volley.newRequestQueue(context).add(jsonObjectRequest);
+        Volley.newRequestQueue(myContext).add(jsonObjectRequest);
 
     }
 
@@ -210,31 +222,32 @@ public class ControladorLogin extends ControladorGeneral{
      * @param nombreRest El nombre del restaurante.
      * @param checkboxChecked Booleano que indica si se debe guardar la información del usuario y restaurante para futuros accesos.
      * @param zonas Objeto Zonas que contiene información sobre las zonas asociadas al restaurante.
-     * @param callback Interfaz CallbackZonas para manejar el resultado del inicio de sesión y devolución de información de zonas.
+     * @param callback Interfaz CallbackLogin para manejar el resultado del inicio de sesión y devolución de información de zonas.
      */
-    private void login(String user,String pass,String idRest, String logoRest, String nombreRest, boolean checkboxChecked,Zonas zonas, CallbackZonas callback) {
-        //String deco = decodificar(idRest, true);
+    private void login(String user,String pass,String idRest, String logoRest, String nombreRest, boolean checkboxChecked,ArrayList<ZonaDispositivoAbstracto> zonas, CallbackLogin callback) {
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("ids", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("saveIdRest", idRest);
         editor.apply();
 
-        sharedPreferences = context.getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
+        sharedPreferences = myContext.getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
 
+
+        //esto habria que cambiarlo por atributos estaticos de la vista en vez de guardarlo en preferencias
         String img = logoRest;
         editor.putString("nombreRestaurante", nombreRest);
         editor.putString("imagen", img);
 
         editor.apply();
 
-        guardarZonasPref(zonas);
+        //guardarZonasPref(zonas);
 
 
         Pair<String, String> datos = codificar(user, pass);
-        SharedPreferences prefs = context.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
+        SharedPreferences prefs = myContext.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
         SharedPreferences.Editor editorCuenta = prefs.edit();
 
         if (checkboxChecked) {
@@ -251,7 +264,7 @@ public class ControladorLogin extends ControladorGeneral{
         //hacer el callback y mandar peticion exitosa
 
 
-        callback.onDevolucionExitosa(zonas);
+        callback.onLoginSuccesss(zonas);
 
 
     }
@@ -263,7 +276,7 @@ public class ControladorLogin extends ControladorGeneral{
      * Utiliza este método para limpiar la información de dispositivos guardada si es necesario.
      */
     private void eliminarDisposGuardados(){
-        SharedPreferences sharedZonas = context.getSharedPreferences("dispos", Context.MODE_PRIVATE);
+        SharedPreferences sharedZonas = myContext.getSharedPreferences("dispos", Context.MODE_PRIVATE);
         SharedPreferences.Editor editorZonas = sharedZonas.edit();
         editorZonas.remove("savedDisps");
     }
@@ -282,7 +295,7 @@ public class ControladorLogin extends ControladorGeneral{
     private void guardarZonasPref(Zonas zonas) {
 
 
-        SharedPreferences sharedZonas = context.getSharedPreferences("dispos", Context.MODE_PRIVATE);
+        SharedPreferences sharedZonas = myContext.getSharedPreferences("dispos", Context.MODE_PRIVATE);
         SharedPreferences.Editor editorZonas = sharedZonas.edit();
 
         JSONObject dispJson;
@@ -436,7 +449,7 @@ public class ControladorLogin extends ControladorGeneral{
      * relacionadas con los dispositivos. Utilízalo para limpiar la información de dispositivos almacenada si es necesario.
      */
     private void eliminarShared() {
-        SharedPreferences sharedDevices = context.getSharedPreferences("devices", Context.MODE_PRIVATE);
+        SharedPreferences sharedDevices = myContext.getSharedPreferences("devices", Context.MODE_PRIVATE);
         SharedPreferences.Editor deviceEditor = sharedDevices.edit();
         deviceEditor.remove("listaDispositivos");
         deviceEditor.apply();
@@ -453,7 +466,7 @@ public class ControladorLogin extends ControladorGeneral{
         eliminarShared();
         eliminarDisposGuardados();
 
-        SharedPreferences prefs = context.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
+        SharedPreferences prefs = myContext.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor = prefs.edit();
         editor.remove("saveIdRest");

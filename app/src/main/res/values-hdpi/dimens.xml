@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="producto_width_gridLayout">170dp</dimen>
+    <dimen name="texto_producto_carta">20sp</dimen>
+
+</resources>

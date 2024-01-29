@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/barraHorizontal"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:elevation="19dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/overIconHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/black_overlay"
+            android:elevation="1dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/imgViewMenu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/overBackHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/black_overlay"
+            android:elevation="1dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/overIconHorizontal">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/imgViewMenu"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="15dp"
+            android:padding="@dimen/paddingIcono"
+            android:rotation="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logotipo_sinfondo_sindegradado"
+            app:tint="@null" />
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="15dp"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/flecha_atras"
+            app:tint="@color/verdeOrderSuperfast" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,7 @@
     <color name="verdeOrderSuperfastTranslucido">#8BDCF45C</color>
     <color name="negroSemiTransparente">#55000000</color>
 
+
     <color name="amarilloSuave">#88FFD562</color>
     <color name="rojoSuave">#7EDD5973</color>
     <color name="rojoTransparente">#74E62525</color>
@@ -44,9 +45,13 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="light_blue_translucido">#5C00B0FF</color>
     <color name="black_overlay">#95000000</color>
+    <color name="white_semi">#7CFFFFFF</color>
+
 
     <color name="color_checked">#dcf45c</color>
     <color name="color_unchecked">#FFFF0000</color>
+    <color name="red">#FFFF0000</color>
+
     <color name="fondo_gris_negro_translucido">#63454545</color>
 
     <color name="grisClaroNI">#d9d9d9</color>

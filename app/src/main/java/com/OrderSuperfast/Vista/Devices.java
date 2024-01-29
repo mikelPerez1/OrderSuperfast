@@ -14,13 +14,10 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -33,42 +30,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorDevices;
-import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
-import com.OrderSuperfast.Modelo.Clases.Zonas;
+import com.OrderSuperfast.Modelo.Clases.Dispositivo;
+import com.OrderSuperfast.Modelo.Clases.Zona;
+import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
 import com.OrderSuperfast.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterDevices;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterDevices;
 
-public class Devices extends VistaGeneral{
+public class Devices extends VistaGeneral {
 
 
     private AdapterDevices adapterDevices;
     private final Devices activity = this;
     private RecyclerView recyclerView;
-    private ArrayList<DispositivoZona> listaArrayZonas = new ArrayList<>();
+    private ArrayList<ZonaDispositivoAbstracto> listaArrayZonas = new ArrayList<>();
     private boolean onAnimation = false;
     private LinearLayoutManager linearManager;
     private ActivityResultLauncher<Intent> launcher;
     private ControladorDevices controlador;
 
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
-        String idioma = sharedPreferencesIdiomas.getString("id", "");
-        Locale localeToSwitchTo = new Locale(idioma);
-        ContextWrapper localeUpdatedContext = ContextUtils.updateLocale(newBase, localeToSwitchTo);
-        super.attachBaseContext(localeUpdatedContext);
-    }
-
-
-    /**
-     * @param savedInstanceState 
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().getDecorView().setSystemUiVisibility(
@@ -86,54 +70,22 @@ public class Devices extends VistaGeneral{
         getWindow().setWindowAnimations(0);
 
         controlador = new ControladorDevices(this);
+        System.out.println("id restaurante de la peticion " + controlador.getIdRestaurante());
 
-        ConstraintLayout layoutMainContainer = findViewById(R.id.mainContainer);
-        SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        // obtiene la lista de zonas y dispositivos que se le ha pasado por el intent de la actividad anterior
+        ArrayList<ZonaDispositivoAbstracto> arrayZonas = (ArrayList<ZonaDispositivoAbstracto>) getIntent().getSerializableExtra("lista");
+        listaArrayZonas = controlador.aplanarArray(arrayZonas);
+
 
         ConstraintLayout layoutNavi = findViewById(R.id.constraintNavigationPedidos);
-        LinearLayout constraintNav = findViewById(R.id.linearLayoutNaviPedidos);
 
         ponerInsets(layoutNavi);
 
-        System.out.println("es movil "+getEsMovil());
-
-        /*
-        int inset = prefInset.getInt("inset", 0);
-        if (inset > 0) {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                //vertical
-                layoutMainContainer.setPadding(0, inset, 0, 0);
-
-            } else {
-                if (display.getRotation() == Surface.ROTATION_90) {
-                    //padding izquierda
-                    constraintNav.setPadding(0, 0, 0, 0);
-                    layoutMainContainer.setPadding(0, 0, 0, 0);
-
-                    ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) layoutNavi.getLayoutParams();
-                    marginParams.setMarginStart(inset);
-                    layoutNavi.setLayoutParams(marginParams);
-
-
-                } else {
-                    //padding derecha
-                    layoutMainContainer.setPadding(0, 0, 0, 0);
-
-                    layoutNavi.getLayoutParams().width = (int) getResources().getDimension(R.dimen.Navsize) + inset;
-                    constraintNav.setPadding(0, 0, inset, 0);
-
-
-                }
-
-            }
-        }
-
-         */
         registerLauncher();
 
         ConstraintLayout overLayout = findViewById(R.id.overLayout);
 
+        //Listeners del desplegable opciones y sus elementos que sirven para ir a diferentes pantallas
         ConstraintLayout desplegableOpciones = findViewById(R.id.desplegableOpciones);
         desplegableOpciones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +100,7 @@ public class Devices extends VistaGeneral{
             public void onClick(View v) {
                 Intent i = new Intent(Devices.this, EscanearQR.class);
                 launcher.launch(i);
-                ocultarDesplegable(overLayout,desplegableOpciones);
+                ocultarDesplegable(overLayout, desplegableOpciones);
             }
         });
 
@@ -162,23 +114,26 @@ public class Devices extends VistaGeneral{
             }
         });
 
+        //Listener del layout que oscurece los elementos menos el desplegable
+
         overLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ocultarDesplegable(overLayout,desplegableOpciones);
+                ocultarDesplegable(overLayout, desplegableOpciones);
             }
         });
 
-        ImageView imgAjustes = findViewById(R.id.NavigationBarAjustes);
-        imgAjustes.setOnClickListener(new View.OnClickListener() {
+        //icono que al clickarlo muestra/esconde mediante una animación el desplegable de opciones
+        ImageView imgOpciones = findViewById(R.id.NavigationBarAjustes);
+        imgOpciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarDesplegableOpciones(overLayout,desplegableOpciones);
+                mostrarDesplegableOpciones(overLayout, desplegableOpciones);
 
             }
         });
-        Global application = (Global) this.getApplication();
 
+        //flecha atrás que sirve para ir hacia atrás
         ImageView imgNavBack = findViewById(R.id.navigationBarBack);
         imgNavBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,35 +144,26 @@ public class Devices extends VistaGeneral{
         });
 
         ImageView logoRest = findViewById(R.id.logoRestaurante);
-        SharedPreferences sharedPreferences = getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
-        String img = sharedPreferences.getString("imagen", "");
+        String img = controlador.getImagenRestaurante();
+        listaArrayZonas.add(0, new Zona(controlador.getNombreRestaurante(), ""));
 
+
+        //transforma el string en imagen y lo mete en logoRest
         if (!img.equals("")) {
             Glide.with(this)
                     .load(img)
                     .into(logoRest);
 
         } else {
+            //si el String img está vacío, esconde el CardView donde va la imagen
             CardView cardlogo = findViewById(R.id.cardLogo);
             cardlogo.setVisibility(View.GONE);
         }
 
         recyclerView = findViewById(R.id.recyclerDispositivos);
-
         recyclerView.setHasFixedSize(true);
-        int n = (int) (getResources().getDimension(R.dimen.paddingDevices));
         linearManager = new LinearLayoutManager(this);
-        // linearLayoutManager.
-        //   linearLayoutManager.setStackFromEnd(true);
-        //  linearLayoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(linearManager);
-
-
-////////////////////////////////////////////////////////////////////////
-        //////////Provisional/////////////////
-
-
-
         setAdaptadorDispositivos();
 
 
@@ -234,31 +180,19 @@ public class Devices extends VistaGeneral{
              * Si se clicka en un dispositivo se pasa a la siguiente pantalla donde se mostranán los pedidos asociados a la zona y dispositivo seleccionados
              */
             @Override
-            public void onItemClick(DispositivoZona item, int position) {
+            public void onItemClick(Dispositivo item, int position) { //al clickar en un dispositivo se pasa a la siguiente pantalla
+                controlador.saveData(item.getIdPadre(), item.getId(), item.getNombrePadre(), item.getNombre());
 
                 if (item.getNombre().equals("TakeAway")) {
-                    Intent i = new Intent(Devices.this, TakeAway.class);
-                    controlador.guardarZonaYDispositivo(item.getId(), item.getIdPadre());
+                    Intent i = new Intent(Devices.this, VistaPedidos.class);
+                    i.putExtra("takeAway", true);
+                    i.putExtra("nombreDispositivo", "Take Away");
+                    i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     launcher.launch(i);
 
                 } else {
 
-                    Log.d("prueba", item.getId());
-                    SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("idDisp", item.getId());
-                    editor.putString("textDisp", item.getNombre());
-                    editor.apply();
-
-                    controlador.guardarZonaYDIspositivo(item.getId(), item.getNombre(), item.getIdPadre(), item.getTienePadre() ? item.getNombrePadre() : "");
-
-                    //TODO mirar a ver si esto sirve o borrarlo
-                    Global global = (Global) activity.getApplication();
-                    global.setIdDisp(item.getId());
-                    global.setNombreDisp(item.getNombre());
-
-                    Intent i = new Intent(Devices.this, Lista.class);
-                    i.putExtra("idDisp", item.getId());
+                    Intent i = new Intent(Devices.this, VistaPedidos.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     launcher.launch(i);
                 }
@@ -272,24 +206,7 @@ public class Devices extends VistaGeneral{
     }
 
 
-    /**
-     * Borrar datos persistentes al quitar la aplicación
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SharedPreferences sharedPreferences = getSharedPreferences("dispos", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("savedDisps", "");
-        editor.apply();
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // System.out.println("dispos:"+dispos.toString());
-
-    }
 
     @Override
     protected void onResume() {
@@ -303,6 +220,7 @@ public class Devices extends VistaGeneral{
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
 
+        //si es necesario por los ajustes que se han cambiado en pantallas posteriores, se recrea la actividad
         SharedPreferences sharedAjustes = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
         SharedPreferences.Editor ajustesEditor = sharedAjustes.edit();
         boolean recrear = sharedAjustes.getBoolean("recrear", false);
@@ -314,10 +232,6 @@ public class Devices extends VistaGeneral{
         }
 
         super.onResume();
-
-        Zonas zonas = controlador.getListaZonas();
-        listaArrayZonas.clear();
-        listaArrayZonas.addAll(zonas.getLista());
         setAdaptadorDispositivos();
         adapterDevices.notifyDataSetChanged();
 
@@ -335,11 +249,11 @@ public class Devices extends VistaGeneral{
 
 
     /**
-     * @param overLayout un layout que sirve para oscurecerla pantalla menos el desplegable
+     * @param overLayout          un layout que sirve para oscurecerla pantalla menos el desplegable
      * @param desplegableOpciones Layout al que se le aplica la animación
-     * Función que, mediante una animación, despliega el apartado donde aparecen varias opciones
+     *                            Función que, mediante una animación, despliega el apartado donde aparecen varias opciones
      */
-    private void mostrarDesplegableOpciones(ConstraintLayout overLayout,ConstraintLayout desplegableOpciones) {
+    private void mostrarDesplegableOpciones(ConstraintLayout overLayout, ConstraintLayout desplegableOpciones) {
         System.out.println("onAnimation mostrar " + onAnimation);
         if (!onAnimation) {
 
@@ -411,9 +325,9 @@ public class Devices extends VistaGeneral{
     }
 
     /**
-     * @param overLayout un layout que sirve para oscurecerla pantalla menos el desplegable
+     * @param overLayout          un layout que sirve para oscurecerla pantalla menos el desplegable
      * @param desplegableOpciones Layout al que se le aplica la animación
-     * Función que, mediante una animación, oculta el desplegable donde aparecen varias opciones
+     *                            Función que, mediante una animación, oculta el desplegable donde aparecen varias opciones
      */
     private void ocultarDesplegable(ConstraintLayout overLayout, ConstraintLayout desplegableOpciones) {
         System.out.println("onAnimation esconder " + onAnimation);
@@ -478,17 +392,17 @@ public class Devices extends VistaGeneral{
         TextView tvSi = layoutDialog.findViewById(R.id.tvSi);
         TextView tvNo = layoutDialog.findViewById(R.id.tvNo);
 
+        //si se clicka en si, se cierra la sesion y sales a la pantalla del login
         tvSi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogCerrarSesion.dismiss();
-                controlador.cerrarSesion();
                 Intent i = new Intent(Devices.this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
 
                 startActivity(i);
-                
+
 
             }
         });
@@ -536,7 +450,7 @@ public class Devices extends VistaGeneral{
 
 
     /**
-     * función para detectar si se ha hecho algún cambio en las opciones de la aplicación, en cuyo caso se recrea la actividad para aplicar dichos cambios
+     * función para detectar si se ha hecho algún cambio en las opciones de la aplicación al volver a esta pantalla, en cuyo caso se recrea la actividad para aplicar dichos cambios
      */
     private void registerLauncher() {
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {

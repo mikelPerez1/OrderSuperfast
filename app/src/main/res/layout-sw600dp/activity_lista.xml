@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="10dp"
-    tools:context="com.OrderSuperfast.Vista.Lista">
+    tools:context="com.OrderSuperfast.Vista.VistaPedidos">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/interfaz2"
@@ -29,7 +29,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/barraHorizontal"
             app:layout_constraintTop_toTopOf="@+id/cardViewListaContenido"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
 
             <ScrollView
@@ -55,6 +55,23 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_nuevo_pedido"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="20dp"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toBottomOf="@+id/layoutOpcionesGenerales">
+
+                            <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="nuevo pedido"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layoutEscanear"
@@ -1004,7 +1021,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout38"
-                        tools:visibility="gone">
+                        tools:visibility="visible">
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -1300,7 +1317,7 @@
                             android:id="@+id/recyclerProductosI2"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_marginTop="85dp"
+                            android:layout_marginTop="130dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -1348,6 +1365,32 @@
                                     app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="@+id/tvNombreCliente"
                                     app:layout_constraintTop_toBottomOf="@+id/tvNombreCliente" />
+
+                                <TextView
+                                    android:id="@+id/tvNombreRecogida"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:text=""
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/text_size_medium_takeAway"
+                                    android:textStyle="bold"
+                                    android:visibility="gone"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="@+id/tvNombre"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvRecogida" />
+
+                                <TextView
+                                    android:id="@+id/tvRecogida"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/recogida"
+
+                                    android:visibility="gone"
+                                    app:layout_constraintStart_toStartOf="@+id/tvNombre"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvNombre" />
 
                                 <view
                                     android:id="@+id/view26"

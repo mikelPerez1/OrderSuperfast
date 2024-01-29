@@ -23,7 +23,6 @@ import java.util.Date;
 
 public class ControladorLog extends ControladorGeneral{
 
-    private logActivity myContext;
 
     /**
      * Crea un Controlador de Log asociado con la actividad de registro (logActivity).
@@ -31,7 +30,7 @@ public class ControladorLog extends ControladorGeneral{
      * @param mContext El contexto de la actividad de registro (logActivity) al que se asocia este Controlador de Log.
      */
     public ControladorLog(logActivity mContext){
-        this.myContext = mContext;
+        super(mContext);
         removeOlderLines();
     }
 
@@ -108,7 +107,7 @@ public class ControladorLog extends ControladorGeneral{
      * @param context El contexto asociado a la operación de lectura del archivo.
      * @return Una cadena formateada con los datos del archivo para mostrar en una vista.
      */
-    private String readFromFile(Context context) {
+    public String readFromFile(Context context) {
 
         String ret = "";
 
@@ -130,22 +129,24 @@ public class ControladorLog extends ControladorGeneral{
                 StringBuilder stringBuilder = new StringBuilder();
                 String fechaAnterior = "";
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+                //si hay linea
                 while ((receiveString = bufferedReader.readLine()) != null) {
                     if (pedido.equals("") || receiveString.contains(" " + pedido + " ")) {
                         System.out.println("log2 " + receiveString);
                         String[] arrayString = receiveString.split(" ");
                         String fechaNow = arrayString[0];
 
-                        if (!fechaAnterior.equals("")) {
+                        if (!fechaAnterior.equals("")) { //si fecha anterior no esta vacia
                             try {
                                 Date now = format.parse(fechaNow);
                                 Date before = format.parse(fechaAnterior);
 
-                                if (now.after(before)) {
+                                if (now.after(before)) { //si la fecha actual es posterior
                                     String fechaPoner = format.format(now).replace("-", "/");
 
                                     stringBuilder.append("\n\n<br><br>   ").append("<br><b>" + fechaPoner + "</b>");
-                                    myContext.addTextview(fechaPoner,false);
+                                    ((logActivity) myContext).addTextview(fechaPoner,false);
 
 
                                 }
@@ -157,7 +158,7 @@ public class ControladorLog extends ControladorGeneral{
                                 arrayString[1] = "<b> •&nbsp;&nbsp;" + arrayString[1] + "</b>";
                                 String str = TextUtils.join(" ", arrayString);
                                 stringBuilder.append("\n\n<br><br> ").append(str);
-                                myContext.addTextview(str,true);
+                                ((logActivity) myContext).addTextview(str,true);
 
 
 
@@ -165,15 +166,16 @@ public class ControladorLog extends ControladorGeneral{
                                 e.printStackTrace();
                             }
                         } else {
+                            //pone la primera fecha
                             fechaAnterior = fechaNow;
                             String fechaPoner = fechaAnterior.replace("-", "/");
                             stringBuilder.append("\n\n<br><br>  ").append("<b>" + fechaPoner + "</b>");
-                            myContext.addTextview(fechaPoner,false);
+                            ((logActivity) myContext).addTextview(fechaPoner,false);
                             arrayString[0] = "";
                             arrayString[1] = "<b> •&nbsp;&nbsp;" + arrayString[1] + "</b>";
                             String str = TextUtils.join(" ", arrayString);
                             stringBuilder.append("\n\n<br><br> ").append(str);
-                            myContext.addTextview(str,true);
+                            ((logActivity) myContext).addTextview(str,true);
 
 
                         }

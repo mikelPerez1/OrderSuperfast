@@ -2,6 +2,9 @@ package com.OrderSuperfast.Modelo.Clases;
 
 import java.io.Serializable;
 
+/**
+ * Apartado del importe de un Pedido
+ */
 public class Importe implements Serializable {
     private String metodo_pago;
     private String total;

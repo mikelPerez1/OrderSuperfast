@@ -1,58 +1,49 @@
 package com.OrderSuperfast.Modelo.Clases;
 
-/**
- * Esta clase representa una categoría con nombre, número y estado de selección.
- */
-public class Categoria {
-    private String nombre;
-    private boolean seleccionada = false;
-    private int numCat;
 
-    /**
-     * Constructor para la clase Categoria.
-     *
-     * @param pNombre El nombre de la categoría.
-     * @param numCat El número de la categoría.
-     */
-    public Categoria(String pNombre, int numCat) {
-        this.nombre = pNombre;
-        this.numCat = numCat;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Map;
+
+public class Categoria implements Serializable {
+    private Map<String,String> nombres;
+    private String id;
+    private int numCategoria;
+    private ArrayList<Subcategoria> lista;
+
+    public Categoria(Map<String,String> pNombre, String pId, int pNumCategoria) {
+        this.nombres = pNombre;
+        this.id = pId;
+        this.numCategoria = pNumCategoria;
+        this.lista = new ArrayList<>();
     }
 
-    /**
-     * Devuelve el nombre de la categoría.
-     *
-     * @return El nombre de la categoría.
-     */
-    public String getNombre() {
-        return this.nombre;
+    public String getNombre(String idioma) {
+
+        if (nombres.containsKey(idioma)) {
+            return nombres.get(idioma);
+        } else {
+            // Devolver el nombre por defecto o manejar el caso sin nombre
+            return nombres.get("es");
+        }
     }
 
-    /**
-     * Devuelve el número de la categoría.
-     *
-     * @return El número de la categoría.
-     */
-    public int getNumCat() {
-        return this.numCat;
+    public String getId() {
+        return this.id;
     }
 
-    /**
-     * Indica si la categoría está seleccionada o no.
-     *
-     * @return true si la categoría está seleccionada, false en caso contrario.
-     */
-    public boolean getSeleccionado() {
-        return this.seleccionada;
+    public void addSubcategoria(Subcategoria subCategoria) {
+        this.lista.add(subCategoria);
     }
 
-    /**
-     * Establece el estado de selección de la categoría.
-     *
-     * @param pBool true para seleccionar la categoría, false para deseleccionarla.
-     */
-    public void setSeleccionado(boolean pBool) {
-        this.seleccionada = pBool;
+    public int getNumberOfSubcategories() {
+        return this.lista.size();
     }
+
+    public int getNumCategoria(){return this.numCategoria;}
+
+    public Subcategoria getSubCategoria(int position) {
+        return this.lista.get(position);
+    }
+
 }
-

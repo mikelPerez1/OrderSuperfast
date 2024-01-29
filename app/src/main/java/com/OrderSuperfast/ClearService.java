@@ -32,8 +32,6 @@ public class ClearService extends Service {
     public void onTaskRemoved(Intent rootIntent) {
         //Code here
         System.out.println("APP KILLED");
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
         SharedPreferences sharedPreferences = getSharedPreferences("logPedido", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 

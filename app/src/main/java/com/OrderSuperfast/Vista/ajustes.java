@@ -2,22 +2,17 @@ package com.OrderSuperfast.Vista;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,23 +20,19 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.os.LocaleListCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.LocaleHelper;
-import com.OrderSuperfast.Modelo.Adaptadores.AdapterCategoria;
-import com.OrderSuperfast.Modelo.Clases.Categoria;
+import com.OrderSuperfast.Vista.Adaptadores.AdapterCategoria;
+import com.OrderSuperfast.Modelo.Clases.Seccion;
 import com.OrderSuperfast.R;
 
 import java.util.ArrayList;
@@ -54,11 +45,7 @@ public class ajustes extends VistaGeneral {
     private final ajustes activity = this;
     private SharedPreferences sharedPreferencesIdiomas;
     private final ajustes context = this;
-    private ImageView bandera, imgSonido, imgNavBack;
-    private TextView textIngles, textEsp, textFr, textAleman, textPort;
-    private LocaleListCompat llc;
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
+    private ImageView imgNavBack;
     private boolean sonido;
     private String idiomaActual = "";
     private Display display;
@@ -122,12 +109,11 @@ public class ajustes extends VistaGeneral {
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         initElementos();
         System.out.println("ROTACION " + display.getRotation());
-        ConstraintLayout layoutNavi = findViewById(R.id.constraintNavigationPedidos);
-        LinearLayout constraintNav = findViewById(R.id.linearLayoutNaviPedidos);
         SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
         inset = prefInset.getInt("inset", 0);
         barra = findViewById(R.id.barraHorizontal);
 
+        //modificar la interfaz si el dispositivo tiene inset
         if (inset > 0) {
             ViewGroup.MarginLayoutParams param = (ViewGroup.MarginLayoutParams) barra.getLayoutParams();
 
@@ -154,7 +140,7 @@ public class ajustes extends VistaGeneral {
         layoutSeleccionarProductosParaFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ajustes.this, GuardarFiltrarProductos.class);
+                Intent intent = new Intent(ajustes.this, Configuracion.class);
                 startActivity(intent);
 
             }
@@ -188,11 +174,7 @@ public class ajustes extends VistaGeneral {
         botonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //idiomaActual = ((Global) context.getApplication()).getIdioma();
-
-
-                System.out.println("sonido ajuste " + sonidoString);
-
+                //guarda en las preferencias compartidas el idioma seleccionado
                 if (idiomaActual != null && !idiomaActual.equals("")) {
                     SharedPreferences sharedPreferences1 = getSharedPreferences("idioma", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor1 = sharedPreferences1.edit();
@@ -200,10 +182,10 @@ public class ajustes extends VistaGeneral {
                     editor1.commit();
 
 
-                    LocaleHelper.setLocale(context, idiomaActual);
 
                 }
 
+                //guarda en las preferencias compartidas el sonido de la alerta de los nuevos pedidos
                 SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
                 SharedPreferences.Editor sonidoEditor = sharedSonido.edit();
                 sonidoEditor.putBoolean("sonido", sonido);
@@ -215,11 +197,7 @@ public class ajustes extends VistaGeneral {
                     sonidoEditor.commit();
                 }
 
-
-                //    sonidoEditor.commit();
-                //   Intent i=new Intent(ajustes.this,MainActivity.class);
-                //  startActivity(i);
-
+                //vuelve a la actividad anterior con el código 300 para indicar que se han hecho cambios
                 Intent data = new Intent();
                 setResult(300, data);
                 finish();
@@ -229,7 +207,6 @@ public class ajustes extends VistaGeneral {
         });
 
 
-        imgSonido = findViewById(R.id.imageSonidoAjustes);
         SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
         sonido = sharedSonido.getBoolean("sonido", true);
 
@@ -331,7 +308,6 @@ public class ajustes extends VistaGeneral {
     private RadioGroup radioGroup;
     private RadioButton selectedRadioButton;
     private RadioButton selectedLanguage;
-    private Switch switchSonido;
 
     /**
      * La función inicializa varios elementos y establece escuchas para una interfaz de configuración
@@ -376,9 +352,6 @@ public class ajustes extends VistaGeneral {
         radioAle = findViewById(R.id.radioAle);
 
         imgPlaySonido = findViewById(R.id.imgPlaySonido);
-
-        switchSonido = findViewById(R.id.switchSonido);
-
         setSonidoChecked();
         setIdiomaChecked();
         setListeners2();
@@ -765,8 +738,6 @@ public class ajustes extends VistaGeneral {
             idioma = "";
         }
 
-        // Imprime el idioma actual para depurar (opcional)
-        System.out.println("idioma es " + idioma);
 
         // Configura el botón de radio correspondiente al idioma encontrado en las preferencias
         switch (idioma) {
@@ -801,7 +772,7 @@ public class ajustes extends VistaGeneral {
 
 
     ///////////////////////////////
-    private List<Categoria> listCategorias = new ArrayList<>();
+    private List<Seccion> listSeccions = new ArrayList<>();
     private ImageView imgBack;
     private CardView cardCatSonido, cardCatIdioma;
     private ConstraintLayout layoutSelected, layoutSelected2;
@@ -882,12 +853,12 @@ public class ajustes extends VistaGeneral {
      */
     private void initListCategorias() {
         // Crea y agrega una categoría para los ajustes de sonido a la lista de categorías
-        Categoria cat1 = new Categoria(resources.getString(R.string.ajusteSonido), 0);
-        listCategorias.add(cat1);
+        Seccion cat1 = new Seccion(resources.getString(R.string.ajusteSonido), 0);
+        listSeccions.add(cat1);
 
         // Crea y agrega una categoría para los ajustes de idioma a la lista de categorías
-        Categoria cat2 = new Categoria(resources.getString(R.string.ajusteIdioma), 1);
-        listCategorias.add(cat2);
+        Seccion cat2 = new Seccion(resources.getString(R.string.ajusteIdioma), 1);
+        listSeccions.add(cat2);
     }
 
 
@@ -906,9 +877,9 @@ public class ajustes extends VistaGeneral {
         recyclerCategorias.setLayoutManager(new LinearLayoutManager(this));
 
         // Crea un adaptador personalizado para las categorías y asigna un listener para los clics en los elementos
-        adapterCat = new AdapterCategoria(listCategorias, this, new AdapterCategoria.OnItemClickListener() {
+        adapterCat = new AdapterCategoria(listSeccions, this, new AdapterCategoria.OnItemClickListener() {
             @Override
-            public void onItemClick(Categoria item, int position) {
+            public void onItemClick(Seccion item, int position) {
                 String cat = item.getNombre();
                 scroll.scrollTo(0, 0);
 
