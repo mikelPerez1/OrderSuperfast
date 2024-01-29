@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+/**
+ * Base de datos local que se utiliza para guardar los productos que se han tachado de los pedidos y que pedidos no se han visto todavia
+ */
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "OrderSuperfast.db";
     private static final int DATABASE_VERSION = 8;

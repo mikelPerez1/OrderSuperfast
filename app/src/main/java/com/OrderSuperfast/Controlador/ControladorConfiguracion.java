@@ -28,13 +28,10 @@ import java.util.Iterator;
 import java.util.Map;
 import static com.OrderSuperfast.Vista.VistaGeneral.getIdioma;
 public class ControladorConfiguracion extends ControladorGeneral{
-    private Context myContext;
     private HashMap<String, Boolean> mapaProductos = new HashMap<>();
     private ArrayList<ProductoAbstracto> listaProductos,listaProductosEsconder,listaOpcionesEsconder,listaCompleta;
     private ArrayList<JSONObject> productosACambiar,elementosACambiar;
-    private int FLAG_MOSTRAR_PRODUCTOS = 1, FLAG_ESCONDER_PRODUCTOS = 2, FLAG_ESCONDER_OPCIONES = 3, FLAG_MODO_ACTUAL, FLAG_MODO_PEDIDOS;
-    private static final String urlActualizarVisibles = "https://app.ordersuperfast.es/android/v1/carta/productosYOpciones/actualizarVisibles/";
-
+    private final int  FLAG_ESCONDER_PRODUCTOS = 2, FLAG_ESCONDER_OPCIONES = 3;
 
     /**
      * Crea un Controlador de Configuración asociado con un contexto específico e inicializa listas internas.
@@ -42,7 +39,7 @@ public class ControladorConfiguracion extends ControladorGeneral{
      * @param mContext El contexto asociado a este Controlador de Configuración.
      */
     public ControladorConfiguracion(Context mContext) {
-        this.myContext = mContext;
+        super(mContext);
         listaProductos = new ArrayList<>();
         listaProductosEsconder = new ArrayList<>();
         listaOpcionesEsconder = new ArrayList<>();
@@ -71,11 +68,10 @@ public class ControladorConfiguracion extends ControladorGeneral{
     /**
      * Inicializa un HashMap con datos recuperados de las preferencias compartidas del restaurante.
      *
-     * @param idRestaurante El identificador único del restaurante para recuperar la información.
      * @throws JSONException Si ocurre un error al parsear los datos como JSON.
      */
-    public void inicializarHash(String idRestaurante) throws JSONException {
-        SharedPreferences preferenciasProductos = myContext.getSharedPreferences("pedidos_"+idRestaurante,Context.MODE_PRIVATE);
+    public void inicializarHash() throws JSONException {
+        SharedPreferences preferenciasProductos = myContext.getSharedPreferences("pedidos_"+getIdRestaurante(),Context.MODE_PRIVATE);
         String arrayString = preferenciasProductos.getString("listaMostrar", "");
         System.out.println("lsita guardada " + arrayString);
         if (!arrayString.equals("")) {
@@ -99,16 +95,11 @@ public class ControladorConfiguracion extends ControladorGeneral{
      * @param callback El objeto DevolucionCallback para manejar la devolución exitosa o errores.
      */
     public void getProductos(DevolucionCallback callback) {
-
-        SharedPreferences sharedIds = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
-        String idRestaurante = sharedIds.getString("saveIdRest", "null");
-        String idZona = sharedIds.getString("idZona", "null");
-        String idDisp = sharedIds.getString("idDisp", "null");
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("id_restaurante", idRestaurante);
-            jsonBody.put("id_zona", idZona);
-            jsonBody.put("id_dispositivo", idDisp);
+            jsonBody.put("id_restaurante", getIdRestaurante());
+            jsonBody.put("id_zona", getIdZona());
+            jsonBody.put("id_dispositivo", getIdDisp());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -348,16 +339,14 @@ public class ControladorConfiguracion extends ControladorGeneral{
     /**
      * Realiza una petición para obtener el estado de recepción de pedidos Take Away para un restaurante y una zona específicos.
      *
-     * @param idRestaurante El identificador del restaurante del cual se quiere obtener el estado de recepción de pedidos.
-     * @param idZona El identificador de la zona para la cual se quiere obtener el estado de recepción de pedidos.
      * @param callback El callback que manejará la respuesta de la petición.
      */
-    public void peticionObtenerEstadoRecepcionPedidos(String idRestaurante, String idZona, CallbackBoolean callback) {
+    public void peticionObtenerEstadoRecepcionPedidos( CallbackBoolean callback) {
         JSONObject jsonBody = new JSONObject();
         try {
 
-            jsonBody.put("id_restaurante", idRestaurante);
-            jsonBody.put("id_zona", idZona);
+            jsonBody.put("id_restaurante", getIdRestaurante());
+            jsonBody.put("id_zona", getIdZona());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -399,17 +388,15 @@ public class ControladorConfiguracion extends ControladorGeneral{
      *
      * @param FLAG_PESTAÑA Indica la pestaña en la que se quiere cambiar el estado de recepción de pedidos.
      * @param recibiendoPedidos Indica si se están recibiendo pedidos (true) o no (false).
-     * @param idRestaurante El identificador del restaurante al que se refiere la petición.
-     * @param idZona El identificador de la zona asociada a la petición.
      */
-    public void peticionCambiarEstadoRecepcionPedidos(int FLAG_PESTAÑA,boolean recibiendoPedidos,String idRestaurante,String idZona) {
+    public void peticionCambiarEstadoRecepcionPedidos(int FLAG_PESTAÑA,boolean recibiendoPedidos) {
         JSONObject jsonBody = new JSONObject();
         if ((FLAG_PESTAÑA == 1 && recibiendoPedidos) || (FLAG_PESTAÑA == 2 && !recibiendoPedidos)) {
             return;
         }
         try {
-            jsonBody.put("id_restaurante", idRestaurante);
-            jsonBody.put("id_zona", idZona);
+            jsonBody.put("id_restaurante", getIdRestaurante());
+            jsonBody.put("id_zona", getIdZona());
             if (FLAG_PESTAÑA == 1) {
                 jsonBody.put("recibir_pedidos", true);
             } else {
@@ -453,17 +440,13 @@ public class ControladorConfiguracion extends ControladorGeneral{
     /**
      * Realiza una petición para cambiar la visibilidad de productos y elementos asociados a un restaurante, una zona y un dispositivo específicos.
      *
-     * @param idRestaurante El identificador del restaurante al que se refiere la petición.
-     * @param idZona El identificador de la zona asociada a la petición.
-     * @param idDisp El identificador del dispositivo relacionado con la petición.
      * @param callbackBoolean La interfaz de devolución de llamada para manejar la respuesta de la petición.
      */
-    public void peticionCambiarVisibleProducto(String idRestaurante,String idZona,String idDisp,CallbackBoolean callbackBoolean) {
+    public void peticionCambiarVisibleProducto(CallbackBoolean callbackBoolean) {
         System.out.println("params " + elementosACambiar.size());
 
         if (productosACambiar.size() > 0 || elementosACambiar.size() > 0) {
             JSONObject jsonBody = new JSONObject();
-            System.out.println("params " + idRestaurante);
             try {
                 JSONArray arrayProd = new JSONArray();
                 for (int i = 0; i < productosACambiar.size(); i++) {
@@ -473,9 +456,9 @@ public class ControladorConfiguracion extends ControladorGeneral{
                 for (int i = 0; i < elementosACambiar.size(); i++) {
                     arrayEl.put(elementosACambiar.get(i));
                 }
-                jsonBody.put("id_restaurante", idRestaurante);
-                jsonBody.put("id_zona", idZona);
-                jsonBody.put("id_dispositivo", idDisp);
+                jsonBody.put("id_restaurante", getIdRestaurante());
+                jsonBody.put("id_zona", getIdZona());
+                jsonBody.put("id_dispositivo", getIdDisp());
                 jsonBody.put("productos", arrayProd);
                 jsonBody.put("elementos", arrayEl);
 
@@ -534,11 +517,10 @@ public class ControladorConfiguracion extends ControladorGeneral{
     /**
      * Modifica la lista de productos para mostrar u ocultar según la bandera indicada, y actualiza las preferencias.
      *
-     * @param idRestaurante El identificador del restaurante al que se refiere la lista de productos.
      * @param FLAG_MOSTRAR_PRODUCTOS_OCULTADOS La bandera booleana que indica si se deben mostrar o no los productos ocultados.
      */
-    public void modificarListaProductosMostrar(String idRestaurante,boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS) {
-        SharedPreferences preferenciasProductos = myContext.getSharedPreferences("pedidos_" + idRestaurante, Context.MODE_PRIVATE);
+    public void modificarListaProductosMostrar(boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS) {
+        SharedPreferences preferenciasProductos = myContext.getSharedPreferences("pedidos_" + getIdRestaurante(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferenciasProductos.edit();
 
         JSONArray array = new JSONArray();
@@ -563,81 +545,4 @@ public class ControladorConfiguracion extends ControladorGeneral{
         // finish();
     }
 
-    /*
-
-    public void peticionCambiarVisibleProducto(String idRestaurante,String idZona,String idDisp) {
-        System.out.println("params " + elementosACambiar.size());
-
-        if (productosACambiar.size() > 0 || elementosACambiar.size() > 0) {
-            JSONObject jsonBody = new JSONObject();
-            System.out.println("params " + idRestaurante);
-            try {
-                JSONArray arrayProd = new JSONArray();
-                for (int i = 0; i < productosACambiar.size(); i++) {
-                    arrayProd.put(productosACambiar.get(i));
-                }
-                JSONArray arrayEl = new JSONArray();
-                for (int i = 0; i < elementosACambiar.size(); i++) {
-                    arrayEl.put(elementosACambiar.get(i));
-                }
-                jsonBody.put("id_restaurante", idRestaurante);
-                jsonBody.put("id_zona", idZona);
-                jsonBody.put("id_dispositivo", idDisp);
-                jsonBody.put("productos", arrayProd);
-                jsonBody.put("elementos", arrayEl);
-
-
-            } catch (JSONException e) {
-                System.out.println("ERROR putting parameters");
-                e.printStackTrace();
-            }
-            System.out.println("param " + jsonBody);
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlActualizarVisibles, jsonBody, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Iterator<String> iterator = response.keys();
-                    while (iterator.hasNext()) {
-                        String clave = iterator.next();
-                        try {
-                            System.out.println(clave + " " + response.getString(clave));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            if (response.getString(clave).equals("OK")) {
-                                System.out.println("Peticion exitosa");
-                            } else if (response.getString(clave).equals("ERROR")) {
-                                Toast.makeText(myContext, "An error has ocurred", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            getProductos(new DevolucionCallback() {
-                                @Override
-                                public void onDevolucionExitosa(JSONObject resp) {
-
-                                }
-
-                                @Override
-                                public void onDevolucionFallida(String mensajeError) {
-
-                                }
-                            });
-                        }
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-            Volley.newRequestQueue(myContext).add(jsonObjectRequest);
-        }
-    }
-
-
-
-     */
 }

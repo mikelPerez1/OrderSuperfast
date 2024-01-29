@@ -3,7 +3,12 @@ package com.OrderSuperfast.Modelo.Clases;
 import com.OrderSuperfast.Controlador.Interfaces.ListObserverCallback;
 import com.OrderSuperfast.Controlador.Interfaces.ProductoListener;
 
-public class PedidoNuevo {
+import java.io.Serializable;
+
+/**
+ * Clase de la pantalla pedido nuevo que contiene la lista de productos y un listener para saber cuando se ha modificado/añadido/qutiado elementos de la lista
+ */
+public class PedidoNuevo implements Serializable {
     private ListaProductos listaProductos;
     private String instruccionesPedido;
 
@@ -20,15 +25,11 @@ public class PedidoNuevo {
         listaProductos.addProducto(item);
     }
 
-    public void removeProducto(int pos){
-        listaProductos.removeProducto(pos);
-    }
-
     public ListaProductos getListaProductos(){
         return this.listaProductos;
     }
 
-    public void removeProducto(Producto p){
+    public void removeProducto(ProductoPedido p){
         listaProductos.removeProducto(p);
     }
 

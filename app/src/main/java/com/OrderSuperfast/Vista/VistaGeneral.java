@@ -32,16 +32,10 @@ public class VistaGeneral extends AppCompatActivity{
 
     private static boolean esMovil = true;
     protected static Zonas zonas = new Zonas();
-    protected static String idRestaurante;
-    protected static String nombreRestaurante;
-    protected static String idZona;
-    protected static String nombreZona;
-    protected static String idDisp;
-    protected static String nombreDisp;
-    protected static String idioma;
-    protected listener listener;
-    protected ImageView imgBack,imgDesplegable;
-    protected ConstraintLayout overLayoutBarra;
+    protected static String idioma; //String que indica el idioma actual de la aplicación. Sirve para seleccionar en que idioma sale el texto de los productos, opciones ... que recibe del servidor
+    protected listener listener; // listener de volver atrás. Este listener se puede sobreescribir dependiendo de la actividad
+    protected ImageView imgBack,imgDesplegable; //ImageView de la vista inflada para volver atrás y del icono para mostrar el desplegable con opciones
+    protected ConstraintLayout overLayoutBarra; //layout que oscurece la imagen de volver atrás cuando se muestra el desplegable con opciones
 
     protected interface listener {
         void listenerBack();
@@ -56,6 +50,10 @@ public class VistaGeneral extends AppCompatActivity{
 
     }
 
+    /**
+     * La función establece varios indicadores para controlar la visibilidad de los elementos de la
+     * interfaz de usuario del sistema en una aplicación de Android.
+     */
     protected void setFlags() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -65,8 +63,14 @@ public class VistaGeneral extends AppCompatActivity{
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                         | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+
     }
 
+    /**
+     * La función devuelve el valor de la variable "idioma".
+     *
+     * @return El método devuelve el valor de la variable "idioma".
+     */
     public static String getIdioma() {
         return idioma;
     }
@@ -102,10 +106,22 @@ public class VistaGeneral extends AppCompatActivity{
 
     }
 
+    /**
+     * La función establece el valor de la variable booleana "esMovil".
+     *
+     * @param pBool El parámetro "pBool" es un valor booleano que se utiliza para establecer el valor
+     * de la variable "esMovil".
+     */
     protected void setEsMovil(boolean pBool){
         this.esMovil = pBool;
     }
 
+    /**
+     * La función devuelve el valor de la variable booleana "esMovil".
+     *
+     * @return El método está devolviendo un valor booleano, concretamente el valor de la variable
+     * "esMovil".
+     */
     protected boolean getEsMovil(){
         return this.esMovil;
     }
@@ -140,6 +156,12 @@ public class VistaGeneral extends AppCompatActivity{
         }
     }
 
+    /**
+     * La función "getScreenHeight" en Java recupera la altura de la pantalla en píxeles mediante el
+     * servicio WindowManager.
+     *
+     * @return El método devuelve la altura de la pantalla en píxeles.
+     */
     protected int getScreenHeight(){
         // Obtener el servicio WindowManager
         WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -164,8 +186,15 @@ public class VistaGeneral extends AppCompatActivity{
     }
 
 
+    /**
+     * La función establece el idioma de la aplicación en función del valor almacenado en la
+     * preferencia compartida "idioma".
+     *
+     * @param newBase El contexto base de la aplicación. Es el contexto del que se derivará el nuevo
+     * contexto.
+     */
     @Override
-    protected void attachBaseContext(Context newBase) { //pone el idioma que se usa
+    protected void attachBaseContext(Context newBase) {
         SharedPreferences sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
         String idiomaNuevo = sharedPreferencesIdiomas.getString("id", "");
         idioma = idiomaNuevo;
@@ -175,6 +204,10 @@ public class VistaGeneral extends AppCompatActivity{
     }
 
 
+    /**
+     * La función "inflateTopBar" infla un archivo de diseño en un ConstraintLayout, lo agrega al
+     * diseño y configura oyentes para varias vistas dentro del diseño inflado. El archivo inflado contiene el ImageView para volver atrás y el ImageView para mostrar el desplegable con opciones
+     */
     protected void inflateTopBar() {
         ConstraintLayout layoutBarra = findViewById(R.id.barraIzq);
         if(layoutBarra != null) {
@@ -189,6 +222,10 @@ public class VistaGeneral extends AppCompatActivity{
         }
     }
 
+    /**
+     * La función establece un detector de clics en una vista de imagen y llama a un método desde una
+     * interfaz de detector cuando se hace clic en la vista de imagen.
+     */
     protected void setBackListener() {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +235,9 @@ public class VistaGeneral extends AppCompatActivity{
         });
     }
 
+    /**
+     * La función establece un listener que, cuando se activa, llama al método Finish().
+     */
     private void setListenerBack() {
         listener = new listener() {
             @Override

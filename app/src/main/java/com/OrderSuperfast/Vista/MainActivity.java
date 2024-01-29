@@ -9,14 +9,9 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -34,24 +29,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.OrderSuperfast.AndroidBug5497Workaround;
 import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorLogin;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackLogin;
-import com.OrderSuperfast.Controlador.Interfaces.CallbackZonas;
-import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
-import com.OrderSuperfast.LocaleHelper;
 import com.OrderSuperfast.Modelo.Clases.CustomEditText;
-import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
-import com.OrderSuperfast.Modelo.Clases.Zona;
+import com.OrderSuperfast.Modelo.Clases.SessionSingleton;
 import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
-import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -62,50 +46,30 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.conn.util.InetAddressUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
-
-import okhttp3.OkHttpClient;
 
 
 public class MainActivity extends VistaGeneral {
 
     private MainActivity activity = this;
-    private SharedPreferences sharedPreferencesIdiomas;
     private int inset = 0;
     private boolean onAnimation = false;
-    private AppUpdateManager appUpdateManager;
-    private ConstraintLayout constraintMainCuenta;
+    private AppUpdateManager appUpdateManager; //
+    private ConstraintLayout constraintMainCuenta; //
     private ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void onResume() {
         super.onResume();
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        );
+        setFlags();
     }
 
 
     @Override
     /**
-     * Función que una vez cargada la pantalla, mira a ver si algún elemento del dispositivo (cámara por ejemplo) puede obstruir la vista de la pantalla al usuario,
+     * Función que una vez cargada la pantalla, mira a ver si algún elemento del dispositivo (cámara por ejemplo) puede obstruir la vista de la pantalla completa al usuario,
      * en cuyo caso se inserta un pequeño margen para que no afecte
      */
     public void onAttachedToWindow() {
@@ -133,32 +97,16 @@ public class MainActivity extends VistaGeneral {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-
-    }
 
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        System.out.println("key " + event);
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
             // Handle the Back key press event here
             desplazarPagina();
             setVerticalBias(0.5f);
-            System.out.println("Pagina desplazar inicio");
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            setFlags(); //volver a poner los flags para que la aplicación este en full screen
 
-            );
 
         }
         return super.dispatchKeyEvent(event);
@@ -179,7 +127,6 @@ public class MainActivity extends VistaGeneral {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         this.getWindow().setStatusBarColor(getColor(R.color.white));
 
-        String idiomaId = sharedPreferencesIdiomas.getString("id", "");
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -192,31 +139,22 @@ public class MainActivity extends VistaGeneral {
         );
 
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        } else {
-            //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-        }
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AndroidBug5497Workaround.assistActivity(this);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //Flag que hace que la pantalla no se bloquee mientras la aplicación está en primer plano
+        getWindow().setWindowAnimations(0); //desactiva las animaciones al cambiar de actividad
 
 
         checkForUpdates();
 
         tipoDispositivo();
-        ControladorLogin controlador = new ControladorLogin(this);
+        ControladorLogin controlador = new ControladorLogin(this); // inicializa el controlador de la actividad MainActivity (el login)
 
         ConstraintLayout desplegableOpciones = findViewById(R.id.desplegableOpciones);
+        // se le pone un listener vacío al desplegable de opciones para que no se pueda interactuar con el overLayout (layout que oscurece los demás elementos) que está justo detrás
         desplegableOpciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,29 +165,12 @@ public class MainActivity extends VistaGeneral {
         ConstraintLayout overLayout = findViewById(R.id.overLayout);
         CheckBox checkbox = findViewById(R.id.checkBox);
 
+        //listener que te lleva a la actividad de los ajustes generales
         ConstraintLayout layoutOpcionesGenerales = findViewById(R.id.layoutOpcionesGenerales);
-
-
-
         layoutOpcionesGenerales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, ajustes.class);
-                launcher.launch(i);
-                ocultarDesplegable(overLayout, desplegableOpciones);
-            }
-        });
-
-        if (!idiomaId.equals("")) {
-            LocaleHelper.setLocale(this, idiomaId);
-        }
-
-
-        ConstraintLayout layoutEscanear = findViewById(R.id.layoutEscanear);
-        layoutEscanear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, EscanearQR.class);
                 launcher.launch(i);
                 ocultarDesplegable(overLayout, desplegableOpciones);
             }
@@ -264,53 +185,27 @@ public class MainActivity extends VistaGeneral {
 
             }
         });
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().setWindowAnimations(0);
-        //////// cambio de los insets para que se vea fullscreen entero sin que ocupe información/////////
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        // obtenerPaisDesdeIP();
-        System.out.println("ROTACION " + display.getRotation());
-        ConstraintLayout l = findViewById(R.id.mainContainer);
-        ConstraintLayout layoutNavi = findViewById(R.id.constraintNavigationPedidos);
-        LinearLayout constraintNav = findViewById(R.id.linearLayoutNaviPedidos);
-        ConstraintLayout cardViewListaContenido = findViewById(R.id.cardViewListaContenido);
 
+        //cambio de los insets para que se vea fullscreen entero sin que ocupe información
+        ConstraintLayout layoutNavi = findViewById(R.id.constraintNavigationPedidos);
         ponerInsets(layoutNavi);
         //////////////////////
 
 
         /////////////////////////////////////////
         Button loginIniciarBtn = findViewById(R.id.loginIniciarBtn);
-        ImageView bandera = findViewById(R.id.imageBanderas);
-        Button selectIdioma = findViewById(R.id.botonSeleccionarIdiomas);
-
-
-        bandera.setVisibility(View.INVISIBLE);
-        selectIdioma.setVisibility(View.INVISIBLE);
-
-
-        ImageView imageAjustes = findViewById(R.id.imageAjustes);
-        imageAjustes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ajustes.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
 
         constraintMainCuenta = findViewById(R.id.constraintMainCuenta);
 
 
-        /////////custom editTexts para que aparezca la barra de navegación al aparecer el teclado y se vaya al quitar el teclado////////
+        //custom editTexts para que aparezca la barra de navegación al aparecer el teclado y se vaya al quitar el teclado
         CustomEditText loginUsername = findViewById(R.id.loginUsername);
         loginUsername.setMainActivity(this);
         CustomEditText loginPassword = findViewById(R.id.loginPassword);
         loginPassword.setMainActivity(this);
 
-        ImageView imgAjustes = findViewById(R.id.NavigationBarAjustes);
-        imgAjustes.setOnClickListener(new View.OnClickListener() {
+        ImageView imgDesplegable = findViewById(R.id.NavigationBarAjustes);
+        imgDesplegable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mostrarDesplegableOpciones(overLayout, desplegableOpciones);
@@ -324,15 +219,15 @@ public class MainActivity extends VistaGeneral {
             }
         });
 
-        Pair<String, String> cuenta = controlador.getCuentaGuardada(); // obtiene las credenciales guardadas en el dispositivo (si se a seleccionado recordar cuenta)
-
+        // obtiene las credenciales guardadas en el dispositivo (si se a seleccionado recordar cuenta) y las pone
+        Pair<String, String> cuenta = controlador.getCuentaGuardada();
         String user = cuenta.first;
         String password = cuenta.second;
         loginUsername.setText(user);
         loginPassword.setText(password);
 
 
-        if (!user.equals("") && !password.equals("")) {
+        if (!user.equals("") && !password.equals("")) { // si había cuenta guardada pone el checkbox de recordar cuenta a true
             checkbox.setChecked(true);
         }
 
@@ -348,7 +243,7 @@ public class MainActivity extends VistaGeneral {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
                     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     } else {
-                        desplazarPagina();
+                      //  desplazarPagina();
                     }
                     setVerticalBias(0.15f);//desplaza hacia arriba el contenedor
 
@@ -397,38 +292,51 @@ public class MainActivity extends VistaGeneral {
     }
 
 
+    /**
+     * La función establece el bias vertical de la cuenta principal de ConstraintLayout.
+     *
+     * @param bias El parámetro "sesgo" es un valor flotante que representa el sesgo vertical de una
+     * vista dentro de un ConstraintLayout. Determina la posición de la vista a lo largo del eje
+     * vertical en relación con sus restricciones. Un valor de sesgo de 0,0 significa que la vista se
+     * colocará en la parte superior, un valor de
+     */
     private void setVerticalBias(float bias) {
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) constraintMainCuenta.getLayoutParams();
         params.verticalBias = bias;
         constraintMainCuenta.setLayoutParams(params);
     }
 
+    /**
+     * La función establece los indicadores de visibilidad de la interfaz de usuario del sistema para
+     * la ventana actual.
+     *
+     * @param flags El parámetro "flags" es un valor entero que representa los indicadores de
+     * visibilidad de la interfaz de usuario del sistema. Estas banderas se utilizan para controlar la
+     * visibilidad de los elementos de la interfaz de usuario del sistema, como la barra de estado y la
+     * barra de navegación, en la pantalla.
+     */
     private void setSystemUiVisibilityFlags(int flags) {
         getWindow().getDecorView().setSystemUiVisibility(flags);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
-        String idioma = sharedPreferencesIdiomas.getString("id", "");
 
-        Locale localeToSwitchTo = new Locale(idioma);
-        ContextWrapper localeUpdatedContext = ContextUtils.updateLocale(newBase, localeToSwitchTo);
-        super.attachBaseContext(localeUpdatedContext);
-    }
-
-
+    /**
+     * Esta función maneja el resultado de una actividad y muestra un mensaje Toast basado en el
+     * resultado.
+     *
+     * @param requestCode El parámetro requestCode se utiliza para identificar qué actividad devuelve
+     * un resultado. Normalmente se configura al iniciar una actividad utilizando el método
+     * startActivityForResult().
+     * @param resultCode El parámetro resultCode es un número entero que representa el resultado de la
+     * actividad que se inició para obtener un resultado. Puede tener diferentes valores, como
+     * RESULT_OK, RESULT_CANCELED o cualquier código de resultado personalizado que defina.
+     * @param data El parámetro "datos" es un objeto "Intento" que contiene cualquier dato adicional
+     * devuelto por la actividad que se inició para obtener el resultado. Estos datos se pueden
+     * utilizar para pasar información a la actividad de llamada.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*
-        if(requestCode==CODE && resultCode==RESULT_OK){
-            String username=data.getExtras().getString("username");
-            loginUsername.setText(username);
-        }
-         */
-
-        System.out.println("vuelta ajustes");
         if (requestCode == 100) {
             if (resultCode != RESULT_OK) {
                 Toast.makeText(activity, "Update required", Toast.LENGTH_SHORT).show();
@@ -444,10 +352,10 @@ public class MainActivity extends VistaGeneral {
 
     }
 
-    private void registerLauncher(ActivityResultLauncher<Intent> launcher) {
 
-    }
-
+    /**
+     * La función onStop() en Java cancela el registro de un oyente del appUpdateManager.
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -455,10 +363,9 @@ public class MainActivity extends VistaGeneral {
     }
 
 
-    //contro+o para overide elementos de clase padre
-
     /**
-     * Función que desplaza el contenedor del login para que el teclado no oculte los elementos donde se escribe
+     * La función "desplazarPagina" ajusta el diseño de la sección de inicio de sesión al medio cuando
+     * el teclado está oculto y también oculta las barras de navegación y estado.
      */
     public void desplazarPagina() {
         //Desplaza de nuevo el apartado del login al medio cuando se esconde el teclado
@@ -479,10 +386,16 @@ public class MainActivity extends VistaGeneral {
         );
     }
 
+
     /**
+     * La función CheckLogin toma un nombre de usuario, contraseña y estado de casilla de verificación,
+     * los envía a una función de inicio de sesión para codificarlos y luego pasa a la siguiente
+     * pantalla si el inicio de sesión es exitoso o muestra un mensaje de error si falla.
      *
-     * @param controlador Clase que se encarga de de la lógica de la pantalla del login
-     * @param checkboxChecked parámetro que referencia si se quiere guardar la cuenta en el dispositivo o no (en caso de que la cuenta sea correcta)
+     * @param controlador Una instancia de la clase ControladorLogin, que es responsable de manejar las
+     * operaciones relacionadas con el inicio de sesión.
+     * @param checkboxChecked Un valor booleano que indica si una casilla de verificación está marcada
+     * o no.
      */
     public void CheckLogin(ControladorLogin controlador, boolean checkboxChecked) {
         //coge el usuario y la contraseña y los envía a la función de codificar para codificar dichos Strings
@@ -500,8 +413,11 @@ public class MainActivity extends VistaGeneral {
 
                 Intent intent = new Intent(MainActivity.this, Devices.class);
                 intent.putExtra("lista",lista);
+
                 launcher.launch(intent);
+
                 finish();
+
             }
 
             @Override
@@ -516,11 +432,14 @@ public class MainActivity extends VistaGeneral {
 
     }
 
+
     /**
+     * La función "mostrarDesplegableOpciones" se utiliza para animar la visibilidad de una vista
+     * ConstraintLayout escalándola y apareciendo gradualmente.
      *
-     * @param overLayout Layout que oscurece la vista menos el desplegable
-     * @param desplegableOpciones Vista del desplegable
-     * Muestra el desplegable uasndo una animación
+     * @param overLayout El ConstraintLayout que se superpone a la pantalla y se hará visible.
+     * @param desplegableOpciones El parámetro desplegableOpciones es un ConstraintLayout que
+     * representa un menú desplegable o menú de opciones.
      */
     private void mostrarDesplegableOpciones(ConstraintLayout overLayout, ConstraintLayout
             desplegableOpciones) {

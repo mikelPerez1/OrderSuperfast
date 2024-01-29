@@ -16,24 +16,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ControladorEscanerQR extends ControladorGeneral{
+
     private static final String urlPeticion = "https://app.ordersuperfast.es/android/v1/qr/getData/";
     private static final String urlCambiarDatosQR = "https://app.ordersuperfast.es/android/v1/qr/setName/";
     private static final String urlCambiarDatosZona = "https://app.ordersuperfast.es/android/v1/qr/setZona/";
-    private Context myContext;
     private String idQr ,idZona = "NULL",textoQr,idZonaInicial;
     private boolean zonaClickada = false;
 
     public ControladorEscanerQR(Context mContext) {
-        this.myContext = mContext;
+        super(mContext);
     }
-
-    public void setIdZonaInicial(String idZonaInicial) {
-        this.idZonaInicial = idZonaInicial;
-    }
-
-    public void setIdQr(String id ){this.idQr = id;}
-
-    public String getIdQr(){return this.idQr;}
 
     public void setIdZona(String id,boolean clickado ){
         this.idZona = id;
@@ -42,10 +34,18 @@ public class ControladorEscanerQR extends ControladorGeneral{
 
     public String getIdZona(){return this.idZona;}
 
-    public void setTextoQr(String id ){this.textoQr = id;}
 
-    public String getTextoQr(){return this.textoQr;}
-
+    /**
+     * La función `peticionGetDatosQr` envía una solicitud POST a una URL especificada con datos JSON y
+     * maneja la respuesta mediante una devolución de llamada.
+     *
+     * @param url El parámetro `url` es la URL del punto final del servidor donde se enviará la
+     * solicitud.
+     * @param callback El parámetro "callback" es una instancia de la interfaz "DevolucionCallback".
+     * Esta interfaz se utiliza para definir dos métodos: "onDevolucionExitosa" y
+     * "onDevolucionFallida". Estos métodos se llaman cuando la respuesta del servidor se recibe
+     * exitosamente o cuando un
+     */
     public void peticionGetDatosQr(String url, DevolucionCallback callback) throws JSONException {
         SharedPreferences sharedCuenta = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
         String idRest = sharedCuenta.getString("saveIdRest", "");
@@ -90,6 +90,18 @@ public class ControladorEscanerQR extends ControladorGeneral{
         cambiarVinculacionQr(callback);
     }
 
+    /**
+     * La función `peticionCambiarDatosQR` envía una solicitud POST a un servidor para cambiar el
+     * nombre asociado a un código QR, y llama a una función de devolución de llamada con un parámetro
+     * booleano que indica si la solicitud fue exitosa o no.
+     *
+     * @param nuevoNombre El parámetro `nuevoNombre` es un String que representa el nuevo nombre que
+     * deseas asignar a un código QR.
+     * @param callbackBoolean El parámetro "callbackBoolean" es una instancia de la interfaz
+     * "CallbackBoolean". Esta interfaz se utiliza para definir un método de devolución de llamada que
+     * se llamará cuando se complete la solicitud. El método de devolución de llamada toma un parámetro
+     * booleano que indica si la solicitud fue exitosa o no.
+     */
     private void peticionCambiarDatosQR(String nuevoNombre,CallbackBoolean callbackBoolean){
 
         if(nuevoNombre == null || nuevoNombre.isEmpty()){
@@ -139,6 +151,14 @@ public class ControladorEscanerQR extends ControladorGeneral{
 
 
 
+    /**
+     * La función `cambiarVinculacionQr` es un método Java que envía una solicitud POST a un servidor
+     * para cambiar la asociación de un código QR con una zona específica de un restaurante.
+     *
+     * @param callbackBoolean El parámetro callbackBoolean es una interfaz que tiene un método llamado
+     * onPeticionExitosa(boolean exitosa). Este método se llama cuando la solicitud se realiza
+     * correctamente y el parámetro booleano indica si la solicitud se realizó correctamente o no.
+     */
     public void cambiarVinculacionQr(CallbackBoolean callbackBoolean){
         SharedPreferences sharedCuenta = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
         String idRest = sharedCuenta.getString("saveIdRest", "");

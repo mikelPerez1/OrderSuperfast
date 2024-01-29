@@ -10,19 +10,8 @@ public class Zonas {
         listaZonas = new ArrayList<>();
     }
 
-    public boolean reemplazarLista(ArrayList<DispositivoZona> array ){
-
-        listaZonas.clear();
-        listaZonas.addAll(array);
-        return true;
-    }
-
     public DispositivoZona getZona(int pos){
         return listaZonas.get(pos);
-    }
-
-    public void borrarLista(){
-        this.listaZonas.clear();
     }
 
     public void addZona(DispositivoZona zona){

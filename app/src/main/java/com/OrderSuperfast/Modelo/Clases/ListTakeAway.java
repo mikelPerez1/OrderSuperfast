@@ -1,5 +1,8 @@
 package com.OrderSuperfast.Modelo.Clases;
 
+/**
+ * Clase que contiene la información de la parte de Take Away de los pedidos Take Away
+ */
 public class ListTakeAway {
     private String tipo;
     private String fecha_recogida;
@@ -8,10 +11,7 @@ public class ListTakeAway {
     private String nombre;
     private String primer_apellido;
     private String segundo_apellido;
-    private String direccion = "";
-    private boolean esDelivery;
     private int tiempoDelivery=0;
-    private int tiempoProducirComida=0;
 
     public ListTakeAway(String pTipo,String pNombre,String pApellido1,String pApellido2){
         this.tipo=pTipo;
@@ -35,11 +35,6 @@ public class ListTakeAway {
 
     public String getSegundo_apellido(){return this.segundo_apellido;}
 
-    public String getDireccion(){return this. direccion;}
-
-    public int getTiempoProducirComida(){return this.tiempoProducirComida;}
-
-    public boolean getEsDelivery(){return this.esDelivery;}
 
     public int getTiempoDelivery(){return this.tiempoDelivery;}
 
@@ -52,11 +47,4 @@ public class ListTakeAway {
         this.tramo_fin=tramoF;
     }
 
-    public void setDireccion(String dir){this.direccion=dir;}
-
-    public void setTiempoDelivery(int t){this.tiempoDelivery=t;}
-
-    public void setTiempoProducirComida(int t){this.tiempoProducirComida=t;}
-
-    public void setEsDelivery(boolean b){this.esDelivery=b;}
 }

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Clase para mostrar pedido normales
+ */
 public class PedidoNormal extends Pedido implements Serializable {
     private String color;
     private String mesa;

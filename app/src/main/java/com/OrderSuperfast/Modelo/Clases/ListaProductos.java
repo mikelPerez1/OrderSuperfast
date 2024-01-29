@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
+/**
+ * Clase con una lista observable para controlar cuando se eliminan/añaden/modifican elementos
+ */
 public class ListaProductos implements Serializable {
     private ObservableList<ProductoPedido> listaProductos ;
     private transient ProductoListener listener;
@@ -168,7 +171,7 @@ public class ListaProductos implements Serializable {
     public int size(){return this.listaProductos.size();}
 
 
-    public void removeProducto(Producto p){
+    public void removeProducto(ProductoPedido p){
         this.listaProductos.remove(p);
     }
 

@@ -31,13 +31,8 @@
             android:name=".Vista.EscanearQR"
             android:exported="false" />
         <activity
-            android:name=".Vista.GuardarFiltrarProductos"
+            android:name=".Vista.Configuracion"
             android:exported="false" />
-        <activity
-            android:name=".Vista.TakeAway"
-            android:configChanges="orientation|screenSize|locale"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Vista.logActivity"
             android:exported="false" />
@@ -50,7 +45,7 @@
             tools:targetApi="q" />
 
         <activity
-            android:name=".Vista.Lista"
+            android:name=".Vista.VistaPedidos"
             android:configChanges="orientation|screenSize|locale"
             android:exported="false"
             android:launchMode="standard"

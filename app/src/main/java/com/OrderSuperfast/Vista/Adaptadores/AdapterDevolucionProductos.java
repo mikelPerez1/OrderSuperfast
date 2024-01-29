@@ -30,10 +30,8 @@ import static com.OrderSuperfast.Vista.VistaGeneral.getIdioma;
  */
 public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevolucionProductos.ViewHolder> {
     private final List<ProductoPedido> mData;
-    private final LayoutInflater mInflater;
-    private final Context context;
+
     final AdapterDevolucionProductos.OnItemClickListener listener;
-    private final Resources resources;
     private Map<String, Integer> cantidadDevueltaProductos;
     private int opacidadTransparente = 50;
     private ArrayList<Integer> arrayCant = new ArrayList<>(); // array de la misma longitud que mData que lleva la cantidad a devolver del producto en la posicion X
@@ -44,12 +42,9 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
     }
 
     public AdapterDevolucionProductos(List<ProductoPedido> itemList, Map<String, Integer> map, Activity context, AdapterDevolucionProductos.OnItemClickListener listener) {
-        this.mInflater = LayoutInflater.from(context);
-        this.context = context;
         this.mData = itemList;
         this.listener = listener;
         cantidadDevueltaProductos = map;
-        resources = context.getResources();
         initArrayCant();
     }
 
@@ -120,7 +115,6 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
             nombreProducto.setText(nombre);
 
             int cantidad_maxima = cantidadDevueltaProductos.get(item.getId())!=null ? cantidadDevueltaProductos.get(item.getId()): Integer.valueOf(item.getCantidad());
-            System.out.println("lista productos elem position "+item.getNombre(getIdioma())+" "+cantidad_maxima);
 
             if(position == mData.size()-1){ //si es el último elemeneto, la linea separatoria se vuelve negra, si no gris
                 lineaSeparatoria.setBackgroundColor(Color.BLACK);
@@ -183,22 +177,12 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
                     }
                     arrayCant.set(position,Integer.valueOf(cantidad.getText().toString()));//se cambia el valor en arrayCant
                     cant = arrayCant.get(position);
-                    System.out.println("cantidad x "+ arrayCant.get(position) +" pos "+position);
-
                     if(cant == cantidad_maxima){ // si llega al maximo, se desactiva el botón de aumentar
                         aumentar.setImageAlpha(opacidadTransparente);
                     }else{
                         aumentar.setImageAlpha(255);
 
                     }
-                    /*
-                    if(cant == 0){
-                        disminuir.setImageAlpha(opacidadTransparente);
-                    }else{
-                        disminuir.setImageAlpha(255);
-                    }
-
-                     */
 
                 }
             });
@@ -224,23 +208,13 @@ public class AdapterDevolucionProductos extends RecyclerView.Adapter<AdapterDevo
                     }else{
                         disminuir.setImageAlpha(255);
                     }
-                    /*
-                    if(cant == cantidad_maxima){
-                        aumentar.setImageAlpha(opacidadTransparente);
-                    }else{
-                        aumentar.setImageAlpha(255);
-
-                    }
-
-                     */
                 }
             });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //listener.onItemClick(item, position);
-                    //notifyDataSetChanged();
+
                 }
             });
 

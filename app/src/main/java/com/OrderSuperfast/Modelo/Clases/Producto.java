@@ -2,6 +2,9 @@ package com.OrderSuperfast.Modelo.Clases;
 
 import java.util.Map;
 
+/**
+ * Clase que se usa en la pantalla de configuración de mostrar y ocultar productos de la carta
+ */
 public class Producto extends ProductoAbstracto{
 
 
@@ -26,14 +29,9 @@ public class Producto extends ProductoAbstracto{
         this.idPadre = id;
     }
 
-
-
-
     public int getNum() {
         return this.num;
     }
-
-
 
     public void setNum(int i) {
         this.num = i;

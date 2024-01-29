@@ -43,7 +43,7 @@ public class Opcion implements Serializable {
 
 
     /**
-     * Constructor de Opcion con el tipo de opción que es (unica selección o selección múltiple). Este constructor se usa para la sección de hacer un nuevo pedido,
+     * Constructor de Opcion para los elementos de las opciones con el tipo de opción que es (unica selección o selección múltiple). Este constructor se usa para la sección de hacer un nuevo pedido,
      * ya que aquí si interesa si la opción es de seleccion unica o múltiple
      * @param pIdO
      * @param pNombreO
@@ -70,6 +70,14 @@ public class Opcion implements Serializable {
 
     }
 
+    /**
+     *
+     * Constructor para las opciones
+     * @param pIdO
+     * @param pNombreO
+     * @param pTipo
+     * @param pObligatorio
+     */
     public Opcion(String pIdO,Map<String,String> pNombreO,String pTipo,boolean pObligatorio){
         this.idOpcion = pIdO;
         this.nombreOpcion = pNombreO;
@@ -79,6 +87,16 @@ public class Opcion implements Serializable {
         this.max = 1;
         this.min = 1;
     }
+
+    /**
+     *Constructor de Opcion para los elementos de las opciones con el tipo de opción multiple
+     * @param pIdO
+     * @param pNombreO
+     * @param pTipo
+     * @param pObligatorio
+     * @param cantMin
+     * @param cantMax
+     */
     public Opcion(String pIdO,Map<String,String> pNombreO,String pTipo,boolean pObligatorio,int cantMin, int cantMax){
         this.idOpcion = pIdO;
         this.nombreOpcion = pNombreO;
@@ -149,16 +167,6 @@ public class Opcion implements Serializable {
 
     public boolean getSeleccionado(){
         return this.seleccionado;
-    }
-
-    //setters
-    public void setMaxAndmin(int pMax,int pMin){
-        this.max = pMax;
-        this.min = pMin;
-    }
-
-    public void setEsObligatorio(boolean pObligatorio){
-        this.esObligatorio = pObligatorio;
     }
 
     public void setSeleccionado(boolean pSeleccionado){

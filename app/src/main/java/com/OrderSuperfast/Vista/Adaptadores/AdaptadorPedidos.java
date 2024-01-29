@@ -8,8 +8,8 @@ import com.OrderSuperfast.Modelo.Clases.PedidoTakeAway;
 
 import java.util.Comparator;
 
+//Clase abstracta de un adaptador que luego sus hijos heredan y reescriben las funciones
 public abstract class AdaptadorPedidos extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    private AdapterTakeAway2.ViewHolder2 holder2;
 
 
     public void filtrarPorTexto(String texto) {

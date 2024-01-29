@@ -5,18 +5,14 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.Pair;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.OrderSuperfast.Controlador.Interfaces.CallbackLogin;
-import com.OrderSuperfast.Controlador.Interfaces.CallbackZonas;
-import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Clases.Dispositivo;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
+import com.OrderSuperfast.Modelo.Clases.SessionSingleton;
 import com.OrderSuperfast.Modelo.Clases.Zona;
 import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
 import com.OrderSuperfast.Modelo.Clases.Zonas;
 import com.OrderSuperfast.R;
-import com.OrderSuperfast.Vista.VistaGeneral;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -36,10 +32,9 @@ import java.util.Map;
 
 public class ControladorLogin extends ControladorGeneral{
     private final String urlLogin = "https://app.ordersuperfast.es/android/v1/login/";
-    private Context context;
 
     public ControladorLogin(Context mContext){
-        context = mContext;
+        super(mContext);
     }
 
 
@@ -47,11 +42,12 @@ public class ControladorLogin extends ControladorGeneral{
      * @param nombre Nombre del usuario
      * @param password Contraseña del usuario
      * @param checkboxChecked Booleano que sirve para ver si el usuario quiere guardar el nombre y la contraseña que acaba de poner
-     * @param callback Una instancia de la interfaz de retorno de llamada ({@link CallbackZonas}) que maneja
+     * @param callback Una instancia de la interfaz de retorno de llamada ({@link CallbackLogin}) que maneja
      *                 el resultado del intento de inicio de sesión, ya sea éxito o fracaso.
      *                 Se utiliza para notificar el resultado de la operación al usuario.
      *                 Requiere implementar métodos como onSuccess() y onError() para manejar los diferentes casos.
-     * @see CallbackZonas
+     * @see CallbackLogin
+     *
      */
     public void peticionLogin(String nombre, String password,boolean checkboxChecked, CallbackLogin callback) {
 
@@ -177,12 +173,16 @@ public class ControladorLogin extends ControladorGeneral{
                                     }
                                 }
                                 if (idRest != null && !idRest.equals("")) {
-                                    idRestaurante = idRest;
+                                   // getSessionSingleton().resetInstance();
+                                    SessionSingleton sesion = getSessionSingleton();
+                                    sesion.setRestaurantId(idRest);
+                                    sesion.setRestaurantName(nombreRest);
+                                    sesion.setRestaurantImage(logoRest);
 
                                     login(nombre,password,idRest,logoRest,nombreRest,checkboxChecked,listaZonas,callback);
 
                                 } else {
-                                    callback.onLoginError(context.getResources().getString(R.string.cuentaIncorrecta));
+                                    callback.onLoginError(myContext.getResources().getString(R.string.cuentaIncorrecta));
                                 }
                             }
 
@@ -207,7 +207,7 @@ public class ControladorLogin extends ControladorGeneral{
 
 // Agregar la petición a la cola
 
-        Volley.newRequestQueue(context).add(jsonObjectRequest);
+        Volley.newRequestQueue(myContext).add(jsonObjectRequest);
 
     }
 
@@ -222,20 +222,16 @@ public class ControladorLogin extends ControladorGeneral{
      * @param nombreRest El nombre del restaurante.
      * @param checkboxChecked Booleano que indica si se debe guardar la información del usuario y restaurante para futuros accesos.
      * @param zonas Objeto Zonas que contiene información sobre las zonas asociadas al restaurante.
-     * @param callback Interfaz CallbackZonas para manejar el resultado del inicio de sesión y devolución de información de zonas.
+     * @param callback Interfaz CallbackLogin para manejar el resultado del inicio de sesión y devolución de información de zonas.
      */
     private void login(String user,String pass,String idRest, String logoRest, String nombreRest, boolean checkboxChecked,ArrayList<ZonaDispositivoAbstracto> zonas, CallbackLogin callback) {
-        //String deco = decodificar(idRest, true);
 
-        idRestaurante = idRest;
-        nombreRestaurante = nombreRest;
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences("ids", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("saveIdRest", idRest);
         editor.apply();
 
-        sharedPreferences = context.getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
+        sharedPreferences = myContext.getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
 
@@ -251,7 +247,7 @@ public class ControladorLogin extends ControladorGeneral{
 
 
         Pair<String, String> datos = codificar(user, pass);
-        SharedPreferences prefs = context.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
+        SharedPreferences prefs = myContext.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
         SharedPreferences.Editor editorCuenta = prefs.edit();
 
         if (checkboxChecked) {
@@ -280,7 +276,7 @@ public class ControladorLogin extends ControladorGeneral{
      * Utiliza este método para limpiar la información de dispositivos guardada si es necesario.
      */
     private void eliminarDisposGuardados(){
-        SharedPreferences sharedZonas = context.getSharedPreferences("dispos", Context.MODE_PRIVATE);
+        SharedPreferences sharedZonas = myContext.getSharedPreferences("dispos", Context.MODE_PRIVATE);
         SharedPreferences.Editor editorZonas = sharedZonas.edit();
         editorZonas.remove("savedDisps");
     }
@@ -299,7 +295,7 @@ public class ControladorLogin extends ControladorGeneral{
     private void guardarZonasPref(Zonas zonas) {
 
 
-        SharedPreferences sharedZonas = context.getSharedPreferences("dispos", Context.MODE_PRIVATE);
+        SharedPreferences sharedZonas = myContext.getSharedPreferences("dispos", Context.MODE_PRIVATE);
         SharedPreferences.Editor editorZonas = sharedZonas.edit();
 
         JSONObject dispJson;
@@ -453,7 +449,7 @@ public class ControladorLogin extends ControladorGeneral{
      * relacionadas con los dispositivos. Utilízalo para limpiar la información de dispositivos almacenada si es necesario.
      */
     private void eliminarShared() {
-        SharedPreferences sharedDevices = context.getSharedPreferences("devices", Context.MODE_PRIVATE);
+        SharedPreferences sharedDevices = myContext.getSharedPreferences("devices", Context.MODE_PRIVATE);
         SharedPreferences.Editor deviceEditor = sharedDevices.edit();
         deviceEditor.remove("listaDispositivos");
         deviceEditor.apply();
@@ -470,7 +466,7 @@ public class ControladorLogin extends ControladorGeneral{
         eliminarShared();
         eliminarDisposGuardados();
 
-        SharedPreferences prefs = context.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
+        SharedPreferences prefs = myContext.getSharedPreferences("cuenta", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor = prefs.edit();
         editor.remove("saveIdRest");

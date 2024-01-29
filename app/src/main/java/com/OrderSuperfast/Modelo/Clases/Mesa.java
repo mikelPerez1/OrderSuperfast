@@ -2,6 +2,9 @@ package com.OrderSuperfast.Modelo.Clases;
 
 import java.util.ArrayList;
 
+/**
+ * Clase que hace referencia a la ubicación desde donde se ha hecho el pedido
+ */
 public class Mesa {
     private ArrayList<PedidoNormal> listaPedidos = new ArrayList<>();
     private String nombre;
@@ -36,33 +39,9 @@ public class Mesa {
         this.listaPedidos.add(elemento);
     }
 
-    public void removeElement(int position){
-        this.listaPedidos.remove(position);
-    }
-
-    public boolean removeElementNumPedido(int num){
-        for(int i = 0;i < listaSize();i++){
-            PedidoNormal elemento = listaPedidos.get(i);
-            if(elemento.getNumPedido() == num){
-                listaPedidos.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
 
     public PedidoNormal getElement(int position) {
         return listaPedidos.get(position);
-    }
-
-    public PedidoNormal estaElemento(int numPedido){
-        for(int i = 0; i<listaPedidos.size();i++){
-            PedidoNormal pedido = listaPedidos.get(i);
-            if(pedido.getNumPedido() == numPedido){
-                return pedido;
-            }
-        }
-        return null;
     }
 
     public void reset() {

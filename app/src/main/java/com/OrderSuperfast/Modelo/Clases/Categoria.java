@@ -36,14 +36,6 @@ public class Categoria implements Serializable {
         this.lista.add(subCategoria);
     }
 
-    public void removeSubcategoria(Subcategoria subcategoria) {
-        this.lista.remove(subcategoria);
-    }
-
-    public void removeSubcategoria(int position) {
-        this.lista.remove(position);
-    }
-
     public int getNumberOfSubcategories() {
         return this.lista.size();
     }

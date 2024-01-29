@@ -358,7 +358,7 @@ public class AdapterDevices extends RecyclerView.Adapter<AdapterDevices.ViewHold
      * La función establece el valor de la variable "midata" en la lista proporcionada de elementos
      * "ZonaDispositivoAbstracto".
      *
-     * @param items El parámetro "items" es una Lista de objetos de tipo ZonaDispositivoAbstracto.
+     * @param items El parámetro "items" es una VistaPedidos de objetos de tipo ZonaDispositivoAbstracto.
      */
     public void setItems(List<ZonaDispositivoAbstracto> items) {
         midata = (ArrayList<ZonaDispositivoAbstracto>) items;

@@ -8,7 +8,10 @@ import android.util.AttributeSet;
 
 import com.OrderSuperfast.R;
 
-// clase para tachar de un color (color_pendiente en este caso) un textview
+
+/**
+ * Clase que extiende de TextView para customizar un tachón rojo al texto
+ */
 public class TextViewTachable extends androidx.appcompat.widget.AppCompatTextView {
     public Paint paint;
     public boolean addStrike = false;
@@ -36,11 +39,11 @@ public class TextViewTachable extends androidx.appcompat.widget.AppCompatTextVie
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         if (addStrike) {
+            //si hay que tachar
             Layout layout = getLayout();
             for (int i = 0; i < layout.getLineCount(); i++) {
-
+                //se obtiene la posición media del textview y se tacha
                 int baseline =layout.getLineTop(i) +((int) ((layout.getLineBaseline(i)-layout.getLineTop(i))/ 1.45));
                 System.out.println("lineas "+(layout.getLineBaseline(i)-layout.getLineTop(i) ));
                 canvas.drawLine(layout.getLineLeft(i), baseline, layout.getLineRight(i), baseline, paint);

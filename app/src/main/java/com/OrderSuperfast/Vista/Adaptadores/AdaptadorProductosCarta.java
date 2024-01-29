@@ -1,10 +1,12 @@
 package com.OrderSuperfast.Vista.Adaptadores;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AlignmentSpan;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
     private ArrayList<Object> mData;
     private AdaptadorProductosCarta.listener listener;
     private Context context;
+    private Resources resources;
 
 
     public interface listener {
@@ -42,6 +45,7 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
         this.mData = lista;
         this.listener = pListener;
         this.context = context;
+        resources = context.getResources();
 
     }
 
@@ -49,9 +53,9 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
     public int getItemViewType(int position) {
         Object objeto = mData.get(position);
         if (objeto instanceof ProductoPedido) {
-            return 1;
+            return 1; //si es ProductoPedido devuelve 1
         } else {
-            return 2;
+            return 2; //si es otra clase (Categoria o Subcategoria)
         }
 
     }
@@ -61,6 +65,7 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
     public AdaptadorProductosCarta.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v;
+        //dependiendo de si es ProductoPedido o no infla una vista u otra
         if (viewType == 1) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_producto_carta, parent, false);
         } else {
@@ -80,6 +85,11 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
         } else if (objeto instanceof Categoria) {
             holder.bindCategoria((Categoria) objeto, position);
         }
+
+        if (position == mData.size() - 1) {
+            holder.lastItem();
+        }
+
     }
 
     @Override
@@ -88,51 +98,43 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvNombre, tvPrecioProducto;
+        private TextView tvNombre;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNombre = itemView.findViewById(R.id.tvNombreProducto);
-            tvPrecioProducto = itemView.findViewById(R.id.tvPrecioProducto);
+        }
 
+        void lastItem() {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
+            params.bottomMargin = 100;
+            itemView.setLayoutParams(params);
         }
 
         void bindData(final ProductoPedido item, int position) {
-            // Crear un SpannableStringBuilder para aplicar estilos al texto
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            builder.append(item.getNombre(getIdioma()));
-
-            // Crear un AlignmentSpan para justificar el texto
-            AlignmentSpan.Standard justifySpan = new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL);
-            builder.setSpan(justifySpan, 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             tvNombre.setText(item.getNombre(getIdioma()));
-            tvNombre.setTextSize((int) context.getResources().getDisplayMetrics().scaledDensity, 20);
-
-           // tvPrecioProducto.setText(item.getPrecio() + " €");
-            // ConstraintLayout layout_card_background = itemView.findViewById(R.id.layout_card_background);
-            //layout_card_background.setBackgroundColor(item.getColor());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     listener.onItemClick(item);
                 }
             });
-            //
+
         }
 
 
         void bindCategoria(final Categoria item, int position) {
 
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
-            params.setMargins(0,(int)(30*context.getResources().getDisplayMetrics().density),0,0);
+            params.setMargins(0, (int) (30 * context.getResources().getDisplayMetrics().density), 0, 0);
             params.setMarginStart(0);
             itemView.setLayoutParams(params);
 
 
             TextView tvNombreCat = itemView.findViewById(R.id.tvNombreCat);
-            tvNombreCat.setTextSize((int) context.getResources().getDisplayMetrics().scaledDensity, 28);
+            float textSizeSP = resources.getDimension(R.dimen.texto_categoria) / resources.getDisplayMetrics().scaledDensity;
+            tvNombreCat.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSP);
             tvNombreCat.setText(item.getNumCategoria() + ". " + item.getNombre(getIdioma()));
 
         }
@@ -140,13 +142,13 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
         void bindSubcategoria(final Subcategoria item, int position) {
 
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
-            params.setMarginStart((int)(30*context.getResources().getDisplayMetrics().density));
+            params.setMarginStart((int) (30 * context.getResources().getDisplayMetrics().density));
 
-            Object objeto = mData.get(position-1);
-            if(objeto instanceof Categoria){
-                params.setMargins(0,(int)(-10*context.getResources().getDisplayMetrics().density),0,0);
-            }else{
-                params.setMargins(0,(int)(30*context.getResources().getDisplayMetrics().density),0,0);
+            Object objeto = mData.get(position - 1);
+            if (objeto instanceof Categoria) {
+                params.setMargins(0, (int) (-10 * context.getResources().getDisplayMetrics().density), 0, 0);
+            } else {
+                params.setMargins(0, (int) (30 * context.getResources().getDisplayMetrics().density), 0, 0);
             }
             itemView.setLayoutParams(params);
 
@@ -156,7 +158,8 @@ public class AdaptadorProductosCarta extends RecyclerView.Adapter<AdaptadorProdu
                 itemView.getLayoutParams().height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
             }
             TextView tvNombreCat = itemView.findViewById(R.id.tvNombreCat);
-            tvNombreCat.setTextSize((int) context.getResources().getDisplayMetrics().scaledDensity, 25);
+            float textSizeSP = resources.getDimension(R.dimen.texto_categoria) / resources.getDisplayMetrics().scaledDensity;
+            tvNombreCat.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSP);
             tvNombreCat.setText(item.getNombre(getIdioma()));
 
         }

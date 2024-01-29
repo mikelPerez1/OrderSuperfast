@@ -3,6 +3,7 @@ package com.OrderSuperfast.Modelo.Clases;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
 public class Zona extends ZonaDispositivoAbstracto implements Serializable {
     private ArrayList<Dispositivo> listaDispositivos;
     private boolean clickado;

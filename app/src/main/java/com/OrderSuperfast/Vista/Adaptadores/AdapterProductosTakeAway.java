@@ -24,19 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProductosTakeAway.ViewHolder> {
-    private final List<ProductoTakeAway> mData;
-    private final List<ProductoTakeAway> Original;
-    private final List<ProductoTakeAway> filtrado;//
-    private final LayoutInflater mInflater;
+    private final List<ProductoTakeAway> mData; //lista que el Recyclerview muestra
+    private final List<ProductoTakeAway> Original; //lista original con todos los elementos
     private final Context context;
     private String estadoPedido = "";
     private boolean modoMesa = false;
 
     final AdapterProductosTakeAway.OnItemClickListener listener;
-    int k = 0;
     private int textSize;
     private boolean tachadoHabilitado = false;
-
     private final Resources resources;
 
     public interface OnItemClickListener {
@@ -49,6 +45,10 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
         estadoPedido = pEstado;
     }
 
+    /**
+     * La función "destacharTodos" establece la propiedad "tachado" de todos los elementos de la lista
+     * "mData" en falso.
+     */
     public void destacharTodos() {
         for (int i = 0; i < mData.size(); i++) {
             mData.get(i).setTachado(false);
@@ -56,40 +56,46 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
     }
 
 
+    /**
+     * La función establece el valor de una variable booleana llamada "tachadoHabilitado".
+     *
+     * @param pTachar El parámetro pTachar es un valor booleano que determina si el "tachado" está
+     * habilitado o deshabilitado.
+     */
     public void setTacharHabilitado(boolean pTachar) {
         this.tachadoHabilitado = pTachar;
     }
 
+    /**
+     * La función establece la variable "modoMesa" en verdadero.
+     */
     public void setModomesa() {
         this.modoMesa = true;
     }
 
     public AdapterProductosTakeAway(List<ProductoTakeAway> itemList, Activity context, OnItemClickListener listener) {
-        this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = itemList;
         this.listener = listener;
         this.Original = new ArrayList<>();
-        this.filtrado = new ArrayList<>();
 
         resources = context.getResources();
         setTextSize();
     }
 
+    /**
+     * La función de eliminación borra las listas mData y Original.
+     */
     public void delete() {
-
-        while (mData.size() > 0) {
-            mData.remove(0);
-        }
-        while (Original.size() > 0) {
-            Original.remove(0);
-        }
-        k = 0;
-
+        mData.clear();
+        Original.clear();
     }
 
+    /**
+     * La función establece la variable textSize en función del valor de la variable dimen, que se
+     * obtiene de los recursos.
+     */
     private void setTextSize() {
-        //esta así por que por alguna razon el resources.getDimension(R.dimen.text_size_medium_takeAway)  no pillaba bien el size de dimens.xml
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
         System.out.println("resources " + dimen);
         if (dimen > 10) {
@@ -144,28 +150,22 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
             cantidad.setText("x" + item.getCantidad() + " ");
             precio.setText(item.getPrecio() + "€");
-            //productos.setText(item.getProducto());
-
-            if (tachadoHabilitado) {
+            if (tachadoHabilitado) { // si esta habilitado el modo tachar productos, se dividen mediante una linea
                 lineaSeparatoria.setVisibility(View.VISIBLE);
-                System.out.println("tachado si " + lineaSeparatoria.getVisibility());
             } else {
                 lineaSeparatoria.setVisibility(View.INVISIBLE);
-                System.out.println("tachado no " + lineaSeparatoria.getVisibility());
-
             }
 
-            if (item.getSeleccionado()) {
+            if (item.getSeleccionado()) { // si mientras tachado esta habilitado se a seleccionado el producto, el fondo cambiará de color
                 layoutProducto.setBackgroundColor(resources.getColor(R.color.azulSuave, context.getTheme()));
             } else {
                 layoutProducto.setBackgroundColor(Color.TRANSPARENT);
             }
 
-            System.out.println("producto tachado adapter " + modoMesa);
-            if (estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado)) || modoMesa) { // para que el tachon solo salga en pedidos aceptados
+            if (estadoPedido.equals("ACEPTADO") || estadoPedido.equals(resources.getString(R.string.botonAceptado)) || modoMesa) { // para que el tachon solo salga en pedidos aceptados o en modo mesa
 
 
-                if (item.getTachado() || item.getSeleccionado()) {
+                if (item.getTachado() || item.getSeleccionado()) { //este código sirve para poner un tachón en el producto y esconder las opciones de los productos tachados
                     productos.setStrike(true);
                     productos.setText(item.getProducto().split("\n")[0]);
                     imageViewTachonCantidad.setVisibility(View.VISIBLE);
@@ -203,13 +203,12 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                 crearTextviews(item, position);
             }
 
-            if (item.getMostrarSiOcultado()) {
+            if (item.getMostrarSiOcultado()) { //cambia de color entre negro y gris del texto del producto dependiendo del ajuste elegido
                 System.out.println("cambiar color a translucido");
                 productos.setTextColor(context.getResources().getColor(R.color.black_translucido, context.getTheme()));
                 cantidad.setTextColor(context.getResources().getColor(R.color.black_translucido, context.getTheme()));
             } else {
                 System.out.println("cambiar color a negro");
-
                 productos.setTextColor(context.getResources().getColor(R.color.black));
                 cantidad.setTextColor(context.getResources().getColor(R.color.black));
             }
@@ -224,6 +223,17 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
         }
 
+        /**
+         * La función `crearTextviews` crea y agrega TextViews a un diseño en función de los datos
+         * proporcionados.
+         *
+         * @param item El parámetro "item" es un objeto de tipo ProductoTakeAway, que contiene
+         * información sobre un producto. Se utiliza para recuperar los datos necesarios para crear
+         * TextViews.
+         * @param position El parámetro de posición es un número entero que representa la posición del
+         * elemento en una lista o matriz. Se utiliza para identificar el elemento específico que debe
+         * procesarse o modificarse.
+         */
         private void crearTextviews(ProductoTakeAway item, int position) {
 
             int colorProducto = item.getMostrarSiOcultado() ? context.getResources().getColor(R.color.black_translucido, context.getTheme()) : Color.BLACK;
@@ -243,7 +253,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             productos.setStrike(false);
             int idTVanterior = View.generateViewId();
 
-            String[] lineas = item.getProducto().split("\n");
+            String[] lineas = item.getProducto().split("\n"); //sirve para dividir el nombre y las opciones del producto
             TextViewTachable tv = new TextViewTachable(context);
             tv.setText(lineas[0]);
             tv.setTextColor(Color.BLACK);
@@ -251,8 +261,9 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             tv.setTag("Producto_0");
             tv.setId(idTVanterior);
             tv.setTextColor(colorProducto);
-            layoutProducto.addView(tv);
+            layoutProducto.addView(tv); //se añade el textview del nombre del producto
 
+            //se ponen los constraints
             ConstraintSet constraintSet = new ConstraintSet();
             constraintSet.clone(layoutProducto);
             constraintSet.connect(tv.getId(), ConstraintSet.START, cantidad.getId(), ConstraintSet.END);
@@ -274,11 +285,12 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
             ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) tv.getLayoutParams();
             p.horizontalBias = 0.0f;
             tv.setLayoutParams(p);
-            if (lineas.length > 1) {
+            if (lineas.length > 1) { // si tiene opciones
                 for (int j = 1; j < lineas.length; j++) {
                     System.out.println("producto dividido " + position + " " + item.getProducto() + " linea " + lineas[j]);
                     System.out.println("producto dividido linea " + lineas[j]);
 
+                    //Se crea un textview para cada opción
                     tv = new TextViewTachable(context);
                     tv.setText(lineas[j]);
                     tv.setTextColor(Color.BLACK);
@@ -289,6 +301,7 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
 
                     layoutProducto.addView(tv);
 
+                    //se ponen las restricciones dependiendo del textview anterior
                     constraintSet = new ConstraintSet();
                     constraintSet.clone(layoutProducto);
                     constraintSet.connect(tv.getId(), ConstraintSet.START, idTVanterior, ConstraintSet.START);
@@ -300,9 +313,9 @@ public class AdapterProductosTakeAway extends RecyclerView.Adapter<AdapterProduc
                     tv.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
 
                     params = (ViewGroup.MarginLayoutParams) tv.getLayoutParams();
-                    if (j == 1) {
+                    if (j == 1) { //si es la primera opcion se le pone margen respecto al nombre del producto
                         params.setMarginStart((int) (10 * resources.getDisplayMetrics().density));
-                    } else {
+                    } else { // si no es la primera no se pone ya que el textview empieza donde empieza la anterior opción
                         params.setMarginStart(0);
                     }
                     params.setMarginEnd((int) (15 * resources.getDisplayMetrics().density));

@@ -20,7 +20,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -28,7 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,14 +37,8 @@ import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Vista.Adaptadores.AdapterCategoria;
 import com.OrderSuperfast.Vista.Adaptadores.AdapterEsconderProducto;
 import com.OrderSuperfast.Modelo.Clases.Seccion;
-import com.OrderSuperfast.Modelo.Clases.Producto;
 import com.OrderSuperfast.Modelo.Clases.ProductoAbstracto;
 import com.OrderSuperfast.R;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONArray;
@@ -55,38 +47,30 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class GuardarFiltrarProductos extends VistaGeneral {
-    private static final String urlObtenerProductos = "https://app.ordersuperfast.es/android/v1/carta/productosYOpciones/obtener/";
-    private static final String urlActualizarVisibles = "https://app.ordersuperfast.es/android/v1/carta/productosYOpciones/actualizarVisibles/";
-
-    private String idRestaurante, idZona, idDisp;
+public class Configuracion extends VistaGeneral {
     private ArrayList<ProductoAbstracto> listaProductos = new ArrayList<>(), listaProductosEsconder = new ArrayList<>(), listaOpcionesEsconder = new ArrayList<>(), listaCompleta = new ArrayList<>();
-    private GuardarFiltrarProductos activity = this;
+    private Configuracion activity = this;
     private AdapterEsconderProducto adapterProductosMostrar, adapterVisualizacionProductos;
     private FastScrollRecyclerView recyclerView;
-    private SharedPreferences preferenciasProductos, sharedIds;
-    private SharedPreferences.Editor editor;
+    private SharedPreferences preferenciasProductos;
     private HashMap<String, Boolean> mapaProductos = new HashMap<>();
-    private ConstraintLayout constraintAtras, constraintConfirmar, constraintCancelar, categoriaMostrarProductos, categoriaEsconderProductos, categoriaEsconderOpciones, categoriaEsconderElementos, layoutOpcionesEsconder;
-    private ConstraintLayout layoutOpcionesMostrar, constraintOpcionMostrarOcultados, constraintOpcionModificarListaOcultarProductos, layoutProductosCategorias;
-    private TextView textViewMostrarProductos, textViewEsconderProductos, textViewEsconderOpciones, textViewEsconderElementos, textViewTitulo;
-    private View viewEsconderOpciones, viewMostrarProductos, viewEsconderProductos, viewEsconderElementos;
-    private int FLAG_ACTUAL;
+    private ConstraintLayout constraintAtras, constraintCancelar, categoriaMostrarProductos, categoriaEsconderElementos;
+    private ConstraintLayout  layoutProductosCategorias;
+    private TextView textViewMostrarProductos, textViewEsconderElementos, textViewTitulo;
+    private View  viewMostrarProductos, viewEsconderElementos;
     private Resources resources;
-    private ArrayList<JSONObject> productosACambiar = new ArrayList<>();
-    private ArrayList<JSONObject> elementosACambiar = new ArrayList<>();
     private CardView cardMostrarProductosBoolean;
     private Button botonConfirmar, botonConfirmar2;
-    private Switch switchMostrarEscondidos;
-    ///flags
 
+    ///flags
+    private int FLAG_ACTUAL;
     private int FLAG_MOSTRAR_PRODUCTOS = 1, FLAG_ESCONDER_PRODUCTOS = 2, FLAG_ESCONDER_OPCIONES = 3, FLAG_MODO_ACTUAL, FLAG_MODO_PEDIDOS;
     private boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS;
 
+    //controlador
     private ControladorConfiguracion controlador;
 
     @Override
@@ -104,28 +88,23 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardar_filtrar_productos);
 
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-
+        setFlags();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setWindowAnimations(0);
 
         resources = getResources();
 
         controlador = new ControladorConfiguracion(this);
+        FLAG_MODO_ACTUAL = getIntent().getIntExtra("modo", 1);
 
         initialize();
+        System.out.println("Flag modo actual " + FLAG_MODO_ACTUAL);
         setListeners();
 
 
         try {
             inicializarHash();
-            controlador.inicializarHash(idRestaurante);
+            controlador.inicializarHash();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -139,30 +118,19 @@ public class GuardarFiltrarProductos extends VistaGeneral {
 
     @Override
     protected void onResume() {
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        setFlags();
         super.onResume();
     }
 
+    /**
+     * La función `initialize()` inicializa varias variables y vistas
+     */
     private void initialize() {
 
-        sharedIds = getSharedPreferences("ids", Context.MODE_PRIVATE);
-        idRestaurante = sharedIds.getString("saveIdRest", "null");
-        idZona = sharedIds.getString("idZona", "null");
-        idDisp = sharedIds.getString("idDisp", "null");
 
-        preferenciasProductos = getSharedPreferences("pedidos_" + idRestaurante, Context.MODE_PRIVATE);
-        editor = preferenciasProductos.edit();
+        preferenciasProductos = getSharedPreferences("pedidos_" + controlador.getIdRestaurante(), Context.MODE_PRIVATE);
 
         FLAG_MOSTRAR_PRODUCTOS_OCULTADOS = preferenciasProductos.getBoolean("mostrarOcultados", true);
-        FLAG_MODO_ACTUAL = preferenciasProductos.getInt("modo", 0);
-
-
         constraintAtras = findViewById(R.id.layoutAtras);
         botonConfirmar = findViewById(R.id.botonConfirmar);
         botonConfirmar2 = findViewById(R.id.botonConfirmar2);
@@ -181,25 +149,13 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         layoutProductosCategorias = findViewById(R.id.layoutProductosCategorias);
 
         categoriaMostrarProductos = findViewById(R.id.categoriaMostrarProductos);
-        categoriaEsconderProductos = findViewById(R.id.categoriaEsconderProductos);
-        categoriaEsconderOpciones = findViewById(R.id.categoriaEsconderOpciones);
         categoriaEsconderElementos = findViewById(R.id.categoriaEsconderElementos);
 
         textViewMostrarProductos = findViewById(R.id.textViewMostrarProductos);
-        textViewEsconderProductos = findViewById(R.id.textViewEsconderProductos);
-        textViewEsconderOpciones = findViewById(R.id.textViewEsconderOpciones);
         textViewEsconderElementos = findViewById(R.id.textViewEsconderElementos);
 
         viewMostrarProductos = findViewById(R.id.viewCategoriaMostrarProductos);
-        viewEsconderProductos = findViewById(R.id.viewCategoriaEsconderProductos);
-        viewEsconderOpciones = findViewById(R.id.viewCategoriaEsconderOpciones);
         viewEsconderElementos = findViewById(R.id.viewCategoriaEsconderElementos);
-
-        layoutOpcionesEsconder = findViewById(R.id.layoutOpcionesEsconder);
-        layoutOpcionesMostrar = findViewById(R.id.layoutOpcionesMostrar);
-
-        constraintOpcionMostrarOcultados = findViewById(R.id.constraintOpcionMostrarOcultados);
-        constraintOpcionModificarListaOcultarProductos = findViewById(R.id.constraintOpcionModificarListaOcultarProductos);
 
 
         setMode();
@@ -207,14 +163,14 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         visualizandoProductos(FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
     }
 
+    /**
+     * La función establece el modo según el valor de FLAG_MODO_ACTUAL para que se muestre de una forma u otra.
+     */
     private void setMode() {
         if (FLAG_MODO_ACTUAL == 1) {
             layoutProductosCategorias.setVisibility(View.GONE);
-            // cambiarListaProductos(FLAG_MOSTRAR_PRODUCTOS);
             FLAG_ACTUAL = FLAG_MOSTRAR_PRODUCTOS;
             recyclerView.setVisibility(View.VISIBLE);
-            //  layoutOpcionesEsconder.setVisibility(View.GONE);
-//            layoutOpcionesMostrar.setVisibility(View.GONE);
             cardMostrarProductosBoolean.setVisibility(View.VISIBLE);
             textViewTitulo.setText(resources.getString(R.string.mostrarPedidos));
             botonConfirmar2.setVisibility(View.VISIBLE);
@@ -223,10 +179,7 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         } else if (FLAG_MODO_ACTUAL == 2) {
             layoutProductosCategorias.setVisibility(View.VISIBLE);
             FLAG_ACTUAL = FLAG_ESCONDER_PRODUCTOS;
-            //  layoutOpcionesEsconder.setVisibility(View.GONE);
-            // layoutOpcionesMostrar.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
-            // cambiarInterfaz();
             cardMostrarProductosBoolean.setVisibility(View.GONE);
             textViewTitulo.setText(resources.getString(R.string.esconderElementos));
             botonConfirmar2.setVisibility(View.GONE);
@@ -234,6 +187,9 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         }
     }
 
+    /**
+     * La función configura listeners para varios botones y maneja sus eventos de clic.
+     */
     private void setListeners() {
         constraintAtras.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,12 +201,9 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         botonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //modificarListaProductosMostrar();
-               // peticionCambiarVisibleProducto();
-                //peticionCambiarEstadoRecepcionPedidos();
-
-                controlador.modificarListaProductosMostrar(idRestaurante, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
-                controlador.peticionCambiarVisibleProducto(idRestaurante, idZona, idDisp, new CallbackBoolean() {
+                //guarda los cambios realizados
+                controlador.modificarListaProductosMostrar(FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
+                controlador.peticionCambiarVisibleProducto(new CallbackBoolean() {
                     @Override
                     public void onPeticionExitosa(boolean bool) {
                         getProductos();
@@ -262,9 +215,11 @@ public class GuardarFiltrarProductos extends VistaGeneral {
                     }
                 });
 
-                controlador.peticionCambiarEstadoRecepcionPedidos(FLAG_PESTAÑA,recibiendoPedidos,idRestaurante,idZona);
+                controlador.peticionCambiarEstadoRecepcionPedidos(FLAG_PESTAÑA, recibiendoPedidos);
                 guardarNuevoTemporizador();
                 guardarModoPedido();
+
+                //cierra la actividad pasando el código 200 para indicar que se han hecho cambios
                 Intent data = new Intent();
                 setResult(200, data);
                 onBackPressed();
@@ -315,6 +270,10 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     }
 
 
+    /**
+     * La función `cambiarInterfaz()` cambia la visibilidad y el color del texto de ciertas vistas en
+     * función del valor de la variable `FLAG_ACTUAL`.
+     */
     private void cambiarInterfaz() {
         if (FLAG_ACTUAL == FLAG_MOSTRAR_PRODUCTOS) {
             //  viewMostrarProductos.setVisibility(View.VISIBLE);
@@ -353,6 +312,10 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         }
     }
 
+    /**
+     * La función `getProductos()` recupera productos de un controlador y configura adaptadores para
+     * visualizar los productos.
+     */
     private void getProductos() {
         controlador.getProductos(new DevolucionCallback() {
             @Override
@@ -361,7 +324,6 @@ public class GuardarFiltrarProductos extends VistaGeneral {
                 listaProductosEsconder = controlador.getListaProductosEsconder();
                 listaOpcionesEsconder = controlador.getListaOpcionesEsconder();
                 listaCompleta = controlador.getListaCompleta();
-                System.out.println("lista productos " + listaProductos.size());
                 setAdaptador();
                 setAdaptadorRecyclerVisualizacion();
             }
@@ -371,164 +333,12 @@ public class GuardarFiltrarProductos extends VistaGeneral {
 
             }
         });
-        /*
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("id_restaurante", idRestaurante);
-            jsonBody.put("id_zona", idZona);
-            jsonBody.put("id_dispositivo", idDisp);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("jsonBody getProductos " + jsonBody);
-
-        listaProductos = new ArrayList<>();
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlObtenerProductos, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("prod " + response);
-                Iterator<String> keysGenerales = response.keys();
-                try {
-                    while (keysGenerales.hasNext()) {
-                        String clave = keysGenerales.next();
-                        switch (clave) {
-                            case "status":
-                                System.out.println(response.getString(clave));
-                                break;
-                            case "productos":
-                                JSONArray array = response.getJSONArray(clave);
-                                for (int i = 0; i < array.length(); i++) {
-                                    JSONObject objeto = array.getJSONObject(i);
-                                    String id = objeto.getString("id_producto");
-                                    String nombre = objeto.getString("nombre_producto");
-                                    boolean mostrar = mapaProductos.get(id) != null ? mapaProductos.get(id) : true;
-                                    Producto p = new Producto(nombre, "producto", id, mostrar, true, "producto");
-                                    listaProductos.add(p);
-
-                                    boolean esVisible = objeto.getBoolean("visible");
-                                    Producto pEsconder = new Producto(nombre, "producto", id, esVisible, true, "producto");
-                                    listaProductosEsconder.add(pEsconder);
-
-                                }
-                                break;
-
-                            case "opciones":
-
-                                JSONArray arrayOpc = response.getJSONArray(clave);
-                                for (int j = 0; j < arrayOpc.length(); j++) {
-                                    JSONObject opcion = arrayOpc.getJSONObject(j);
-                                    System.out.println("opcion " + opcion);
-                                    String idOpc = opcion.getString("id_opcion");
-                                    String nombreOpc = opcion.getString("nombre_opcion");
-                                    String tipoOpc = opcion.getString("tipo_opcion");
-
-                                    ArrayList<ElementoProducto> listaElementos = new ArrayList<>();
-                                    JSONArray arrayElementos = opcion.getJSONArray("elementos");
-                                    for (int k = 0; k < arrayElementos.length(); k++) {
-                                        JSONObject elemento = arrayElementos.getJSONObject(k);
-                                        String idEl = elemento.getString("id_elemento");
-                                        String nombreEl = elemento.getString("nombre_elemento");
-                                        String tipoEl = elemento.getString("tipo_precio");
-                                        boolean visibleEl = elemento.getBoolean("visible");
-                                        ElementoProducto elem = new ElementoProducto(idEl, nombreEl, tipoEl, visibleEl, "elemento");
-
-                                        if (tipoEl != null && !tipoEl.equals("null")) {
-                                            elem.setTipo(tipoEl);
-                                        }
-
-                                        try {
-                                            double precio = elemento.getDouble("precio");
-                                            elem.setPrecio(precio);
-                                            System.out.println("precio " + precio);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        listaElementos.add(elem);
-                                    }
-
-                                    OpcionProducto op = new OpcionProducto(idOpc, nombreOpc, tipoOpc, listaElementos, "opcion");
-
-                                    listaOpcionesEsconder.add(op);
-
-                                }
-                                break;
-                        }
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Collections.sort(listaProductos, new Comparator<ProductoAbstracto>() {
-                    @Override
-                    public int compare(ProductoAbstracto o1, ProductoAbstracto o2) {
-                        return o1.getNombre().compareToIgnoreCase(o2.getNombre());
-
-                    }
-
-                });
-
-                Collections.sort(listaProductosEsconder, new Comparator<ProductoAbstracto>() {
-                    @Override
-                    public int compare(ProductoAbstracto o1, ProductoAbstracto o2) {
-                        return o1.getNombre().compareToIgnoreCase(o2.getNombre());
-
-                    }
-
-                });
-
-                Collections.sort(listaOpcionesEsconder, new Comparator<ProductoAbstracto>() {
-                    @Override
-                    public int compare(ProductoAbstracto o1, ProductoAbstracto o2) {
-                        return o1.getNombre().compareToIgnoreCase(o2.getNombre());
-
-                    }
-
-                });
-
-                for (int i = 0; i < listaOpcionesEsconder.size(); i++) {
-                    System.out.println("nombreOpcion " + listaOpcionesEsconder.get(i).getNombre());
-                }
-
-                listaCompleta = new ArrayList<>();
-                listaCompleta.addAll(listaProductos);
-                ArrayList<ProductoAbstracto> listaCopia = new ArrayList<>();
-                for (int i = 0; i < listaOpcionesEsconder.size(); i++) {
-                    OpcionProducto op = (OpcionProducto) listaOpcionesEsconder.get(i);
-                    listaCopia.add(op);
-                    ArrayList<ElementoProducto> arrayEl = op.getLista();
-                    if (arrayEl != null) {
-                        for (int j = 0; j < arrayEl.size(); j++) {
-                            ElementoProducto el = arrayEl.get(j);
-                            listaCopia.add(el);
-                        }
-                    }
-                }
-                listaOpcionesEsconder = new ArrayList<>();
-                listaOpcionesEsconder.addAll(listaCopia);
-
-
-                setAdaptador();
-                setAdaptadorRecyclerVisualizacion();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-
-         */
-
     }
 
 
+    /**
+     * La función configura un adaptador para RecyclerView y configura sus propiedades.
+     */
     private void setAdaptador() {
         adapterProductosMostrar = new AdapterEsconderProducto(listaProductos, this, new AdapterEsconderProducto.OnItemClickListener() {
             @Override
@@ -540,74 +350,17 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         }, new AdapterEsconderProducto.OnSwitchListener() {
             @Override
             public void onSwitchClick(ProductoAbstracto item) {
+                // El código alterna la visibilidad de un elemento. Si el elemento está
+                // actualmente visible, se configurará como invisible, y si actualmente es invisible,
+                // se configurará como visible.
                 if (item.getVisible()) {
                     item.setVisible(false);
                 } else {
                     item.setVisible(true);
                 }
-                System.out.println("switch clicked " + FLAG_ACTUAL + " " + FLAG_ESCONDER_OPCIONES);
+
 
                 controlador.añadirElementosACambiar(item, FLAG_ACTUAL);
-
-                /*
-                if (FLAG_ACTUAL == FLAG_ESCONDER_PRODUCTOS) {
-                    try {
-                        if (item.getClaseTipo().equals("producto")) {
-                            String id = item.getId();
-                            boolean esVisible = item.getVisible();
-                            boolean esta = false;
-                            for (int i = 0; i < productosACambiar.size(); i++) {
-                                JSONObject objeto = productosACambiar.get(i);
-                                String id2 = objeto.getString("id_producto");
-                                if (id.equals(id2)) {
-                                    esta = true;
-                                    productosACambiar.remove(i);
-                                    break;
-                                }
-                            }
-                            if (!esta) {
-                                JSONObject objetoParaMeter = new JSONObject();
-                                objetoParaMeter.put("id_producto", id);
-                                objetoParaMeter.put("visible", esVisible);
-
-                                productosACambiar.add(objetoParaMeter);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                else if (FLAG_ACTUAL == FLAG_ESCONDER_OPCIONES) {
-                    try {
-                        if (item.getClaseTipo().equals("elemento")) {
-                            String id = item.getId();
-                            System.out.println("elemento " + id);
-                            boolean esVisible = item.getVisible();
-                            boolean esta = false;
-                            for (int i = 0; i < elementosACambiar.size(); i++) {
-                                JSONObject objeto = elementosACambiar.get(i);
-
-                                String id2 = objeto.getString("id_elemento");
-                                if (id.equals(id2)) {
-                                    esta = true;
-                                    elementosACambiar.remove(i);
-                                    break;
-                                }
-                            }
-                            if (!esta) {
-                                JSONObject objetoParaMeter = new JSONObject();
-                                objetoParaMeter.put("id_elemento", id);
-                                objetoParaMeter.put("visible", esVisible);
-                                elementosACambiar.add(objetoParaMeter);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                 */
 
             }
         });
@@ -623,29 +376,10 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     }
 
 
-    private void modificarListaProductosMostrar() {
-        JSONArray array = new JSONArray();
-        for (int i = 0; i < listaProductos.size(); i++) {
-            Producto p = (Producto) listaProductos.get(i);
-            JSONObject objeto = new JSONObject();
-            try {
-                objeto.put("id", p.getId());
-                objeto.put("mostrar", p.getVisible());
-                array.put(objeto);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        editor.putString("listaMostrar", array.toString());
-        editor.putBoolean("mostrarOcultados", FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
-        editor.apply();
-
-
-        // finish();
-    }
-
+    /**
+     * La función inicializa un mapa hash recuperando datos de una matriz JSON almacenada en
+     * preferencias compartidas.
+     */
     private void inicializarHash() throws JSONException {
         String arrayString = preferenciasProductos.getString("listaMostrar", "");
         System.out.println("lsita guardada " + arrayString);
@@ -663,12 +397,25 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     }
 
 
+    /**
+     * La función "actualizarAdapterProductos" actualiza los datos del adaptador utilizado para mostrar
+     * los productos.
+     *
+     * @param array Un ArrayList de objetos ProductoAbstracto.
+     */
     private void actualizarAdapterProductos(ArrayList<ProductoAbstracto> array) {
         if (adapterProductosMostrar != null) {
             adapterProductosMostrar.cambiarDatos(array);
         }
     }
 
+    /**
+     * La función "cambiarListaProductos" actualiza el adaptador de un RecyclerView en función del
+     * valor del parámetro "flag".
+     *
+     * @param flag El parámetro de bandera es un valor entero que determina qué lista de productos
+     *             mostrar en recyclerView. Hay tres valores posibles para la bandera:
+     */
     private void cambiarListaProductos(int flag) {
         recyclerView.setBubbleVisible(true);
         if (flag == FLAG_MOSTRAR_PRODUCTOS) {
@@ -684,81 +431,22 @@ public class GuardarFiltrarProductos extends VistaGeneral {
 
     }
 
-
-    private void peticionCambiarVisibleProducto() {
-        System.out.println("params " + elementosACambiar.size());
-
-        if (productosACambiar.size() > 0 || elementosACambiar.size() > 0) {
-            JSONObject jsonBody = new JSONObject();
-            System.out.println("params " + idRestaurante);
-            try {
-                JSONArray arrayProd = new JSONArray();
-                for (int i = 0; i < productosACambiar.size(); i++) {
-                    arrayProd.put(productosACambiar.get(i));
-                }
-                JSONArray arrayEl = new JSONArray();
-                for (int i = 0; i < elementosACambiar.size(); i++) {
-                    arrayEl.put(elementosACambiar.get(i));
-                }
-                jsonBody.put("id_restaurante", idRestaurante);
-                jsonBody.put("id_zona", idZona);
-                jsonBody.put("id_dispositivo", idDisp);
-                jsonBody.put("productos", arrayProd);
-                jsonBody.put("elementos", arrayEl);
-
-
-            } catch (JSONException e) {
-                System.out.println("ERROR putting parameters");
-                e.printStackTrace();
-            }
-            System.out.println("param " + jsonBody);
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlActualizarVisibles, jsonBody, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Iterator<String> iterator = response.keys();
-                    while (iterator.hasNext()) {
-                        String clave = iterator.next();
-                        try {
-                            System.out.println(clave + " " + response.getString(clave));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            if (response.getString(clave).equals("OK")) {
-                                System.out.println("Peticion exitosa");
-                            } else if (response.getString(clave).equals("ERROR")) {
-                                Toast.makeText(GuardarFiltrarProductos.this, "An error has ocurred", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            getProductos();
-                        }
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-            Volley.newRequestQueue(this).add(jsonObjectRequest);
-        }
-    }
-
+    /**
+     * Esta función maneja la pulsación del botón Atrás, ya sea para retroceder dentro de la aplicación
+     * o finalizar la actividad.
+     */
     @Override
     public void onBackPressed() {
-
+        //este apartado es para el dispositivo modo vertical, ya que en dicho modo cuando eliges una
+        //categoría se esconden las categorias y el contenido de la categoría ocupa la pantalla, entonces
+        //se modifica esta función para que en caso de estar en una categoría, vuelvas a la lista de categorías
+        //en vez de salir de la actividad
         if (recyclerCategorias.getVisibility() == View.GONE) {
             backCategorias();
         } else {
-
             finish();
             super.onBackPressed();
         }
-
-
     }
 
 
@@ -783,12 +471,15 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     private boolean onAnimationPestaña = false;
     private int FLAG_PESTAÑA = 1;
     private View backAnimation;
-    private boolean visualizando = false;
 
 
     private ConstraintLayout barraHorizontal, barraVertical, layoutCategoriasAjustes;
 
 
+    /**
+     * La función inicializa varios elementos de la interfaz de usuario y configura oyentes,
+     * adaptadores e inserciones, y realiza solicitudes de API.
+     */
     private void initI2() {
         layoutShowHiddenProducts = findViewById(R.id.layoutShowHiddenElements);
         recyclerCategorias = findViewById(R.id.recyclerCategorias);
@@ -841,12 +532,15 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         setRecyclerviewVisualizacion();
         ponerInsetsI2();
         peticionObtenerEstadoRecepcionPedidos();
-        //  limitarAlturaRecyclerCategorias();
+
     }
 
 
+    /**
+     * La función "cambiarI2" cambia la visibilidad de determinadas vistas en función del valor de la
+     * variable "FLAG_MODO_ACTUAL".
+     */
     private void cambiarI2() {
-
 
         if (FLAG_MODO_ACTUAL == 1) {
             recyclerCategorias.setVisibility(View.VISIBLE);
@@ -856,19 +550,21 @@ public class GuardarFiltrarProductos extends VistaGeneral {
             tvTitulo.setText(resources.getString(R.string.txtConfiguracion));
             initListCategoriasConf();
 
-
         } else if (FLAG_MODO_ACTUAL == 2) {
             imgExplicacion.setVisibility(View.GONE);
             recyclerCategorias.setVisibility(View.VISIBLE);
             layoutShowHiddenProducts.setVisibility(View.GONE);
-
             initListCategorias();
-            // setRecyclerCategorias();
 
         }
     }
 
+    /**
+     * La función "setListenersI2" configura varios detectores de clics para diferentes vistas en una
+     * aplicación de Android.
+     */
     private void setListenersI2() {
+        //listener para volver atrás
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -908,6 +604,8 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         cardImgExplicacion.setOnClickListener(v -> crearDialogExplicacion());
 
 
+        /////////////////////////////
+        // listeners para los botones de aumentar/disminuir el tiempo para los pedidos programados
         botonAnadirTiempoProgramado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -935,14 +633,16 @@ public class GuardarFiltrarProductos extends VistaGeneral {
             }
         });
 
+        /////////////////////////////
+        //Listeners para el apartado de permitir o no pedidos Take Away
         pestañaPermitir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //Al clickar en la pestaña, se desplaza el fondo mediante una animación y se coloca en la pestaña que se ha clickado
                 if (!onAnimationPestaña) {
                     tvPermitir.setTextColor(resources.getColor(R.color.white, activity.getTheme()));
                     tvDenegar.setTextColor(resources.getColor(R.color.black, activity.getTheme()));
-                    //  pestañaDevolverTotal.setBackground(resources.getDrawable(R.drawable.background_redondeado_negro, activity.getTheme()));
                     pestañaDenegar.setBackground(null);
                     animacionCambiarPestaña(backAnimation, 1f, 0f, constraintAnimacion, pestañaPermitir, 1, 0);
                 }
@@ -954,15 +654,21 @@ public class GuardarFiltrarProductos extends VistaGeneral {
             @Override
             public void onClick(View v) {
 
+                //Al clickar en la pestaña, se desplaza el fondo mediante una animación y se coloca en la pestaña que se ha clickado
                 if (!onAnimationPestaña) {
                     pestañaPermitir.setBackground(null);
-                    //pestañaDevolverParcial.setBackground(resources.getDrawable(R.drawable.background_redondeado_negro, activity.getTheme()));
                     tvPermitir.setTextColor(resources.getColor(R.color.black, activity.getTheme()));
                     tvDenegar.setTextColor(resources.getColor(R.color.white, activity.getTheme()));
                     animacionCambiarPestaña(backAnimation, 0f, 1f, constraintAnimacion, pestañaDenegar, 2, 0);
                 }
             }
         });
+
+        ////////////////////////////
+
+        //////////////////////////////////
+        //// Listeners para las pestañas de visualización de pedidos para que dichos pedidos se vean individualmente
+        //// o se vean agrupados por mesas
 
         ConstraintLayout constraintAnimacionModo = findViewById(R.id.layoutBackAnimationModo);
         ConstraintLayout pestañaMesas = findViewById(R.id.layoutPestañaMesas);
@@ -997,6 +703,8 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         });
 
 
+        // si al entrar en la actividad el flag de modo_pedidos estaba en agrupados (2) se pone como clickado
+        // la pestaña de agrupados
         if (FLAG_MODO_PEDIDOS == 2) {
             pestañaMesas.callOnClick();
             ConstraintSet constraintSet = new ConstraintSet();
@@ -1008,29 +716,33 @@ public class GuardarFiltrarProductos extends VistaGeneral {
 
     }
 
+    /**
+     * La función cambia la visibilidad de dos vistas, haciendo una visible y la otra invisible.
+     *
+     * @param v1 La primera vista cuya visibilidad debe cambiarse.
+     * @param v2 El parámetro v2 es un objeto Ver que representa la vista cuya visibilidad debe
+     *           cambiarse a invisible.
+     */
     private void cambiarVisibilidad(View v1, View v2) {
         v1.setVisibility(View.VISIBLE);
         v2.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * La función configura un RecyclerView con un adaptador personalizado y maneja eventos de clic en
+     * elementos.
+     */
     private void setRecyclerCategorias() {
         recyclerCategorias = findViewById(R.id.recyclerCategorias);
         recyclerCategorias.setHasFixedSize(true);
-        //if(resources.getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE) {
         recyclerCategorias.setLayoutManager(new LinearLayoutManager(this));
-
-       /* }else{
-            recyclerCategorias.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-
-        }
-
-        */
 
         adapterCategoria = new AdapterCategoria(listSeccions, this, new AdapterCategoria.OnItemClickListener() {
             @Override
             public void onItemClick(Seccion item, int position) {
                 recyclerView.setVisibility(View.VISIBLE);
                 String cat = item.getNombre();
+                //esconde todos los layouts y muestra dependiendo la sección que se haya clickado del RecyclerView
                 esconderLayouts();
                 if (cat.equals(resources.getString(R.string.productos))) {
                     cambiarListaProductos(FLAG_ESCONDER_PRODUCTOS);
@@ -1051,6 +763,7 @@ public class GuardarFiltrarProductos extends VistaGeneral {
                     mostrarLayout(layoutModoPedidos);
                 }
 
+                // si está en orientación vertical cambia la interfaz
                 if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     elegirCategoria();
                 }
@@ -1076,9 +789,9 @@ public class GuardarFiltrarProductos extends VistaGeneral {
         Seccion cat3 = new Seccion(resources.getString(R.string.anticipacionPedidosProgramadosTexto), 2);
         listSeccions.add(cat3);
         //if (!getEsMovil()) {
-            Seccion cat4 = new Seccion(getString(R.string.textoTituloVisualizacionPedidos), 3);
-            listSeccions.add(cat4);
-       // }
+        Seccion cat4 = new Seccion(getString(R.string.textoTituloVisualizacionPedidos), 3);
+        listSeccions.add(cat4);
+        // }
 
         setRecyclerCategorias();
     }
@@ -1349,7 +1062,7 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     private boolean recibiendoPedidos = false;
 
     private void peticionObtenerEstadoRecepcionPedidos() {
-        controlador.peticionObtenerEstadoRecepcionPedidos(idRestaurante, idZona, new CallbackBoolean() {
+        controlador.peticionObtenerEstadoRecepcionPedidos(new CallbackBoolean() {
             @Override
             public void onPeticionExitosa(boolean bool) {
                 recibiendoPedidos = bool;
@@ -1364,96 +1077,6 @@ public class GuardarFiltrarProductos extends VistaGeneral {
             }
         });
 
-        /*
-        JSONObject jsonBody = new JSONObject();
-        try {
-
-            jsonBody.put("id_restaurante", idRestaurante);
-            jsonBody.put("id_zona", idZona);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlObtenerEstadoRecepcion, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("respuesta datos Recibir pedidos " + response);
-
-                Iterator<String> iterator = response.keys();
-                while (iterator.hasNext()) {
-                    String clave = iterator.next();
-                    if (clave.equals("recibiendo_pedidos")) {
-                        try {
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-
-         */
-    }
-
-    private void peticionCambiarEstadoRecepcionPedidos() {
-        controlador.peticionCambiarEstadoRecepcionPedidos(FLAG_PESTAÑA, recibiendoPedidos, idRestaurante, idZona);
-
-        /*
-        JSONObject jsonBody = new JSONObject();
-        if ((FLAG_PESTAÑA == 1 && recibiendoPedidos) || (FLAG_PESTAÑA == 2 && !recibiendoPedidos)) {
-            return;
-        }
-        try {
-            jsonBody.put("id_restaurante", idRestaurante);
-            jsonBody.put("id_zona", idZona);
-            if (FLAG_PESTAÑA == 1) {
-                jsonBody.put("recibir_pedidos", true);
-            } else {
-                jsonBody.put("recibir_pedidos", false);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlCambiarEstadoRecepcionPedidos, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("respuesta cambiar Recibir pedidos " + response);
-                Iterator<String> iterator = response.keys();
-                while (iterator.hasNext()) {
-                    String clave = iterator.next();
-                    if (clave.equals("status")) {
-                        try {
-                            if (response.getString(clave).equals("OK")) {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Toast.makeText(activity, "An error has occurred", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity, "An error has occurred", Toast.LENGTH_SHORT).show();
-            }
-        });
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-
-         */
-
     }
 
     private void cambiarInterfazRecibirPedidos() {
@@ -1467,29 +1090,20 @@ public class GuardarFiltrarProductos extends VistaGeneral {
     }
 
 
-    private void limitarAlturaRecyclerCategorias() {
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-            if (windowManager != null) {
-                windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-                ViewGroup.LayoutParams layoutParams = layoutCategoriasAjustes.getLayoutParams();
-                layoutParams.height = displayMetrics.heightPixels / 3;
-                layoutCategoriasAjustes.setLayoutParams(layoutParams);
-
-            }
-        }
-    }
-
-
+    /**
+     * La función guarda el valor de FLAG_MODO_PEDIDOS en preferencias compartidas.
+     */
     private void guardarModoPedido() {
-        //TODO
         SharedPreferences.Editor editor = sharedTakeAway.edit();
         editor.putInt("FLAG_MODO_PEDIDOS", FLAG_MODO_PEDIDOS);
         editor.apply();
     }
 
 
+    /**
+     * La función "elegirCategoria" oculta un RecyclerView, ajusta la altura de un diseño, muestra un
+     * botón y oculta un TextView.
+     */
     private void elegirCategoria() {
         recyclerCategorias.setVisibility(View.GONE);
         layoutCategoriasAjustes.getLayoutParams().height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
@@ -1498,6 +1112,10 @@ public class GuardarFiltrarProductos extends VistaGeneral {
 
     }
 
+    /**
+     * La función "backCategorias" establece la visibilidad de ciertas vistas como visibles y ajusta la
+     * altura de un diseño.
+     */
     private void backCategorias() {
         recyclerCategorias.setVisibility(View.VISIBLE);
         layoutCategoriasAjustes.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;

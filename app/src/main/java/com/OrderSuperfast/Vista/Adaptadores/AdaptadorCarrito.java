@@ -26,7 +26,6 @@ public class AdaptadorCarrito extends RecyclerView.Adapter<AdaptadorCarrito.View
 
     private ListaProductos mData;
     private AdaptadorCarrito.listener listener;
-    private Context context;
 
 
     public interface listener {
@@ -38,7 +37,6 @@ public class AdaptadorCarrito extends RecyclerView.Adapter<AdaptadorCarrito.View
     public AdaptadorCarrito(ListaProductos lista, Context context, AdaptadorCarrito.listener pListener) {
         this.mData = lista;
         this.listener = pListener;
-        this.context = context;
     }
 
 
@@ -80,7 +78,13 @@ public class AdaptadorCarrito extends RecyclerView.Adapter<AdaptadorCarrito.View
             tvNombre.setText(Html.fromHtml(getTextoProducto(item)));
 
             ImageView imgRemove = itemView.findViewById(R.id.imgRemove);
-            imgRemove.setOnClickListener(v -> listener.onRemoveClick(item));
+            imgRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onRemoveClick(item);
+                    notifyItemRemoved(position);
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,13 +92,23 @@ public class AdaptadorCarrito extends RecyclerView.Adapter<AdaptadorCarrito.View
                     listener.onItemClick(item);
                 }
             });
+
+
             //
         }
 
 
+        /**
+         * La función `getTextoProducto` genera una representación de cadena formateada de un artículo
+         * de producto, incluido su nombre, las opciones elegidas y cualquier instrucción adicional.
+         *
+         * @param item El parámetro "item" es de tipo "ProductoPedido", el cual representa un producto
+         * en un carrito de compras.
+         * @return El método devuelve una cadena que representa el texto de un producto.
+         */
         private String getTextoProducto(ProductoPedido item) {
             String texto = "<b>" + item.getNombre(getIdioma()) + "</b>";
-            ArrayList<Opcion> elementos = item.getListaOpciones();
+            ArrayList<Opcion> elementos = item.getOpcionesElegidas();
             for (int i = 0; i < elementos.size(); i++) {
                 Opcion opcion = elementos.get(i);
                 if(opcion.getEsElemento()) {
@@ -109,11 +123,20 @@ public class AdaptadorCarrito extends RecyclerView.Adapter<AdaptadorCarrito.View
             return texto;
         }
 
+        /**
+         * La función calcula el precio total de un pedido de producto, teniendo en cuenta las opciones
+         * y cantidades adicionales.
+         *
+         * @param item El parámetro item es un objeto de tipo ProductoPedido, que representa un pedido
+         * de producto.
+         * @return El método devuelve una representación de cadena del precio total de un pedido de
+         * producto.
+         */
         private String getPrecio(ProductoPedido item) {
             float precio = Float.valueOf(item.getPrecio());
             float precioExtra = 0;
 
-            ArrayList<Opcion> elementos = item.getListaOpciones();
+            ArrayList<Opcion> elementos = item.getOpcionesElegidas();
 
             for (int i = 0; i < elementos.size(); i++) {
                 Opcion elemento = elementos.get(i);

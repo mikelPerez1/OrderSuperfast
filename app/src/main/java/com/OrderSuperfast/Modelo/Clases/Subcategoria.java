@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Subcategoria implements Serializable {
-    private Map<String,String> nombres;
+    private Map<String,String> nombres; //Map que contiene los codigo del idioma junto con su nombre en dicho idioma
     private String id;
     private String idPadre;
     private ListaProductos lista;
@@ -17,11 +17,6 @@ public class Subcategoria implements Serializable {
         this.id = pId;
         this.idPadre = pIdPadre;
         this.lista = new ListaProductos();
-    }
-
-    public Subcategoria(){
-        this.lista=new ListaProductos();
-        this.nombres=new HashMap<>();
     }
 
     public String getNombre(String idioma) {

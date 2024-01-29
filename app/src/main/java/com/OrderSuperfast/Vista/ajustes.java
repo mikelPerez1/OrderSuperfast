@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.LocaleHelper;
 import com.OrderSuperfast.Vista.Adaptadores.AdapterCategoria;
 import com.OrderSuperfast.Modelo.Clases.Seccion;
 import com.OrderSuperfast.R;
@@ -46,11 +45,7 @@ public class ajustes extends VistaGeneral {
     private final ajustes activity = this;
     private SharedPreferences sharedPreferencesIdiomas;
     private final ajustes context = this;
-    private ImageView bandera, imgSonido, imgNavBack;
-    private TextView textIngles, textEsp, textFr, textAleman, textPort;
-    private LocaleListCompat llc;
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
+    private ImageView imgNavBack;
     private boolean sonido;
     private String idiomaActual = "";
     private Display display;
@@ -114,12 +109,11 @@ public class ajustes extends VistaGeneral {
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         initElementos();
         System.out.println("ROTACION " + display.getRotation());
-        ConstraintLayout layoutNavi = findViewById(R.id.constraintNavigationPedidos);
-        LinearLayout constraintNav = findViewById(R.id.linearLayoutNaviPedidos);
         SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
         inset = prefInset.getInt("inset", 0);
         barra = findViewById(R.id.barraHorizontal);
 
+        //modificar la interfaz si el dispositivo tiene inset
         if (inset > 0) {
             ViewGroup.MarginLayoutParams param = (ViewGroup.MarginLayoutParams) barra.getLayoutParams();
 
@@ -146,7 +140,7 @@ public class ajustes extends VistaGeneral {
         layoutSeleccionarProductosParaFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ajustes.this, GuardarFiltrarProductos.class);
+                Intent intent = new Intent(ajustes.this, Configuracion.class);
                 startActivity(intent);
 
             }
@@ -180,11 +174,7 @@ public class ajustes extends VistaGeneral {
         botonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //idiomaActual = ((Global) context.getApplication()).getIdioma();
-
-
-                System.out.println("sonido ajuste " + sonidoString);
-
+                //guarda en las preferencias compartidas el idioma seleccionado
                 if (idiomaActual != null && !idiomaActual.equals("")) {
                     SharedPreferences sharedPreferences1 = getSharedPreferences("idioma", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor1 = sharedPreferences1.edit();
@@ -192,10 +182,10 @@ public class ajustes extends VistaGeneral {
                     editor1.commit();
 
 
-                    LocaleHelper.setLocale(context, idiomaActual);
 
                 }
 
+                //guarda en las preferencias compartidas el sonido de la alerta de los nuevos pedidos
                 SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
                 SharedPreferences.Editor sonidoEditor = sharedSonido.edit();
                 sonidoEditor.putBoolean("sonido", sonido);
@@ -207,11 +197,7 @@ public class ajustes extends VistaGeneral {
                     sonidoEditor.commit();
                 }
 
-
-                //    sonidoEditor.commit();
-                //   Intent i=new Intent(ajustes.this,MainActivity.class);
-                //  startActivity(i);
-
+                //vuelve a la actividad anterior con el código 300 para indicar que se han hecho cambios
                 Intent data = new Intent();
                 setResult(300, data);
                 finish();
@@ -221,7 +207,6 @@ public class ajustes extends VistaGeneral {
         });
 
 
-        imgSonido = findViewById(R.id.imageSonidoAjustes);
         SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
         sonido = sharedSonido.getBoolean("sonido", true);
 
@@ -323,7 +308,6 @@ public class ajustes extends VistaGeneral {
     private RadioGroup radioGroup;
     private RadioButton selectedRadioButton;
     private RadioButton selectedLanguage;
-    private Switch switchSonido;
 
     /**
      * La función inicializa varios elementos y establece escuchas para una interfaz de configuración
@@ -368,9 +352,6 @@ public class ajustes extends VistaGeneral {
         radioAle = findViewById(R.id.radioAle);
 
         imgPlaySonido = findViewById(R.id.imgPlaySonido);
-
-        switchSonido = findViewById(R.id.switchSonido);
-
         setSonidoChecked();
         setIdiomaChecked();
         setListeners2();
@@ -757,8 +738,6 @@ public class ajustes extends VistaGeneral {
             idioma = "";
         }
 
-        // Imprime el idioma actual para depurar (opcional)
-        System.out.println("idioma es " + idioma);
 
         // Configura el botón de radio correspondiente al idioma encontrado en las preferencias
         switch (idioma) {

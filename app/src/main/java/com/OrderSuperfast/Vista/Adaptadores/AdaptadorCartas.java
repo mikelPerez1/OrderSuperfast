@@ -21,13 +21,16 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/**
+ * Adaptador para las diferentes cartas al hacer un nuevo pedido
+ */
 public class AdaptadorCartas extends RecyclerView.Adapter<AdaptadorCartas.ViewHolder> {
     private ArrayList<Carta> miData;
     private AdaptadorCartas.listener listener;
     private Context context;
 
     public interface listener {
-        void onItemClick(ListaCategorias item);
+        void onItemClick(ListaCategorias item,int position);
     }
 
     public AdaptadorCartas(ArrayList<Carta> listaCartas, Context pContext, AdaptadorCartas.listener listener) {
@@ -67,9 +70,8 @@ public class AdaptadorCartas extends RecyclerView.Adapter<AdaptadorCartas.ViewHo
         public void bindData(Carta item, int position) {
 
 
-
+            //cambiar el color del texto si esta seleccionado el item o no
             if(item.estaSeleccionada()){
-                //TODO cambiar el color de seleccionada
                 tvCarta.setTextColor(Color.BLUE);
             }else{
                 tvCarta.setTextColor(Color.BLACK);
@@ -81,7 +83,7 @@ public class AdaptadorCartas extends RecyclerView.Adapter<AdaptadorCartas.ViewHo
                 public void onClick(View v) {
                     quitarCartaSeleccionada();
                     item.setSeleccionada(true);
-                    listener.onItemClick(item.getListaCategorias());
+                    listener.onItemClick(item.getListaCategorias(),position);
                     notifyItemChanged(position);
                 }
             });
@@ -89,6 +91,11 @@ public class AdaptadorCartas extends RecyclerView.Adapter<AdaptadorCartas.ViewHo
             
         }
 
+        /**
+         * La función "quitarCartaSeleccionada" itera a través de una lista de objetos "Carta" y
+         * establece la propiedad "seleccionada" en falso para el primer objeto que está actualmente
+         * seleccionado.
+         */
         private void quitarCartaSeleccionada(){
             for(int i = 0; i < miData.size();i++){
                 Carta carta = miData.get(i);

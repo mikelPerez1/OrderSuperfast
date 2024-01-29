@@ -3,6 +3,10 @@ package com.OrderSuperfast.Modelo.Clases;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
+/**
+ * Clase abstracta de la que heredan Zona y Dispositivo
+ */
 public abstract class ZonaDispositivoAbstracto implements Serializable {
     private final String nombre;
     private final String id;
@@ -32,11 +36,6 @@ public abstract class ZonaDispositivoAbstracto implements Serializable {
      */
     public String getId() {
         return this.id;
-    }
-
-
-    public boolean getMostrandose() {
-        return this.mostrandose;
     }
 
     public void setMostrandose(boolean bool) {

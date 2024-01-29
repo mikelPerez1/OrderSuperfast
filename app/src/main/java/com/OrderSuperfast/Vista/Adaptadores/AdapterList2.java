@@ -40,19 +40,14 @@ import java.util.List;
 
 public class AdapterList2 extends AdaptadorPedidos {
     private List<PedidoNormal> mData = new ArrayList<>();
-    private List<PedidoNormal> Original = new ArrayList<>();
+    private List<PedidoNormal> Original;
     private final Context context;
     final AdapterList2.OnItemClickListener listener;
     private ViewHolder2 holder2;
-    private boolean mostrarImprimirTicket = false;
     private String estadoActual;
-    private boolean mini = true;
-    private int currentOrientation;
-    private Calendar c1 = Calendar.getInstance();
     private int posicionFiltro = 0;
     private AdapterList2 adapter = this;
     private RecyclerView recycler;
-    int k = 0;
     private int x = 0;
     private String dispName;
 
@@ -67,27 +62,8 @@ public class AdapterList2 extends AdaptadorPedidos {
 
     }
 
-    public void cambiarEstadoFiltro() {
-        System.out.println("estado filtro actual " + estadoActual);
-        if (holder2 != null) {
-            System.out.println("estado filtro actual 2" + estadoActual);
-            System.out.println("posicion filtro " + posicionFiltro);
-
-            holder2.cambiarFiltroDirecto(estadoActual);
-
-        }
-    }
-
     public ViewHolder2 getHolder() {
         return this.holder2;
-    }
-
-    public void setTrueMostrarImprimirTicket() {
-        this.mostrarImprimirTicket = true;
-    }
-
-    public void setFalseMostrarImprimirTicket() {
-        this.mostrarImprimirTicket = false;
     }
 
     public AdapterList2(List<PedidoNormal> itemList, String pEstado, Activity context, RecyclerView pRecycler, String pDisp, OnItemClickListener listener) {
@@ -102,26 +78,13 @@ public class AdapterList2 extends AdaptadorPedidos {
 
         resources = context.getResources();
         this.estadoActual = pEstado;
-        currentOrientation = resources.getConfiguration().orientation;
     }
 
     public void delete() {
-
-        while (mData.size() > 0) {
-            mData.remove(0);
-        }
-        while (Original.size() > 0) {
-            Original.remove(0);
-        }
-        k = 0;
-
+        mData.clear();
+        Original.clear();
     }
 
-    public void copiarLista() {
-        mData = new ArrayList<>();
-        mData.addAll(Original);
-
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -132,19 +95,21 @@ public class AdapterList2 extends AdaptadorPedidos {
         }
     }
 
+    /**
+     * La función filtra una lista de objetos según un texto determinado y actualiza los datos en
+     * consecuencia.
+     *
+     * @param texto El parámetro "texto" es un String que representa el texto que se utilizará para
+     * filtrar los datos.
+     */
     public void filtrarPorTexto(String texto) {
-        System.out.println("elementss 2" + estadoActual + " " + Original.size());
 
         if (texto.equals("")) {
             cambiarestado(estadoActual);
             notifyDataSetChanged();
             return;
         }
-        while (mData.size() > 0) {
-            mData.remove(0);
-        }
-        //mData.add(Original.get(0));
-        System.out.println("filtrar texto " + Original.size());
+        mData.clear();
 
         for (int i = 0; i < Original.size(); i++) {
             PedidoNormal p = Original.get(i);
@@ -164,6 +129,16 @@ public class AdapterList2 extends AdaptadorPedidos {
     }
 
 
+    /**
+     * La función "contieneTexto" comprueba si un texto determinado está contenido en el número de
+     * pedido, nombre del cliente, apellido del cliente o cualquier nombre de producto en un pedido
+     * determinado.
+     *
+     * @param item El parámetro "item" es de tipo PedidoNormal, que representa un orden normal.
+     * @param texto El parámetro "texto" es un String que representa el texto que queremos comprobar si
+     * está contenido en el objeto "item" dado.
+     * @return El método devuelve un valor booleano.
+     */
     private boolean contieneTexto(PedidoNormal item, String texto) {
         String num = String.valueOf(item.getNumPedido()).toLowerCase();
         System.out.println("filtrar comparar " + num + " " + texto);
@@ -187,6 +162,15 @@ public class AdapterList2 extends AdaptadorPedidos {
         return false;
     }
 
+    /**
+     * La función "buscarPedido" busca un número de pedido específico en una lista de pedidos normales
+     * y devuelve verdadero si lo encuentra, falso en caso contrario.
+     *
+     * @param numP El parámetro "numP" es un número entero que representa el número del pedido que
+     * queremos buscar.
+     * @return El método devuelve un valor booleano. Devuelve verdadero si se encuentra un pedido con
+     * el numP (número de pedido) especificado en la lista mData, y falso en caso contrario.
+     */
     public boolean buscarPedido(int numP) {
         for (int i = 0; i < mData.size(); i++) {
             PedidoNormal element = mData.get(i);
@@ -197,6 +181,16 @@ public class AdapterList2 extends AdaptadorPedidos {
         return false;
     }
 
+    /**
+     * La función "posicionPedido" devuelve el índice de un elemento específico en una lista de objetos
+     * PedidoNormal en función de su atributo numPedido.
+     *
+     * @param numP El parámetro "numP" es un número entero que representa el número de un pedido
+     * específico.
+     * @return El método devuelve la posición del pedido (pedido) con el numP (número de pedido) dado
+     * en la lista mData. Si se encuentra el pedido, el método devuelve el índice del pedido en la
+     * lista. Si no se encuentra el pedido, el método devuelve -1.
+     */
     public int posicionPedido(int numP) {
         for (int i = 0; i < mData.size(); i++) {
             PedidoNormal element = mData.get(i);
@@ -210,7 +204,6 @@ public class AdapterList2 extends AdaptadorPedidos {
 
     @Override
     public int getItemCount() {
-
         return mData.size();
     }
 
@@ -219,37 +212,21 @@ public class AdapterList2 extends AdaptadorPedidos {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view;
-
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
-        int dimenSmallTablet = (int) resources.getDimension(R.dimen.smallTablet);
-/*
-        if ((dimen > 10 || dimenSmallTablet > 10) && currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
-            mini = true;
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.take_away_pedido_mini_portrait, parent, false);
-
-        } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pedido_take_away, parent, false);
-
-        }
-
- */
-
+        //Dependiendo del viewtype y de las dimensiones del dispositivo, infla una vista u otra
         if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && dimen < 10) {
             if (viewType == 0) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_top_lista, parent, false);
                 return new AdapterList2.ViewHolder2(view);
             } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pedido_take_away_2_tablet, parent, false);
-                System.out.println("View 1 port");
             }
         } else {
             if (viewType == 0 && dimen < 10) {
-                System.out.println(" view type 0 land");
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_top_lista, parent, false);
                 return new AdapterList2.ViewHolder2(view);
             } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pedido_take_away_2, parent, false);
-                System.out.println("View 2 tablet");
             }
 
         }
@@ -265,10 +242,12 @@ public class AdapterList2 extends AdaptadorPedidos {
             AdapterList2.ViewHolder h = (AdapterList2.ViewHolder) holder;
             h.bindData(mData.get(position), position);
         } else if (holder instanceof AdapterList2.ViewHolder2) {
+            //Viewholder que implementa el elemento que constituye el nombre del dispositivo, el buscador y los filtros
+            //en el recyclerview para cuando el dispositivo es de unas dimensiones de una tablet o más grande y en orientación vertical
+
             AdapterList2.ViewHolder2 h = (AdapterList2.ViewHolder2) holder;
             h.bindData(mData.get(position), position);
             holder2 = (AdapterList2.ViewHolder2) holder;
-            // ((ViewHolder2) holder).scrollFiltros.setNestedScrollingEnabled(false);
             ((ViewHolder2) holder).scrollFiltros.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -418,151 +397,6 @@ public class AdapterList2 extends AdaptadorPedidos {
         }
 
     }
-
-    /**
-     * La función `filtrar` filtra una lista de objetos `PedidoNormal` basándose en los parámetros
-     * `status` y `text` proporcionados.
-     *
-     * @param status El parámetro "status" es una cadena que representa el estado de un pedido. Puede
-     * tener valores como "ACEPTADO", "PENDIENTE", "LISTO", "CANCELADO", etc.
-     * @param text El parámetro "texto" es una cadena que representa el texto que se utiliza para
-     * filtrar los datos. Se utiliza para comprobar si alguno de los campos del objeto "PedidoNormal"
-     * contiene este texto.
-     */
-    public void filtrar(String status, String text) {
-        /*
-        if (Original.size() == 0) {
-            this.Original.addAll(mData);
-
-        }
-
-         */
-
-        //System.out.println(mData);
-
-        mData.clear();
-        List<PedidoNormal> collect = new ArrayList<>();
-
-
-        System.out.println("filtra" + status + text + "a");
-
-        if (text.equals("")) {
-            System.out.println("filtra" + status + " no texto" + Original.size());
-
-            if (status.equals(resources.getString(R.string.filtroOperativo))) {
-                System.out.println("filtra" + status + " dentro" + Original.size());
-
-                for (int i = 0; i < Original.size(); i++) {
-                    System.out.println("filtra" + status + " " + Original.size());
-
-                    PedidoNormal elemento = Original.get(i);
-                    if (elemento.getEstado().equals(resources.getString(R.string.botonAceptado)) || elemento.getEstado().equals("ACEPTADO")) {
-
-                        mData.add(elemento);
-
-                    }
-
-
-                }
-                for (int i = 0; i < Original.size(); i++) {
-                    PedidoNormal elemento = Original.get(i);
-
-                    if (elemento.getEstado().equals(resources.getString(R.string.botonPendiente)) || elemento.getEstado().equals("PENDIENTE")) {
-                        System.out.println("filtro operativo elemento " + elemento.getNumPedido());
-                        if (elemento.getPrimera()) {
-                            mData.add(0, elemento);
-                        } else {
-                            mData.add(elemento);
-
-                        }
-
-                    }
-                }
-            } else if (status.equals(resources.getString(R.string.botonListo))) {
-                for (int i = 0; i < Original.size(); i++) {
-                    PedidoNormal elemento = Original.get(i);
-
-
-                    if (elemento.getEstado().equals(resources.getString(R.string.botonListo))) {
-                        if (!masDeDosDias(elemento.getFecha())) {
-                            mData.add(elemento);
-
-                        }
-                    }
-
-                }
-                for (int i = 0; i < Original.size(); i++) {
-                    PedidoNormal elemento = Original.get(i);
-
-                    if (elemento.getEstado().equals(resources.getString(R.string.botonCancelado))) {
-
-                        mData.add(elemento);
-
-                    }
-                }
-            } else {
-                for (int i = 0; i < Original.size(); i++) {
-                    PedidoNormal elemento = Original.get(i);
-
-                    if (!status.equals("")) {
-                        if (elemento.getEstado().equals(status)) {
-                            if (!text.equals("")) {
-                                if (elemento.getPrimera()) {
-                                    mData.add(0, elemento);
-                                } else {
-                                    mData.add(elemento);
-
-                                }
-                            } else {
-                                if (elemento.getPrimera()) {
-                                    mData.add(0, elemento);
-                                } else {
-                                    mData.add(elemento);
-
-                                }
-                            }
-                        }
-                    } else {
-                        if (elemento.getEstado().equals(resources.getString(R.string.botonListo))) {
-                            if (!masDeDosDias(elemento.getFecha())) {
-                                if (elemento.getPrimera()) {
-                                    mData.add(0, elemento);
-                                } else {
-                                    mData.add(elemento);
-                                }
-                            }
-                        } else {
-                            if (elemento.getPrimera()) {
-                                mData.add(0, elemento);
-                            } else {
-                                mData.add(elemento);
-                            }
-
-                        }
-                    }
-                }
-
-            }
-        } else {
-            System.out.println("filtra" + status + " si texto" + Original.size());
-
-            for (int i = 0; i < Original.size(); i++) {
-                PedidoNormal elemento = Original.get(i);
-
-                if (String.valueOf(elemento.getNumPedido()).contains(text) || elemento.getMesa().toLowerCase().contains(text) || contieneTexto(elemento, text) || elemento.getCliente().getNombre().toLowerCase().contains(text) || elemento.getCliente().getApellido().toLowerCase().contains(text) || elemento.getCliente().getCorreo().toLowerCase().contains(text) || elemento.getCliente().getNumero_telefono().toLowerCase().contains(text)) {
-                    mData.add(elemento);
-                    System.out.println("pedido filtrado " + Original.get(i));
-                }
-            }
-        }
-
-
-        notifyDataSetChanged();
-
-
-    }
-
-
     /**
      * La función "parpadeo" actualiza la propiedad "parpadeo" de un elemento específico en una lista
      * en función de un valor de pedido determinado.
@@ -605,8 +439,9 @@ public class AdapterList2 extends AdaptadorPedidos {
 
         void bindData(final PedidoNormal item, int position) {
 
+            //Si es el elemento que está solo para mostrarse en dispositivos de dimensiones como
+            //tablet o más grande y en orientación vertical, se oculta si no se cumplen dichas condiciones
             if (item.getEsPlaceHolder()) {
-
                 int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
                 if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || dimen > 10) {
                     layoutTodo.setVisibility(View.GONE);
@@ -615,8 +450,6 @@ public class AdapterList2 extends AdaptadorPedidos {
                 }
                 return;
             } else {
-                System.out.println("noEsPlaceHolder " +item.getNumPedido());
-
                 numOrden.setText(resources.getString(R.string.num_pedido) + " " + item.getNumPedido());
                 fechaProgramada.setText(item.getMesa());
                 img.setVisibility(View.GONE);
@@ -624,7 +457,7 @@ public class AdapterList2 extends AdaptadorPedidos {
                 setBarColor(item);
                 boolean parpadeo = item.getParpadeo();
                 String botonPendiente = resources.getString(R.string.botonPendiente);
-                System.out.println("item " + item.getNumPedido() + " parpadeo " + item.getParpadeo());
+                //cambia el color de la barra de los pedidos nuevos haciendo un efecto de parpadeo segun el flag "parpadeo"
                 if (item.getEstado().equals(botonPendiente)) {
                     if (parpadeo) {
                         pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.black, context.getTheme())));
@@ -642,18 +475,10 @@ public class AdapterList2 extends AdaptadorPedidos {
                     cardPedido.setCardBackgroundColor(resources.getColor(R.color.white, context.getTheme()));
                 }
 
-            /*
-            if(item.getActual()){
-                cardPedido.setCardBackgroundColor(resources.getColor(R.color.gris, context.getTheme()));
-            }else{
-                cardPedido.setCardBackgroundColor(resources.getColor(R.color.white, context.getTheme()));
-            }
-             */
-
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        item.setPrimera(false);
+                        item.setPrimera(false); //pone a false el atributo primera del pedido clickado
                         listener.onItemClick(item, position);
                         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
                         if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || (dimen < 10 && resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)) {
@@ -692,7 +517,7 @@ public class AdapterList2 extends AdaptadorPedidos {
                     pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.verdeOscuro, context.getTheme())));
                     break;
                 case "CANCELADO":
-                    pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.colorcancelado, context.getTheme())));
+                    pedidoSeleccionado.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.color_cancelado, context.getTheme())));
                     break;
 
             }
@@ -791,7 +616,6 @@ public class AdapterList2 extends AdaptadorPedidos {
          * interfaz de usuario y maneja sus eventos de clic y desplazamiento.
          */
         private void initListenerFiltros() {
-            int dimenFlecha = (int) resources.getDimension(R.dimen.dimen30dp);
             imgFlechaIzq.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -803,8 +627,6 @@ public class AdapterList2 extends AdaptadorPedidos {
                     }
 
                     int act = scrollFiltros.getWidth();
-                    System.out.println("scrollwidth " + act + " " + dimenFlecha);
-                    //scrollFiltros.smoothScrollBy(-act+140,0);
                     View viewFiltro = getScrollChild(posicionFiltro);
                     int x = getScrollXForChild(scrollFiltros, viewFiltro);
                     scrollFiltros.smoothScrollTo(x, 0);

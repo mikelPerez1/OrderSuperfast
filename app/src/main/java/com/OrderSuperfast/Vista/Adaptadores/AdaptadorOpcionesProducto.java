@@ -78,8 +78,13 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
         return listaElementos;
     }
 
-    //Revisar esta funcion
-    public boolean isAtLeastOneItemSelected() {
+    /**
+     * La función comprueba si se han seleccionado todas las opciones obligatorias necesarias
+     *
+     * @return El método devuelve un valor booleano que indica si hay al menos un elemento
+     * seleccionado.
+     */
+    public boolean opcionesObligatoriasSeleccionadas() {
         boolean mandatory = false;
         boolean faltaSeleccionar = false;
         int min = 0;
@@ -87,23 +92,29 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
         int seleccionados = 0;
         for (int i = 0; i < mData.size(); i++) {
             Object item = mData.get(i);
+            //si es una opción y no es un elemento de la opción
             if (item instanceof Opcion && !((Opcion) item).getEsElemento()) {
                 if (mandatory) {
+                    //si de la opcion se han seleccionado menos / más de los que se pueden
+                    //devuelve true
                     if (min > seleccionados || max < seleccionados) {
                         faltaSeleccionar = true;
                     }
                 }
+
                 if (((Opcion) item).getEsObligatorio()) {
+                    //Si es obligatorio coge el maximo y el minimo de posibles elementos que se puedan seleccionar
                     mandatory = true;
                     min = ((Opcion) item).getCantidadMinima();
                     max = ((Opcion) item).getCantidadMaxima();
                 } else {
                     mandatory = false;
                 }
+                //se vuelve a poner a 0 los elementos de la opcion seleccionada porque ha cambiado de opción
                 seleccionados = 0;
 
             } else if (mandatory && (item instanceof Opcion && ((Opcion) item).getEsElemento()) && ((Opcion) item).getSeleccionado()) {
-                seleccionados++;
+                seleccionados++; //aumenta el número de elementos seleccionados de la opción
 
             }
 
@@ -128,17 +139,16 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
         if (item instanceof Opcion) {
             Opcion opcion = (Opcion) item;
             if (!opcion.getEsElemento()) {
-
-                return 1;
+                return 1; //Si es opción
             } else {
                 if (opcion.getTipoOpcion().equals("unico")) {
-                    return 3;
+                    return 3; //si es elemento de opción de tipo unico
                 } else {
-                    return 2;
+                    return 2;//si es elemento de opción de tipo multiple
                 }
             }
         } else if (item instanceof String) {
-            return 4;
+            return 4; // si es String (para las instrucciones del producto)
         }
 
         return super.getItemViewType(position);
@@ -180,67 +190,40 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
         } else{
             holder.setInstruccionesListener((String) item);
         }
-        System.out.println("elemento no es opcion "+position);
-
-
     }
 
-
+    /**
+     * La función recorre en iteración una lista de opciones y comprueba si se ha seleccionado el
+     * número máximo de elementos para cada opción.
+     */
     private void getMaxElementsSelected() {
-        //TODO modificar esta funcion
         String idPadre = "";
         int numSelected = 0;
+        int cantidadMaxima = 0;
         for (int i = 0; i < mData.size(); i++) {
             if (mData.get(i) instanceof Opcion) {
                 Opcion opcion = (Opcion) mData.get(i);
-                if (opcion.getTipoOpcion().equals("multiple") && opcion.getSeleccionado()) {
+                if(!opcion.getEsElemento()){
+                    cantidadMaxima = opcion.getCantidadMaxima();
+                }
+                if (opcion.getTipoOpcion().equals("multiple") && opcion.getEsElemento() && opcion.getSeleccionado()) {
                     numSelected++;
-                    if (numSelected >= opcion.getCantidadMaxima()) {
+                    if (numSelected >= cantidadMaxima) {
+                        //si se han seleccionado el número máximo de los elementos de la opción, se añade a elementosMaximosSeleccionados
                         if (!elementosMaximosSeleccionados.contains(opcion.getIdOpcion())) {
                             elementosMaximosSeleccionados.add(opcion.getIdOpcion());
                         }
                     }
                 }
-                if (!idPadre.equals(opcion.getIdOpcion())) {
+                if (!idPadre.equals(opcion.getIdOpcion()) && !opcion.getEsElemento()) {
                     numSelected = 0;
-                }
-                idPadre = opcion.getIdOpcion();
-            }
+                    idPadre = opcion.getIdOpcion();
 
-
-            /*
-            if (mData.get(i) instanceof Opcion) {
-                Opcion opcion = (Opcion) mData.get(i);
-                if (opcion.getListaElementos().getElemento(0) instanceof ElementoMultiple) {
-                    int numSelected = getNumberSelected(opcion);
-                    if (numSelected >= opcion.getCantidadMaxima()) {
-                        if (!elementosMaximosSeleccionados.contains(opcion.getId())) {
-                            elementosMaximosSeleccionados.add(opcion.getId());
-                        }
-                    }
                 }
             }
-
-             */
         }
     }
-/*
-    private int getNumberSelected(Opcion opcion) {
 
-        ListaElementos listaElementos = opcion.getListaElementos();
-        int numSeleccionados = 0;
-        for (int i = 0; i < listaElementos.size(); i++) {
-            Elemento elemento = listaElementos.getElemento(i);
-            if (elemento.getSeleccionado()) {
-                numSeleccionados++;
-            }
-        }
-
-        return numSeleccionados;
-        //lo añado y si está lo quito
-    }
-
- */
 
     @Override
     public int getItemCount() {
@@ -290,6 +273,7 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
             TextView textElementoMultiple = itemView.findViewById(R.id.elementoCheckbox);
             textElementoMultiple.setText(item.getNombreElemento(getIdioma()));
 
+            //Si se han seleccionado el máximo de elementos de una opción de tipo multiple, se pone en gris los demás elementos no seleccionados
             if (elementosMaximosSeleccionados.contains(item.getIdOpcion()) && !item.getSeleccionado()) {
                 textElementoMultiple.setTextColor(resources.getColor(R.color.grisClaroNI, context.getTheme()));
             } else {
@@ -297,6 +281,7 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
             }
 
             ConstraintLayout layout_borde_elemento = itemView.findViewById(R.id.layout_borde_elemento);
+            //si el item esta seleccionado se cambia el background y se muestra la imagen de un check
             if (item.getSeleccionado()) {
                 layout_borde_elemento.setBackground(resources.getDrawable(R.drawable.background_borde_seleccionado, context.getTheme()));
                 imgCheck.setVisibility(View.VISIBLE);
@@ -308,9 +293,12 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //si se clicka en un elemento que no estaba seleccionado teniendo el número máximo de
+                    //elementos seleccionados, no hace nada
                     if (elementosMaximosSeleccionados.contains(item.getIdOpcion()) && !item.getSeleccionado()) {
                         return;
                     }
+                    // si no, se selecciona y se comprueba si se ha llegado al máximo de elementos seleccionados o no y se notifica
                     item.setSeleccionado(!item.getSeleccionado());
                     OpcionDeLista op = getOpcionSeleccionada(item.getIdOpcion(), position);
                     int numSeleccionados = addElementoOpcion(op.getOpcion(), op.getPosicion());
@@ -318,10 +306,9 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
                         elementosMaximosSeleccionados.add(item.getIdOpcion());
                         notifyElements(item.getIdOpcion(), item.getIdElemento());
                     } else {
-                        if (elementosMaximosSeleccionados.contains(op.getOpcion().getIdOpcion())) {
-                            elementosMaximosSeleccionados.remove(op.getOpcion().getIdOpcion());
-                            notifyElements(op.getOpcion().getIdOpcion(), item.getIdElemento());
-
+                        if (elementosMaximosSeleccionados.contains(item.getIdOpcion())) {
+                            elementosMaximosSeleccionados.remove(item.getIdOpcion());
+                            notifyElements(item.getIdOpcion(), item.getIdElemento());
                         }
 
                     }
@@ -334,6 +321,13 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
 
         }
 
+        /**
+         * La función recorre en iteración una lista de objetos y notifica al adaptador si se cumple
+         * una condición específica.
+         *
+         * @param idOpcion La identificación de la opción que necesita ser notificada.
+         * @param itemId El parámetro itemId es una cadena que representa el ID de un artículo.
+         */
         private void notifyElements(String idOpcion, String itemId) {
             for (int i = 0; i < mData.size(); i++) {
                 Object objeto = mData.get(i);
@@ -357,9 +351,8 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
             TextView textElementoUnico = itemView.findViewById(R.id.elementoCheckbox);
             textElementoUnico.setText(item.getNombreElemento(getIdioma()));
             ImageView imgCheck = itemView.findViewById(R.id.imgCheck);
-            String seleccionado = gruposRadioButtons.get(groupId);
             ConstraintLayout layout_borde_elemento = itemView.findViewById(R.id.layout_borde_elemento);
-
+            //cambia la vista del item según si esta seleccionado o no
             if (item.getSeleccionado()) {
                 layout_borde_elemento.setBackground(resources.getDrawable(R.drawable.background_borde_seleccionado, context.getTheme()));
                 imgCheck.setVisibility(View.VISIBLE);
@@ -372,15 +365,12 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
                 @Override
                 public void onClick(View view) {
 
-
+                    //se añade el id del elemento junto con otro id que indica el id del grupo para que
+                    //solo se pueda tener seleccionado 1 elemento del grupo
                     quitarSeleccionDemas(item.getIdElemento(), groupId);
-
                     item.setSeleccionado(true);
                     gruposRadioButtons.replace(groupId, item.getIdElemento());
 
-
-                    // Actualiza todos los RadioButtons después de cada clic
-                    System.out.println("actualizar");
                     listener.onUniqueClick(item);
                     notifyDataSetChanged();
 
@@ -388,9 +378,15 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
             });
 
 
-            // Resto de la lógica para configurar los RadioButtons según tu diseño
         }
 
+        /**
+         * La función "quitarSeleccionDemas" itera a través de una lista de objetos y establece la
+         * propiedad "seleccionado" en falso para los objetos que cumplen ciertas condiciones.
+         *
+         * @param id El parámetro "id" es una cadena que representa el ID de un elemento.
+         * @param idPadre El parámetro "idPadre" representa el ID principal de una opción.
+         */
         private void quitarSeleccionDemas(String id, String idPadre) {
             for (int i = 0; i < mData.size(); i++) {
                 Object objeto = mData.get(i);
@@ -405,8 +401,11 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
         }
 
         void bindData(final Opcion item, int position) {
+            //este apartado pone el nombre de la opción, si es obligatorio o no y cuantos elementos se
+            //pueden escoger
             TextView tvNombre = itemView.findViewById(R.id.tvNombreOpcion);
             tvNombre.setText(item.getNombreOpcion(getIdioma()));
+
 
             if (position == 0) {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tvNombre.getLayoutParams();
@@ -415,7 +414,6 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
             }
 
             TextView elementosPosibles = itemView.findViewById(R.id.elementosPosibles);
-            TextView tipoOpcion = itemView.findViewById(R.id.tipoOpcion);
             CardView cardEsOlbigatorio = itemView.findViewById(R.id.cardEsOlbigatorio);
 
             if (item.getCantidadMinima() == item.getCantidadMaxima()) {
@@ -434,7 +432,16 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
 
         }
 
-        //TODO cambiar la clase opcionDeLista por un objeto que devuelva como argumentos [Opcion,posicion]
+        /**
+         * La función `getOpcionSeleccionada` devuelve la opción seleccionada de una lista comenzando
+         * desde una posición determinada.
+         *
+         * @param pIdOpcion El parámetro "pIdOpcion" es un String que representa el ID de la opción que
+         * se busca en la lista.
+         * @param startPosition El parámetro `startPosition` es el índice desde donde el bucle debe
+         * comenzar a iterar hacia atrás a través de la lista `mData`.
+         * @return El método devuelve un objeto de tipo OpciónDeLista.
+         */
         private OpcionDeLista getOpcionSeleccionada(String pIdOpcion, int startPosition) {
 
             for (int i = startPosition - 1; i >= 0; i--) {
@@ -447,6 +454,9 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
             return null;
         }
 
+        /**
+         * La clase "OpcionDeLista" representa una opción en una lista con su posición correspondiente.
+         */
         public class OpcionDeLista {
             private Opcion opcion;
             private int posicion;
@@ -474,7 +484,6 @@ public class AdaptadorOpcionesProducto extends RecyclerView.Adapter<AdaptadorOpc
          */
         private int addElementoOpcion(Opcion opcion, int position) {
             int numSeleccionados = 0;
-            String idPadre = opcion.getIdOpcion();
             for (int i = position; i < mData.size(); i++) {
                 Object elemento = mData.get(i);
                 if (elemento instanceof Opcion && ((Opcion) elemento).getEsElemento()) {

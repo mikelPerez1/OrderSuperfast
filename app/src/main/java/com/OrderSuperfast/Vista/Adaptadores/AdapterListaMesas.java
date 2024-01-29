@@ -32,7 +32,6 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Mesa> Original = new ArrayList<>();
     private final Context context;
     final AdapterListaMesas.OnItemClickListener listener;
-    private AdapterListaMesas.ViewHolder holder;
     private boolean parpadeo = false;
     private ViewHolder2 holder2;
     private boolean esMovil;
@@ -49,15 +48,13 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
+    /**
+     * La función "quitarFiltrado" borra la variable "textoFiltrando" y luego llama a la función
+     * "filtrarPorTexto" con la variable borrada como argumento para quitar el filtro por texto
+     */
     public void quitarFiltrado(){
         textoFiltrando = "";
         filtrarPorTexto(textoFiltrando);
-    }
-
-    public void reFiltrar(){
-        if(!textoFiltrando.equals("")) {
-            filtrarPorTexto(textoFiltrando);
-        }
     }
 
     public AdapterListaMesas(List<Mesa> itemList, Activity context, boolean esMovil, AdapterListaMesas.OnItemClickListener listener) {
@@ -70,16 +67,24 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
+    /**
+     * La función "copiarLista" crea una nueva ArrayList llamada "Original" y copia en ella todos los
+     * elementos del ArrayList "mData".
+     */
     public void copiarLista() {
         this.Original = new ArrayList<>();
         this.Original.addAll(mData);
     }
 
-    public ViewHolder2 getHolder2() {
-        return this.holder2;
-    }
 
 
+    /**
+     * La función `filtrarPorTexto` filtra una lista de objetos en función de un texto determinado y
+     * actualiza la lista filtrada.
+     *
+     * @param texto El parámetro "texto" es un String que representa el texto que se utilizará para
+     * filtrar los datos.
+     */
     public void filtrarPorTexto(String texto) {
 
         if (texto.equals("")) {
@@ -97,14 +102,10 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             mData.clear();
         }
-        //mData.add(Original.get(0));
         System.out.println("filtrar texto " + Original.size());
 
         for (int i = 1; i < Original.size(); i++) {
             Mesa p = Original.get(i);
-            //  if (p.getEsPlaceHolder()) {
-            //  mData.add(0, p);
-            //  } else {
             boolean contiene = contieneTexto(p, texto);
             if (contiene) {
                 System.out.println("filtrar contiene " + contiene);
@@ -120,6 +121,16 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
+    /**
+     * La función "contieneTexto" verifica si un texto determinado está presente en la lista de pedidos
+     * o en el nombre de un objeto Mesa.
+     *
+     * @param item El parámetro "elemento" es de tipo "Mesa", que probablemente sea una clase que
+     * representa una mesa o un objeto de mesa en un restaurante o entorno similar.
+     * @param texto El parámetro "texto" es un String que representa el texto que queremos comprobar si
+     * está contenido en los valores "numPedidos" o "item.getNombre()".
+     * @return El método devuelve un valor booleano.
+     */
     private boolean contieneTexto(Mesa item, String texto) {
         List<String> listaNumPedidos = new ArrayList<>();
         String numPedidos = "";
@@ -128,34 +139,22 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
             numPedidos += String.valueOf(item.getElement(i).getNumPedido()).toLowerCase() + ", ";
 
         }
-
-        /*
-        if (item.getEsPlaceHolder()) {
-            return true;
-        }
-
-         */
-
         if (numPedidos.contains(texto.toLowerCase()) || item.getNombre().toLowerCase().contains(texto)) {
             System.out.println("filtrar texto si mesa");
 
             return true;
-        } else {
-            /*
-            ArrayList<ProductoPedido> lista = item.getListaProductos().getLista();
-            for (int i = 0; i < lista.size(); i++) {
-                ProductoPedido p = lista.get(i);
-                if (p.getNombre().toLowerCase().contains(texto)) {
-                    return true;
-                }
-            }
-
-             */
         }
-
         return false;
     }
 
+    /**
+     * La función devuelve la posición de un elemento en una lista según su nombre.
+     *
+     * @param nombreMesa El parámetro "nombreMesa" es un String que representa el nombre de una tabla.
+     * @return El método devuelve la posición del elemento con el nombreMesa dado en la lista mData. Si
+     * se encuentra el elemento, el método devuelve el índice del elemento en la lista. Si no se
+     * encuentra el elemento, el método devuelve -1.
+     */
     public int getPositionOfItem(String nombreMesa) {
         for (int i = 0; i < mData.size(); i++) {
             Mesa m = mData.get(i);
@@ -167,12 +166,20 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void delete() {
-
         mData.clear();
         Original.clear();
     }
 
 
+    /**
+     * La función busca un objeto Mesa en una lista basándose en su atributo nombre y lo devuelve si lo
+     * encuentra, de lo contrario devuelve nulo.
+     *
+     * @param nombre El parámetro "nombre" es un String que representa el nombre de la mesa que estamos
+     * buscando.
+     * @return El método devuelve un objeto de tipo "Mesa" si se encuentra una mesa con el nombre dado
+     * en la lista mData. Si no se encuentra ninguna mesa, devuelve nulo.
+     */
     public Mesa buscarMesa(String nombre) {
         for (int i = 0; i < mData.size(); i++) {
             Mesa m = mData.get(i);
@@ -184,6 +191,10 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
         return null;
     }
 
+    /**
+     * La función reorganiza una lista de objetos Mesa según ciertos criterios y actualiza el conjunto
+     * de datos. Las mesas que tengan pedidos nuevos saldrán al principio, luego las que tengan pedidos y por último las mesas sin pedidos
+     */
     public void reorganizar() {
 
         int inic;
@@ -226,10 +237,32 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
+    /**
+     * La función ordena dos nombres alfabéticamente.
+     *
+     * @param name1 El primer nombre a comparar.
+     * @param name2 El parámetro "nombre2" es una variable de cadena que representa el segundo nombre
+     * que se comparará en el proceso de clasificación.
+     * @return El método devuelve el resultado de comparar los dos nombres utilizando el método
+     * compareTo.
+     */
     private int sortByName(String name1, String name2) {
         return name1.compareTo(name2);
     }
 
+    /**
+     * La función ordena dos ArrayLists de objetos PedidoNormal según el número de pedido del primer
+     * pedido pendiente en cada lista.
+     *
+     * @param array1 Un ArrayList de objetos PedidoNormal.
+     * @param array2 Un ArrayList de objetos PedidoNormal.
+     * @return El método devuelve un valor entero que representa el orden en el que se deben ordenar
+     * las dos matrices. Los posibles valores de retorno son:
+     * - 0: si ambos arrays no tienen órdenes pendientes
+     * - -1: si solo el primer array tiene órdenes pendientes
+     * - 1: si solo el segundo array tiene órdenes pendientes
+     * - 1: si ambos arrays tienen órdenes pendientes y la orden pendiente del primer array
+     */
     private int sortByOrders(ArrayList<PedidoNormal> array1, ArrayList<PedidoNormal> array2) {
         int numPedido1 = -1, numPedido2 = -1;
         int orden = 0;
@@ -266,6 +299,16 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
+    /**
+     * La función ordena dos elementos según si tienen pedidos o no
+     *
+     * @param size1 El tamaño del primer elemento.
+     * @param size2 El parámetro "tamaño2" representa el tamaño del segundo elemento que se compara.
+     * @param name1 El primer nombre a comparar.
+     * @param name2 El parámetro "nombre2" es una cadena que representa el nombre del segundo elemento
+     * que se compara.
+     * @return El método devuelve un valor entero.
+     */
     private int sortByIsActive(int size1, int size2, String name1, String name2) {
         if (size1 == 0 && size2 == 0) {
 
@@ -338,8 +381,8 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         TextView tvNombreMesa;
         CardView cardPedido;
-        ConstraintLayout pedidoSeleccionado, lineaDiv;
-        int color;
+        ConstraintLayout pedidoSeleccionado,
+                lineaDiv;// linea que separa las mesas con pedidos de las mesas que no tienen pedidos
 
 
         ViewHolder(View itemView) {
@@ -364,9 +407,7 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
             int color = setColorBarra(item.getLista());
-            System.out.println("elements in array " + mData.size());
             tvNombreMesa.setText(item.getNombre());
-            System.out.println("adapter mesa seleccionada " + item.getNombre() + " " + item.getSeleccionada());
             fondoSeleccionada(item.getSeleccionada());
             boolean hayPedidosNuevos = item.hayPedidoNuevo();
             parpadeoPedido(hayPedidosNuevos, color);
@@ -397,6 +438,14 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         }
 
+        /**
+         * La función `setColorBarra` devuelve un color basado en el estado de la matriz dada de
+         * objetos `PedidoNormal`. Si todos los pedidos de la mesa están listos, devuelve el color azul.
+         * Si tiene pedidos no completados, devuelve el color verde y si no tiene pedidos el color negro.
+         *
+         * @param array Un ArrayList de objetos de tipo PedidoNormal.
+         * @return El método devuelve un valor entero que representa un recurso de color.
+         */
         private int setColorBarra(ArrayList<PedidoNormal> array) {
             int color;
             if (array.size() == 0) {
@@ -419,7 +468,8 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-
+    //Viewholder que implementa el elemento que constituye el nombre del dispositivo, el buscador
+    //en el recyclerview para cuando el dispositivo es de unas dimensiones de una tablet o más grande y en orientación vertical
     public class ViewHolder2 extends RecyclerView.ViewHolder implements androidx.appcompat.widget.SearchView.OnQueryTextListener {
 
         TextView nombreDispositivo;
@@ -442,10 +492,8 @@ public class AdapterListaMesas extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         private void setSearchListeners() {
             search.setListaActivity((Activity) context);
-
             search.setOnQueryTextListener(this);
             ImageView bot = search.findViewById(androidx.appcompat.R.id.search_close_btn);
-
             bot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

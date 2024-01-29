@@ -119,24 +119,19 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
     }
 
     public void delete() {
-
-        while (mData.size() > 0) {
-            mData.remove(0);
-        }
-
-
-    }
-
-
-    public void cambiarParpadeo() {
-        this.parpadeo = !parpadeo;
+        mData.clear();
     }
 
     public void setTacharHabilitado(boolean pBool) {
         this.tacharProductos = pBool;
-
     }
 
+    /**
+     * La función "cancelarTachar" cancela o desmarca todos los productos seleccionados y borra la
+     * lista actual de productos.
+     *
+     * @param pBool Un valor booleano que determina si los productos deben tacharse o no.
+     */
     public void cancelarTachar(boolean pBool) {
         this.tacharProductos = pBool;
         holder.adapterProductos.destacharTodos();
@@ -154,8 +149,7 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
     @Override
     public AdapterPedidosMesa.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-
-        System.out.println("current layout type " + currentLayout);
+        //diferentes views que inflar dependiendo de si es movil o tablet y el tipo de layout
         if (currentLayout == 200) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_pedido_mesa_wrap, parent, false);
 
@@ -183,21 +177,30 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
 
     }
 
+    /**
+     * La función establece la variable booleana "flechaMostrandose" en falso y notifica a los
+     * observadores sobre un cambio en el conjunto de datos.
+     */
     private void setFalseFlagDesplegableMostrandose() {
-        //if(holder != null) {
-        System.out.println("poner flecha null ");
         flechaMostrandose = false;
         notifyDataSetChanged();
-        //}
+
     }
 
 
+    /**
+     * La función "reiniciarConf()" restablece la configuración llamando a otras funciones auxiliares.
+     */
     public void reiniciarConf() {
         reiniciarPosicionAnimacion();
         setFalseFlagDesplegableMostrandose();
         ocultarInformacionClientes();
     }
 
+    /**
+     * La función "ocultarInformacionClientes" establece la propiedad "mostrarDatosCliente" en falso
+     * para cada elemento de la lista "mData". Esto oculta la información de los clientes de todos los pedidos
+     */
     private void ocultarInformacionClientes() {
         for (int i = 0; i < mData.size(); i++) {
             PedidoNormal elemento = mData.get(i);
@@ -249,7 +252,6 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
 
 
         void bindData(final PedidoNormal item, int position) {
-
             tvNumPedido.setText(resources.getString(R.string.pedidotxt)+" " + item.getNumPedido());
             Cliente cliente = item.getCliente();
 
@@ -272,15 +274,15 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             }
 
             if (esMovil && resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-
+                //
             } else {
-                System.out.println("flecha mostrandose " + flechaMostrandose);
+                //si el atributo flechaMostrandose es false se oculta las opciones del pedido y se pone la rotación de la flecha a 0
                 if (!flechaMostrandose) {
                     desplegableFlecha.setVisibility(View.INVISIBLE);
                     arrowUp.setRotation(0);
                 }
 
-
+                //si es el primer elemento se le pone más margen a la izquierda
                 if (position == 0) {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) card.getLayoutParams();
                     params.setMarginStart((int) (20 * resources.getDisplayMetrics().density));
@@ -292,6 +294,7 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                     card.setLayoutParams(params);
                 }
 
+                //si es el último elemento se le pone más margen a la derecha
                 if (position == mData.size() - 1) {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) card.getLayoutParams();
                     params.setMarginEnd((int) (20 * resources.getDisplayMetrics().density));
@@ -303,6 +306,7 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 }
             }
 
+            //si el cliente es tipo invitado, se oculta el apartado de llamar
             String tipoCliente = item.getCliente().getTipo();
             if (tipoCliente.equalsIgnoreCase("invitado")) {
                 imgLlamar.setVisibility(View.GONE);
@@ -311,24 +315,6 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             }
 
             ArrayList<ProductoTakeAway> listaProductos = getProductosDelPedido(item.getListaProductos());
-
-            for (int i = 0; i < listaProductos.size(); i++) {
-                ProductoTakeAway producto = listaProductos.get(i);
-                System.out.println("Producto de listaProductos pedido " + item.getNumPedido() + " " + producto.getProducto());
-            }
-
-            //prueba para ver como se vería con mas productos
-            /*
-            listaProductos.add(0, new ProductoTakeAway(4, "Salmón aguaciro recien pescado del mar \n + Bacon \n + Pepinillos de la huerta recien recolectados", 2));
-            listaProductos.add(0, new ProductoTakeAway(4, "Hamburguesa mediterranea El Buho Rojo (Explosion de sabores picantes)", 2));
-            listaProductos.add(0, new ProductoTakeAway(4, "Hamburguesa moruna El Buho Rojo (mejor hamburguesa de españa) \n + Bacon  ", 2));
-            //  listaProductosPedido.add(0, new ProductoTakeAway(4, "Salmón aguaciro recien pescado del mar  \n + Bacon \n + Bacon \n + Bacon \n + Pepinillos de la huerta recien recolectados \n + Pepinillos de la huerta recien recolectados \n + Pepinillos de la huerta recien recolectados con sabor a lima limon" , 2));
-            listaProductos.add(0, new ProductoTakeAway(4, "Hamburguesa mediterranea El Buho Rojo (Explosion de sabores picantes)", 2));
-            listaProductos.add(0, new ProductoTakeAway(4, "Hamburguesa moruna El Buho Rojo (mejor hamburguesa de españa) \n + Bacon  ", 2));
-
-             */
-
-
             setListenersDesplegableFlecha(item, position);
             cambiarLayoutVisiblesDesplegableFlecha(item.getEstado());
             cambiarColorLineaEstado(item.getEstado());
@@ -340,7 +326,6 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 public void run() {
                     maxHeight = desplegableFlecha.getHeight();
                     maxWidth = desplegableFlecha.getWidth();
-                    System.out.println("maxHeight " + maxHeight);
                     if (esMovil && resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                         desplegableFlecha.getLayoutParams().height = arrowUp.getHeight();
                         desplegableFlecha.setVisibility(View.GONE);
@@ -349,12 +334,14 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 }
             });
 
+            //mostrar solo el botón de siguiente estado en los estados no terminales (pendiente y aceptado)
             botonSiguienteEstado.setText(estadoSiguiente(item.getEstado()));
             if (item.getEstado().equals(resources.getString(R.string.botonListo)) || item.getEstado().equals(resources.getString(R.string.botonCancelado))) {
                 botonSiguienteEstado.setVisibility(View.GONE);
             } else {
                 botonSiguienteEstado.setVisibility(View.VISIBLE);
             }
+            //cambia al siguiente estado
             botonSiguienteEstado.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -366,10 +353,10 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             });
 
 
+            //depende del atributo flag hace una animación u otra
             arrowUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (flag) {
                         boolean anim = guardarAnimacionDesplegableFlecha();
                         if (!anim) {
@@ -388,14 +375,12 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
                 @Override
                 public void onItemClick(ProductoTakeAway itemProd, int position) {
                     guardarAnimacionDesplegableFlecha();
-
                     if (tacharProductos) {
+                        //guarda los productos tachados temporalmente (si no se da al botón de guardar los productos no se tachan)
                         itemProd.setSeleccionado(!itemProd.getSeleccionado());
-                        // pedidoActual.getListaProductos().getLista().get(position).setTachado(item.getTachado());
                         boolean esta = false;
                         for (int i = 0; i < productosActuales.size(); i++) {
                             Pair<Integer, Integer> par = productosActuales.get(i);
-
                             if (par.first == item.getNumPedido() && par.second == position) {
                                 productosActuales.remove(i);
                                 esta = true;
@@ -441,6 +426,7 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
             imgLlamar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //pide permiso para llamar y llama al cliente
                     String telefono = item.getCliente().getPrefijo_telefono() + item.getCliente().getNumero_telefono();
                     Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + telefono));
                     if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE) !=
@@ -466,6 +452,15 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         }
 
 
+        /**
+         * La función establece escuchas de clic para tres diseños diferentes y llama a los métodos de
+         * escucha correspondientes cuando se hace clic.
+         *
+         * @param item El artículo es un objeto de tipo PedidoNormal, que representa un orden normal en
+         * un sistema. Contiene información sobre el pedido como los artículos, cantidad, precio, etc.
+         * @param pos El parámetro "pos" es un número entero que representa la posición del elemento en
+         * una lista o matriz.
+         */
         private void setListenersDesplegableFlecha(PedidoNormal item, int pos) {
             layoutCancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -494,6 +489,12 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         }
 
 
+        /**
+         * La función `cambiarColorLineaEstado` cambia el color de una línea según el estado dado.
+         *
+         * @param est El parámetro "est" es una cadena que representa el estado actual de un elemento.
+         * Puede tener valores como "PENDIENTE", "ACEPTADO", "LISTO" o "CANCELADO".
+         */
         private void cambiarColorLineaEstado(String est) {
             ConstraintLayout layoutLinea = itemView.findViewById(R.id.layoutLineaEstado);
 
@@ -522,6 +523,15 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         }
 
 
+        /**
+         * La función "guardarAnimacionDesplegableFlecha" verifica si "itemHolder" no es nulo, y si es
+         * así llama al método "animacionDesplegableFlecha" con el argumento "false" y devuelve
+         * verdadero; de lo contrario, devuelve falso.
+         *
+         * @return El método devuelve un valor booleano. Si la condición "itemHolder != null" es
+         * verdadera, el método llama al método "animacionDesplegableFlecha(false)" en el objeto
+         * itemHolder y devuelve verdadero. Si la condición es falsa, el método devuelve falso.
+         */
         private boolean guardarAnimacionDesplegableFlecha() {
             if (itemHolder != null) {
 
@@ -532,13 +542,17 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         }
 
 
+        /**
+         * La función toma una lista de objetos ProductoPedido, extrae información relevante de cada
+         * objeto y crea una lista de objetos ProductoTakeAway.
+         *
+         * @param listaProductos Un ArrayList de objetos ProductoPedido.
+         * @return El método devuelve un ArrayList de objetos ProductoTakeAway.
+         */
         private ArrayList<ProductoTakeAway> getProductosDelPedido(ArrayList<ProductoPedido> listaProductos) {
-
             ArrayList<ProductoTakeAway> listaProductosTakeAway = new ArrayList<>();
-
             for (int i = 0; i < listaProductos.size(); i++) {
                 ProductoPedido pedido;
-
                 pedido = listaProductos.get(i);
                 boolean mostrar = pedido.getMostrarProductosOcultados();
                 String producto = pedido.getNombre(getIdioma());
@@ -570,6 +584,16 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         }
 
 
+        /**
+         * La función "estadoSiguiente" devuelve el siguiente estado basado en el estado actual
+         * proporcionado como parámetro.
+         *
+         * @param est El parámetro "est" es una cadena que representa el estado actual de algo.
+         * @return El método devuelve un valor de cadena. El valor de cadena específico que se devuelve
+         * depende del parámetro de entrada "est". Si "est" es igual a "PENDIENTE" o al valor de cadena
+         * del recurso "botonPendiente", el método devolverá el valor de cadena del recurso
+         * "textoAceptar". Si "est" es igual a "ACEPTADO" o el valor de cadena del
+         */
         private String estadoSiguiente(String est) {
 
             if (est.equals("PENDIENTE") || est.equals(resources.getString(R.string.botonPendiente))) {
@@ -582,6 +606,12 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         }
 
 
+        /**
+         * La función cambia la visibilidad de ciertos diseños según el valor del estado del pedido.
+         *
+         * @param est El parámetro "est" es una cadena que representa el estado actual de algo. Se
+         * utiliza para determinar qué elementos del diseño deben estar visibles u ocultos.
+         */
         private void cambiarLayoutVisiblesDesplegableFlecha(String est) {
             layoutDevolver.setVisibility(View.VISIBLE);
             layoutCancelar.setVisibility(View.VISIBLE);
@@ -600,6 +630,15 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
         }
 
 
+        /**
+         * La función `animacionDesplegableFlecha` es un método Java que anima la expansión y el
+         * colapso de un elemento de vista, junto con otras animaciones relacionadas.
+         *
+         * @param Flag El parámetro "Flag" es un indicador booleano que determina si la animación debe
+         * realizarse en estado expandido o contraído. Si la bandera es verdadera, la animación se
+         * realizará en el estado expandido, y si la bandera es falsa, la animación se realizará en el
+         * estado contraído.
+         */
         private void animacionDesplegableFlecha(boolean Flag) {
 
             System.out.println("funcion animacion adaptador");
@@ -752,6 +791,13 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
 
         }
 
+        /**
+         * La función establece la visibilidad y la altura de ciertas vistas según una condición y
+         * agrega un detector de clics a una vista de imagen para animar la apariencia de los atributos
+         * del cliente.
+         *
+         * @param item El parámetro "item" es un objeto de tipo "PedidoNormal".
+         */
         private void setImgUserListener(PedidoNormal item) {
             if (!item.getMostrarDatosClinte()) {
                 layoutInformacionCliente.setVisibility(View.GONE);
@@ -788,11 +834,18 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
 
         }
 
+        /**
+         * La función `animacionInformacionCliente` anima la altura de un diseño en función del valor
+         * de una bandera, mostrando u ocultando el diseño en consecuencia.
+         *
+         * @param flag Un indicador booleano que indica si se muestra u oculta la información del
+         * cliente.
+         * @param item El parámetro "item" es de tipo "PedidoNormal" y representa un objeto que
+         * contiene información sobre un pedido específico.
+         */
         private void animacionInformacionCliente(boolean flag, PedidoNormal item) {
-
-
             int height = layoutProvisional.getHeight();
-            ValueAnimator anim, anim2;
+            ValueAnimator anim;
             if (!flag) {
                 System.out.println("animacion altura 1 " + height);
 
@@ -862,33 +915,31 @@ public class AdapterPedidosMesa extends RecyclerView.Adapter<AdapterPedidosMesa.
 
         }
 
+        /**
+         * La función "ponerInformacionCliente" establece la información de un cliente en los TextViews
+         * correspondientes, y ajusta la visibilidad de los campos de correo electrónico y número de
+         * teléfono según el tipo de cliente.
+         *
+         * @param cliente El parámetro cliente es un objeto de la clase Cliente, que contiene
+         * información sobre un cliente, como su nombre, correo electrónico y número de teléfono.
+         * @param nombre Un TextView donde se mostrará el nombre del cliente.
+         * @param email Un TextView que muestra el correo electrónico del cliente.
+         * @param telefono El parámetro `telefono` es un objeto `TextView` que se utiliza para mostrar
+         * el número de teléfono del cliente.
+         */
         private void ponerInformacionCliente(Cliente cliente, TextView nombre, TextView email, TextView telefono) {
-
             nombre.setText(cliente.getNombre() + " " + cliente.getApellido());
-
-            System.out.println("altura layout provisional " + cliente.getTipo());
             if (!cliente.getTipo().equals("invitado")) {
                 email.setText(cliente.getCorreo());
                 telefono.setText(cliente.getPrefijo_telefono() + " " + cliente.getNumero_telefono());
                 email.setVisibility(View.VISIBLE);
                 telefono.setVisibility(View.VISIBLE);
-
             } else {
                 email.setText("");
                 telefono.setText("");
                 email.setVisibility(View.GONE);
                 telefono.setVisibility(View.GONE);
-
-
             }
-
-            layoutProvisional.post(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("altura layout provisional 2 " + layoutProvisional.getHeight());
-
-                }
-            });
 
         }
 

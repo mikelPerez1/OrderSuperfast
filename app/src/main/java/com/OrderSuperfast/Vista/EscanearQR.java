@@ -56,16 +56,6 @@ public class EscanearQR extends VistaGeneral {
     private ControladorEscanerQR controlador;
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences sharedPreferencesIdiomas = newBase.getSharedPreferences("idioma", Context.MODE_PRIVATE);
-        String idioma = sharedPreferencesIdiomas.getString("id", "");
-
-        Locale localeToSwitchTo = new Locale(idioma);
-        ContextWrapper localeUpdatedContext = ContextUtils.updateLocale(newBase, localeToSwitchTo);
-        super.attachBaseContext(localeUpdatedContext);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_escanear_qr);
@@ -74,53 +64,7 @@ public class EscanearQR extends VistaGeneral {
         inicializarEscaner();
 
 
-        //prueba
-        //QUITAR
-        /*
-        try {
 
-            controlador.peticionGetDatosQr("https://www.app.ordersuperfast.es/receptorQR/?rest=UWEYwcCL4awrXlz3FZyc/A==&ubic=ugXCgl2N1fnRUM5tioI4VA==", new DevolucionCallback() {
-                @Override
-                public void onDevolucionExitosa(JSONObject resp) {
-                    //poner en los textviews los datos
-                    try {
-                        JSONObject qr = resp.getJSONObject("qr");
-                        System.out.println("respuesta json "+qr);
-
-                        if(qr != null){
-                            textUbicacion.setText(qr.getString("texto"));
-                            String idQr = qr.getString("id");
-                            controlador.setIdQr(idQr);
-
-
-                        }
-                        JSONObject zona = resp.getJSONObject("zona");
-                        if(zona != null){
-                            textZona.setText(zona.getString("nombre"));
-                            controlador.setIdZona(zona.getString("id"),true);
-                            controlador.setIdZonaInicial(zona.getString("id"));
-
-                        }else{
-                            textZona.setVisibility(View.GONE);
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onDevolucionFallida(String mensajeError) {
-                    Toast.makeText(EscanearQR.this, mensajeError, Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-         */
     }
 
     @Override
@@ -174,51 +118,23 @@ public class EscanearQR extends VistaGeneral {
     }
 
 
+    /**
+     * La función inicializa las inserciones de una vista.
+     */
     private void inicializarInsets() {
-        SharedPreferences prefInset = getSharedPreferences("inset", Context.MODE_PRIVATE);
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
-
-        int inset = prefInset.getInt("inset", 0);
         View view = findViewById(R.id.barra);
         ponerInsets((ConstraintLayout) view);
 
-        /*
-        System.out.println("inset actual "+inset);
-        if (inset > 0) {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                view = findViewById(R.id.barra);
-                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                marginParams.setMargins(0,inset,0,0);
-                view.setLayoutParams(marginParams);
 
-            } else {
-                System.out.println("ROTACION 2 entra");
-                view = findViewById(R.id.barra);
-
-                if (display.getRotation() == Surface.ROTATION_90) {
-                    ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                    marginParams.setMarginStart(inset);
-                    view.setLayoutParams(marginParams);
-
-
-                } else {
-                    ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                    marginParams.setMarginEnd(inset);
-                    view.setLayoutParams(marginParams);
-
-                }
-
-            }
-        }
-
-         */
 
     }
 
     private void inicializarEscaner() {
 
-        //
+   /**
+     * La función inicializa un escáner de códigos QR con opciones específicas y lo inicia.
+     */
+
         ScanOptions integrator = new ScanOptions();
         integrator.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
         integrator.setPrompt("Escanea un código QR");
@@ -240,6 +156,12 @@ public class EscanearQR extends VistaGeneral {
                     String qrData = result.getContents();
                     try {
 
+                        // Este código realiza una solicitud GET para recuperar datos
+                        // relacionados con un código QR. Utiliza una interfaz de devolución de llamada
+                        // llamada "DevolucionCallback" para manejar la respuesta. Si la solicitud
+                        // tiene éxito, el código extrae los datos necesarios del objeto JSON de
+                        // respuesta y los establece en los TextViews correspondientes. Si la solicitud
+                        // falla, muestra un mensaje de error y vuelve a la pantalla anterior.
                         controlador.peticionGetDatosQr(qrData, new DevolucionCallback() {
                             @Override
                             public void onDevolucionExitosa(JSONObject resp) {
@@ -285,45 +207,12 @@ public class EscanearQR extends VistaGeneral {
             });
 
 
-    private void peticionGetDatosQr(String url, DevolucionCallback callback) throws JSONException {
-
-        SharedPreferences sharedCuenta = getSharedPreferences("ids",Context.MODE_PRIVATE);
-        String idRest = sharedCuenta.getString("saveIdRest","");
-        JSONObject jsonBody = new JSONObject();
-        jsonBody.put("id_restaurante",idRest);
-        jsonBody.put("url", url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlPeticion, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-                    String est = response.getString("status");
-                    if (est.equals("OK")) {
-                        JSONObject respuesta = response.getJSONObject("datos_qr");
-                        callback.onDevolucionExitosa(respuesta);
-
-                    } else {
-                        callback.onDevolucionFallida("ERROR");
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onDevolucionFallida(error.toString());
-            }
-        });
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-
-    }
-
-
-
+    /**
+     * La función `crearDialogActualizarQR()` crea un diálogo personalizado en Java que permite al
+     * usuario modificar y actualizar un código QR.
+     */
     private void crearDialogActualizarQR(){
+        //en este dialog se puede cambiar el nombre y la zona a la que está vinculada el qr
         AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View layoutDialog = getLayoutInflater().inflate(R.layout.popup_modificar_qr, null);
@@ -345,6 +234,8 @@ public class EscanearQR extends VistaGeneral {
         GridLayoutManager manager = new GridLayoutManager(this,4);
 
         if(getEsMovil()) {
+            //dependiendo del dispositivo y la orientación, el layout muestra más o menos
+            //elementos por fila
 
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
                 manager.setSpanCount(2);
@@ -361,30 +252,9 @@ public class EscanearQR extends VistaGeneral {
         recycler.setLayoutManager(manager);
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int dialogHeight = (int) (displayMetrics.heightPixels * 1); // Elige el porcentaje deseado
-
-
+        int dialogHeight = (int) (displayMetrics.heightPixels * 1);
         ConstraintLayout rootLayout = layoutDialog.findViewById(R.id.rootLayout);
-        System.out.println("root "+rootLayout.getLayoutParams());
-
         ArrayList<DispositivoZona> lista = zonas.getLista();
-        for(int i = 0; i < lista.size();i++){
-            System.out.println("zona qr "+lista.get(i).getNombre() +" "+lista.get(i).getId());
-        }
-
-        /*
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-        lista.add(new DispositivoZona("zona","asd",true));
-         */
 
 
         String idZona = controlador.getIdZona();
@@ -402,7 +272,7 @@ public class EscanearQR extends VistaGeneral {
         AdapterVincularZona adapterVincular = new AdapterVincularZona(lista, this, new AdapterVincularZona.OnItemClickListener() {
             @Override
             public void onItemClick(DispositivoZona item, int position) {
-                item.setClickado(!item.getClickado());
+                item.setClickado(!item.getClickado()); // si seleccionas uno que ya estaba seleccionado, se deselecciona
                 controlador.setIdZona(item.getId(),item.getClickado());
             }
         });

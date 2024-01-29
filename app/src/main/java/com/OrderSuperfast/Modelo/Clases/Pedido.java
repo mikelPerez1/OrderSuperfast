@@ -3,6 +3,9 @@ package com.OrderSuperfast.Modelo.Clases;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Clase de la que extienden PedidoNormal y PedidoTakeAway
+ */
 public abstract class Pedido {
     private boolean parpadeo;
     private Cliente cliente;

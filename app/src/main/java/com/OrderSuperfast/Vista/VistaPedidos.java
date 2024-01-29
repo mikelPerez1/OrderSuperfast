@@ -28,7 +28,6 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
@@ -54,7 +53,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -76,12 +74,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.OrderSuperfast.ClearService;
 import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.Controlador.ControladorLista;
+import com.OrderSuperfast.Controlador.ControladorPedidos;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackCambiarEstadoPedido;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackPeticionPedidos;
+import com.OrderSuperfast.Controlador.Interfaces.CallbackSimple;
 import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
 import com.OrderSuperfast.Modelo.Clases.Importe;
-import com.OrderSuperfast.Modelo.Clases.ListElementPedido;
 import com.OrderSuperfast.Modelo.Clases.Pedido;
 import com.OrderSuperfast.Vista.Adaptadores.AdaptadorPedidos;
 import com.OrderSuperfast.Vista.Adaptadores.AdapterDevolucionProductos;
@@ -90,14 +88,11 @@ import com.OrderSuperfast.Vista.Adaptadores.AdapterListaMesas;
 import com.OrderSuperfast.Vista.Adaptadores.AdapterPedidosMesa;
 import com.OrderSuperfast.Vista.Adaptadores.AdapterProductosTakeAway;
 import com.OrderSuperfast.Vista.Adaptadores.AdapterTakeAway2;
-import com.OrderSuperfast.Vista.Adaptadores.ListAdapterPedido;
 import com.OrderSuperfast.Modelo.Clases.Cliente;
 import com.OrderSuperfast.Modelo.Clases.CustomEditTextNumbers;
 import com.OrderSuperfast.Modelo.Clases.CustomLayoutManager;
 import com.OrderSuperfast.Modelo.Clases.CustomSvSearch;
 import com.OrderSuperfast.Modelo.Clases.PedidoNormal;
-import com.OrderSuperfast.Modelo.Clases.ListaMesas;
-import com.OrderSuperfast.Modelo.Clases.ListaProductoPedido;
 import com.OrderSuperfast.Modelo.Clases.Mesa;
 import com.OrderSuperfast.Modelo.Clases.Opcion;
 import com.OrderSuperfast.Modelo.Clases.ProductoPedido;
@@ -119,22 +114,14 @@ import org.json.JSONObject;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
 
 import me.zhanghai.android.fastscroll.FastScrollerBuilder;
 import okhttp3.OkHttpClient;
@@ -142,50 +129,32 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 
-public class Lista extends VistaGeneral implements SearchView.OnQueryTextListener, DevolucionCallback {
+public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryTextListener, DevolucionCallback {
     List<Pedido> elements = new ArrayList<>();
     ArrayList<PedidoTakeAway> elementosTakeAway = new ArrayList<>();
     List<Integer> newElements = new ArrayList<>();
     int t = 0;
     List<PedidoNormal> copia = new ArrayList();
     private CustomSvSearch svSearch, svSearch2;//
-    private static final String URL = "https://app.ordersuperfast.es/android/v1/pedidos/obtenerPedidos/";
     private final String urlInsertar = "https://app.ordersuperfast.es/android/v1/pedidos/cambiarEstado/"; // se va a cambiar por cambiarEstadoPedido.php
-    private static final String urlDatosDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/getCantidad/";
-    private static final String urlDevolucion = "https://app.ordersuperfast.es/android/v1/pedidos/devolucionParcial/setCantidad/";private AdapterTakeAway2 listAdapterTakeAway;
     private Button cambiarAceptar, cambiarListo, cambiarCancelar, cambiarPendiente, botonDevolucion;//
     ImageButton producto;//
-    private final String tiempo = "";
     private String info = "";
     int anchuraSv = -1;
-    private AlertDialog dialogCancelar, dialogAtrasPedido, dialogDevolucion;
+    private AlertDialog dialogCancelar, dialogDevolucion;
     RecyclerView recyclerView, recyclerDatosPedido;
-    private int s = 0; // para saber la primera vez que entra al init() para obtener los datos de los pedidos.
-    private boolean actualizado = false;
     private WebSocket webSocket;
-    private String idDisp = "", idZona = "";
     Handler handler = new Handler();
     Handler handler2 = new Handler();
     MediaPlayer mp;
     boolean fallo = true, primeraEntrada = true;
     private ConstraintLayout lay, constraintDatosPedido;
-    private final String ubiFiltro = "";
-    private final Lista activity = this;
-    private boolean spinnerTouched;
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-    private RecyclerView dialogRecycler;
+    private final VistaPedidos activity = this;
     private ArrayList<String> lables;
     private String newText = "";
     private String estado = "PENDIENTE";
-    private boolean cerrado = false;
-    private int altura, anchura;
-    private LinearLayout scrollLayout;
-    private Intent intent;
-    private boolean primera = true;
-    private boolean animacion = true;
     private TextView textDisp, datoEstado;
-    private JSONObject datosPedidos, dPedidos;
+    private JSONObject datosPedidos;
     private String idRest;
     private int numMax = -1;
     private int svSearchWidth = 0;
@@ -193,73 +162,46 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private boolean animacionEjecutada = false;
     private ImageView actualizarLogo, menuBack, imageExpand, imageSearch;
     private ConstraintLayout miniMenu;
-    private float vBiasH, vBiasV;
-    private final boolean p1 = true;
     int height;
     private int inset = 0;
     private Handler h;
-    private boolean portrait = false;
     private View overlay;
-    private Dictionary filtros;
     private ConstraintLayout constrainSearch;
     private Display display;
     private boolean haEntradoEnFallo = false;
     private boolean updateReconect = false;
     private int elementsSize = 0;
     private View dividerLista;
-    private final HashMap<Integer, String> pedidosLocalHash = new HashMap<>();
-    private final ArrayList<Integer> pedidosNull = new ArrayList<>();
-    private final List<ListElementPedido> elementsPedido = new ArrayList<>();
-    private com.OrderSuperfast.Vista.Adaptadores.ListAdapterPedido ListAdapterPedido;
-    private ArrayList<ProductoPedido> productos;
     private Pedido pedidoActual = null;
-    private String nombreDisp, nombreZona;
-    private Date currentTime;
-    private boolean paralocal;
     private ImageView navigationBack, navigationBackHorizontal, navigationInfoHorizontal;
     private HorizontalScrollView scrollBotonesVertical, scrollBotonesHorizontal;
     private CardView cardviewTopV, cardviewH, cardInfoCliente;
     private final ArrayList<String> listaPedidosParpadeo = new ArrayList();
     private boolean parpadeo = false;
-    private Handler handlerParpadeoPedido, horaPedidoAceptado, pollingTakeAway;
-    private String tiempoFinalString;
-    private final int horaActualizada = 0;
+    private Handler handlerParpadeoPedido;
     private ImageView bot, bot2;
     private ImageButton telefono;
     private View space1, space2, space3, space4, space5;
-    private boolean infoClienteExpandido = false;
     private boolean searchHorizontal = false;
     private boolean primerActualizar = true;
-    private final Handler handlerMusica = new Handler();
     private int resId;
     private Resources resources;
     private boolean actualizarUnaVez = false;
-    private final String countryName = "";
-    private int prevX, offsetX;
-    private final int threshold = 100;
-    private final Queue<PedidoTakeAway> colaTakeAway = new LinkedList();
-    private boolean notificacionActiva = false;
-    private PopupWindow popupListaNoti, popupBotonCerrar;
     private SharedPreferences sharedTakeAway;
     private SharedPreferences.Editor editorTakeAway;
-    private final ArrayList<PedidoTakeAway> listaTakeAwaysPendientes = new ArrayList<>();
-    private final ArrayList<PedidoTakeAway> listaTakeAwaysPreparacion = new ArrayList<>();
     private final Handler handlerTakeAways = new Handler();
     private LinearLayout layoutBotonesVertical;
     private boolean hayNuevosPedidos = false;
     private boolean primerPeticionGetPedidos = true;
     private boolean recreate = false;
     private boolean actividadTakeAway;
-
     private HashMap<String, Boolean> mapaProductos = new HashMap<>();
     private SharedPreferences preferenciasProductos;
-
-    RecyclerView recyclerProd;
     private final ArrayList<Integer> arrayPrueba = new ArrayList<>();
 
     private boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS;
 
-    private ControladorLista controlador;
+    private ControladorPedidos controlador;
     private TextView tvRecogida,tvNombreRecogida;
 
     @Override
@@ -631,15 +573,10 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         setContentView(R.layout.activity_lista);
 
         resources = getResources();
+        controlador = new ControladorPedidos(this);
+
         SharedPreferences sharedId = getSharedPreferences("ids", Context.MODE_PRIVATE);
-        idDisp = sharedId.getString("idDisp", "");
-        idZona = sharedId.getString("idZona", "");
-        idRest = sharedId.getString("saveIdRest", "");
-        nombreDisp = getIntent().getStringExtra("nombreDispositivo");
-        if(nombreDisp == null) {
-            nombreDisp = sharedId.getString("textDisp", "");
-        }
-        nombreZona = sharedId.getString("textZona", "");
+
 
         actividadTakeAway = getIntent().getBooleanExtra("takeAway", false);
         if(actividadTakeAway){
@@ -649,10 +586,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             tvNombreRecogida.setVisibility(View.VISIBLE);
         }
 
-        System.out.println("nombre zona " + nombreZona);
 
-
-        writeToFile("Connected as " + nombreDisp + " from " + nombreZona, activity);
+        writeToFile("Connected as " + controlador.getNombreDisp() + " from " + controlador.getNombreZona(), activity);
 
 
         preferenciasProductos = getSharedPreferences("pedidos_" + idRest, Context.MODE_PRIVATE);
@@ -672,9 +607,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         sharedTakeAway = getSharedPreferences("takeAway", Context.MODE_PRIVATE);
         editorTakeAway = sharedTakeAway.edit();
 
-        controlador = new ControladorLista(this);
         listaPedidosParpadeo.clear();
-        listaPedidosParpadeo.addAll(controlador.getPedidosNoVistos(idRest));
+        System.out.println("idRestaurante es "+controlador.getIdRestaurante());
+        listaPedidosParpadeo.addAll(controlador.getPedidosNoVistos());
 
         constraintDatosPedido = findViewById(R.id.constraintListaDescripcionPedido);
         recyclerDatosPedido = findViewById(R.id.listadepedidos);
@@ -718,7 +653,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         layout_nuevo_pedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Lista.this,VistaNuevoPedido.class);
+                Intent i = new Intent(VistaPedidos.this,VistaNuevoPedido.class);
                 startActivity(i);
             }
         });
@@ -729,68 +664,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             @Override
             public void onClick(View v) {
                 peticionGetDatosDevolucion(pedidoActual);
-
-/*
-                AlertDialog.Builder dialogB=   new AlertDialog.Builder(activity)
-                        .setTitle(getString(R.string.echarAtrasPedido))
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton(resources.getString(R.string.aceptar), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Continue with delete operation
-                                if (pedidoActual != null) {
-                                    System.out.println("pedidoActual " + pedidoActual.getNumPedido() + " " + pedidoActual.getEstado());
-                                    listAdapter.cambiarEstadoPedido(pedidoActual.getNumPedido(), getString(R.string.botonPendiente), colorPedido("PENDIENTE"));
-                                    listAdapter.filtrar(estado, newText);
-                                    if (!paralocal) {
-                                        ejecutar(getString(R.string.botonPendiente));
-                                    } else {
-                                        cambiarEnLocal(resources.getString(R.string.botonPendiente));
-                                    }
-                                    writeToFile(nombreDisp + " " + "Order" + " " + pedidoActual.getNumPedido() + " - " + "Pending", activity);
-                                    pedidoActual.setEstado(resources.getString(R.string.botonPendiente));
-                                    datoEstado.setText(pedidoActual.getEstado());
-                                    String color=colorPedido(cambiarEstadoIdiomaABase(pedidoActual.getEstado()));
-                                    datoEstado.setTextColor(Color.parseColor(color));
-                                    if(estado.equals(resources.getString(R.string.botonListo) ) || estado.equals(resources.getString(R.string.botonPendiente))){
-                                        constraintDatosPedido.setVisibility(View.INVISIBLE);
-                                        listAdapter.pedidoActual("0");
-                                        recyclerView.scrollToPosition(0);
-                                    }
-
-
-                                    esconderBotonSobrante(pedidoActual.getEstado());
-
-                                }
-                                //  activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
-                                //activity.overridePendingTransition(R.anim.leave, R.anim.leave);
-
-
-                            }
-                        })
-
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setNeutralButton(resources.getString(R.string.cancelar), null);
-
-                AlertDialog a= dialogB.create();
-                a.getWindow().
-                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-                a.getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-                a.show();
-                a.getWindow().
-                        clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-
- */
 
 
             }
@@ -876,35 +749,11 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             }
         }
 
-        LinearLayout linearNavi = findViewById(R.id.linearLayoutNaviPedidos);
-        ConstraintLayout constraintTodo = findViewById(R.id.layoutPrincipal);
-
-        ImageView imageViewAct = findViewById(R.id.NavigationBarActualizar);
-        ImageView imageViewInf = findViewById(R.id.NavigationBarInfo);
-        ImageView imageViewBack = findViewById(R.id.NavigationBarBack);
-
-        // imageViewInf.getLayoutParams().height=linearNavi.getLayoutParams().height;
-        // imageViewInf.getLayoutParams().width=(int) resources.getDimension(R.dimen.NavIconSize);
 
 
-        //  spinnerubi=findViewById(R.id.spinner2);///
         lay = findViewById(R.id.layoutPrincipal);
-        altura = lay.getHeight();
-        anchura = lay.getWidth();
-        scrollLayout = findViewById(R.id.scrollLayout);
-        System.out.println("idRest guardado" + idRest);
-        sharedPreferences = getSharedPreferences("ids", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String idDisp1 = sharedPreferences.getString("idDisp", "");
-        String idRest1 = sharedPreferences.getString("saveIdRest", "");
         overlay = findViewById(R.id.overlay);
-        idDisp = ((Global) this.getApplication()).getIdDisp();
-        idRest = ((Global) this.getApplication()).getIdRest();
-        if (!idDisp1.equals("") && !idRest1.equals("")) {
-            idDisp = idDisp1;
-            idRest = idRest1;
 
-        }
 
 
         // SharedPreferences sharedPreferences2 = getSharedPreferences("pedidos",Context.MODE_PRIVATE);
@@ -931,11 +780,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
 
 
-        filtros = new Hashtable();
-        filtros.put("aceptado", false);
-        filtros.put("pendiente", false);
-        filtros.put("listo", false);
-        filtros.put("cancelado", false);
 
         ImageButton actualizar = findViewById(R.id.botonActualizar);
 
@@ -951,19 +795,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
         textDisp = findViewById(R.id.textNombreDisp);
         String texto = ((Global) this.getApplication()).getNombreDisp();
-
-        if (!texto.equals("")) {
-            sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-            editor = sharedPreferences.edit();
-            editor.putString("textDisp", texto);
-            editor.commit();
-            textDisp.setText(((Global) this.getApplication()).getNombreDisp());
-            TextView tDisp2 = findViewById(R.id.textNombreDisp2);
-            tDisp2.setText(texto);
-            editor.putBoolean("esPrimeraLista1", true);
-            editor.commit();
-
-        }
 
 
         actualizarLogo = findViewById(R.id.actualizarLogo);
@@ -1015,7 +846,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 Cliente c = pedidoActual.getCliente();
                 System.out.println("telefono1 " + c.getPrefijo_telefono() + " " + c.getNumero_telefono());
                 Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + c.getPrefijo_telefono() + c.getNumero_telefono()));
-                if (ActivityCompat.checkSelfPermission(Lista.this, android.Manifest.permission.CALL_PHONE) !=
+                if (ActivityCompat.checkSelfPermission(VistaPedidos.this, android.Manifest.permission.CALL_PHONE) !=
                         PackageManager.PERMISSION_GRANTED) {
 
                     requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 200);
@@ -1190,38 +1021,22 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
             }
         });
-        ImageView imgMenu = findViewById(R.id.mini_menu);
 
 
         instantiateWebSocket();
 
-
-        // Run whatever background code you want here.
-
-
         lay.post(new Runnable() {
             public void run() {
-                ConstraintLayout constraintListaDescripcionPedido = findViewById(R.id.constraintListaDescripcionPedido);
-                //handlerTiempoTakeAways();
                 if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    portrait = true;
-                    // constraintListaDescripcionPedido.getLayoutParams().width=(lay.getHeight()/3)*2;
-                    imageViewAct.setPadding(lay.getWidth() / 12 * 2, (int) resources.getDimension(R.dimen.NavIconPad), 0, (int) resources.getDimension(R.dimen.NavIconPad));
-                    imageViewBack.setPadding(0, (int) resources.getDimension(R.dimen.NavIconPad), lay.getWidth() / 12 * 2, (int) resources.getDimension(R.dimen.NavIconPad));
                     recyclerView.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_PARENT;
                 } else {
-                    // constraintListaDescripcionPedido.getLayoutParams().width=(lay.getWidth()/3)*2;
                     recyclerView.getLayoutParams().width = (int) resources.getDimension(R.dimen.listPedidosSize);
-                    imageViewAct.setPadding(lay.getHeight() / 12 * 2, (int) resources.getDimension(R.dimen.NavIconPad), 0, (int) resources.getDimension(R.dimen.NavIconPad));
-                    imageViewBack.setPadding(0, (int) resources.getDimension(R.dimen.NavIconPad), lay.getHeight() / 12 * 2, (int) resources.getDimension(R.dimen.NavIconPad));
-                    portrait = false;
                 }
 
                 System.out.println("ancho" + lay.getWidth());
                 int menos = (int) resources.getDimension(R.dimen.topMarginMinus);
                 System.out.println("MENOS" + menos);
                 height = lay.getHeight();
-                //width=lay.getWidth();
                 System.out.println("alturaLay" + height);
                 ConstraintLayout.LayoutParams lay1 = (ConstraintLayout.LayoutParams) miniMenu.getLayoutParams();
                 lay1.setMargins(0, height - (170 - (int) resources.getDimension(R.dimen.topMarginMinus)), 0, 0);
@@ -1230,16 +1045,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
                 System.out.println("layHeight= " + lay.getWidth());
 
-                //imageViewInf.setPadding(0,(int) resources.getDimension(R.dimen.NavIconPad),0,(int) resources.getDimension(R.dimen.NavIconPad));
-
-
-                // imageViewAct.setPadding((int) resources.getDimension(R.dimen.NavIconPad), 0, (int) resources.getDimension(R.dimen.NavIconPad), lay.getHeight() / 12 * 2);
-                // imageViewBack.setPadding((int) resources.getDimension(R.dimen.NavIconPad),lay.getHeight()/12*2,(int) resources.getDimension(R.dimen.NavIconPad),0);
-                //    imageViewInf.setPadding((int) resources.getDimension(R.dimen.NavIconPad),0,(int) resources.getDimension(R.dimen.NavIconPad),0);
-
-                imageViewAct.setVisibility(View.VISIBLE);
-                imageViewBack.setVisibility(View.VISIBLE);
-                imageViewInf.setVisibility(View.VISIBLE);
 
             }
         });
@@ -1432,7 +1237,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(Lista.this, logActivity.class);
+                Intent i = new Intent(VistaPedidos.this, logActivity.class);
                 startActivity(i);
             }
         });
@@ -1448,7 +1253,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                     editor.commit();
                 }
 
-                Intent i = new Intent(Lista.this, logActivity.class);
+                Intent i = new Intent(VistaPedidos.this, logActivity.class);
                 startActivity(i);
             }
         });
@@ -1486,18 +1291,15 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
     public void actualizar(boolean recargar, DevolucionCallback callbackDevolucion) {
-        //  listAdapter = null;
-        s = 0;
-
-
-        //init2(false, activity);
         boolean bol = recargar;
         if (!actividadTakeAway) {
             controlador.peticionPedidos((List<PedidoNormal>) (ArrayList<?>) elements, listaPedidosParpadeo, bol, FLAG_MOSTRAR_PRODUCTOS_OCULTADOS, new CallbackPeticionPedidos() {
                 @Override
                 public void onNuevosPedidos() {
+                    System.out.println("nuevos pedidos 1 " +resId);
                     if (resId != -1 && !bol) {
                         mp = MediaPlayer.create(activity, resId);
+                        System.out.println("nuevos pedidos 2");
                         mp.start();
                         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             @Override
@@ -1512,11 +1314,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 public void onUpdateReconnect() {
                     if (updateReconect) {
                         int num2 = Integer.valueOf(elements.get(elements.size() - 1).getNumPedido());
-                        System.out.println("websocket reconnect list sizes " + elementsSize + " " + num2);
                         if (num2 > elementsSize) {
-                            SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
-                            boolean sonido = sharedSonido.getBoolean("sonido", true);
-                            boolean vibracion = sharedSonido.getBoolean("vibracion", false);
                             if (resId != -1) {
                                 System.out.println("SONIDO DE RECONECTAR " + num2 + "es mayor a " + elementsSize);
                                 mp = MediaPlayer.create(activity, resId);
@@ -1612,13 +1410,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 public void onUpdateReconnect() {
                     if (updateReconect) {
                         int num2 = Integer.valueOf(elementosTakeAway.get(elements.size() - 1).getNumPedido());
-                        System.out.println("websocket reconnect list sizes " + elementsSize + " " + num2);
                         if (num2 > elementsSize) {
-                            SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
-                            boolean sonido = sharedSonido.getBoolean("sonido", true);
-                            boolean vibracion = sharedSonido.getBoolean("vibracion", false);
                             if (resId != -1) {
-                                System.out.println("SONIDO DE RECONECTAR " + num2 + "es mayor a " + elementsSize);
                                 mp = MediaPlayer.create(activity, resId);
                                 mp.start();
                                 mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -2252,6 +2045,25 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
     private void peticionEnviarDevolucion(Pedido pedido, double cantidad, DevolucionCallback callback) {
+
+        controlador.peticionEnviarDevolucion(pedido, cantidad, new DevolucionCallback() {
+            @Override
+            public void onDevolucionExitosa(JSONObject resp) {
+                if (dialogDevolucion != null && dialogDevolucion.isShowing()) {
+                    dialogDevolucion.cancel();
+                    quitarTeclado();
+                }
+                callback.onDevolucionExitosa(resp);
+            }
+
+            @Override
+            public void onDevolucionFallida(String mensajeError) {
+                Toast.makeText(activity, "An error has ocurred. Try again in a little bit.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        /*
         System.out.println("cantidad " + cantidad);
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         String formattedNumber = decimalFormat.format(cantidad);
@@ -2266,8 +2078,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("id_restaurante", idRest);
-            jsonBody.put("id_zona", idZona);
+            jsonBody.put("id_restaurante", controlador.getIdRestaurante());
+            jsonBody.put("id_zona", controlador.getIdZona());
             jsonBody.put("numero_pedido", pedido.getNumPedido());
             jsonBody.put("cantidad", d);
         } catch (JSONException e) {
@@ -2311,9 +2123,32 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             }
         });
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+
+         */
     }
 
     private void peticionGetDatosDevolucion(Pedido pedido) {
+
+        controlador.peticionGetDatosDevolucion(pedido, new CallbackSimple() {
+            @Override
+            public void onSuccess(Object[] arg) {
+                try {
+                    crearDialogDevolucion((float) arg[0], (float) arg[1], pedido);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(String error) {
+                if (error.toLowerCase().contains("noconnectionerror")) {
+                    Toast.makeText(VistaPedidos.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        /*
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("id_restaurante", idRest);
@@ -2362,18 +2197,17 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.toString().toLowerCase().contains("noconnectionerror")) {
-                    Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VistaPedidos.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
         Volley.newRequestQueue(this).add(jsonObjectRequest);
 
-    }
-
-    private void setElementsInRecyclerviewTakeAway() {
+         */
 
     }
+
 
 
 
@@ -2391,7 +2225,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         lables = new ArrayList<String>();
 
-        //Toast.makeText(Lista.this,copia.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(VistaPedidos.this,copia.toString(), Toast.LENGTH_SHORT).show();
         for (int i = 0; i < copia.size(); i++) {
             //Toast.makeText(this, elements.get(i).toString(), Toast.LENGTH_SHORT).show();
             boolean yaEsta = false;
@@ -2456,14 +2290,14 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     public void click() {
         producto = findViewById(R.id.productos);
         producto.setOnClickListener(v -> {
-            // Intent i = new Intent(Lista.this, GuardarFiltrarProductos.class);
+            // Intent i = new Intent(VistaPedidos.this, Configuracion.class);
             //i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             //startActivity(i);
 
         });
         ImageButton producto2 = findViewById(R.id.productos2);
         producto2.setOnClickListener(v -> {
-            //Intent i = new Intent(Lista.this, GuardarFiltrarProductos.class);
+            //Intent i = new Intent(VistaPedidos.this, Configuracion.class);
             //i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             //startActivity(i);
 
@@ -2477,7 +2311,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         svSearch.setOnQueryTextListener(this);
 
         double num = 1.5;
-        float d = (float) num;
 
         svSearchWidth = svSearch.getLayoutParams().width;
         svSearchHeight = svSearch.getLayoutParams().height;
@@ -2485,12 +2318,13 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         bot = svSearch.findViewById(androidx.appcompat.R.id.search_close_btn);
 
+        //hace que al pulsar en cerrar del buscador, cierre directamente el buscador en vez de
+        //quitar el texto si habia la primera vez
         bot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 svSearch.setIconified(true);
                 svSearch.setIconified(true);
-                cerrado = true;
                 System.out.println("CERRAR BUSQ");
 
             }
@@ -2503,7 +2337,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 producto.setVisibility(View.INVISIBLE);
                 textDisp.setVisibility(View.INVISIBLE);
                 dividerLista.setVisibility(View.INVISIBLE);
-                // navigationBack.setVisibility(View.INVISIBLE);
                 svSearch.setBackground(null);
                 double num = 1.5;
                 float d = (float) num;
@@ -2513,9 +2346,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 svSearch.getLayoutParams().width = lay.getWidth() - 40;
                 svSearch.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
 
-                //svSearch.setPadding(0,0,25,0);
-                //svSearch.setPadding(0, 0, 80, 0);
-
                 ((Global) activity.getApplication()).setSearchUtilizando(true);
 
             }
@@ -2523,9 +2353,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         svSearch.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    //    svSearch.setBackground(resources.getDrawable(R.drawable.borde));
-                }
+
                 if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     svSearch.setBackground(resources.getDrawable(R.drawable.background_search));
                 }
@@ -2545,8 +2373,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
                 svSearch.setScaleX(d);
                 svSearch.setScaleY(d);
-
-                // svSearch.clearAnimation();
                 ((Global) activity.getApplication()).setSearchUtilizando(false);
 
                 return false;
@@ -2583,16 +2409,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             }
         });
 
-        /*
-        lay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //svSearch.clearFocus();
-                //svSearch.onActionViewCollapsed();
-            }
-        });
 
-         */
 
 
         ///////////////////////////////
@@ -2600,10 +2417,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
         svSearch2.setOnQueryTextListener(this);
-
-
-        //  svSearchWidth = svSearch2.getLayoutParams().width;
-        // svSearchHeight = svSearch2.getLayoutParams().height;
         lay = findViewById(R.id.layoutPrincipal);
 
         bot2 = svSearch2.findViewById(androidx.appcompat.R.id.search_close_btn);
@@ -2613,7 +2426,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             public void onClick(View v) {
                 svSearch2.setIconified(true);
                 svSearch2.setIconified(true);
-                cerrado = true;
 
 
             }
@@ -2748,57 +2560,17 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         imageSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (searchHorizontal) {
-                    //   svSearch2.setVisibility(View.INVISIBLE);
                     svSearch2.setIconified(true);
                     svSearch2.setIconified(true);
                     System.out.println("pasando a iconified");
-                    //  imageSearch.setImageDrawable(resources.getDrawable(R.drawable.search3));
                 } else {
-                    //  svSearch2.setVisibility(View.VISIBLE);
                     svSearch2.setIconified(false);
-                    System.out.println("pasando a iconified false");
-
-                    //        imageSearch.setImageDrawable(resources.getDrawable(R.drawable.close1));
 
                 }
-                //svSearch2.setVisibility(View.VISIBLE);
-                //   svSearch2.setIconified(false);
-                // svSearch2.callOnClick();
+
             }
         });
-
-    }
-
-
-    private void listaEsDesplazable() {
-        int itemHeight = (int) resources.getDimension(R.dimen.heightItem);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int screenHeight = displayMetrics.heightPixels;
-        int alturaItems = itemHeight * arrayPrueba.size();
-        int extra = 0;
-        System.out.println("altura item=" + alturaItems + "screen =" + screenHeight + " extra = " + extra);
-
-        if (arrayPrueba.size() > 0) {
-            if (arrayPrueba.get(arrayPrueba.size() - 1) == 999) {
-                extra = itemHeight;
-            }
-
-            System.out.println("altura item=" + alturaItems + "screen =" + screenHeight + " extra = " + extra);
-            if (alturaItems >= (screenHeight - itemHeight + extra - 40)) {
-                popupBotonCerrar.dismiss();
-                System.out.println("popupWindow showing" + popupBotonCerrar.isShowing());
-
-
-            } else {
-
-            }
-        } else {
-            popupBotonCerrar.dismiss();
-            popupListaNoti.dismiss();
-        }
 
     }
 
@@ -2864,213 +2636,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         return color;
     }
 
-    public void moveToDescription(PedidoNormal item) {
-
-        removeFromListaParpadeo(item.getNumPedido());
-        if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-            intent.putExtra("ListElement", item);
-            intent.putExtra("idDisp", idDisp);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            // System.out.println("FILTROS ACTIVOS = " + filtros.get("aceptado") + " " + filtros.get("pendiente") + " " + filtros.get("listo") + " " + filtros.get("cancelado") + " ");
-            try {
-                JSONObject objeto = transformListElementToJson(item);
-                System.out.println("item " + objeto);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            for (int j = 0; j < newElements.size(); j++) {
-                if (newElements.get(j) == Integer.valueOf(item.getNumPedido())) {
-                    newElements.remove(j);
-                    SharedPreferences sharedPreferences1 = getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor1 = sharedPreferences1.edit();
-
-                    System.out.println(newElements.toString());
-                    editor1.putString("pedidosNuevos", newElements.toString());
-                    editor1.commit();
-                }
-            }
-            startActivityForResult(intent, 2);
-            overridePendingTransition(0, 0);
-        } else {
-//            System.out.println("nombre elemento " + (!item.getListaProductos().getLista().get(0).getListaOpciones().isEmpty() ? item.getListaProductos().getLista().get(0).getListaOpciones().get(0).getNombreElemento() : "nada"));
-
-        }
-    }
 
 
-    private void removeFromNewElements(int numPedido) {
-        for (int i = newElements.size() - 1; i >= 0; i--) {
-            // System.out.println("es igual? " + item.getNumPedido() + " " + newElements.get(j));
-            if (newElements.get(i) == numPedido) {
-                newElements.remove(i);
-            }
-        }
-    }
 
-
-    private void removeElementsPedido() {
-        for (int i = elementsPedido.size() - 1; i >= 0; i--) {
-            elementsPedido.remove(0);
-        }
-    }
-
-    private void esconderBotonSobrante(String estadoP) {
-        cambiarAceptar.setVisibility(View.VISIBLE);
-        cambiarPendiente.setVisibility(View.VISIBLE);
-        cambiarListo.setVisibility(View.VISIBLE);
-        cambiarCancelar.setVisibility(View.VISIBLE);
-
-
-        space1.setVisibility(View.VISIBLE);
-        space2.setVisibility(View.VISIBLE);
-        space3.setVisibility(View.VISIBLE);
-        space4.setVisibility(View.VISIBLE);
-        // space1.setVisibility(View.GONE);
-
-        System.out.println("esconderBotones " + estadoP);
-
-        if (estadoP.equals(resources.getString(R.string.botonPendiente)) || estadoP.equals("PENDIENTE")) {
-            cambiarPendiente.setVisibility(View.GONE);
-            space1.setVisibility(View.GONE);
-            space2.getLayoutParams().height = (int) getResources().getDimension(R.dimen.spaceHeightExtremes);
-            //        textoTiempoAñadido.setVisibility(View.INVISIBLE);
-            //   textoTiempoTranscurrido.setVisibility(View.INVISIBLE);
-        } else if (estadoP.equals(resources.getString(R.string.botonListo)) || estadoP.equals("LISTO")) {
-            cambiarListo.setVisibility(View.GONE);
-            space3.setVisibility(View.GONE);
-            space2.getLayoutParams().height = (int) getResources().getDimension(R.dimen.spaceHeightMiddle);
-
-            //     textoTiempoAñadido.setVisibility(View.INVISIBLE);
-            //       textoTiempoTranscurrido.setVisibility(View.INVISIBLE);
-        } else if (estadoP.equals(resources.getString(R.string.botonCancelado)) || estadoP.equals("CANCELADO")) {
-            //   textoTiempoAñadido.setVisibility(View.INVISIBLE);
-            space2.getLayoutParams().height = (int) getResources().getDimension(R.dimen.spaceHeightMiddle);
-
-            //        textoTiempoTranscurrido.setVisibility(View.INVISIBLE);
-            cambiarCancelar.setVisibility(View.GONE);
-            space4.setVisibility(View.GONE);
-        } else if (estadoP.equals(resources.getString(R.string.botonAceptado)) || estadoP.equals("ACEPTADO")) {
-            cambiarAceptar.setVisibility(View.GONE);
-            space2.setVisibility(View.GONE);
-            space2.getLayoutParams().height = (int) getResources().getDimension(R.dimen.spaceHeightMiddle);
-
-            //cambiarAceptar.setText("ACTUALIZAR TIEMPO");
-            //  textoTiempoAñadido.setVisibility(View.VISIBLE);
-            // textoTiempoTranscurrido.setVisibility(View.VISIBLE);
-        }
-        System.out.println("esconderBotones pendiente " + cambiarPendiente.getVisibility());
-        System.out.println("esconderBotones aceptado " + cambiarAceptar.getVisibility());
-        System.out.println("esconderBotones listo " + cambiarListo.getVisibility());
-        System.out.println("esconderBotones cancelado " + cambiarCancelar.getVisibility());
-
-    }
-
-    private void obtenerDatosPedido(PedidoNormal item) {
-        //String productosString = item.productosJson;
-        pedidoActual = item;
-        esconderBotonSobrante(item.getEstado());
-
-        TextView datoPedido = findViewById(R.id.datoPedido);
-        TextView datoUbi = findViewById(R.id.datoUbi);
-        TextView datoEstado = findViewById(R.id.datoEstado);
-
-
-        datoPedido.setText(resources.getString(R.string.pedido) + " " + item.getNumPedido());
-        datoUbi.setText(item.getMesa());
-        datoEstado.setText(item.getEstado());
-        String color = colorPedido(cambiarEstadoIdiomaABase(item.getEstado()));
-        datoEstado.setTextColor(Color.parseColor(color));
-
-        if (pedidoActual.getEstado().equals(resources.getString(R.string.botonAceptado))) {
-
-            if (horaPedidoAceptado != null) {
-                horaPedidoAceptado.removeCallbacksAndMessages(null);
-            }
-
-        } else {
-            if (horaPedidoAceptado != null) {
-                horaPedidoAceptado.removeCallbacksAndMessages(null);
-            }
-            //    textoTiempoAñadido.setVisibility(View.INVISIBLE);
-            //   textoTiempoTranscurrido.setVisibility(View.INVISIBLE);
-        }
-
-
-        TextView nombreCliente = findViewById(R.id.Nombre);
-        TextView correo = findViewById(R.id.Correo);
-        ImageButton botonTelefono = findViewById(R.id.Botontelefono);
-        TextView textTelefono = findViewById(R.id.textTelefono);
-
-        Cliente cliente = pedidoActual.getCliente();
-        nombreCliente.setText(cliente.getNombre());
-
-        TextView telefonoCliente = findViewById(R.id.textTel);
-        if (cliente.getNumero_telefono() != null && !cliente.getNumero_telefono().equals("") && !cliente.getNumero_telefono().equals("null")) {
-            telefonoCliente.setText(cliente.getNumero_telefono().substring(0, 3) + " " + cliente.getNumero_telefono().substring(3, 6) + " " + cliente.getNumero_telefono().substring(6, 9));
-            telefonoCliente.setVisibility(View.GONE);
-            correo.setVisibility(View.GONE);
-            textTelefono.setVisibility(View.GONE);
-            botonTelefono.setVisibility(View.GONE);
-        }
-
-        correo.setText(cliente.getCorreo());
-        System.out.println("NOMBRE CLIENTE =" + nombreCliente.getText().toString());
-
-        removeElementsPedido();
-        LinearLayoutManager manager = new LinearLayoutManager(this) {
-            @Override
-            public boolean canScrollVertically() {
-                return true;
-
-            }
-        };
-        PedidoNormal element = (PedidoNormal) getIntent().getSerializableExtra("ListElement");
-
-        String idrestaurant = ((Global) this.getApplication()).getIdRest();
-        productos = pedidoActual.getListaProductos();
-        String instruccionesGenerales = item.getInstruccionesGenerales();
-        ArrayList<Opcion> listaOpciones = new ArrayList<>();
-        for (int i = 0; i < productos.size(); i++) {
-            ProductoPedido pedido;
-            pedido = productos.get(i);
-
-            listaOpciones = new ArrayList<>();
-            String producto = "<b>" + pedido.getNombre(getIdioma()) + "</b>";
-            String cantidad = String.valueOf(pedido.getCantidad());
-            listaOpciones = pedido.getListaOpciones();
-            System.out.println("elementos size " + listaOpciones.size());
-            for (int j = 0; j < listaOpciones.size(); j++) {
-                Opcion op = listaOpciones.get(j);
-                System.out.println("Elementos nombre " + pedido.getNombre(getIdioma()) + " " + j + " " + op.getNombreElemento(getIdioma()));
-
-                producto += "<br>" + "&nbsp;&nbsp;" + " - " + op.getNombreElemento(getIdioma());
-            }
-            String instrucciones = pedido.getInstrucciones();
-            if (!instrucciones.equals("")) {
-                producto += "<br>" + "&nbsp;&nbsp; " + instrucciones;
-
-            }
-
-            if (i == productos.size() - 1 && instruccionesGenerales != null && !instruccionesGenerales.equals("")) {
-                producto += "<br>" + "" + "[" + instruccionesGenerales + "]" + "<br>";
-            } else if (i == productos.size() - 1) {
-                producto += "<br>";
-            }
-
-            System.out.println("elementos opciones " + producto);
-
-            elementsPedido.add(new ListElementPedido(producto, cantidad, "", 0, pedido.getMostrarProductosOcultados()));
-
-        }
-        ListAdapterPedido = new ListAdapterPedido(elementsPedido, this);
-
-        recyclerDatosPedido.setLayoutManager(manager);
-        recyclerDatosPedido.setAdapter(ListAdapterPedido);
-
-
-    }
 
 
 
@@ -3133,9 +2701,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         SharedPreferences sharedId = getSharedPreferences("ids", Context.MODE_PRIVATE);
         ((Global) this.getApplication()).setIdRest(sharedId.getString("saveIdRest", "0"));
-        idDisp = sharedId.getString("idDisp", "");
-        idZona = sharedId.getString("idZona", "");
-        nombreDisp = sharedId.getString("textDisp", "");
 
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         boolean primera = sharedPreferences.getBoolean("esPrimeraLista1", true);
@@ -3152,7 +2717,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
  */
 
 
-        System.out.println("FILTROS ACTIVOS = " + filtros.get("aceptado") + " " + filtros.get("pendiente") + " " + filtros.get("listo") + " " + filtros.get("cancelado") + " ");
 
 
         sharedPreferences = getSharedPreferences("pedidos", Context.MODE_PRIVATE);
@@ -3179,12 +2743,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         System.out.println("newElementsLista " + newElements.toString());
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         // nombreDisp = sharedPreferences.getString("textDisp", "");
-        System.out.println("nombre del dispositivo!" + nombreDisp);
-        if (!nombreDisp.equals("")) {
-            textDisp.setText(nombreDisp);
-            TextView tDisp2 = findViewById(R.id.textNombreDisp2);
-            tDisp2.setText(nombreDisp);
-        }
 
         sharedPreferences = getSharedPreferences("ids", Context.MODE_PRIVATE);
         String id = sharedPreferences.getString("saveIdRest", "0");
@@ -3197,7 +2755,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
         SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
-        paralocal = false;
 
 
         System.out.println("RESUME HASH AFTER");
@@ -3206,10 +2763,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         String idDisp1 = sharedPreferences.getString("idDisp", "");
         System.out.println("EL ID DISP ES:" + idDisp1);
 
-        if (!idDisp1.equals("")) {
-            ((Global) this.getApplication()).setIdDisp(idDisp1);
-            idDisp = idDisp1;
-        }
 
 
         //  editor.putBoolean("esPrimeraLista1", true);
@@ -3795,18 +3348,12 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         try {
             data.put("requestType", "connection");
-            data.put("zona", idZona);
-            data.put("id_dispositivo", idDisp);
+            data.put("zona", controlador.getIdZona());
+            data.put("id_dispositivo", controlador.getIdDisp());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String dat = data.toString();
-
-        dat = dat.replace("{", "");
-        // System.out.println("dat incorrecto "+dat);
-        // dat=dat.replace("}","%7D");
-        String prueba = "\"requestType\":\"connection\",\"zona\": \"" + idZona + "\",\"id_dispositivo\":\"" + idDisp + "\"}";
-        //System.out.println("data conexion websocket " +"ws://185.101.227.119:6000?data="+prueba);
         OkHttpClient client = new OkHttpClient();
 
         okhttp3.Request request = new okhttp3.Request.Builder().url("ws://185.101.227.119:6000?data=" + data).build();
@@ -3815,7 +3362,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         Date d = new Date();
         System.out.println("prueba conexion" + t + "  " + d);
 
-        Lista.SocketListener socketListener = new Lista.SocketListener(this);
+        VistaPedidos.SocketListener socketListener = new VistaPedidos.SocketListener(this);
         webSocket = client.newWebSocket(request, socketListener);
 
 
@@ -3823,12 +3370,12 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
     public class SocketListener extends WebSocketListener {
-        public Lista activity;
+        public VistaPedidos activity;
         private final long startTime = 0;
         private Runnable runnable;
 
 
-        public SocketListener(Lista activity) {
+        public SocketListener(VistaPedidos activity) {
             this.activity = activity;
             runnable = new Runnable() {
                 @Override
@@ -3837,19 +3384,14 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
                     if (!primeraEntrada) {
                         Toast.makeText(activity, "Connection Established!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // operativo.callOnClick();
-                        // Toast.makeText(activity, "Connection not Established!", Toast.LENGTH_SHORT).show();
-
                     }
                     primeraEntrada = false;
                     if (haEntradoEnFallo) {
-                        //elementsSize = Integer.valueOf(elements.get(elements.size()-1).getNumPedido());
+
                         updateReconect = true;
                         actualizar(false, null);
                         haEntradoEnFallo = false;
                     }
-                    System.out.println("conexion websocket 1");
                 }
             };
         }
@@ -3874,34 +3416,24 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
 
 
+        /**
+         * Esta función es un controlador de eventos que se activa cuando se recibe un mensaje a través
+         * de una conexión WebSocket y realiza algunas acciones en función del mensaje recibido.
+         *
+         * @param webSocket El parámetro webSocket es una instancia de la clase WebSocket, que
+         * representa la conexión al servidor WebSocket.
+         * @param text El parámetro "texto" es una cadena que representa el mensaje recibido del
+         * WebSocket.
+         */
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             super.onMessage(webSocket, text);
-            System.out.println("texto del websocket " + text);
-            System.out.println("Mensaje recibido " + text);
-            Date d = new Date();
-            //System.out.println("prueba conexion " + d + "   " + text);
-
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     System.out.println("texto del websocket " + text);
                     if (text.equals("Update")) {
-                        actualizado = true;
                         SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
-                        boolean sonido = sharedSonido.getBoolean("sonido", true);
-                        boolean vibracion = sharedSonido.getBoolean("vibracion", false);
-                        /*
-                        if (resId!=-1) {
-                            mp = MediaPlayer.create(activity, resId);
-                            // handlerMusica.removeCallbacksAndMessages(null);
-
-                            mp.start();
-
-                        }
-
-                         */
-
                         actualizar(false, null);
                         String estado = ((Global) activity.getApplication()).getFiltro();
                         System.out.println(estado);
@@ -3918,19 +3450,13 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         @Override
         public void onClosing(WebSocket webSocket, int code, String reason) {
-            System.out.println("close websocket" + reason);
-
             super.onClosing(webSocket, code, reason);
 
         }
 
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {
-
             super.onClosed(webSocket, code, reason);
-
-            System.out.println("close websocket" + reason);
-
 
         }
 
@@ -3938,56 +3464,31 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
             super.onFailure(webSocket, t, response);
-            System.out.println("conexion websocket fallo");
             Date d = new Date();
-            System.out.println("prueba conexion " + d + "  " + t.getMessage());
-//            System.out.println("prueba conexion "+d+"  " +response);
-
-
-            System.out.println("Fallo websocket " + t.getMessage());
-            if (t.getMessage().equals("Socket closed")) {
-                //   writeToFile((nombreDisp + " | " + "Websocket connection closed"), activity);
-
-            }
-
-            System.out.println(fallo);
             haEntradoEnFallo = true;
-            if (fallo) {
-                //  writeToFile((nombreDisp + " | " + "Failed to connect to the websocket - " + t.getMessage()), activity);
-
-            }
             if (elements != null && elements.size() > 0) {
                 for (int i = 0; i < elements.size(); i++) {
+                    // se mira si hay un nuevo pedido con el numero de pedido más alto o no
                     if (Integer.valueOf(elements.get(i).getNumPedido()) > elementsSize) {
                         elementsSize = Integer.valueOf(elements.get(i).getNumPedido());
-
                     }
                 }
-                // System.out.println("elementssize es igual a " + elementsSize);
-            } else {
-                // System.out.println("elementssize no entra");
             }
+
+            //si hay un fallo en la conexión con el websocket, se inicia un handler para que cada 15 segundos
+            //llame a la función actualizar para ver si hay nuevos pedidos e inicia otro handler que
+            //cada 10 segundos intente volver a conectarse al websocket
             if ((t.getMessage() == null && fallo) || (fallo && !t.getMessage().equals("Socket closed"))) {
                 System.out.println("entra en el fallo");
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         fallo = false;
-                        // función a ejecutar
-
-                        actualizado = true;
-
-
-                        String estado = ((Global) activity.getApplication()).getFiltro();
-                        System.out.println("Scroll Y " + recyclerView.getScrollY());
-
                         actualizar(false, null);
-
-                        //instantiateWebSocket();
-
                         handler.postDelayed(this, 15000);
                     }
 
                 }, 15000);
+
 
                 handler2.postDelayed(new Runnable() {
                     public void run() {
@@ -4009,7 +3510,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("idDisp", idDisp);
         outState.putString("idRest", idRest);
 
 
@@ -4018,6 +3518,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     @Override
     public void onBackPressed() {
 
+        // si está en un pedido, ir atrás quita el pedido en vez de cerrar la actividad (si es un dispositivo
+        //pequeño como un móvil y está viendo la información de un pedido)
         if (estaEnPedido) {
             constraintInfoPedido.setVisibility(View.GONE);
             constraintPartePedidos.setVisibility(View.VISIBLE);
@@ -4027,48 +3529,16 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             pedidoActual = null;
             return;
         }
+        //si se han cambiado los ajustes pasa a la pantalla anterior el codigo 300 para indicar que
+        //necesita recrear la pantalla y aplicar los cambios
         if (recreate) {
             Intent data = new Intent();
             setResult(300, data);
         }
-        writeToFile("Exited as " + nombreDisp + " from " + nombreZona, activity);
+        //escribe en el registro que se ha salido del dispositivo
+        writeToFile("Exited as " + controlador.getNombreDisp() + " from " + controlador.getNombreZona(), activity);
 
 
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("saved_text", "");
-
-
-        editor.putString("pedidosNuevos", newElements.toString());
-
-
-        editor.putBoolean("esPrimeraLista", true);
-        editor.apply();
-
-        sharedPreferences = getSharedPreferences("ids", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putString("idDisp", "");
-        editor.apply();
-
-        sharedPreferences = getSharedPreferences("pedidos", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putString("saved_text", "");
-
-        editor.apply();
-
-        SharedPreferences sharedPreferences1 = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
-
-        System.out.println(newElements.toString());
-        editor1.putString("pedidosNuevos", newElements.toString());
-        editor1.apply();
-
-        if (popupListaNoti != null && popupListaNoti.isShowing()) {
-            popupListaNoti.dismiss();
-        }
-        if (popupBotonCerrar != null && popupBotonCerrar.isShowing()) {
-            popupBotonCerrar.dismiss();
-        }
         if (handlerTakeAways != null) {
             handlerTakeAways.removeCallbacksAndMessages(null);
         }
@@ -4106,25 +3576,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("saved_text", "");
-        editor.commit();
-        //  editor.putString("pedidosNuevos","");
-        //   editor.commit();
-
-        editor.putBoolean("esPrimeraLista", true);
-        editor.commit();
-        editor.remove("saved_text");
-        editor.commit();
-
-        sharedPreferences = getSharedPreferences("pedidos", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putString("saved_text", "");
-
-        editor.commit();
-
-        // h.removeCallbacksAndMessages(null);
         handlerParpadeoPedido.removeCallbacksAndMessages(null);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -4141,6 +3592,13 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
 
+    /**
+     * La función normaliza un texto determinado reemplazando los caracteres Unicode con sus
+     * correspondientes caracteres ASCII.
+     *
+     * @param producto El parámetro "producto" es una cadena que representa un producto.
+     * @return El método devuelve la versión normalizada de la cadena de entrada 'producto'.
+     */
     public String normalizarTexto(String producto) {
         producto = producto.replace("u00f1", "ñ");
         producto = producto.replace("u00f3", "ó");
@@ -4163,25 +3621,21 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
 
-    private String getState(String texto) {
-        String textofinal = "";
-        if (texto.equals(resources.getString(R.string.botonAceptado)) || texto.equals(estado_aceptado)) {
-            textofinal = "ACEPTADO";
-        } else if (texto.equals(resources.getString(R.string.botonPendiente)) || texto.equals(estado_pendiente)) {
-            textofinal = "PENDIENTE";
-        } else if (texto.equals(resources.getString(R.string.botonListo)) || texto.equals(estado_listo)) {
-            textofinal = "LISTO";
-        } else if (texto.equals(resources.getString(R.string.botonCancelado)) || texto.equals(estado_cancelado)) {
-            textofinal = "CANCELADO";
-        }
-        return textofinal;
-    }
-
+    /**
+     * La función `peticionLimpieza` envía una solicitud POST a un servidor con un cuerpo JSON que
+     * contiene información sobre un pedido de restaurante y maneja la respuesta en consecuencia.
+     *
+     * @param pedido El parámetro "pedido" es de tipo PedidoNormal, que representa un orden normal.
+     * Contiene información sobre el pedido, como el número de pedido y la lista de productos del
+     * pedido.
+     * @param callback El "DevolucionCallback" es una interfaz de devolución de llamada que se utiliza
+     * para manejar la respuesta de la solicitud de red realizada en el método "peticionLimpieza".
+     * Tiene dos métodos:
+     */
     private void peticionLimpieza(PedidoNormal pedido, DevolucionCallback callback) {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("id_zona", idZona);
             jsonBody.put("id_restaurante", idRest);
             jsonBody.put("numero_pedido", pedido.getNumPedido());
             jsonBody.put("estado", estado_listo);
@@ -4195,15 +3649,13 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Ejecutar");
-                        System.out.println("Petición ejecutada " + response);
                         Iterator<String> keys = response.keys();
                         while (keys.hasNext()) {
                             String clave = keys.next();
                             try {
                                 if (clave.equals("status") && response.getString(clave).equals("OK")) {
                                     pedido.setEstado(estado_listo);
-                                    writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedido.getNumPedido() + " - " + estadoToIngles(estado_listo), activity);
+                                    writeToFile(controlador.getNombreZona() + " - " + controlador.getNombreDisp() + " | " + "Order" + " " + pedido.getNumPedido() + " - " + estadoToIngles(estado_listo), activity);
 
                                     //para que el tachon solo salga en pedidos aceptados
                                     if (adapterProductos2 != null) {
@@ -4241,7 +3693,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                 if (error.toString().contains("Value error of type java.lang.String cannot be converted to JSONObject")) {
 
                     pedido.setEstado(estado_listo);
-                    writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedido.getNumPedido() + " - " + estadoToIngles(estado_listo), activity);
+                    writeToFile(controlador.getNombreZona() + " - " + controlador.getNombreDisp() + " | " + "Order" + " " + pedido.getNumPedido() + " - " + estadoToIngles(estado_listo), activity);
 
                     //para que el tachon solo salga en pedidos aceptados
                     if (adapterProductos2 != null) {
@@ -4258,7 +3710,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                     System.out.println("numero de peticion error");
                     callback.onDevolucionFallida(error.toString());
 
-                    Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VistaPedidos.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
                 } else {
                     callback.onDevolucionFallida(error.toString());
                 }
@@ -4270,159 +3722,15 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     }
 
-    private void ejecutar(String est, String info, int numPedido, DevolucionCallback callback) {
-        String est2 = getState(est);
-        Pedido element = pedidoActual;
-        System.out.println("entra en ejecutar");
-        if (!est2.equals("ACEPTADO")) {
-            // db.eliminarNotificacion(element.getNumPedido());
-            for (int i = elementsPedido.size() - 1; i >= 0; i--) {
-                if (elementsPedido.get(i).getPlato().equals("tiempo")) {
-                    elementsPedido.remove(i);
-                }
-            }
-            //ListAdapterPedido.notifyDataSetChanged();
-            //  horaVisible();
-        }
-        if (!pedidoActual.getEstado().equals("")) {
-            System.out.println("entra en ejecutar no cancelado " + est2);
-            // if ((est2.equals("ACEPTADO") && !tiempo.equals("")
-            if (est2.equals("ACEPTADO") || est2.equals("PENDIENTE") || est2.equals("LISTO") || est2.equals("CANCELADO")) {
-                int Npedido = numPedido;
-                //     mal=false;
-                String idrestaurant = ((Global) this.getApplication()).getIdRest();
-                String url = urlInsertar;
-                ((Global) this.getApplication()).setEstadoPedido(est);
-
-                if (!tiempo.equals("") && est2.equals("ACEPTADO")) {
-                    String[] s = tiempo.split(" ");
-                    url = url + "&tiempo=" + Integer.valueOf(s[0]);
-
-
-                } else {
-                    //tiempo=tiempos[0];
-                    //init();
-
-                    //db.eliminar(Integer.valueOf(element.getNumPedido()));
-
-                }
-
-
-                System.out.println("entra en ejecutar pre jsonBody");
-                Log.d("url", url);
-                //    actualizarHora(element);
-
-                JSONObject jsonBody = new JSONObject();
-                try {
-                    jsonBody.put("id_zona", idZona);
-                    jsonBody.put("id_restaurante", idrestaurant);
-                    jsonBody.put("numero_pedido", Npedido);
-                    jsonBody.put("estado", est2);
-                    if (est2.equals("CANCELADO")) {
-                        JSONObject jsonReason = new JSONObject();
-                        jsonReason.put("reason", info);
-                        jsonBody.put("extra_data", jsonReason);
-                    }
-                    info = "";
-                    String jsonString = jsonBody.toString();
-                    // System.out.println("respuesta peticion prueba "+jsonString);
-                    // new PostData().execute(jsonString);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                System.out.println("jsonBody " + jsonBody);
-
-
-// Crear la petición POST
-
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlInsertar, jsonBody,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                System.out.println("Ejecutar");
-                                System.out.println("Petición ejecutada " + response);
-                                Iterator<String> keys = response.keys();
-                                while (keys.hasNext()) {
-                                    String clave = keys.next();
-                                    try {
-                                        if (clave.equals("status") && response.getString(clave).equals("OK")) {
-                                            pedidoActual.setEstado(est2);
-                                            adapterPedidos2.cambiarestado(estado);
-                                            mostrarDatosTk(pedidoActual);
-                                            String estadoIdiomaActual = cambiarEstadoIdioma(est2);
-                                            tvEstActual.setText(estadoIdiomaActual.toUpperCase());
-                                            writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedidoActual.getNumPedido() + " - " + estadoToIngles(est), activity);
-
-                                            //para que el tachon solo salga en pedidos aceptados
-                                            if (adapterProductos2 != null) {
-                                                adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
-                                                adapterProductos2.destacharTodos();
-                                                ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos();
-                                                for (int i = 0; i < lista.size(); i++) {
-                                                    lista.get(i).setTachado(false);
-                                                }
-
-                                                adapterPedidos2.notifyDataSetChanged();
-                                            }
-                                            if (est2.equals(estado_listo) && modo == 2) {
-                                                setPedidosMesa(mesaActual.getNombre(), numPedido);
-                                            }
-                                            callback.onDevolucionExitosa(response);
-                                        } else if (clave.equals("status") && response.getString(clave).equals("ERROR")) {
-                                            //peticionGetTakeAway();
-                                            try {
-                                                String details = response.getString("details");
-                                                Toast.makeText(activity, "An error has ocurred: " + details, Toast.LENGTH_SHORT).show();
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    } catch (JSONException e) {
-                                        System.out.println("petition error 1");
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        System.out.println("Petition error 1 " + error.toString());
-                        if (error.toString().contains("Value error of type java.lang.String cannot be converted to JSONObject")) {
-
-                            pedidoActual.setEstado(est2);
-                            adapterPedidos2.cambiarestado(estado);
-                            mostrarDatosTk(pedidoActual);
-                            writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedidoActual.getNumPedido() + " - " + estadoToIngles(est), activity);
-
-                            //para que el tachon solo salga en pedidos aceptados
-                            if (adapterProductos2 != null) {
-                                adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
-                                ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos();
-                                for (int i = 0; i < lista.size(); i++) {
-                                    lista.get(i).setTachado(false);
-                                }
-
-                                adapterPedidos2.notifyDataSetChanged();
-                            }
-
-                        } else if (error.toString().toLowerCase().contains("noconnectionerror")) {
-                            Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
-                        } else {
-
-                        }
-                        error.printStackTrace();
-                    }
-                });
-                Volley.newRequestQueue(this).add(jsonObjectRequest);
-
-
-            }
-        }
-    }
-
+    /**
+     * La función estadoToIngles traduce un estado determinado del español al inglés.
+     *
+     * @param est El parámetro "est" es un String que representa el estado en español.
+     * @return El método devuelve un valor de cadena. El valor de cadena específico que se devuelve
+     * depende del parámetro de entrada "est". Si "est" coincide con uno de los casos en la declaración
+     * de cambio, se devolverá la traducción al inglés correspondiente del estado. Si "est" no coincide
+     * con ninguno de los casos, se devolverá una cadena vacía.
+     */
     private String estadoToIngles(String est) {
         switch (est) {
             case "PENDIENTE":
@@ -4438,6 +3746,16 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
 
+    /**
+     * La función `writeToFile` escribe datos en un archivo en el contexto especificado, incluida una
+     * marca de tiempo y un separador de línea.
+     *
+     * @param data El parámetro de datos es una cadena que contiene la información que desea escribir
+     * en el archivo. Podría ser cualquier texto o datos que desee almacenar.
+     * @param context El parámetro "contexto" es un objeto de la clase Contexto, que proporciona acceso
+     * a diversos recursos e información específicos de la aplicación. Normalmente se pasa como
+     * argumento a métodos que requieren acceso a recursos o servicios del sistema.
+     */
     private void writeToFile(String data, Context context) {
         try {
             String datos = "";
@@ -4457,879 +3775,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
     }
 
-
-    private void cambiarEnLocal(String estadoP) {
-        SharedPreferences sharedPedidosLocal = getSharedPreferences("pedidosLocal" + idRest, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editPedidosLocal = sharedPedidosLocal.edit();
-        pedidoActual.setEstado(estadoP);
-        actualizarPedidosSharedpreferences();
-
-        Set<String> set = sharedPedidosLocal.getStringSet("pedidosLocal", new HashSet<>());
-        Iterator it = set.iterator();
-        while (it.hasNext()) {
-            String pedidoLocal = (String) it.next();
-            String[] splitString = pedidoLocal.split(" ");
-            if (splitString[0].equals(pedidoActual.getNumPedido()) && splitString[2].equals(idDisp)) {
-                it.remove();
-                System.out.println("REMOVED FROM LOCALLIST");
-            }
-        }
-
-        set.add(pedidoActual.getNumPedido() + " " + cambiarEstadoIdiomaABase(estadoP) + " " + idDisp);
-        editPedidosLocal.remove("pedidosLocal");
-        editPedidosLocal.commit();
-        editPedidosLocal.putStringSet("pedidosLocal", set);
-        editPedidosLocal.commit();
-        if (estadoP.equals(resources.getString(R.string.botonAceptado))) {
-            //     textoTiempoAñadido.setVisibility(View.VISIBLE);
-            //     textoTiempoTranscurrido.setVisibility(View.VISIBLE);
-        } else {
-            //    textoTiempoAñadido.setVisibility(View.INVISIBLE);
-            //      textoTiempoTranscurrido.setVisibility(View.INVISIBLE);
-        }
-    }
-
-/*
-    private void actualizarHora() {
-        // hAdapter=null;
-
-        ListElement element = pedidoActual;
-        ArrayList<Pair<String, String>> hora = db.obtener(Integer.valueOf(element.getNumPedido()));
-
-        if (pedidoActual.getEstado().equals(resources.getString(R.string.botonAceptado)) && hora != null) {
-            //    textoTiempoAñadido.setVisibility(View.VISIBLE);
-            //    textoTiempoTranscurrido.setVisibility(View.VISIBLE);
-            int tiempos = hora.size();
-            String hora1 = hora.get(0).first;
-            String[] hora1Array = hora1.split(":");
-
-            // textoHora.setText(resources.getString(R.string.pedidoAceptadoHora)+" - "+hora1Array[0]+":"+hora1Array[1]+"h");
-            Pair<String, String> tiempoDB = hora.get(hora.size() - 1);
-            Pair<String, String> tiempoPrimero = hora.get(0);
-            Date date = new Date();
-            String dateNow = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-            System.out.println("TIEMPODB1 " + tiempoDB.first);
-            int tiempoTrans = tiempoTranscurrido(tiempoDB.first, dateNow);
-            int tiempoTransPrimero = tiempoTranscurrido(tiempoPrimero.first, dateNow);
-            //  textoTiempoAñadido.setText(resources.getString(R.string.tiempoTranscurrido) + ": " + tiempoTransPrimero + " mins");
-            tiempoFinalString = hora(tiempoDB.first, tiempoDB.second);
-            if (db.existeNotificacion(element.getNumPedido())) {
-                if (db.notificacionParaEliminar(element.getNumPedido())) {
-                    db.actualizarNotificacion(element.getNumPedido(), tiempoFinalString, 1);
-
-                } else {
-                    db.actualizarNotificacion(element.getNumPedido(), tiempoFinalString, 0);
-
-                }
-            } else {
-                db.agregarNotificacion(element.getNumPedido(), tiempoFinalString);
-
-            }
-            System.out.println(dateNow);
-            System.out.println("pruebaHora1 " + tiempoFinalString + "         " + hora.get(hora.size() - 1).first);
-            int tFinalInt = tiempoTranscurrido(tiempoFinalString, hora.get(hora.size() - 1).first);
-            tFinalInt = tFinalInt - tiempoTrans;
-            if (tFinalInt <= 0) {
-                //    textoTiempoTranscurrido.setTextColor(getColor(R.color.color_pendiente));
-            } else {
-                //     textoTiempoTranscurrido.setTextColor(getColor(R.color.black));
-
-            }
-            // textoTiempoTranscurrido.setText(resources.getString(R.string.horaEstimada) + ": " + tFinalInt + " mins");
-
-
-            horaActualizada++;
-
-        } else {
-            //  textoTiempoTranscurrido.setText("");
-            // textoTiempoAñadido.setText("");
-            //    textoTiempoAñadido.setVisibility(View.INVISIBLE);
-            //  textoTiempoTranscurrido.setVisibility(View.INVISIBLE);
-        }
-
-
-    }
-
-
- */
-    /*
-    private int tiempoTranscurrido(String t, String hora1) {
-        String[] s = t.split(":");
-        String[] h = hora1.split(":");
-
-        int h1 = Integer.valueOf(s[0]);
-        int h2 = Integer.valueOf(h[0]);
-
-        if (h1 == 0) {
-            h1 += 24;
-        }
-        if (h2 == 0) {
-            h2 += 24;
-        }
-
-        int llevada = h2 - h1;
-
-        int s1 = Integer.valueOf(s[2]);
-        int s2 = Integer.valueOf(h[2]);
-
-        int r = (Integer.valueOf(s[1]) * 60 + s1) - (Integer.valueOf(h[1]) * 60 + (3600 * llevada) + s2);
-        System.out.println("prueba r1 " + r);
-        if (r > 0) {
-            r = (Integer.valueOf(s[1]) * 60 + s1) - (Integer.valueOf(h[1]) * 60 + (3600 * llevada) + s2);
-            r = Math.abs(r);
-
-        } else {
-            r = Math.abs(r);
-        }
-        System.out.println("prueba r2 " + r);
-        r = r / 60;
-        System.out.println("prueba r3 " + r);
-        String resultado = String.valueOf(r) + " mins";
-        System.out.println("result" + resultado);
-        return r;
-    }
-
-
-     */
-
-    /*
-    private String hora(String hora1, String tiempo) {
-        String[] horas = hora1.split(":");
-        String[] tiempos = tiempo.split(" ");
-        int tiempoInt = Integer.valueOf(tiempos[0]);
-        int horasInt = Integer.valueOf(horas[0]);
-        int minutosInt = Integer.valueOf(horas[1]);
-
-        minutosInt += tiempoInt;
-        if (minutosInt >= 60) {
-            minutosInt -= 60;
-            horasInt += 1;
-        }
-        String resultado;
-        if (minutosInt < 10) {
-            resultado = String.valueOf(horasInt) + ":0" + String.valueOf(minutosInt) + ":" + horas[2];
-        } else {
-            resultado = String.valueOf(horasInt) + ":" + String.valueOf(minutosInt) + ":" + horas[2];
-
-        }
-
-        return resultado;
-    }
-
-
-     */
-
-    private void actualizarPedidosSharedpreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("pedidos", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String pedidos = sharedPreferences.getString("saved_text", "");
-        if (!pedidos.equals("")) {
-
-            JSONObject datos = null;
-            try {
-                datos = new JSONObject(pedidos);
-
-                JSONArray array = datos.getJSONArray("pedidos");
-
-                for (int i = array.length() - 1; i >= 0; i--) {
-
-                    JSONObject pedido = array.getJSONObject(i);
-                    if (pedido.getString("Npedido").equals(pedidoActual.getNumPedido())) {
-                        pedido.put("Estado", getState(pedidoActual.getEstado()));
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            editor.putString("saved_text", datos.toString());
-            editor.commit();
-        }
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////Funciones de prueba ////////////////////////////////
-
-    private ArrayList<Pair<Integer, ArrayList<Integer>>> getElementosTachados() {
-        String listaString = sharedTakeAway.getString("lista_productos_tachados_" + idRest, null);
-
-        ArrayList<Pair<Integer, ArrayList<Integer>>> listaFinal = new ArrayList<>();
-        if (listaString != null) {
-            try {
-                JSONArray array = new JSONArray(listaString);
-
-                for (int i = 0; i < array.length(); i++) {
-                    ArrayList<Integer> idProductosTachados = new ArrayList<>();
-                    JSONObject jsonProducto = array.getJSONObject(i);
-                    int numero_pedido = jsonProducto.getInt("numero_pedido");
-                    JSONArray jsonTachados = jsonProducto.getJSONArray("productos_tachados");
-                    for (int j = 0; j < jsonTachados.length(); j++) {
-                        int id = jsonTachados.getInt(j);
-                        idProductosTachados.add(id);
-                    }
-
-                    Pair<Integer, ArrayList<Integer>> par = new Pair<>(numero_pedido, idProductosTachados);
-                    listaFinal.add(par);
-                }
-
-                return listaFinal;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return listaFinal;
-            }
-
-        } else {
-            return listaFinal;
-        }
-
-    }
-
-    private boolean estaTachado(int num, ArrayList<Pair<Integer, ArrayList<Integer>>> array, int idProducto) {
-        boolean esta = false;
-        for (int i = 0; i < array.size(); i++) {
-            Pair<Integer, ArrayList<Integer>> par = array.get(i);
-            if (par.first == num) {
-                ArrayList<Integer> listaIds = par.second;
-                for (int j = 0; j < listaIds.size(); j++) {
-                    if (listaIds.get(j) == idProducto) {
-                        esta = true;
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-
-        return esta;
-
-    }
-
-
-    public void init2(boolean bol, DevolucionCallback callback) {
-        SharedPreferences sharedId = getSharedPreferences("ids", Context.MODE_PRIVATE);
-        ((Global) this.getApplication()).setIdRest(sharedId.getString("saveIdRest", "0"));
-
-        String idrestaurant = ((Global) this.getApplication()).getIdRest();
-
-        String url = URL; /// luego volver a cambiar el 14 por idDisp
-        Log.d("url", url);
-        Log.d("textChange", url);
-        ArrayList<Mesa> arrayMesas = new ArrayList<>();
-
-
-        if (!idZona.equals("") && !idDisp.equals("")) {
-            JSONObject jsonBody = new JSONObject();
-            try {
-                jsonBody.put("id_zona", idZona);
-                jsonBody.put("id_dispositivo", idDisp);
-                System.out.println("jsonBody " + jsonBody);
-                System.out.println("jsonBody " + jsonBody.toString());
-
-                //  new PostData().execute(jsonBody.toString());
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("jsonBody " + jsonBody);
-
-
-// Crear la petición POST
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Manejar la respuesta del servidor en formato JSON
-                            // Aquí puedes procesar la respuesta recibida del servidor
-                            JSONObject respuesta;
-                            ArrayList<Pair<Integer, ArrayList<Integer>>> productosTachados = getElementosTachados();
-                            ArrayList<String> nombreMesas = new ArrayList<>();
-                            callback.onDevolucionExitosa(response);
-                            try {
-                                respuesta = new JSONObject(normalizarTexto(response.toString()));
-                                System.out.println("no error init2 " + normalizarTexto(response.toString()));
-                            } catch (JSONException e) {
-                                System.out.println("error init2 " + e.toString());
-                                e.printStackTrace();
-                                respuesta = response;
-                            }
-                            if (elements.size() == 0) {
-                                elements.add(0, new PedidoNormal(nombreDisp));
-                            }
-                            System.out.println("PETICION RECIBIDA init2 " + respuesta);
-                            try {
-                                Iterator<String> keys2 = respuesta.keys();
-                                while (keys2.hasNext()) {
-                                    String k = keys2.next();
-                                    System.out.println("key " + k);
-                                    System.out.println(" respuesta init2" + respuesta.getString(k));
-                                }
-                                // resetearListas();
-
-                                datosPedidos = respuesta;
-                                SharedPreferences sharedPreferences = getSharedPreferences("pedidos", Context.MODE_PRIVATE);
-                                int savedNumMax = sharedPreferences.getInt("numMax_" + idRest, -1);
-
-                                if (primera) {
-                                    savedNumMax = sharedPreferences.getInt("numMax_" + idRest, -1);
-                                    primera = false;
-                                } else {
-                                    savedNumMax = -1;
-                                }
-                                String pedidosShared = sharedPreferences.getString("saved_text", "");
-                                System.out.println("NUMMAX = " + numMax);
-                                if (pedidosShared != null && !pedidosShared.equals("")) {
-                                    System.out.println("ENTRA EN CAMBIARNUMMAX ");
-                                    JSONObject p = null;
-                                    try {
-                                        p = new JSONObject(pedidosShared);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-
-                                    }
-                                    JSONArray Ar = null;
-                                    if (p == null) {
-                                        Ar = new JSONArray(pedidosShared);
-                                    }
-                                    if ((p != null && p.getJSONArray("pedidos").length() > 0) || (Ar != null && Ar.length() > 0)) {
-                                        JSONArray arrayP = p != null ? p.getJSONArray("pedidos") : Ar;
-                                        System.out.println("ultimopedido " + arrayP.get(arrayP.length() - 1));
-                                        boolean encontradoPedido = false;
-                                        int num_pedido = 0;
-                                        if (numMax != -1) {
-                                            num_pedido = numMax;
-                                        }
-                                        while (num_pedido < arrayP.length()) {
-                                            if (!arrayP.getJSONObject(num_pedido).getString("estado_cocina").equals("null")) {
-                                                numMax = Integer.valueOf(arrayP.getJSONObject(num_pedido).getString("numero_pedido"));
-                                                System.out.println("ultimo pedido no null = " + numMax);
-                                            } else {
-                                                pedidosNull.add(Integer.valueOf(arrayP.getJSONObject(num_pedido).getString("numero_pedido")));
-                                            }
-                                            num_pedido++;
-                                        }
-                                        System.out.println("NUM MAX = " + numMax);
-                                    } else {
-                                        System.out.println("lista pedidos sin pedidos");
-                                        //  numMax=1;
-                                    }
-                                } else {
-                                    System.out.println("NO ENTRA EN CAMBIAR NUM MAX");
-                                }
-
-                                if (bol) {
-                                    elements.clear();
-                                    elements.add(0, new PedidoNormal(nombreDisp));
-
-                                    // objeto que sirve para la parte del search en la version vertical de tablet
-                                }
-                                JSONArray array = response.getJSONArray("pedidos");
-                                Date resultdate = new Date();
-                                if (s == 0) {
-                                    for (int i = 0; i < array.length(); i++) {
-                                        System.out.println("listElement entra en pedidos");
-
-                                        JSONObject pedido = array.getJSONObject(i);
-                                        System.out.println("pedido " + pedido);
-
-                                        if (!pedido.getString("ubicacion").equals("TakeAway")) {
-
-                                            if (i == array.length() - 1) {
-                                                System.out.println("ultimo pedido " + array.getJSONObject(i));
-                                            }
-                                            // boolean esTakeAway=pedido.getBoolean("takeAway");
-                                            // if(!esTakeAway){
-                                            int num = 0;
-                                            String mesa = "";
-                                            String est = "";
-                                            String instruccionesGenerales = "";
-                                            String fecha = "";
-
-                                            String nombre = "";
-                                            Map<String, String> nombres = new HashMap<>();
-                                            String apellido = "";
-                                            String tipo = "";
-                                            String correo = "";
-                                            String prefijoTlf = "";
-                                            String tlf = "";
-
-                                            String metodo_pago = "";
-                                            String total = "";
-                                            String impuesto = "";
-                                            String service_charge = "";
-                                            String propina = "";
-
-                                            String idProducto = "";
-                                            String idCarrito = "";
-                                            String nombreProducto = "";
-                                            String precioProducto = "";
-                                            String impuestoProducto = "";
-                                            String cantidadProducto = "";
-                                            String instruccionesProducto = "";
-                                            String imagen = "";
-
-                                            ArrayList<ProductoPedido> listaProductos = new ArrayList<>();
-                                            ArrayList<ProductoPedido> listaProductosOcultos = new ArrayList<>();
-
-
-                                            Iterator<String> keys = pedido.keys();
-
-                                            while (keys.hasNext()) {
-                                                String claves = keys.next();
-
-                                                if (claves.equals("numero_pedido")) {
-                                                    num = pedido.getInt(claves);
-                                                } else if (claves.equals("ubicacion")) {
-                                                    mesa = pedido.getString(claves);
-                                                    mesa = normalizarTexto(mesa);
-                                                    if (!nombreMesas.contains(mesa)) {
-                                                        System.out.println("mesa nombre " + mesa);
-                                                        nombreMesas.add(mesa);
-                                                    }
-                                                } else if (claves.equals("estado_cocina")) {
-                                                    est = pedido.getString(claves);
-                                                } else if (claves.equals("instrucciones")) {
-                                                    instruccionesGenerales = pedido.getString(claves);
-                                                } else if (claves.equals("fecha")) {
-                                                    fecha = pedido.getString(claves);
-                                                    System.out.println("fecha " + fecha);
-
-                                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                                    Calendar c = Calendar.getInstance();
-                                                    c.add(Calendar.DATE, 2);
-                                                    try {
-                                                        c.setTime(sdf.parse(fecha));
-                                                        sdf = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss");
-                                                        resultdate = new Date(c.getTimeInMillis());
-                                                    } catch (ParseException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                } else if (claves.equals("cliente")) {
-                                                    JSONObject cliente = pedido.getJSONObject("cliente");
-                                                    Iterator<String> keyClientes = cliente.keys();
-                                                    while (keyClientes.hasNext()) {
-                                                        String claveCliente = keyClientes.next();
-                                                        if (claveCliente.equals("nombre")) {
-                                                            nombre = cliente.getString(claveCliente);
-                                                        } else if (claveCliente.equals("tipo")) {
-                                                            tipo = cliente.getString(claveCliente);
-                                                        } else if (claveCliente.equals("correo")) {
-                                                            correo = cliente.getString(claveCliente);
-                                                        } else if (claveCliente.equals("prefijo_telefono")) {
-                                                            prefijoTlf = cliente.getString(claveCliente);
-                                                        } else if (claveCliente.equals("numero_telefono")) {
-                                                            tlf = cliente.getString(claveCliente);
-                                                        } else if (claveCliente.equals("apellido")) {
-                                                            apellido = cliente.getString(claveCliente);
-                                                        }
-                                                    }
-
-                                                } else if (claves.equals("importe")) {
-                                                    JSONObject importe = pedido.getJSONObject("importe");
-                                                    Iterator<String> keyImporte = importe.keys();
-                                                    while (keyImporte.hasNext()) {
-                                                        String clave = keyImporte.next();
-                                                        if (clave.equals("metodo_pago")) {
-                                                            metodo_pago = importe.getString(clave);
-                                                        } else if (clave.equals("total")) {
-                                                            total = importe.getString(clave);
-                                                        } else if (clave.equals("impuesto")) {
-                                                            impuesto = importe.getString(clave);
-                                                        } else if (clave.equals("service_charge")) {
-                                                            service_charge = importe.getString(clave);
-                                                        } else if (clave.equals("propina")) {
-                                                            propina = importe.getString(clave);
-                                                        }
-                                                    }
-                                                } else if (claves.equals("pedido")) {
-                                                    try {
-
-                                                        if (pedido.getString("pedido") != null && !pedido.getString("pedido").equals("null")) {
-                                                            JSONArray productosPedido = pedido.getJSONArray("pedido");
-                                                            int idProductoPedido = 0;
-
-                                                            for (int p = 0; p < productosPedido.length(); p++) {
-                                                                idProductoPedido++;
-                                                                ArrayList<Opcion> opciones = new ArrayList<>();
-                                                                JSONObject prod = productosPedido.getJSONObject(p);
-                                                                System.out.println("prod " + prod);
-                                                                Iterator<String> key = prod.keys();
-                                                                while (key.hasNext()) {
-                                                                    String clave = key.next();
-                                                                    if (clave.equals("id")) {
-                                                                        idProducto = prod.getString(clave);
-                                                                    } else if (clave.equals("idCarrito")) {
-                                                                        idCarrito = prod.getString(clave);
-                                                                    } else if (clave.equals("nombre")) {
-                                                                        try {
-                                                                            JSONObject jsonNombres = prod.getJSONObject("nombre");
-                                                                            nombres = getNombresDeIdiomas(jsonNombres);
-
-                                                                        } catch (JSONException e) {
-                                                                            e.printStackTrace();
-                                                                            nombreProducto = prod.getString(clave);
-                                                                            nombreProducto = normalizarTexto(nombreProducto);
-                                                                            nombres.put("es", nombreProducto);
-                                                                        }
-
-
-                                                                    } else if (clave.equals("precio")) {
-                                                                        precioProducto = prod.getString(clave);
-                                                                    } else if (clave.equals("impuesto")) {
-                                                                        impuestoProducto = prod.getString(clave);
-                                                                    } else if (clave.equals("cantidad")) {
-                                                                        cantidadProducto = prod.getString(clave);
-                                                                    } else if (clave.equals("instrucciones")) {
-                                                                        instruccionesProducto = prod.getString(clave);
-                                                                    } else if (clave.equals("src")) {
-                                                                        imagen = prod.getString(clave);
-                                                                    } else if (clave.equals("opciones")) {
-                                                                        JSONArray listaOpciones = prod.getJSONArray("opciones");
-                                                                        JSONObject jsonOpcion;
-                                                                        String idOpcion = "";
-                                                                        String nombreOpcion = "";
-                                                                        String idElemento = "";
-                                                                        String nombreElemento = "";
-                                                                        String tipoPrecioOpcion = "";
-                                                                        String precioOpcion = "";
-                                                                        System.out.println("size listaopciones " + listaOpciones.length());
-                                                                        for (int iOp = 0; iOp < listaOpciones.length(); iOp++) {
-                                                                            System.out.println("iOp " + listaOpciones.length());
-                                                                            jsonOpcion = listaOpciones.getJSONObject(iOp);
-                                                                            Iterator<String> keyOpciones = jsonOpcion.keys();
-                                                                            Map<String,String > nombresOpcion = new HashMap<>();
-                                                                            Map<String,String > nombresElementos = new HashMap<>();
-
-                                                                            while (keyOpciones.hasNext()) {
-                                                                                String claveOpc = keyOpciones.next();
-                                                                                switch (claveOpc) {
-                                                                                    case "idOpcion":
-                                                                                        idOpcion = jsonOpcion.getString(claveOpc);
-                                                                                        break;
-                                                                                    case "nombreOpcion":
-                                                                                        nombresOpcion = getNombresDeIdiomas(jsonOpcion.getJSONObject("nombreOpcion"));
-                                                                                        nombreOpcion = jsonOpcion.getString(claveOpc);
-                                                                                        nombreOpcion = normalizarTexto(nombreOpcion);
-                                                                                        System.out.println("nombre opcion " + nombreOpcion);
-
-                                                                                        break;
-                                                                                    case "idElemento":
-                                                                                        idElemento = jsonOpcion.getString(claveOpc);
-                                                                                        break;
-                                                                                    case "nombreElemento":
-                                                                                        nombresElementos = getNombresDeIdiomas(jsonOpcion.getJSONObject("nombreElemento"));
-                                                                                        nombreElemento = jsonOpcion.getString(claveOpc);
-                                                                                        nombreElemento = normalizarTexto(nombreElemento);
-
-                                                                                        break;
-                                                                                    case "tipoPrecio":
-                                                                                        tipoPrecioOpcion = jsonOpcion.getString(claveOpc);
-                                                                                        break;
-                                                                                    case "precio":
-                                                                                        precioOpcion = jsonOpcion.getString(claveOpc);
-                                                                                        break;
-                                                                                }
-                                                                            }
-                                                                            Opcion option = new Opcion(idOpcion, nombresOpcion, idElemento, nombresElementos, tipoPrecioOpcion, precioOpcion,false);
-                                                                            opciones.add(option);
-
-                                                                        }
-
-                                                                    }
-                                                                }
-                                                                //los id de los productos que se obtienen de las 2 peticiones son iguales?
-                                                                if (!mapaProductos.containsKey(idProducto) || mapaProductos.get(idProducto) == true) {
-                                                                    System.out.println("añade producto " + idProducto + " esta " + mapaProductos.get(idProducto) + " existe " + mapaProductos.containsKey(idProducto));
-                                                                    ProductoPedido productoPedido = new ProductoPedido(idProducto, idCarrito, nombres, precioProducto, impuestoProducto, Integer.valueOf(cantidadProducto), instruccionesProducto, opciones, false);
-                                                                    productoPedido.setIdProductoPedido(idProductoPedido);
-
-                                                                    if (estaTachado(num, productosTachados, idProductoPedido)) {
-                                                                        productoPedido.setTachado(true);
-                                                                    }
-                                                                    listaProductos.add(productoPedido);
-                                                                } else if (FLAG_MOSTRAR_PRODUCTOS_OCULTADOS) {
-                                                                    ProductoPedido productoPedido = new ProductoPedido(idProducto, idCarrito, nombres, precioProducto, impuestoProducto, Integer.valueOf(cantidadProducto), instruccionesProducto, opciones, true);
-                                                                    productoPedido.setIdProductoPedido(idProductoPedido);
-                                                                    if (estaTachado(num, productosTachados, idProductoPedido)) {
-                                                                        productoPedido.setTachado(true);
-                                                                    }
-                                                                    listaProductosOcultos.add(productoPedido);
-                                                                    System.out.println("no añade producto" + idProducto);
-                                                                }
-
-
-                                                            }
-                                                        }
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-
-                                            }
-                                            boolean anadir = true;
-                                            if (est != null && !est.equals("null")) {
-                                                anadir = estaYaEnLista(num, est);
-                                                System.out.println("boolean anadir " + anadir);
-
-                                            }
-                                            if (listaProductosOcultos.size() > 0) {
-                                                listaProductos.addAll(listaProductosOcultos);
-                                            }
-
-                                            System.out.println("listElement " + num + " " + anadir + " " + listaProductos.size());
-
-                                            if ((!anadir || bol) && listaProductos.size() > 0) {
-                                                Cliente client = new Cliente(nombre, tipo, correo, prefijoTlf, tlf);
-                                                client.setApellido(apellido);
-                                                Importe importe = new Importe(metodo_pago, total, impuesto, service_charge, propina);
-                                                ListaProductoPedido listaP = new ListaProductoPedido(listaProductos);
-
-
-                                                System.out.println("lista productos size " + listaP.getLista().size());
-                                                System.out.println("listElement " + num + " " + est);
-
-                                                if (est.equals("ACEPTADO")) {
-                                                    PedidoNormal elemento = new PedidoNormal("#ED40B616", num, mesa, resources.getString(R.string.botonAceptado), false, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
-                                                    elements.add(elemento);
-
-                                                } else if (est.equals("LISTO")) {
-
-                                                    elements.add(new PedidoNormal("#0404cb", num, mesa, resources.getString(R.string.botonListo), false, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS));
-
-                                                } else if (est.equals("PENDIENTE")) {
-
-                                                    System.out.println("Numpedido " + num);
-                                                    System.out.println("NUMPEDIDO MAX = " + numMax);
-                                                    boolean estaEnNull = false;
-                                                    int indice = 0;
-                                                    while (!estaEnNull && indice < pedidosNull.size()) {
-                                                        System.out.println("Pedidos null = " + pedidosNull.get(indice));
-                                                        if (String.valueOf(pedidosNull.get(indice)).equals(num)) {
-                                                            estaEnNull = true;
-                                                            pedidosNull.remove(indice);
-                                                        }
-                                                        indice++;
-                                                    }
-                                                    if ((Integer.valueOf(num) > numMax && numMax != -1) || (Integer.valueOf(num) > savedNumMax && savedNumMax != -1) || estaEnNull) {
-                                                        System.out.println("entra numMAx -1");
-                                                        boolean esta = false;
-                                                        for (int l = 0; l < newElements.size(); l++) {
-                                                            if (newElements.get(l) == num) {
-                                                                esta = true;
-                                                            }
-                                                        }
-                                                        if (!esta) {
-                                                            newElements.add(num);
-                                                        }
-
-
-                                                        SharedPreferences sharedPreferences1 = getPreferences(Context.MODE_PRIVATE);
-                                                        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
-                                                        System.out.println(newElements.toString());
-                                                        editor1.putString("pedidosNuevos", newElements.toString());
-                                                        editor1.commit();
-
-                                                        PedidoNormal elemento = new PedidoNormal("#000000", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
-                                                        elements.add(elemento);
-
-                                                        listaPedidosParpadeo.add(String.valueOf(num));
-                                                        hayNuevosPedidos = true;
-                                                    } else {
-                                                        boolean esta = false;
-                                                        System.out.println("newElements for ");
-                                                        for (int y = 0; y < newElements.size(); y++) {
-                                                            // System.out.println("es igual? " + num + " " + newElements.get(y));
-
-                                                            System.out.println(newElements.get(y));
-                                                            System.out.println(Integer.valueOf(num));
-                                                            if (newElements.get(y) == num) {
-                                                                esta = true;
-                                                                //System.out.println("entra en está  " + num);
-                                                            }
-                                                        }
-                                                        System.out.println(newElements);
-                                                        PedidoNormal elemento;
-                                                        if (esta) {
-                                                            elemento = new PedidoNormal("#FFFFFF", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
-                                                            elements.add(new PedidoNormal("#FFFFFF", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS));
-
-                                                            listaPedidosParpadeo.add(String.valueOf(num));
-                                                        } else {
-                                                            System.out.println("entra en el else");
-                                                            elemento = new PedidoNormal("#F3E62525", num, mesa, resources.getString(R.string.botonPendiente), false, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
-                                                            elements.add(elemento);
-                                                        }
-                                                    }
-                                                }
-                                                //Cancelado
-                                                else if (est.equals("CANCELADO")) {
-                                                    elements.add(new PedidoNormal("#fe820f", num, mesa, resources.getString(R.string.botonCancelado), false, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS));
-                                                }
-                                                //anadir(pedido);
-                                            }
-                                        }
-                                    }
-                                }
-                                //   filtrar();
-
-                                //s = 1;
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                System.out.println("ARRAY Prueba " + array.length());
-                                if (array.length() == 0) {
-                                    numMax = 0;
-                                }
-                                editor.putString("saved_text", datosPedidos.toString());
-                                editor.commit();
-                                int numMaxPreferences = sharedPreferences.getInt("numMax_" + idRest, -1);
-                                int n = array.getJSONObject(array.length() - 1).getInt("numero_pedido");
-                                System.out.println("NUMMAXPREF " + n);
-                                if (n > numMaxPreferences) {
-                                    editor.putInt("numMax_" + idRest, n);
-                                    editor.commit();
-                                }
-
-
-                                if (!primerPeticionGetPedidos && hayNuevosPedidos) {
-                                    System.out.println("entra en hayNuevosPedidos");
-
-                                    if (hayNuevosPedidos) {
-                                        recyclerPedidosI2.scrollToPosition(0);
-                                    }
-
-                                    SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
-                                    boolean sonido = sharedSonido.getBoolean("sonido", true);
-                                    boolean vibracion = sharedSonido.getBoolean("vibracion", false);
-                                    System.out.println("musica es " + resId);
-                                    if (resId != -1 && !bol) {
-                                        mp = MediaPlayer.create(activity, resId);
-                                        mp.start();
-                                        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mp.release();
-                                            }
-                                        });
-                                    }
-                                    hayNuevosPedidos = false;
-
-                                }
-
-
-                                if (updateReconect) {
-                                    int num2 = Integer.valueOf(elements.get(elements.size() - 1).getNumPedido());
-                                    System.out.println("websocket reconnect list sizes " + elementsSize + " " + num2);
-                                    if (num2 > elementsSize) {
-                                        SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
-                                        boolean sonido = sharedSonido.getBoolean("sonido", true);
-                                        boolean vibracion = sharedSonido.getBoolean("vibracion", false);
-                                        if (resId != -1) {
-                                            System.out.println("SONIDO DE RECONECTAR " + num2 + "es mayor a " + elementsSize);
-                                            mp = MediaPlayer.create(activity, resId);
-                                            mp.start();
-                                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                                @Override
-                                                public void onCompletion(MediaPlayer mp) {
-                                                    mp.release();
-                                                }
-                                            });
-                                        }
-
-                                    }
-                                    updateReconect = false;
-                                }
-
-                                if (primerPeticionGetPedidos) {
-                                    if (modo == 1) {
-                                        animacionRecyclerPedidos(recyclerPedidosI2);
-                                    } else if (modo == 2) {
-                                        animacionRecyclerPedidos(recyclerMesas);
-                                    }
-                                }
-
-                                primerPeticionGetPedidos = false;
-
-
-                                // setElementsInRecyclerview();
-                                // listAdapter.notifyDataSetChanged();
-                                //listAdapter.filtrar(estado, newText);
-
-                                System.out.println("elementss " + elements.size());
-                                if (bol) {
-                                    setRecycler();
-                                    cambiarOrientacionRecyclerPedidos();
-                                    if (pedidoActual != null) {
-                                        buscarPedidoActual(pedidoActual.getNumPedido());
-                                    }
-                                    if (pedidoActual != null) {
-                                        mostrarDatosTk(pedidoActual);
-                                    } else {
-                                        constraintInfoPedido.setVisibility(View.GONE);
-                                        constraintPartePedidos.setVisibility(View.VISIBLE);
-
-                                    }
-                                }
-                                System.out.println("listaMesas " + listaMesas.size());
-
-                                listaPedidosAListaMesas((List<PedidoNormal>) (ArrayList<?>) elements, listaMesas, nombreMesas);
-                                adapterMesas.copiarLista();
-
-                                adapterPedidos2.notifyDataSetChanged();
-
-                                adapterMesas.reorganizar();
-                                adapterMesas.reFiltrar();
-
-                                setObserverActualizarVistaPedidos();
-
-                                if (adapterPedidos2 instanceof AdapterList2) {
-                                    ((AdapterList2) adapterPedidos2).filtrarPorTexto(newText);
-                                } else if (adapterPedidos2 instanceof AdapterTakeAway2) {
-                                    ((AdapterTakeAway2) adapterPedidos2).filtrarPorTexto(newText);
-                                }
-
-                                hayNuevosPedidos = false;
-
-                            } catch (JSONException e) {
-                                System.out.println("error " + e.toString());
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Manejar el error de la petición
-                            // Aquí puedes manejar cualquier error de la petición
-                            System.out.println("error " + error.toString());
-                            if (error.toString().toLowerCase().contains("noconnectionerror")) {
-                                Toast.makeText(Lista.this, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(Lista.this, error.toString(), Toast.LENGTH_SHORT).show();
-
-                            }
-                            error.printStackTrace();
-
-                        }
-                    });
-
-// Agregar la petición a la cola
-            System.out.println("jsonRequest " + jsonObjectRequest.toString());
-            Volley.newRequestQueue(this).add(jsonObjectRequest);
-
-
-        }
-    }
-
-    private HashMap<String, String> getNombresDeIdiomas(JSONObject objeto) throws JSONException {
-        HashMap<String, String> mapNombres = new HashMap<>();
-        Iterator<String> keys = objeto.keys();
-        while (keys.hasNext()) {
-            String clave = keys.next();
-            mapNombres.put(clave, normalizarTexto(objeto.getString(clave)));
-
-        }
-        return mapNombres;
-    }
 
     private ArrayList<Integer> getPedidosMesa(String mesa) {
         ArrayList<Integer> array = new ArrayList<>();
@@ -5381,69 +3826,24 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private void listaPedidosAListaMesas(List<PedidoNormal> pedidos, ArrayList<Mesa> mesas, ArrayList<String> nombreMesas) {
         ArrayList<Mesa> arrayProvisional = new ArrayList<>();
         if (!getEsMovil()) {
-            arrayProvisional.add(new Mesa(nombreDisp));
+            arrayProvisional.add(new Mesa(controlador.getNombreDisp()));
         }
         for (int i = 1; i < pedidos.size(); i++) {
             PedidoNormal pedido = pedidos.get(i);
-            //if (pedido.getEstado().equals(resources.getString(R.string.botonAceptado)) || pedido.getEstado().equals(resources.getString(R.string.botonPendiente))) {
             ArrayList<Integer> pedidosMesa = new ArrayList<>();
             if (nombreMesas.contains(pedido.getMesa())) {
                 pedidosMesa.addAll(getPedidosMesa(pedido.getMesa()));
             }
             addMesa(pedido, arrayProvisional, pedidosMesa);
-            // }
 
         }
 
-
-        //arrayProvisional.add(new Mesa("Mesa 21"));
-        //arrayProvisional.add(new Mesa("Terraza frontal mesa 2"));
-
-
-        //cambiarListaMesas(listaMesas,arrayProvisional);
-        //adapterMesas.notifyDataSetChanged();
         listaMesas.clear();
         listaMesas.addAll(arrayProvisional);
 
     }
 
-
-    private void cambiarListaMesas(ArrayList<Mesa> Original, ArrayList<Mesa> array) {
-        ListaMesas listaOriginal = new ListaMesas(Original);
-        ListaMesas listaPoner = new ListaMesas(array);
-        for (int i = 0; i < listaPoner.getSize(); i++) {
-            Mesa mesaArray = listaPoner.getMesa(i);
-            Mesa mesaOriginal = listaOriginal.estaMesa(mesaArray.getNombre());
-            if (mesaOriginal != null) {
-                if (mesaOriginal.listaSize() == mesaArray.listaSize()) {
-                    for (int j = 0; j < mesaArray.listaSize(); j++) {
-                        PedidoNormal elementoArray = mesaArray.getElement(j);
-
-                        PedidoNormal elementoOriginal = mesaOriginal.estaElemento(elementoArray.getNumPedido());
-                        if (elementoOriginal != null && !elementoArray.getEstado().equals(elementoOriginal.getEstado())) {
-
-                            elementoOriginal = elementoArray;
-
-                        } else {
-                            System.out.println("Elemento igual ");
-                        }
-                    }
-                } else {
-                    mesaOriginal.getLista().clear();
-                    mesaOriginal.getLista().addAll(mesaArray.getLista());
-                }
-            } else {
-                listaOriginal.add(mesaArray);
-            }
-
-        }
-
-    }
-
-
     private void setObserverActualizarVistaPedidos() {
-        // observador que sirve para que una vez se reorganicen el orden de las mesas, se llame a la mesa en la que estabas
-
         ViewTreeObserver observer = recyclerMesas.getViewTreeObserver();
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -5516,24 +3916,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
     }
 
-    private boolean estaYaEnLista(int numPedido, String estadoActual) {
-        for (int i = 0; i < elements.size(); i++) {
-            Pedido element = elements.get(i);
-            if (element.getNumPedido() == numPedido) {
-                String est = cambiarEstadoIdiomaABase(element.getEstado());
-                if (est.equals(estadoActual)) {
-                    return true;
-                } else {
-                    elements.remove(i);
-                    return false;
-                }
-            }
-        }
-
-
-        return false;
-    }
-
     private void buscarPedidoActual(int numPedido) {
         for (int i = 0; i < elements.size(); i++) {
             Pedido elemento = elements.get(i);
@@ -5559,7 +3941,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private RecyclerView recyclerPedidosI2, recyclerProductosI2;
     private CustomLayoutManager customLayout;
     private Button botonCambiarEstado, botonSiguienteEstado;
-    private ConstraintLayout interfaz2, constraintPartePedidos, constraintInfoPedido, barraHorizontal, barraVertical, desplegable, desplegableOpciones, backDesplegable;
+    private ConstraintLayout  constraintPartePedidos, constraintInfoPedido, barraHorizontal, barraVertical, desplegable, desplegableOpciones, backDesplegable;
     private ConstraintLayout filtroPendiente, filtroAceptado, filtroListo, filtroCancelado;
     private ConstraintLayout overLayout, layoutRetractarPedido, layoutCancelarPedido, layoutDevolucion, layoutMostrarElementos, layoutEsconderElementos, layoutLlamar, layoutLog, layoutOpcionesGenerales;
     private TextView nombreDispositivo, tvFiltroPendiente, tvFiltroAceptado, tvFiltroListo, tvFiltroCancelado, tvFasePedido;
@@ -5567,8 +3949,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private AdaptadorPedidos adapterPedidos2;
     private AdapterProductosTakeAway adapterProductos2;
     private ArrayList<ProductoTakeAway> listaProductosPedido = new ArrayList<>();
-    private PedidoNormal pedidoActual2;
-    private ImageView imgAjustes, imgAjustes2, imgBack, imgBack2, imgCirculo1, imgCirculo2, imgCirculo3, imgCirculo4, arrowUp, imgRest1, imgRest2, imgEsconderElementos, imgEsconderElementos2;
+    private ImageView imgAjustes, imgAjustes2, imgBack, imgBack2, imgCirculo1, imgCirculo2, imgCirculo3, arrowUp, imgRest1, imgRest2;
     private ImageView imgMenu, imgCrossCancelado, imgFlechaIzq, imgFlechaDer;
     private HorizontalScrollView scrollFiltros;
     private CustomSvSearch search;
@@ -5583,14 +3964,14 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private boolean tacharProductos = false;
     private Button botonTacharProductos;
     private ConstraintLayout layoutDegradadoBlancoIzq, layoutDegradadoBlancoDer, layoutGrisIzq, layoutGrisDer;
-    private ConstraintLayout overLayoutProductos, overLayoutInfoPedidos, overLayoutPartePedidos, layoutOpcionesPedido, overLayoutInfoCliente;
+    private ConstraintLayout overLayoutProductos, overLayoutInfoPedidos, overLayoutPartePedidos, layoutOpcionesPedido;
     private LinearLayout linearLayoutScrollFiltros;
     private View viewInfoNombre, viewInfoInstrucciones;
     private int posicionFiltro = 0;
     private List<Integer> productosActuales = new ArrayList<>();
     private List<Pair<Integer, Integer>> productosAcutalesPedido = new ArrayList<>();
 
-    private ConstraintLayout linearBoton, linearInstrucciones;
+    private ConstraintLayout linearInstrucciones;
 
     private ConstraintLayout layoutContDispositivo, layoutContScrollTop, layoutEscanear;
     private SharedPreferences sharedPreferencesLista;
@@ -5603,14 +3984,17 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
     private TextView tvNombreMesaTop;
-    private int modo, posMesaClickada = -1;
+    private int modo;
     private Mesa mesaActual;
 
+    /**
+     * La función "obtenerObjetosInterefazNueva()" inicializa y asigna valores a varios objetos y
+     * vistas en la interfaz.
+     */
     private void obtenerObjetosInterefazNueva() {
 
         sharedPreferencesLista = getPreferences(Context.MODE_PRIVATE);
         editorLista = sharedPreferencesLista.edit();
-        interfaz2 = findViewById(R.id.interfaz2);
         recyclerPedidosI2 = findViewById(R.id.recyclerviewTakeAway2);
         recyclerPedidosI2.setVisibility(View.INVISIBLE);
 
@@ -5641,7 +4025,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         imgCirculo1 = findViewById(R.id.imgCirculo1);
         imgCirculo2 = findViewById(R.id.imgCirculo2);
         imgCirculo3 = findViewById(R.id.imgCirculo3);
-        imgCirculo4 = findViewById(R.id.imgCirculo4);
         tvFasePedido = findViewById(R.id.tvFasePedido);
         constraintPartePedidos = findViewById(R.id.constraintPartePedidos);
         constraintInfoPedido = findViewById(R.id.constraintInfoPedido);
@@ -5674,7 +4057,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         overLayoutInfoPedidos = findViewById(R.id.overLayoutInfoPedidos);
         overLayoutPartePedidos = findViewById(R.id.overLayoutPartePedidos);
         overLayoutProductos = findViewById(R.id.overLayoutProductos);
-        overLayoutInfoCliente = findViewById(R.id.overLayoutInfoCliente);
         viewInfoNombre = findViewById(R.id.view26);
         viewInfoInstrucciones = findViewById(R.id.view27);
         layoutOpcionesPedido = findViewById(R.id.layoutOpcionesPedido);
@@ -5685,7 +4067,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         layoutContScrollTop = findViewById(R.id.layoutContScrollTop);
 
         botonTacharProductos = findViewById(R.id.botonTacharProductos);
-        linearBoton = findViewById(R.id.linearBoton);
         linearInstrucciones = findViewById(R.id.linearInstrucciones);
 
         layoutEscanear = findViewById(R.id.layoutEscanear);
@@ -5703,8 +4084,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
 
         filtroPendiente.callOnClick();
-        System.out.println("nombre dispositivo " + nombreDisp);
-        nombreDispositivo.setText(nombreDisp);
+        nombreDispositivo.setText(controlador.getNombreDisp());
 
 
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) recyclerProductosI2.getLayoutParams();
@@ -5718,16 +4098,14 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     }
 
+    /**
+     * La función `cambiarModo()` cambia el modo de la aplicación entre "Pedidos" y "Mesas" y actualiza
+     * la UI en consecuencia.
+     */
     private void cambiarModo() {
 
         int modoPrevio = modo;
         modo = sharedTakeAway.getInt("FLAG_MODO_PEDIDOS", 1);
-        /*
-        if (getEsMovil()) {
-            modo = 1;
-        }
-
-         */
 
         if (pedidoActual != null) {
             pedidoActual.setActual(false);
@@ -5774,6 +4152,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
     }
 
+    /**
+     * La función "quitarMesa" elimina una mesa específica de una lista de mesas y oculta una vista.
+     */
     private void quitarMesa() {
         for (int i = 0; i < listaMesas.size(); i++) {
             Mesa m = listaMesas.get(i);
@@ -5785,6 +4166,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     }
 
+    /**
+     * Esta función configura un RecyclerView con un diseño horizontal y le conecta un adaptador.
+     */
     private void setRecyclerPedidosMesa() {
 
         recyclerPedidosMesa.setHasFixedSize(true);
@@ -5805,7 +4189,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
             @Override
             public void reiniciarPedido(PedidoNormal item) {
-                peticionReiniciarPedido(item.getNumPedido());
+                retractarPedido(item.getNumPedido(),item);
             }
 
             @Override
@@ -5816,7 +4200,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                     public void onDevolucionExitosa(JSONObject resp) {
                         for (int i = 0; i < listaMesas.size(); i++) {
                             Mesa m = listaMesas.get(i);
-                            boolean quitado = m.removeElementNumPedido(item.getNumPedido());
                         }
                         listaPedidosMesa.remove(position);
                         adapterPedidosMesa.notifyDataSetChanged();
@@ -5843,10 +4226,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
             public void cambiarEstadoPedido(PedidoNormal item, int position) {
                 String siguienteEstado = estadoSiguiente(item.getEstado());
                 pedidoActual = item;
-                ejecutar(siguienteEstado, "", item.getNumPedido(), new DevolucionCallback() {
+                controlador.peticionCambiarEstadoPedido(siguienteEstado, "", item.getNumPedido(), new CallbackCambiarEstadoPedido() {
                     @Override
-                    public void onDevolucionExitosa(JSONObject resp) {
-                        //Toast.makeText(activity, "Pedido cambiado con exito", Toast.LENGTH_SHORT).show();
+                    public void onSuccess() {
                         if (siguienteEstado.equals(estado_listo)) {
                             setPedidosMesa(item.getMesa(), item.getNumPedido());
                         }
@@ -5854,7 +4236,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                     }
 
                     @Override
-                    public void onDevolucionFallida(String mensajeError) {
+                    public void onError(String error) {
 
                     }
                 });
@@ -5867,70 +4249,31 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
 
+    /**
+     * La función "setRecyclerMesas" configura un RecyclerView con una lista de objetos Mesa y un
+     * Adaptador para manejar los datos y las interacciones del usuario.
+     */
     private void setRecyclerMesas() {
 
-        listaMesas.add(new Mesa(nombreDisp)); // objeto que sirve para la parte del search en la version vertical de tablet
+        listaMesas.add(new Mesa(controlador.getNombreDisp())); // objeto que sirve para la parte del search en la version vertical de tablet
         recyclerMesas.setHasFixedSize(true);
         recyclerMesas.setLayoutManager(new LinearLayoutManager(this));
         adapterMesas = new AdapterListaMesas(listaMesas, this, getEsMovil(), new AdapterListaMesas.OnItemClickListener() {
             @Override
             public void onItemClick(Mesa item, int position) {
-
-                //recyclerPedidosMesa.scrollToPosition(0);
-
-
-                //TODO cambiar este par de lineas para que solo salte cuando se clicka en una mesa diferente a la que estas actualmente
-                //esto de momento esta mal, lo que hace es que si clickas en la misma mesa no se resetee el flag de animacion pero si que desaparece el desplegable
-
-
-                //
                 quitarElementosNuevos(item);
                 System.out.println("clickado 1");
                 recyclerPedidosMesa.scrollToPosition(0);
                 item.quitarPrimeraVez();
-                posMesaClickada = position;
-
-
-                /*
-                if( (modo==2 && getEsMovil())){
-                    constraintInfoPedido.setVisibility(View.VISIBLE);
-                    findViewById(R.id.layoutPedidosModoMesa).setVisibility(View.VISIBLE);
-                    constraintPartePedidos.getLayoutParams().height=400;
-                    System.out.println("visible recycler "+recyclerPedidosMesa.getVisibility());
-
-                    ConstraintLayout constraintContenido = findViewById(R.id.constraintContenido);
-                    ConstraintSet set = new ConstraintSet();
-                    set.clone(constraintContenido);
-
-                    set.connect(constraintInfoPedido.getId(),ConstraintSet.TOP,constraintPartePedidos.getId(),ConstraintSet.BOTTOM);
-                    set.connect(constraintInfoPedido.getId(),ConstraintSet.START,ConstraintSet.PARENT_ID,ConstraintSet.START);
-                    set.connect(constraintInfoPedido.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END);
-                    set.applyTo(constraintContenido);
-
-
-                    constraintInfoPedido.getLayoutParams().width = ConstraintLayout.LayoutParams.MATCH_PARENT;
-
-                    LinearLayoutManager manager = new LinearLayoutManager(activity);
-                    recyclerPedidosMesa.setLayoutManager(manager);
-
-                }
-
-                 */
                 clickarMesa(item);
-
-                if (adapterPedidosMesa != null && mesaActual != null && !mesaActual.getNombre().equals(item.getNombre())) {
-
-                }
                 if (adapterPedidosMesa != null) {
                     adapterPedidosMesa.reiniciarConf();
                 }
-
 
             }
 
             @Override
             public void onSearchClick() {
-                System.out.println("onSearchClick adapterMesas");
                 quitarMesasSeleccionadas();
                 mesaActual = null;
                 pedidoActual = null;
@@ -5941,30 +4284,40 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         recyclerMesas.setAdapter(adapterMesas);
         adapterMesas.notifyDataSetChanged();
-
         setHandlerParpadeoMesas();
     }
 
 
+    /**
+     * La función "clickarMesa" actualiza el pedido actual y la información de la tabla, borra y
+     * actualiza la lista de pedidos para la tabla, actualiza el nombre de la tabla mostrado, actualiza
+     * la lista de productos para el pedido y actualiza los adaptadores y elementos de la interfaz de
+     * usuario.
+     *
+     * @param item El parámetro "item" es de tipo "Mesa", que es una clase que representa una mesa en
+     * un restaurante.
+     */
     private void clickarMesa(Mesa item) {
-
+        //si la mesa tiene pedidos se pone el primer pedido como el actual al clickar la mesa
         if (item.listaSize() > 0) {
             pedidoActual = item.getElement(0);
         }
+        //se reemplaza la lista del adaptador de pedidos de la mesa con los nuevos pedidos de la mesa clickada
         mesaActual = item;
         listaPedidosMesa.clear();
         listaPedidosMesa.addAll(item.getLista());
-        System.out.println("lista pedidos mesa size " + item.getNombre());
         adapterPedidosMesa.notifyDataSetChanged();
+
         tvNombreMesaTop.setText(item.getNombre());
 
+        //se pone a false el atributo de seleccionada de las mesas menos el de la mesa actual
         quitarMesasSeleccionadas();
-
         item.setSeleccionada(true);
 
         ArrayList<ProductoTakeAway> lista = getProductosMesa(item);
         listaProductosPedido.clear();
         listaProductosPedido.addAll(lista);
+
         if (adapterPedidosMesa != null) {
             adapterPedidosMesa.reorganizarPedidos();
         }
@@ -5972,6 +4325,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
         adapterMesas.notifyDataSetChanged();
         mostrarElementosMesa();
+
     }
 
     private void quitarElementosNuevos(Mesa mesa) {
@@ -5989,6 +4343,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         adapterMesas.reorganizar();
     }
 
+    /**
+     * La función "mostrarElementosMesa" hace visibles elementos relacionados con la información de la mesa/ubicación si no estaban visibles.
+     */
     private void mostrarElementosMesa() {
         if (constraintInfoPedido.getVisibility() != View.VISIBLE) {
             constraintInfoPedido.setVisibility(View.VISIBLE);
@@ -6001,7 +4358,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         for (int i = 0; i < item.listaSize(); i++) {
             PedidoNormal elemento = item.getElement(i);
             ArrayList<ProductoPedido> array = elemento.getListaProductos();
-            lista.addAll(getProductosDelPedido(array));
+            lista.addAll(controlador.getProductosDelPedido(array));
 
         }
 
@@ -6102,7 +4459,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         layoutOpcionesGenerales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Lista.this, ajustes.class);
+                Intent i = new Intent(VistaPedidos.this, ajustes.class);
                 //  startActivity(i);
                 launcher.launch(i);
                 ocultarDesplegable();
@@ -6120,7 +4477,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         layoutEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Lista.this, EscanearQR.class);
+                Intent i = new Intent(VistaPedidos.this, EscanearQR.class);
                 launcher.launch(i);
                 ocultarDesplegable();
             }
@@ -6173,7 +4530,18 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         botonSiguienteEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ejecutar(estadoSiguiente(pedidoActual.getEstado()), "", pedidoActual.getNumPedido(), activity);
+                String estadoSiguiente = estadoSiguiente(pedidoActual.getEstado());
+                controlador.peticionCambiarEstadoPedido(estadoSiguiente, "", pedidoActual.getNumPedido(), new CallbackCambiarEstadoPedido() {
+                    @Override
+                    public void onSuccess() {
+                        pedidoCambiado(estadoSiguiente,pedidoActual);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 //cambiarPedidoAlSiguienteEstado();
 
 
@@ -6341,7 +4709,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
                                         productosActuales.clear();
                                         listaProductosPedido.clear();
-                                        listaProductosPedido.addAll(getProductosDelPedido(elemento.getListaProductos()));
+                                        listaProductosPedido.addAll(controlador.getProductosDelPedido(elemento.getListaProductos()));
                                     }
                                 }
 
@@ -6415,7 +4783,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                                     }
                                     productosActuales.clear();
                                     listaProductosPedido.clear();
-                                    listaProductosPedido.addAll(getProductosDelPedido(pedidoActual.getListaProductos()));
+                                    listaProductosPedido.addAll(controlador.getProductosDelPedido(pedidoActual.getListaProductos()));
                                 }
 
                             } else {
@@ -6634,7 +5002,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private void revertirTachadoProductos() {
         if (pedidoActual != null) {
             listaProductosPedido.clear();
-            listaProductosPedido.addAll(getProductosDelPedido(pedidoActual.getListaProductos()));
+            listaProductosPedido.addAll(controlador.getProductosDelPedido(pedidoActual.getListaProductos()));
             adapterProductos2.notifyDataSetChanged();
             productosActuales.clear();
         }
@@ -7093,7 +5461,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
     private void initSearch() {
-        search.setListaActivity(Lista.this);
+        search.setListaActivity(VistaPedidos.this);
         search.setOnQueryTextListener(this);
         int dim = (int) resources.getDimension(R.dimen.scrollHeight);
 
@@ -7267,13 +5635,22 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
 
-    private void retractarPedido() {
-        ejecutar("PENDIENTE", "", pedidoActual.getNumPedido(), activity);
+    private void retractarPedido(int numPedido, Pedido pedido) {
+        controlador.peticionCambiarEstadoPedido(estado_pendiente, "", numPedido, new CallbackCambiarEstadoPedido() {
+            @Override
+            public void onSuccess() {
+                pedidoCambiado(estado_pendiente,pedido);
+                adapterPedidosMesa.notifyDataSetChanged();
+                adapterPedidos2.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void peticionReiniciarPedido(int numPedido) {
-        ejecutar("PENDIENTE", "", numPedido, activity);
-    }
 
     private void mostrarDesplegable() {
         desplegable.setVisibility(View.VISIBLE);
@@ -7672,7 +6049,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         });
         recyclerPedidosI2.setHasFixedSize(true);
         if (!actividadTakeAway) {
-            adapterPedidos2 = new AdapterList2((List<PedidoNormal>) (ArrayList<?>) elements, estado, this, recyclerPedidosI2, nombreDisp, new AdapterList2.OnItemClickListener() {
+            adapterPedidos2 = new AdapterList2((List<PedidoNormal>) (ArrayList<?>) elements, estado, this, recyclerPedidosI2, controlador.getNombreDisp(), new AdapterList2.OnItemClickListener() {
                 @Override
                 public void onItemClick(PedidoNormal item, int position) {
                     pedidoActual = item;
@@ -7692,7 +6069,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
             });
         } else {
-            adapterPedidos2 = new AdapterTakeAway2((List<PedidoTakeAway>) (ArrayList<?>) elements, estado, this, recyclerPedidosI2, nombreDisp, new AdapterTakeAway2.OnItemClickListener() {
+            adapterPedidos2 = new AdapterTakeAway2((List<PedidoTakeAway>) (ArrayList<?>) elements, estado, this, recyclerPedidosI2, controlador.getNombreDisp(), new AdapterTakeAway2.OnItemClickListener() {
 
 
                 @Override
@@ -7783,9 +6160,9 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         // adapterPedidos2.cambiarestado(estado); //en vez de esto mirar si newText tiene texto y buscar por texto o directamente no cambiar estado
         ArrayList<ProductoPedido> listaProductos = item.getListaProductos();
         listaProductosPedido.clear();
-        listaProductosPedido.addAll(getProductosDelPedido(listaProductos));
+        listaProductosPedido.addAll(controlador.getProductosDelPedido(listaProductos));
 
-        controlador.borrarPedidodNuevoBD(idRest,item.getNumPedido());
+        controlador.borrarPedidodNuevoBD(item.getNumPedido());
         ////prueba
         //listaProductosPedido.add(0, new ProductoTakeAway(4, "producto 1 asfasfa asfasfaf asfasf asfafs fasfasf asfafafsaf asfafs asf asffasffafs as asf \n + Bacon \n + Huevo asda sd asdad ad sadadsasdasda dasdadsa asd  ", 2));
         /*
@@ -7976,12 +6353,18 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
 
+    /**
+     * La función "modificarCirculo" modifica la apariencia del apartado dondes se muestra el estado del pedido seleccionado
+     *
+     * @param estado El parámetro "estado" es una cadena que representa el estado actual de un círculo.
+     * Puede tener los siguientes valores: "PENDIENTE", "NUEVO", "ACEPTADO", "LISTO" o "CANCELADO".
+     */
     private void modificarCirculo(String estado) {
         ponerCirculoA0();
         int colorPendiente = resources.getColor(R.color.color_pendiente, this.getTheme());
         int colorAceptado = resources.getColor(R.color.verdeOrderSuperfast, this.getTheme());
         int colorListo = resources.getColor(R.color.verdeOscuro, this.getTheme());
-        int colorCancelado = resources.getColor(R.color.colorcancelado, this.getTheme());
+        int colorCancelado = resources.getColor(R.color.color_cancelado, this.getTheme());
         imgCrossCancelado.setVisibility(View.INVISIBLE);
         tvFasePedido.setVisibility(View.VISIBLE);
 
@@ -8021,6 +6404,10 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         }
     }
 
+    /**
+     * La función "ponerCirculoA0" establece el filtro de color de las imagenes que marcan el estado del pedido a
+     * gris claro.
+     */
     private void ponerCirculoA0() {
         imgCirculo1.setColorFilter(resources.getColor(R.color.grisClaro, this.getTheme()));
         imgCirculo2.setColorFilter(resources.getColor(R.color.grisClaro, this.getTheme()));
@@ -8028,9 +6415,19 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
     }
 
+    /**
+     * La función "activarParteCirculo" establece el filtro de color de un ImageView a un color
+     * específico.
+     *
+     * @param img El parámetro "img" es un objeto ImageView que representa la vista de imagen donde se
+     * debe activar la parte del círculo.
+     * @param color El parámetro de color es un valor entero que representa el color que desea aplicar
+     * a ImageView.
+     */
     private void activarParteCirculo(ImageView img, int color) {
         img.setColorFilter(color);
     }
+
 
     private ArrayList<ProductoTakeAway> getProductosDelPedido(ArrayList<ProductoPedido> listaProductos) {
 
@@ -8142,11 +6539,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         int dimen = (int) resources.getDimension(R.dimen.scrollHeight);
         ponerInsetsI2();
         estaEnPedido = false;
-        if (adapterPedidos2 instanceof AdapterList2) {
-            ((AdapterList2) adapterPedidos2).quitarActual();
-        } else if (adapterPedidos2 instanceof AdapterTakeAway2) {
-            ((AdapterTakeAway2) adapterPedidos2).quitarActual();
-        }
+        adapterPedidos2.quitarActual();
 
 
         if (newConf == Configuration.ORIENTATION_LANDSCAPE) {
@@ -8949,32 +7342,14 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
                     System.out.println("texto del radioGroup " + txt);
 
 
-                    writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedido.getNumPedido() + " - " + "Cancelled" + ": " + txt, activity);
+                    writeToFile(controlador.getNombreZona() + " - " + controlador.getNombreDisp() + " | " + "Order" + " " + pedido.getNumPedido() + " - " + "Cancelled" + ": " + txt, activity);
 
                     System.out.println("info de cancelar " + info);
-                   // ejecutar(getString(R.string.botonCancelado), info, pedidoActual.getNumPedido(), callback);
 
                     controlador.peticionCambiarEstadoPedido(getString(R.string.botonCancelado),info,pedidoActual.getNumPedido(), new CallbackCambiarEstadoPedido() {
                         @Override
                         public void onSuccess() {
-                            pedidoActual.setEstado(estado_cancelado);
-                            adapterPedidos2.cambiarestado(estado);
-                            mostrarDatosTk(pedidoActual);
-                            String estadoIdiomaActual = cambiarEstadoIdioma(estado_cancelado);
-                            tvEstActual.setText(estadoIdiomaActual.toUpperCase());
-                            writeToFile(nombreZona + " - " + nombreDisp + " | " + "Order" + " " + pedidoActual.getNumPedido() + " - " + estadoToIngles(estado_cancelado), activity);
-
-                            //para que el tachon solo salga en pedidos aceptados
-                            if (adapterProductos2 != null) {
-                                adapterProductos2.setEstadoPedido(pedidoActual.getEstado());
-                                adapterProductos2.destacharTodos();
-                                ArrayList<ProductoPedido> lista = pedidoActual.getListaProductos();
-                                for (int i = 0; i < lista.size(); i++) {
-                                    lista.get(i).setTachado(false);
-                                }
-
-                                adapterPedidos2.notifyDataSetChanged();
-                            }
+                            pedidoCambiado(estado_cancelado,pedidoActual);
 
                             callback.onDevolucionExitosa(new JSONObject());
                         }
@@ -8985,6 +7360,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
 
                         }
                     });
+                    info = "";
 
                     adapterPedidos2.cambiarestado(estado);
                     datoEstado.setText(pedido.getEstado());
@@ -9032,13 +7408,33 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         });
     }
 
+    private void pedidoCambiado(String estadoNuevo, Pedido pedido){
+        pedido.setEstado(estadoNuevo);
+        adapterPedidos2.cambiarestado(estado);
+        mostrarDatosTk(pedido);
+        String estadoIdiomaActual = cambiarEstadoIdioma(estadoNuevo);
+        tvEstActual.setText(estadoIdiomaActual.toUpperCase());
+        writeToFile(controlador.getNombreZona() + " - " + controlador.getNombreDisp() + " | " + "Order" + " " + pedido.getNumPedido() + " - " + estadoToIngles(estado_cancelado), activity);
+
+        //para que el tachon solo salga en pedidos aceptados
+        if (adapterProductos2 != null) {
+            adapterProductos2.setEstadoPedido(pedido.getEstado());
+            adapterProductos2.destacharTodos();
+            ArrayList<ProductoPedido> lista = pedido.getListaProductos();
+            for (int i = 0; i < lista.size(); i++) {
+                lista.get(i).setTachado(false);
+            }
+
+            adapterPedidos2.notifyDataSetChanged();
+        }
+    }
 
     private void llamar() {
 
         Cliente c = pedidoActual.getCliente();
         System.out.println("telefono1 " + c.getPrefijo_telefono() + " " + c.getNumero_telefono());
         Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + c.getPrefijo_telefono() + c.getNumero_telefono()));
-        if (ActivityCompat.checkSelfPermission(Lista.this, android.Manifest.permission.CALL_PHONE) !=
+        if (ActivityCompat.checkSelfPermission(VistaPedidos.this, android.Manifest.permission.CALL_PHONE) !=
                 PackageManager.PERMISSION_GRANTED) {
 
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 200);
@@ -9226,7 +7622,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     }
 
     private void irActivityLog() {
-        Intent i = new Intent(Lista.this, logActivity.class);
+        Intent i = new Intent(VistaPedidos.this, logActivity.class);
         startActivity(i);
     }
 
@@ -9234,7 +7630,8 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
         productosEditor.putInt("modo", flag);
         productosEditor.apply();
-        Intent i = new Intent(Lista.this, GuardarFiltrarProductos.class);
+        Intent i = new Intent(VistaPedidos.this, Configuracion.class);
+        i.putExtra("modo",flag);
         launcher.launch(i);
     }
 
@@ -9245,7 +7642,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         editor.putString("pedido", String.valueOf(pedidoActual.getNumPedido()));
         editor.commit();
 
-        Intent i = new Intent(Lista.this, logActivity.class);
+        Intent i = new Intent(VistaPedidos.this, logActivity.class);
         startActivity(i);
     }
 
@@ -9253,8 +7650,6 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
     private AlertDialog dialogRetractarPedido;
 
     private void crearDialogReiniciarPedido() {
-
-
         AlertDialog.Builder dialogB = new AlertDialog.Builder(activity);
         final View layout = getLayoutInflater().inflate(R.layout.popup_reiniciar_estado_pedido, null);
 
@@ -9266,7 +7661,7 @@ public class Lista extends VistaGeneral implements SearchView.OnQueryTextListene
         botonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                retractarPedido();
+                retractarPedido(pedidoActual.getNumPedido(),pedidoActual);
                 dialogRetractarPedido.dismiss();
             }
         });

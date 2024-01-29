@@ -32,8 +32,6 @@ import static com.OrderSuperfast.Vista.VistaGeneral.getIdioma;
 
 public class AdapterEsconderProducto extends FastScrollRecyclerView.Adapter<AdapterEsconderProducto.ViewHolder> implements FastScroller.SectionIndexer {
     private List<ProductoAbstracto> mData;
-    private final LayoutInflater mInflater;
-    private final Context context;
     final AdapterEsconderProducto.OnItemClickListener listener;
     final AdapterEsconderProducto.OnSwitchListener switchListener;
     private List<Integer> listPos = new ArrayList<>();
@@ -50,8 +48,6 @@ public class AdapterEsconderProducto extends FastScrollRecyclerView.Adapter<Adap
 
 
     public AdapterEsconderProducto(List<ProductoAbstracto> itemList, Activity context, OnItemClickListener listener, OnSwitchListener listenSwitch) {
-        this.mInflater = LayoutInflater.from(context);
-        this.context = context;
         this.mData = itemList;
         this.listener = listener;
         this.switchListener = listenSwitch;

@@ -3,6 +3,9 @@ package com.OrderSuperfast.Modelo.Clases;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * Carta o menu del restaurante
+ */
 public class Carta implements Serializable {
     private String id;
     private Map<String,String> nombres;
