@@ -173,6 +173,14 @@ public class ControladorPedidos extends ControladorGeneral {
     }
 
 
+    /**
+     * Función que hace la petición al servidor para obtener los pedidos asociados a la zona y dispositivos
+     * @param elements lista de pedidos en los que se insertan los pedidos recibidos del servidor
+     * @param listaParpadeos lista de pedidos nuevos que todavia no se han visto
+     * @param bol booleano que indica si hay que borrar e insertar de nuevo los pedidos en la lista elements
+     * @param FLAG_MOSTRAR_PRODUCTOS_OCULTADOS Flag que indica si se quiere mostrar los productos ocultados o no
+     * @param callback Callback para gestionar las acciones del lado de la vista al recibir los pedidos
+     */
     public void peticionPedidos(List<PedidoNormal> elements, ArrayList<String> listaParpadeos, boolean bol, boolean FLAG_MOSTRAR_PRODUCTOS_OCULTADOS, CallbackPeticionPedidos callback) {
 
 
@@ -199,8 +207,7 @@ public class ControladorPedidos extends ControladorGeneral {
                         ArrayList<String> nombreMesas = new ArrayList<>();
                         ArrayList<Integer> pedidosNull = new ArrayList<>();
 
-                        //callback.onDevolucionExitosa(response);
-                        try {
+                        try { //se normaliza el texto para que no haya carácteres especiales
                             respuesta = new JSONObject(normalizarTexto(response.toString()));
                             System.out.println("no error init2 " + normalizarTexto(response.toString()));
                         } catch (JSONException e) {
@@ -211,20 +218,12 @@ public class ControladorPedidos extends ControladorGeneral {
                         if (elements.size() == 0) {
                             elements.add(0, new PedidoNormal(getNombreDisp()));
                         }
-                        System.out.println("PETICION RECIBIDA init2 " + respuesta);
-                        try {
-                            Iterator<String> keys2 = respuesta.keys();
-                            while (keys2.hasNext()) {
-                                String k = keys2.next();
-                                System.out.println("key " + k);
-                                System.out.println(" respuesta init2" + respuesta.getString(k));
-                            }
-                            // resetearListas();
 
-                            int savedNumMax = sharedPedidos.getInt("numMax_" + getIdRestaurante(), -1);
+                        try {
+                            int savedNumMax;
 
                             if (primera) {
-                                savedNumMax = sharedPedidos.getInt("numMax_" + getIdRestaurante(), -1);
+                                savedNumMax = sharedPedidos.getInt("numMax_" + getIdRestaurante(), -1); //se obtiene el numero de pedido máximo recibido de un restaurante
                                 primera = false;
                                 System.out.println("entra por primera vez");
                                 numMax = savedNumMax;
@@ -233,22 +232,15 @@ public class ControladorPedidos extends ControladorGeneral {
                                 savedNumMax = -1;
                             }
 
-                            if (bol) {
+                            if (bol) { //se resetea la lista de pedidos
                                 elements.clear();
-                                elements.add(0, new PedidoNormal(getNombreDisp()));
+                                elements.add(0, new PedidoNormal(getNombreDisp())); // se añade el elemento 0 a la lista (este elemento se muestra solo en la vista vertical de los dispositivos tablet y sirve para que los filtros y el buscador esté dentro del recyclerview)
                             }
                             JSONArray array = response.getJSONArray("pedidos");
                             Date resultdate = new Date();
-                            System.out.println("listElement entra en pedidos");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject pedido = array.getJSONObject(i);
-                                System.out.println("pedido " + pedido);
-                                if (!pedido.getString("ubicacion").equals("TakeAway")) {
-                                    if (i == array.length() - 1) {
-                                        System.out.println("ultimo pedido " + array.getJSONObject(i));
-                                    }
-                                    // boolean esTakeAway=pedido.getBoolean("takeAway");
-                                    // if(!esTakeAway){
+                                if (!pedido.getString("ubicacion").equals("TakeAway")) { //coge los pedidos que no sean take away
                                     int num = 0;
                                     String mesa = "";
                                     String est = "";
@@ -277,13 +269,14 @@ public class ControladorPedidos extends ControladorGeneral {
                                     String impuestoProducto = "";
                                     String cantidadProducto = "";
                                     String instruccionesProducto = "";
-                                    String imagen = "";
 
+                                    //se crean 2 listas, una para los productos y otra para los productos ocultos. Si el flag de mostrar ocultos está activo, al final se juntan en una dejando los productos ocultos los ultimos
                                     ArrayList<ProductoPedido> listaProductos = new ArrayList<>();
                                     ArrayList<ProductoPedido> listaProductosOcultos = new ArrayList<>();
 
 
                                     Iterator<String> keys = pedido.keys();
+                                    //se obtinene los datos de los pedidos
                                     while (keys.hasNext()) {
                                         String claves = keys.next();
 
@@ -379,8 +372,6 @@ public class ControladorPedidos extends ControladorGeneral {
                                                                 cantidadProducto = prod.getString(clave);
                                                             } else if (clave.equals("instrucciones")) {
                                                                 instruccionesProducto = prod.getString(clave);
-                                                            } else if (clave.equals("src")) {
-                                                                imagen = prod.getString(clave);
                                                             } else if (clave.equals("opciones")) {
                                                                 JSONArray listaOpciones = prod.getJSONArray("opciones");
                                                                 JSONObject jsonOpcion;
@@ -433,7 +424,7 @@ public class ControladorPedidos extends ControladorGeneral {
 
                                                             }
                                                         }
-                                                        //los id de los productos que se obtienen de las 2 peticiones son iguales?
+                                                        //mira a ver si el id del producto no existe en el hashmap mapaProductos o si esta en true, en cuyo caso añade el producto
                                                         if (!mapaProductos.containsKey(idProducto) || mapaProductos.get(idProducto) == true) {
                                                             System.out.println("añade producto " + idProducto + " esta " + mapaProductos.get(idProducto) + " existe " + mapaProductos.containsKey(idProducto));
                                                             ProductoPedido productoPedido = new ProductoPedido(idProducto, idCarrito, nombres, precioProducto, impuestoProducto, Integer.valueOf(cantidadProducto), instruccionesProducto, opciones, false);
@@ -444,6 +435,7 @@ public class ControladorPedidos extends ControladorGeneral {
                                                             }
                                                             listaProductos.add(productoPedido);
                                                         } else if (FLAG_MOSTRAR_PRODUCTOS_OCULTADOS) {
+                                                            //Si el id del producto se encuentra en mapaProductos y contiene false, se mira si el Flag de mostrar_productos_ocultados  está en true, en cuyo caso añade el producto a la lista de productos ocultos
                                                             ProductoPedido productoPedido = new ProductoPedido(idProducto, idCarrito, nombres, precioProducto, impuestoProducto, Integer.valueOf(cantidadProducto), instruccionesProducto, opciones, true);
                                                             productoPedido.setIdProductoPedido(idProductoPedido);
                                                             if (tachado(getIdRestaurante(), num, idProductoPedido)) {
@@ -463,18 +455,16 @@ public class ControladorPedidos extends ControladorGeneral {
                                         }
 
                                     }
-                                    boolean anadir = true;
-                                    if (est != null && !est.equals("null")) {
-                                        anadir = estaYaEnLista(num, est, elements);
-                                        System.out.println("boolean anadir " + anadir);
+                                    boolean ignorar = true;
+                                    if (est != null && !est.equals("null")) { // mira que el estado del pedido no sea null
+                                        ignorar = estaYaEnLista(num, est, elements); // mira a ver si ya está en la lista con el mismo estado. si está, se ignora
+                                        System.out.println("boolean anadir " + ignorar);
                                     }
-                                    if (listaProductosOcultos.size() > 0) {
+                                    if (listaProductosOcultos.size() > 0) { //si la lista de productos ocultos tiene algún elemento, se añaden a la lista de productos
                                         listaProductos.addAll(listaProductosOcultos);
                                     }
 
-                                    System.out.println("listElement " + num + " " + anadir + " " + listaProductos.size());
-
-                                    if ((!anadir || bol) && listaProductos.size() > 0) {
+                                    if ((!ignorar || bol) && listaProductos.size() > 0) { //si ignorar es false o el booleano bol (que indicaba que se tenia que rehacer la lista) esta en true y tiene productos, se crea el pedido
                                         Cliente client = new Cliente(nombre, tipo, correo, prefijoTlf, tlf);
                                         client.setApellido(apellido);
                                         Importe importe = new Importe(metodo_pago, total, impuesto, service_charge, propina);
@@ -482,6 +472,7 @@ public class ControladorPedidos extends ControladorGeneral {
 
 
 
+                                        //dependiendo del estado se añade el producto con un color y estado u otro
                                         if (est.equals("ACEPTADO")) {
                                             PedidoNormal elemento = new PedidoNormal("#ED40B616", num, mesa, resources.getString(R.string.botonAceptado), false, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
                                             elements.add(elemento);
@@ -490,8 +481,7 @@ public class ControladorPedidos extends ControladorGeneral {
                                             elements.add(new PedidoNormal("#0404cb", num, mesa, resources.getString(R.string.botonListo), false, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS));
 
                                         } else if (est.equals("PENDIENTE")) {
-                                            System.out.println("Numpedido " + num + " numpedido saved " + savedNumMax);
-                                            System.out.println("NUMPEDIDO MAX = " + numMax);
+                                            //en el estado pendiente se mira si el pedido es nuevo o no
                                             boolean estaEnNull = false;
                                             int indice = 0;
                                             while (!estaEnNull && indice < pedidosNull.size()) {
@@ -513,27 +503,23 @@ public class ControladorPedidos extends ControladorGeneral {
                                                 if (!esta) {
                                                     newElements.add(num);
                                                 }
-                                                System.out.println("listaParpadeos size " + listaParpadeos.size());
 
-                                                db.añadirNuevo(getIdRestaurante(), num);
-                                                addParpadeo(num, listaParpadeos);
-                                                System.out.println("listaParpadeos size " + listaParpadeos.size());
+                                                db.añadirNuevo(getIdRestaurante(), num); //en caso de que el pedido sea nuevo lo añade a la db como pedido nuevo
+                                                addParpadeo(num, listaParpadeos); // y lo añade a la lsita de parpadeos
 
+                                                //el pedido se crea con el atributo de primera en true para indicar que es la primera vez que se recibe dicho pedido
                                                 PedidoNormal elemento = new PedidoNormal("#000000", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
                                                 elements.add(1, elemento);
 
-                                                hayNuevosPedidos = true;
+                                                hayNuevosPedidos = true; //booleano que indica si hay algún pedido que no estaba antes en la lista elements
                                             } else {
                                                 boolean esta = false;
-                                                System.out.println("newElements for ");
                                                 for (int y = 0; y < newElements.size(); y++) {
-                                                    // System.out.println("es igual? " + num + " " + newElements.get(y));
 
                                                     System.out.println(newElements.get(y));
                                                     System.out.println(Integer.valueOf(num));
                                                     if (newElements.get(y) == num) {
                                                         esta = true;
-                                                        //System.out.println("entra en está  " + num);
                                                     }
                                                 }
                                                 System.out.println(newElements);
@@ -549,6 +535,7 @@ public class ControladorPedidos extends ControladorGeneral {
                                                     System.out.println("listaParpadeos size " + listaParpadeos.size());
 
                                                 } else {
+                                                    //se mira si en la db se encuentra el pedido como nuevo
                                                     if (db.estaNuevoPedido(getIdRestaurante(), num)) {
                                                         elemento = new PedidoNormal("#FFFFFF", num, mesa, resources.getString(R.string.botonPendiente), true, resultdate, instruccionesGenerales, client, importe, listaP.getLista(), FLAG_MOSTRAR_PRODUCTOS_OCULTADOS);
                                                         elements.add(1, elemento);
@@ -588,20 +575,15 @@ public class ControladorPedidos extends ControladorGeneral {
 
                             System.out.println("entra en hayNuevosPedidos 2" + primerPeticionGetPedidos);
 
+                            //si no es la primera petición que se hace en la actividad y hay pedidos nuevos
                             if (!primerPeticionGetPedidos && hayNuevosPedidos) {
-                                System.out.println("entra en hayNuevosPedidos");
-
-
+                                //se le llama al callback con la función de onNuevosPedidos y se pone en false el booleano de hayNuevosPeiddos
                                 callback.onNuevosPedidos();
-
-
-                                SharedPreferences sharedSonido = myContext.getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
-
                                 hayNuevosPedidos = false;
 
                             }
 
-                            reordenar((List<Pedido>) (ArrayList<?>) elements);
+                            reordenar((List<Pedido>) (ArrayList<?>) elements); // se llama a la funcion reordenar para ordenar los pedidos
                             callback.onUpdateReconnect();
 
                             callback.onPrimeraPeticion();
@@ -626,7 +608,7 @@ public class ControladorPedidos extends ControladorGeneral {
                         // Manejar el error de la petición
                         // Aquí puedes manejar cualquier error de la petición
                         System.out.println("error " + error.toString());
-                        if (error.toString().toLowerCase().contains("noconnectionerror")) {
+                        if (error.toString().toLowerCase().contains("noconnectionerror")) { // si hay un error en la petición se muestra un mensaje con el error por la pantalla
                             Toast.makeText(myContext, resources.getString(R.string.txtErrorConexion), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(myContext, error.toString(), Toast.LENGTH_SHORT).show();

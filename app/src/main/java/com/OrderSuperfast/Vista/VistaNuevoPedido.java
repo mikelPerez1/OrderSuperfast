@@ -69,6 +69,8 @@ public class VistaNuevoPedido extends VistaGeneral {
 
         controlador = new ControladorNuevoPedido(this);
         //
+        ////////////////////////////////////////////////
+        /////Datos metidos a mano para pruebas /////////
         ArrayList<Carta> listaCartas = new ArrayList<>();
         Carta carta = new Carta("carta1", setNombresIdiomas("Menú del día", "Today's menu"));
         listaCartas.add(carta);
@@ -213,7 +215,6 @@ public class VistaNuevoPedido extends VistaGeneral {
 
                 @Override
                 public void onClick(View v) {
-                    //cambiarVisible(layout_contenido_carrito);
                     animacionScale(layout_contenido_carrito,onAnimation);
                 }
             });
@@ -231,6 +232,12 @@ public class VistaNuevoPedido extends VistaGeneral {
 
     }
 
+    /**
+     * @param v View al que se le va a aplicar la animación
+     * @param onAnimation una lista de booleanos de 1 elemento que contiene un booleano que indica si está en una animación o no.
+     *                    se ha tenido que hacer con una lista de booleanos por que con un booleano normal no dejaba cambiar el valor
+     *                    en las funciones onAnimationEnd y onAnimationStart
+     */
     private void animacionScale(View v, boolean[] onAnimation) {
         ObjectAnimator animator;
 
@@ -277,6 +284,9 @@ public class VistaNuevoPedido extends VistaGeneral {
 
     }
 
+    /**
+     * Inicializa el adaptador AdaptadorCarrito y se lo pone al RecyclerView del carrito.
+     */
     private void setListenerCarrito() {
 
         RecyclerView recyclerView = findViewById(R.id.recycler_carrito);
@@ -284,6 +294,10 @@ public class VistaNuevoPedido extends VistaGeneral {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adaptadorCarrito = new AdaptadorCarrito(pedidoActual.getListaProductos(), this, new AdaptadorCarrito.listener() {
+            /**
+             * al pulsar un item del carrito, se va a la pantalla de opciones del producto para poder modificar el item seleccionado
+             * @param item
+             */
             @Override
             public void onItemClick(ProductoPedido item) {
                 productoActual = item;
@@ -293,6 +307,10 @@ public class VistaNuevoPedido extends VistaGeneral {
 
             }
 
+            /**
+             * Al clickar en la imagen de la basura, se quita el item del pedido actual
+             * @param item
+             */
             @Override
             public void onRemoveClick(ProductoPedido item) {
                 pedidoActual.removeProducto(item);
@@ -390,9 +408,10 @@ public class VistaNuevoPedido extends VistaGeneral {
     }
 
 
-
-
-
+    /**
+     * Funcion que inicializa el adaptador de las opciones de un producto y se lo pone al RecyclerView con id recycler_opciones_producto
+     * @param listaOpciones lista de las opciones que tiene un producto
+     */
     private void setRecyclerOpcionesProductos(ArrayList<Object> listaOpciones) {
         RecyclerView recyclerOpciones = findViewById(R.id.recycler_opciones_producto);
         recyclerOpciones.setHasFixedSize(true);
@@ -406,6 +425,11 @@ public class VistaNuevoPedido extends VistaGeneral {
 
             }
 
+            /**
+             * Cuando se clicka en un elemento de tipo Múltiple se mira si estaba ya elegido o no, si estaba lo quita y si no estaba lo añade a la lista de opciones elegidas del producto
+             * Luego ordena las opciones y por ultimo mira si ya se han seleccionado todas las opciones obligatorias para dejar añadir el producto al carrito
+             * @param item
+             */
             @Override
             public void onMultipleClick(Opcion item) {
                 if (opcionesElegidasProducto.contains(item)) {
@@ -417,6 +441,11 @@ public class VistaNuevoPedido extends VistaGeneral {
                 actualizarBotonAñadir(layout_desactivar_boton);
             }
 
+            /**
+             * Cuando se clicka en un elemento de tipo unico se deselecciona cualquier otro elemento de la misma opcion que estuviese seleccionado,
+             * se añade el actual, se ordenan las opciones y se verifica si se puede añadir el producto o todavía faltan opciones obligatorias por elegir
+             * @param item
+             */
             @Override
             public void onUniqueClick(Opcion item) {
 
@@ -431,6 +460,10 @@ public class VistaNuevoPedido extends VistaGeneral {
                 actualizarBotonAñadir(layout_desactivar_boton);
             }
 
+            /**
+             * Mira si el apartado de instrucciones es el foco o no. Si es el foco, mueve el recycler para que el teclado no oculte el espacio donde se ponen las instrucciones
+             * @param bool booleano que indica si el apartado de las instrucciones tiene el foco o no.
+             */
             @Override
             public void onFocusChange(boolean bool) {
                 if (bool) {
@@ -465,13 +498,16 @@ public class VistaNuevoPedido extends VistaGeneral {
     }
 
 
-
-
+    /**
+     * Inicializa la lista de los productos que tiene el pedido
+     */
     private void initCarrito() {
         ConstraintLayout layout_objetos_carrito_vacio = findViewById(R.id.layout_objetos_carrito_vacio);
         ConstraintLayout botonPagar = findViewById(R.id.boton_pagar);
         TextView tvFinalizar = findViewById(R.id.tvFinalizarPedido);
 
+
+        //se le añade un ListObserverCallback para controlar cuando cambian los elementos de la lista
         ListObserverCallback listObserver = new ListObserverCallback() {
             private boolean isEmpty = true;
             ConstraintLayout layoutCarrito = findViewById(R.id.layout_carrito);
@@ -514,6 +550,7 @@ public class VistaNuevoPedido extends VistaGeneral {
             }
         };
 
+        //se añade un ProductoListener para controlar la cantidad de productos que hay en la lista
         ProductoListener productoListener = new ProductoListener() {
             TextView tvNumElementosCarrito = findViewById(R.id.tvNumElementosCarrito);
 
@@ -543,6 +580,7 @@ public class VistaNuevoPedido extends VistaGeneral {
     }
 
 
+    // se cambia la vista del botón de finalizar para darle un tono apagado y dar a entender que está deshabilitado
     private void carritoVacio(ConstraintLayout botonPagar, ConstraintLayout layoutCarritoVacio, TextView tvFinalizar) {
         layoutCarritoVacio.setVisibility(View.VISIBLE);
         botonPagar.setBackground(getResources().getDrawable(R.drawable.background_boton_pagar_desactivado, getTheme()));
@@ -550,12 +588,18 @@ public class VistaNuevoPedido extends VistaGeneral {
 
     }
 
+    //se cambia la vista del botón finalizar para darle más color y dar a entender que esta habilitado
     private void carritoNoVacio(ConstraintLayout botonPagar, ConstraintLayout layoutCarritoVacio, TextView tvFinalizar) {
         layoutCarritoVacio.setVisibility(View.GONE);
         botonPagar.setBackground(getResources().getDrawable(R.drawable.background_boton_pagar, getTheme()));
         tvFinalizar.setTextColor(getResources().getColor(R.color.black, getTheme()));
     }
 
+    /**
+     * funcion que modifica la cantidad de un producto que se quiere escoger
+     * @param aumentar booleano que indica si se quiere aumentar o disminuir la cantidad al llamar a esta función. Si esta en true es aumentar, si está en false es disminuir
+     * @param tvCantidad Textview que contiene la cantidad actual de un producto
+     */
     private void cambiarCantidadProducto(boolean aumentar, TextView tvCantidad) {
         String cantidad = tvCantidad.getText().toString();
         int cantidadInt = Integer.valueOf(cantidad);
@@ -612,6 +656,10 @@ public class VistaNuevoPedido extends VistaGeneral {
         adaptadorCarrito.notifyDataSetChanged();
     }
 
+    /**
+     * funcion que muestra el layout de añadir un producto o el de modificar un producto dependiendo del valor del flag
+     * @param flag dependiendo del valor se muestra el botón para añadir un nuevo producto o para modificar un producto
+     */
     private void verInformacionProducto(int flag) {
         layoutOpcionesProducto.setVisibility(View.VISIBLE);
         Button botonGuardar = findViewById(R.id.botonGuardar);
