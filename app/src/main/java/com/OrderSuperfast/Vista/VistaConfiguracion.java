@@ -50,9 +50,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class Configuracion extends VistaGeneral {
+public class VistaConfiguracion extends VistaGeneral {
     private ArrayList<ProductoAbstracto> listaProductos = new ArrayList<>(), listaProductosEsconder = new ArrayList<>(), listaOpcionesEsconder = new ArrayList<>(), listaCompleta = new ArrayList<>();
-    private Configuracion activity = this;
+    private VistaConfiguracion activity = this;
     private AdapterEsconderProducto adapterProductosMostrar, adapterVisualizacionProductos;
     private FastScrollRecyclerView recyclerView;
     private SharedPreferences preferenciasProductos;

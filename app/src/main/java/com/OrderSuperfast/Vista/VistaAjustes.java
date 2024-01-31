@@ -16,17 +16,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.os.LocaleListCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,12 +35,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ajustes extends VistaGeneral {
+public class VistaAjustes extends VistaGeneral {
 
 
-    private final ajustes activity = this;
+    private final VistaAjustes activity = this;
     private SharedPreferences sharedPreferencesIdiomas;
-    private final ajustes context = this;
+    private final VistaAjustes context = this;
     private ImageView imgNavBack;
     private boolean sonido;
     private String idiomaActual = "";
@@ -140,7 +136,7 @@ public class ajustes extends VistaGeneral {
         layoutSeleccionarProductosParaFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ajustes.this, Configuracion.class);
+                Intent intent = new Intent(VistaAjustes.this, VistaConfiguracion.class);
                 startActivity(intent);
 
             }
@@ -186,7 +182,7 @@ public class ajustes extends VistaGeneral {
                 }
 
                 //guarda en las preferencias compartidas el sonido de la alerta de los nuevos pedidos
-                SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+                SharedPreferences sharedSonido = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
                 SharedPreferences.Editor sonidoEditor = sharedSonido.edit();
                 sonidoEditor.putBoolean("sonido", sonido);
                 sonidoEditor.commit();
@@ -207,7 +203,7 @@ public class ajustes extends VistaGeneral {
         });
 
 
-        SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+        SharedPreferences sharedSonido = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
         sonido = sharedSonido.getBoolean("sonido", true);
 
 
@@ -290,7 +286,7 @@ public class ajustes extends VistaGeneral {
         super.onBackPressed();
         ((Global) context.getApplication()).setIdioma("");
 
-        //   Intent i=new Intent(ajustes.this,MainActivity.class);
+        //   Intent i=new Intent(VistaAjustes.this,VistaLogin.class);
         // startActivity(i);
         finish();
     }
@@ -541,7 +537,7 @@ public class ajustes extends VistaGeneral {
     }
 
     /**
-     * Oculta los layouts relacionados con ajustes: sonido, idioma e impresora.
+     * Oculta los layouts relacionados con VistaAjustes: sonido, idioma e impresora.
      */
     private void quitarLayoutAjustes() {
         layoutSonido.setVisibility(View.GONE);
@@ -694,7 +690,7 @@ public class ajustes extends VistaGeneral {
      */
     private void setSonidoChecked() {
         // Obtiene las preferencias compartidas para el sonido
-        SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+        SharedPreferences sharedSonido = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
 
         // Obtiene el sonido actual almacenado en las preferencias compartidas
         String sonidoActual = sharedSonido.getString("sonidoUri", "clockalarm");
@@ -779,10 +775,10 @@ public class ajustes extends VistaGeneral {
     private ScrollView scroll;
 
     /**
-     * Inicializa los elementos visuales y configuraciones de la interfaz de ajustes.
-     * Encuentra y asigna elementos visuales como botones de retorno, tarjetas de ajustes de sonido e idioma,
+     * Inicializa los elementos visuales y configuraciones de la interfaz de VistaAjustes.
+     * Encuentra y asigna elementos visuales como botones de retorno, tarjetas de VistaAjustes de sonido e idioma,
      * diseños seleccionados y vistas desplazables.
-     * Inicializa la lista de categorías relacionadas con los ajustes.
+     * Inicializa la lista de categorías relacionadas con los VistaAjustes.
      * Configura el adaptador para el RecyclerView.
      * Establece los listeners para los elementos interactivos en la interfaz.
      */
@@ -795,7 +791,7 @@ public class ajustes extends VistaGeneral {
         layoutSelected2 = findViewById(R.id.layoutSelected2);
         scroll = findViewById(R.id.scrollAjustes);
 
-        // Inicializa la lista de categorías relacionadas con los ajustes
+        // Inicializa la lista de categorías relacionadas con los VistaAjustes
         initListCategorias();
 
         // Configura el adaptador para el RecyclerView
@@ -807,7 +803,7 @@ public class ajustes extends VistaGeneral {
 
 
     /**
-     * Establece los listeners de clic para elementos específicos en la interfaz de ajustes.
+     * Establece los listeners de clic para elementos específicos en la interfaz de VistaAjustes.
      */
     private void setListenerI2() {
         // Listener de clic para el botón de retroceso
@@ -818,12 +814,12 @@ public class ajustes extends VistaGeneral {
             }
         });
 
-        // Listener de clic para la tarjeta de ajustes de sonido
+        // Listener de clic para la tarjeta de VistaAjustes de sonido
         if (cardCatSonido != null) {
             cardCatSonido.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Muestra el diseño de ajustes de sonido y oculta el diseño de idioma
+                    // Muestra el diseño de VistaAjustes de sonido y oculta el diseño de idioma
                     layoutSonido.setVisibility(View.VISIBLE);
                     layoutIdioma.setVisibility(View.GONE);
                     layoutSelected.setVisibility(View.VISIBLE);
@@ -832,12 +828,12 @@ public class ajustes extends VistaGeneral {
             });
         }
 
-        // Listener de clic para la tarjeta de ajustes de idioma
+        // Listener de clic para la tarjeta de VistaAjustes de idioma
         if (cardCatIdioma != null) {
             cardCatIdioma.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Muestra el diseño de ajustes de idioma y oculta el diseño de sonido
+                    // Muestra el diseño de VistaAjustes de idioma y oculta el diseño de sonido
                     layoutSonido.setVisibility(View.GONE);
                     layoutIdioma.setVisibility(View.VISIBLE);
                     layoutSelected.setVisibility(View.INVISIBLE);
@@ -849,14 +845,14 @@ public class ajustes extends VistaGeneral {
 
 
     /**
-     * Inicializa la lista de categorías con las configuraciones de ajustes de sonido e idioma.
+     * Inicializa la lista de categorías con las configuraciones de VistaAjustes de sonido e idioma.
      */
     private void initListCategorias() {
-        // Crea y agrega una categoría para los ajustes de sonido a la lista de categorías
+        // Crea y agrega una categoría para los VistaAjustes de sonido a la lista de categorías
         Seccion cat1 = new Seccion(resources.getString(R.string.ajusteSonido), 0);
         listSeccions.add(cat1);
 
-        // Crea y agrega una categoría para los ajustes de idioma a la lista de categorías
+        // Crea y agrega una categoría para los VistaAjustes de idioma a la lista de categorías
         Seccion cat2 = new Seccion(resources.getString(R.string.ajusteIdioma), 1);
         listSeccions.add(cat2);
     }
@@ -866,7 +862,7 @@ public class ajustes extends VistaGeneral {
     private AdapterCategoria adapterCat;
 
     /**
-     * Configura el RecyclerView para mostrar las categorías de ajustes.
+     * Configura el RecyclerView para mostrar las categorías de VistaAjustes.
      */
     private void setRecyclerCat() {
         // Obtiene la referencia al RecyclerView del layout
@@ -894,7 +890,7 @@ public class ajustes extends VistaGeneral {
 
                 System.out.println("Scroll");
 
-                // Si la orientación del dispositivo es vertical, muestra el layout de configuración de ajustes
+                // Si la orientación del dispositivo es vertical, muestra el layout de configuración de VistaAjustes
                 if (resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     layoutConfiguracionAjustes.setVisibility(View.VISIBLE);
                 }

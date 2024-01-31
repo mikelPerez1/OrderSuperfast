@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,8 +27,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.Controlador.ControladorDevices;
+import com.OrderSuperfast.Controlador.ControladorDispositivos;
 import com.OrderSuperfast.Modelo.Clases.Dispositivo;
 import com.OrderSuperfast.Modelo.Clases.Zona;
 import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
@@ -37,21 +35,20 @@ import com.OrderSuperfast.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import com.OrderSuperfast.Vista.Adaptadores.AdapterDevices;
 
-public class Devices extends VistaGeneral {
+public class VistaDispositivos extends VistaGeneral {
 
 
     private AdapterDevices adapterDevices;
-    private final Devices activity = this;
+    private final VistaDispositivos activity = this;
     private RecyclerView recyclerView;
     private ArrayList<ZonaDispositivoAbstracto> listaArrayZonas = new ArrayList<>();
     private boolean onAnimation = false;
     private LinearLayoutManager linearManager;
     private ActivityResultLauncher<Intent> launcher;
-    private ControladorDevices controlador;
+    private ControladorDispositivos controlador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +66,7 @@ public class Devices extends VistaGeneral {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setWindowAnimations(0);
 
-        controlador = new ControladorDevices(this);
+        controlador = new ControladorDispositivos(this);
         System.out.println("id restaurante de la peticion " + controlador.getIdRestaurante());
 
         // obtiene la lista de zonas y dispositivos que se le ha pasado por el intent de la actividad anterior
@@ -98,7 +95,7 @@ public class Devices extends VistaGeneral {
         layoutEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Devices.this, EscanearQR.class);
+                Intent i = new Intent(VistaDispositivos.this, VistaEscanearQR.class);
                 launcher.launch(i);
                 ocultarDesplegable(overLayout, desplegableOpciones);
             }
@@ -108,7 +105,7 @@ public class Devices extends VistaGeneral {
         layoutAjustes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Devices.this, ajustes.class);
+                Intent i = new Intent(VistaDispositivos.this, VistaAjustes.class);
                 launcher.launch(i);
                 ocultarDesplegable(overLayout, desplegableOpciones);
             }
@@ -184,7 +181,7 @@ public class Devices extends VistaGeneral {
                 controlador.saveData(item.getIdPadre(), item.getId(), item.getNombrePadre(), item.getNombre());
 
                 if (item.getNombre().equals("TakeAway")) {
-                    Intent i = new Intent(Devices.this, VistaPedidos.class);
+                    Intent i = new Intent(VistaDispositivos.this, VistaPedidos.class);
                     i.putExtra("takeAway", true);
                     i.putExtra("nombreDispositivo", "Take Away");
                     i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -192,7 +189,7 @@ public class Devices extends VistaGeneral {
 
                 } else {
 
-                    Intent i = new Intent(Devices.this, VistaPedidos.class);
+                    Intent i = new Intent(VistaDispositivos.this, VistaPedidos.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     launcher.launch(i);
                 }
@@ -220,8 +217,8 @@ public class Devices extends VistaGeneral {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
 
-        //si es necesario por los ajustes que se han cambiado en pantallas posteriores, se recrea la actividad
-        SharedPreferences sharedAjustes = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+        //si es necesario por los VistaAjustes que se han cambiado en pantallas posteriores, se recrea la actividad
+        SharedPreferences sharedAjustes = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
         SharedPreferences.Editor ajustesEditor = sharedAjustes.edit();
         boolean recrear = sharedAjustes.getBoolean("recrear", false);
         if (recrear) {
@@ -397,7 +394,7 @@ public class Devices extends VistaGeneral {
             @Override
             public void onClick(View v) {
                 dialogCerrarSesion.dismiss();
-                Intent i = new Intent(Devices.this, MainActivity.class);
+                Intent i = new Intent(VistaDispositivos.this, VistaLogin.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
 

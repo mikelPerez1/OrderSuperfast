@@ -11,7 +11,7 @@
 
     android:scrollbarAlwaysDrawHorizontalTrack="true"
     android:scrollbarAlwaysDrawVerticalTrack="true"
-    tools:context="com.OrderSuperfast.Vista.MainActivity">
+    tools:context="com.OrderSuperfast.Vista.VistaLogin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/desplegableOpciones"
@@ -431,7 +431,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/usaflag" />
+     />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintNavigationPedidos"

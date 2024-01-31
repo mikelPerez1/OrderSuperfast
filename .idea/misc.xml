@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/arrow_up.xml" value="0.1545" />
         <entry key="app/src/main/res/drawable/back2.xml" value="0.1545" />
         <entry key="app/src/main/res/drawable/background_borde.xml" value="0.1" />
@@ -23,21 +24,72 @@
         <entry key="app/src/main/res/drawable/background_numero_elementos_carrito.xml" value="0.1635" />
         <entry key="app/src/main/res/drawable/background_pedido_mesa.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/background_redondeado_gris_claro_suave.xml" value="0.2445" />
+        <entry key="app/src/main/res/drawable/background_redondeado_negro.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/background_redondo_abajo.xml" value="0.1635" />
         <entry key="app/src/main/res/drawable/background_redondo_gris.xml" value="0.2445" />
         <entry key="app/src/main/res/drawable/background_redondo_izq.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/background_redondo_izq_gris.xml" value="0.3575" />
+        <entry key="app/src/main/res/drawable/background_search.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/background_semi_redondeado_borde.xml" value="0.1635" />
+        <entry key="app/src/main/res/drawable/background_white.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/borde.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/borde_boton_gris_solo.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/borde_gris_claro.xml" value="0.3575" />
         <entry key="app/src/main/res/drawable/borde_gris_claro_suave.xml" value="0.2725" />
         <entry key="app/src/main/res/drawable/borde_redondeado_grisaceo.xml" value="0.2735" />
         <entry key="app/src/main/res/drawable/borde_redondos_rojo.xml" value="0.2405" />
+        <entry key="app/src/main/res/drawable/carrito.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/check.xml" value="0.1635" />
+        <entry key="app/src/main/res/drawable/circulo.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/clock.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/close1.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/comanda.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/comentario.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/custom_checkbox_selector.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/dangericon.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/degradado_blanco.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/delivery.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/documento.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/fondo_boton_llamada.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/fondo_desplegable_opciones.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/fondo_icono_login.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/forma_cuadrado.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/gradient_recycler_fade.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/gradient_spinner.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/gradiente_boton_cerrar.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/gradiente_recycler.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/help_filled.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/ic_dropdown.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/ic_dropdown_arrow_foreground.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/ic_reply_fill0_wght700_grad200_opsz48.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/ic_restaurant_menu_black_24dp.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/img_takeaway.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/info2.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/line.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/line_drawable.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/linea_discontinua.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/linea_tachar.xml" value="0.276" />
+        <entry key="app/src/main/res/drawable/mini_menu_actualizar_lista.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/music_note.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/no_meal_2.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/no_meals.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/progress_bar.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/prueba.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/qr_scanner.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/question_mark.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/radio_button.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/recivo.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/remove.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/replycrop1.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/round_border.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/round_button.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/round_shape.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/scroll.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/scroll_gradient.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/switch_colors.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/task_completed.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/triangulo.xml" value="0.2735" />
+        <entry key="app/src/main/res/drawable/zona.xml" value="0.1295" />
         <entry key="app/src/main/res/layout-land/activity_devices.xml" value="0.26079521162890124" />
         <entry key="app/src/main/res/layout-land/activity_guardar_filtrar_productos.xml" value="0.2975630611372381" />
         <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.2975630611372381" />

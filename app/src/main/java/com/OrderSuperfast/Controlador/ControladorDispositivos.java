@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ControladorDevices extends ControladorGeneral{
+public class ControladorDispositivos extends ControladorGeneral{
 
 
     /**
@@ -25,7 +25,7 @@ public class ControladorDevices extends ControladorGeneral{
      *
      * @param mContext El contexto asociado con este Controlador de Dispositivos.
      */
-    public ControladorDevices(Context mContext) {
+    public ControladorDispositivos(Context mContext) {
         super(mContext);
         System.out.println("id restaurante de la "+getIdRestaurante());
 

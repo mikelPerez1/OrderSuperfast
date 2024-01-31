@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import com.OrderSuperfast.Vista.MainActivity;
+import com.OrderSuperfast.Vista.VistaLogin;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -35,7 +35,7 @@ public class ExampleInstrumentedTest {
     public void testButtonClick() {
         // Simular un clic en un botón con ID "button_login"
 
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        ActivityScenario<VistaLogin> scenario = ActivityScenario.launch(VistaLogin.class);
         onView(withId(R.id.loginIniciarBtn)).perform(click());
 
 

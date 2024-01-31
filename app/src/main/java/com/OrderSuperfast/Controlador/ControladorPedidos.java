@@ -595,7 +595,7 @@ public class ControladorPedidos extends ControladorGeneral {
                                 callback.onNuevosPedidos();
 
 
-                                SharedPreferences sharedSonido = myContext.getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+                                SharedPreferences sharedSonido = myContext.getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
 
                                 hayNuevosPedidos = false;
 
@@ -972,6 +972,7 @@ public class ControladorPedidos extends ControladorGeneral {
                                                         Map<String, String> nombreElemento = new HashMap<>();
                                                         String tipoPrecioOpcion = "";
                                                         String precioOpcion = "";
+                                                        System.out.println("mostrar lista opciones "+listaOpciones);
                                                         for (int o = 0; o < listaOpciones.length(); o++) {
                                                             jsonOpcion = listaOpciones.getJSONObject(o);
                                                             Iterator<String> keyOpciones = jsonOpcion.keys();
@@ -1186,7 +1187,7 @@ public class ControladorPedidos extends ControladorGeneral {
                         if (hayNuevosPedidos) {
                             callback.onNuevosPedidos();
                             /*
-                            SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+                            SharedPreferences sharedSonido = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
                             boolean sonido = sharedSonido.getBoolean("sonido", true);
                             if (resId != -1) {
                                 mp = MediaPlayer.create(activity, resId);

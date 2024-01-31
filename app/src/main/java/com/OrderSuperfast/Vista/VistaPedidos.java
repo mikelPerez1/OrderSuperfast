@@ -72,7 +72,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.OrderSuperfast.ClearService;
 import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorPedidos;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackCambiarEstadoPedido;
@@ -569,7 +568,6 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         super.onCreate(savedInstanceState);
-        startService(new Intent(getBaseContext(), ClearService.class));
         setContentView(R.layout.activity_lista);
 
         resources = getResources();
@@ -783,7 +781,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
 
         ImageButton actualizar = findViewById(R.id.botonActualizar);
 
-        SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+        SharedPreferences sharedSonido = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
         String sonidoUri = sharedSonido.getString("sonidoUri", "clockalarm");
         if (sonidoUri.equals("noSound")) {
             resId = -1;
@@ -1237,7 +1235,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(VistaPedidos.this, logActivity.class);
+                Intent i = new Intent(VistaPedidos.this, VistaRegistro.class);
                 startActivity(i);
             }
         });
@@ -1253,7 +1251,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
                     editor.commit();
                 }
 
-                Intent i = new Intent(VistaPedidos.this, logActivity.class);
+                Intent i = new Intent(VistaPedidos.this, VistaRegistro.class);
                 startActivity(i);
             }
         });
@@ -2290,14 +2288,14 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
     public void click() {
         producto = findViewById(R.id.productos);
         producto.setOnClickListener(v -> {
-            // Intent i = new Intent(VistaPedidos.this, Configuracion.class);
+            // Intent i = new Intent(VistaPedidos.this, VistaConfiguracion.class);
             //i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             //startActivity(i);
 
         });
         ImageButton producto2 = findViewById(R.id.productos2);
         producto2.setOnClickListener(v -> {
-            //Intent i = new Intent(VistaPedidos.this, Configuracion.class);
+            //Intent i = new Intent(VistaPedidos.this, VistaConfiguracion.class);
             //i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             //startActivity(i);
 
@@ -2754,7 +2752,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
         }
 
 
-        SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+        SharedPreferences sharedSonido = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
 
 
         System.out.println("RESUME HASH AFTER");
@@ -3433,7 +3431,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
                 public void run() {
                     System.out.println("texto del websocket " + text);
                     if (text.equals("Update")) {
-                        SharedPreferences sharedSonido = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+                        SharedPreferences sharedSonido = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
                         actualizar(false, null);
                         String estado = ((Global) activity.getApplication()).getFiltro();
                         System.out.println(estado);
@@ -3529,7 +3527,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
             pedidoActual = null;
             return;
         }
-        //si se han cambiado los ajustes pasa a la pantalla anterior el codigo 300 para indicar que
+        //si se han cambiado los VistaAjustes pasa a la pantalla anterior el codigo 300 para indicar que
         //necesita recrear la pantalla y aplicar los cambios
         if (recreate) {
             Intent data = new Intent();
@@ -4459,7 +4457,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
         layoutOpcionesGenerales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(VistaPedidos.this, ajustes.class);
+                Intent i = new Intent(VistaPedidos.this, VistaAjustes.class);
                 //  startActivity(i);
                 launcher.launch(i);
                 ocultarDesplegable();
@@ -4477,7 +4475,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
         layoutEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(VistaPedidos.this, EscanearQR.class);
+                Intent i = new Intent(VistaPedidos.this, VistaEscanearQR.class);
                 launcher.launch(i);
                 ocultarDesplegable();
             }
@@ -7510,7 +7508,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
     }
 
     private void removeElements() {
-        //funcion que se ejecuta después de volver de los ajustes de productos ocultos
+        //funcion que se ejecuta después de volver de los VistaAjustes de productos ocultos
         elements.clear();
 
         System.out.println("elementss " + elements.size());
@@ -7594,7 +7592,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
 
 
             } else if (result.getResultCode() == 300) {
-                SharedPreferences sharedAjustes = getSharedPreferences("ajustes", Context.MODE_PRIVATE);
+                SharedPreferences sharedAjustes = getSharedPreferences("VistaAjustes", Context.MODE_PRIVATE);
                 SharedPreferences.Editor ajustesEditor = sharedAjustes.edit();
                 ajustesEditor.putBoolean("recrear", true);
                 ajustesEditor.apply();
@@ -7622,7 +7620,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
     }
 
     private void irActivityLog() {
-        Intent i = new Intent(VistaPedidos.this, logActivity.class);
+        Intent i = new Intent(VistaPedidos.this, VistaRegistro.class);
         startActivity(i);
     }
 
@@ -7630,7 +7628,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
         SharedPreferences.Editor productosEditor = preferenciasProductos.edit();
         productosEditor.putInt("modo", flag);
         productosEditor.apply();
-        Intent i = new Intent(VistaPedidos.this, Configuracion.class);
+        Intent i = new Intent(VistaPedidos.this, VistaConfiguracion.class);
         i.putExtra("modo",flag);
         launcher.launch(i);
     }
@@ -7642,7 +7640,7 @@ public class VistaPedidos extends VistaGeneral implements SearchView.OnQueryText
         editor.putString("pedido", String.valueOf(pedidoActual.getNumPedido()));
         editor.commit();
 
-        Intent i = new Intent(VistaPedidos.this, logActivity.class);
+        Intent i = new Intent(VistaPedidos.this, VistaRegistro.class);
         startActivity(i);
     }
 

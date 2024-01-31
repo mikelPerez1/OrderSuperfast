@@ -5,8 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.OrderSuperfast.Vista.Global;
-import com.OrderSuperfast.Vista.logActivity;
+import com.OrderSuperfast.Vista.VistaRegistro;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,15 +20,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ControladorLog extends ControladorGeneral{
+public class ControladorRegistro extends ControladorGeneral{
 
 
     /**
-     * Crea un Controlador de Log asociado con la actividad de registro (logActivity).
+     * Crea un Controlador de Log asociado con la actividad de registro (VistaRegistro).
      *
-     * @param mContext El contexto de la actividad de registro (logActivity) al que se asocia este Controlador de Log.
+     * @param mContext El contexto de la actividad de registro (VistaRegistro) al que se asocia este Controlador de Log.
      */
-    public ControladorLog(logActivity mContext){
+    public ControladorRegistro(VistaRegistro mContext){
         super(mContext);
         removeOlderLines();
     }
@@ -146,7 +145,7 @@ public class ControladorLog extends ControladorGeneral{
                                     String fechaPoner = format.format(now).replace("-", "/");
 
                                     stringBuilder.append("\n\n<br><br>   ").append("<br><b>" + fechaPoner + "</b>");
-                                    ((logActivity) myContext).addTextview(fechaPoner,false);
+                                    ((VistaRegistro) myContext).addTextview(fechaPoner,false);
 
 
                                 }
@@ -158,7 +157,7 @@ public class ControladorLog extends ControladorGeneral{
                                 arrayString[1] = "<b> •&nbsp;&nbsp;" + arrayString[1] + "</b>";
                                 String str = TextUtils.join(" ", arrayString);
                                 stringBuilder.append("\n\n<br><br> ").append(str);
-                                ((logActivity) myContext).addTextview(str,true);
+                                ((VistaRegistro) myContext).addTextview(str,true);
 
 
 
@@ -170,12 +169,12 @@ public class ControladorLog extends ControladorGeneral{
                             fechaAnterior = fechaNow;
                             String fechaPoner = fechaAnterior.replace("-", "/");
                             stringBuilder.append("\n\n<br><br>  ").append("<b>" + fechaPoner + "</b>");
-                            ((logActivity) myContext).addTextview(fechaPoner,false);
+                            ((VistaRegistro) myContext).addTextview(fechaPoner,false);
                             arrayString[0] = "";
                             arrayString[1] = "<b> •&nbsp;&nbsp;" + arrayString[1] + "</b>";
                             String str = TextUtils.join(" ", arrayString);
                             stringBuilder.append("\n\n<br><br> ").append(str);
-                            ((logActivity) myContext).addTextview(str,true);
+                            ((VistaRegistro) myContext).addTextview(str,true);
 
 
                         }

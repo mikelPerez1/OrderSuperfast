@@ -28,16 +28,16 @@
             android:name=".Vista.VistaNuevoPedido"
             android:exported="false" />
         <activity
-            android:name=".Vista.EscanearQR"
+            android:name=".Vista.VistaEscanearQR"
             android:exported="false" />
         <activity
-            android:name=".Vista.Configuracion"
+            android:name=".Vista.VistaConfiguracion"
             android:exported="false" />
         <activity
-            android:name=".Vista.logActivity"
+            android:name=".Vista.VistaRegistro"
             android:exported="false" />
         <activity
-            android:name=".Vista.ajustes"
+            android:name=".Vista.VistaAjustes"
             android:exported="false" />
 
         <profileable
@@ -51,16 +51,13 @@
             android:launchMode="standard"
             android:windowSoftInputMode="adjustPan" />
 
-        <service
-            android:name=".ClearService"
-            android:stopWithTask="false" />
 
         <activity
-            android:name=".Vista.Devices"
+            android:name=".Vista.VistaDispositivos"
             android:exported="false"
             android:launchMode="standard" />
         <activity
-            android:name=".Vista.MainActivity"
+            android:name=".Vista.VistaLogin"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">

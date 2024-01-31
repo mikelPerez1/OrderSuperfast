@@ -6,13 +6,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.OrderSuperfast.Vista.MainActivity;
-
-import android.app.Activity;
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.View;
+import com.OrderSuperfast.Vista.VistaLogin;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
@@ -65,8 +59,8 @@ public class CustomEditText extends AppCompatEditText {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
             );
 
-            if (context1 instanceof MainActivity) {
-                ((MainActivity) context1).desplazarPagina();
+            if (context1 instanceof VistaLogin) {
+                ((VistaLogin) context1).desplazarPagina();
             }
             this.clearFocus();
         }

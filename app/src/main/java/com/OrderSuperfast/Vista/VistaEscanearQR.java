@@ -7,10 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -26,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorEscanerQR;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackBoolean;
 import com.OrderSuperfast.Controlador.Interfaces.DevolucionCallback;
@@ -34,11 +30,6 @@ import com.OrderSuperfast.Vista.Adaptadores.AdapterVincularZona;
 import com.OrderSuperfast.Modelo.Clases.CustomEditText;
 import com.OrderSuperfast.Modelo.Clases.DispositivoZona;
 import com.OrderSuperfast.R;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -46,10 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
-public class EscanearQR extends VistaGeneral {
+public class VistaEscanearQR extends VistaGeneral {
     private Button botonEscanearQr;
     private TextView datosqr, textZona, textUbicacion;
     private static final String urlPeticion = "https://app.ordersuperfast.es/android/v1/qr/getName/";
@@ -149,7 +139,7 @@ public class EscanearQR extends VistaGeneral {
     private final ActivityResultLauncher<ScanOptions> escaner = registerForActivityResult(new ScanContract(),
             result -> {
                 if (result.getContents() == null) {
-                    // Toast.makeText(EscanearQR.this, "Cancelled", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(VistaEscanearQR.this, "Cancelled", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
                     // El código QR fue escaneado exitosamente, result.getContents() contiene el valor del código QR.
@@ -192,7 +182,7 @@ public class EscanearQR extends VistaGeneral {
 
                             @Override
                             public void onDevolucionFallida(String mensajeError) {
-                                Toast.makeText(EscanearQR.this, mensajeError, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VistaEscanearQR.this, mensajeError, Toast.LENGTH_SHORT).show();
                                 onBackPressed();
                             }
                         });
@@ -305,7 +295,7 @@ public class EscanearQR extends VistaGeneral {
                     @Override
                     public void onPeticionExitosa(boolean bool) {
                         if(veces == 0) {
-                            Toast.makeText(EscanearQR.this, "Changes saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VistaEscanearQR.this, "Changes saved", Toast.LENGTH_SHORT).show();
                         }
                         veces ++;
                         if(dialog.isShowing()){
@@ -315,7 +305,7 @@ public class EscanearQR extends VistaGeneral {
 
                     @Override
                     public void onPeticionFallida(String error) {
-                        Toast.makeText(EscanearQR.this, error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VistaEscanearQR.this, error, Toast.LENGTH_SHORT).show();
 
                     }
                 });

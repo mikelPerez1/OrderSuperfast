@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -13,14 +12,12 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +26,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.OrderSuperfast.ContextUtils;
 import com.OrderSuperfast.Controlador.ControladorLogin;
 import com.OrderSuperfast.Controlador.Interfaces.CallbackLogin;
 import com.OrderSuperfast.Modelo.Clases.CustomEditText;
-import com.OrderSuperfast.Modelo.Clases.SessionSingleton;
 import com.OrderSuperfast.Modelo.Clases.ZonaDispositivoAbstracto;
 import com.OrderSuperfast.R;
 
@@ -48,12 +43,11 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
-public class MainActivity extends VistaGeneral {
+public class VistaLogin extends VistaGeneral {
 
-    private MainActivity activity = this;
+    private VistaLogin activity = this;
     private int inset = 0;
     private boolean onAnimation = false;
     private AppUpdateManager appUpdateManager; //
@@ -151,7 +145,7 @@ public class MainActivity extends VistaGeneral {
         checkForUpdates();
 
         tipoDispositivo();
-        ControladorLogin controlador = new ControladorLogin(this); // inicializa el controlador de la actividad MainActivity (el login)
+        ControladorLogin controlador = new ControladorLogin(this); // inicializa el controlador de la actividad VistaLogin (el login)
 
         ConstraintLayout desplegableOpciones = findViewById(R.id.desplegableOpciones);
         // se le pone un listener vacío al desplegable de opciones para que no se pueda interactuar con el overLayout (layout que oscurece los demás elementos) que está justo detrás
@@ -165,12 +159,12 @@ public class MainActivity extends VistaGeneral {
         ConstraintLayout overLayout = findViewById(R.id.overLayout);
         CheckBox checkbox = findViewById(R.id.checkBox);
 
-        //listener que te lleva a la actividad de los ajustes generales
+        //listener que te lleva a la actividad de los VistaAjustes generales
         ConstraintLayout layoutOpcionesGenerales = findViewById(R.id.layoutOpcionesGenerales);
         layoutOpcionesGenerales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ajustes.class);
+                Intent i = new Intent(VistaLogin.this, VistaAjustes.class);
                 launcher.launch(i);
                 ocultarDesplegable(overLayout, desplegableOpciones);
             }
@@ -282,7 +276,7 @@ public class MainActivity extends VistaGeneral {
 
 
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            //si vuelve de haber guardado nuevos ajustes de la pantalla de ajustes, recrea la actividad para visualizar los cambios
+            //si vuelve de haber guardado nuevos VistaAjustes de la pantalla de VistaAjustes, recrea la actividad para visualizar los cambios
             if (result.getResultCode() == 300) {
                 recreate();
             }
@@ -411,7 +405,7 @@ public class MainActivity extends VistaGeneral {
                 //si existe un usuario con dichas credenciales, pasa a la siguiente pantalla
 
 
-                Intent intent = new Intent(MainActivity.this, Devices.class);
+                Intent intent = new Intent(VistaLogin.this, VistaDispositivos.class);
                 intent.putExtra("lista",lista);
 
                 launcher.launch(intent);

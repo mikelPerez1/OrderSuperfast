@@ -1,17 +1,12 @@
 package com.OrderSuperfast.Vista;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Display;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,29 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.OrderSuperfast.ContextUtils;
-import com.OrderSuperfast.Controlador.ControladorLog;
+import com.OrderSuperfast.Controlador.ControladorRegistro;
 import com.OrderSuperfast.R;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-public class logActivity extends VistaGeneral {
+public class VistaRegistro extends VistaGeneral {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -75,7 +53,7 @@ public class logActivity extends VistaGeneral {
         inset = prefInset.getInt("inset", 0);
         initialize();
 
-        ControladorLog controlador = new ControladorLog(this);
+        ControladorRegistro controlador = new ControladorRegistro(this);
         controlador.readFromFile(this); //lee el archivo donde tiene guardado el registro
 
     }

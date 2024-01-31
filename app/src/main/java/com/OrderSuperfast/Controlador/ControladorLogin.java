@@ -165,15 +165,13 @@ public class ControladorLogin extends ControladorGeneral{
                                         }
                                     } else if (respuesta.getString(clave).equals("ERROR")) {
                                         try {
-                                           // Toast.makeText(activity, respuesta.getString("details"), Toast.LENGTH_SHORT).show();
                                             callback.onLoginError(respuesta.getString("details"));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 }
-                                if (idRest != null && !idRest.equals("")) {
-                                   // getSessionSingleton().resetInstance();
+                                if (idRest != null && !idRest.equals("")) { //Si el servidor devuelve un Id restaurante (existe la cuenta)
                                     SessionSingleton sesion = getSessionSingleton();
                                     sesion.setRestaurantId(idRest);
                                     sesion.setRestaurantName(nombreRest);
@@ -201,7 +199,7 @@ public class ControladorLogin extends ControladorGeneral{
                         Log.e("error", "Error de conexión");
                         System.out.println("respuesta login " + error.toString());
                         callback.onLoginError(error.toString());
-                        // Toast.makeText(MainActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(VistaLogin.this, "Connection failed", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -226,24 +224,6 @@ public class ControladorLogin extends ControladorGeneral{
      */
     private void login(String user,String pass,String idRest, String logoRest, String nombreRest, boolean checkboxChecked,ArrayList<ZonaDispositivoAbstracto> zonas, CallbackLogin callback) {
 
-        SharedPreferences sharedPreferences = myContext.getSharedPreferences("ids", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("saveIdRest", idRest);
-        editor.apply();
-
-        sharedPreferences = myContext.getSharedPreferences("logoRestaurante", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
-
-
-        //esto habria que cambiarlo por atributos estaticos de la vista en vez de guardarlo en preferencias
-        String img = logoRest;
-        editor.putString("nombreRestaurante", nombreRest);
-        editor.putString("imagen", img);
-
-        editor.apply();
-
-        //guardarZonasPref(zonas);
 
 
         Pair<String, String> datos = codificar(user, pass);
@@ -281,61 +261,6 @@ public class ControladorLogin extends ControladorGeneral{
         editorZonas.remove("savedDisps");
     }
 
-    /**
-     * Guarda la información de zonas y dispositivos en las preferencias compartidas.
-     *
-     * Este método toma un objeto Zonas y guarda la información relacionada con las zonas
-     * y sus dispositivos asociados en las preferencias compartidas. Cada zona contiene
-     * información sobre su identificador, nombre, lista de dispositivos, y configuraciones
-     * específicas (como esTakeAway y takeAwayActivado).
-     *
-     * @param zonas Objeto Zonas que contiene información sobre las zonas y dispositivos a guardar
-     *              en las preferencias compartidas.
-     */
-    private void guardarZonasPref(Zonas zonas) {
-
-
-        SharedPreferences sharedZonas = myContext.getSharedPreferences("dispos", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorZonas = sharedZonas.edit();
-
-        JSONObject dispJson;
-        JSONObject zonaJson;
-        JSONArray array = new JSONArray();
-        JSONArray jsonArrayDisp = new JSONArray();
-        try {
-
-            for (int i = 0; i < zonas.size(); i++) {
-
-                jsonArrayDisp = new JSONArray();
-                DispositivoZona dz = zonas.getZona(i);
-                ArrayList<Dispositivo> arrayDisp = dz.getArray();
-                for (int j = 0; j < arrayDisp.size(); j++) {
-                    dispJson = new JSONObject();
-                    dispJson.put("id", arrayDisp.get(j).getId());
-                    dispJson.put("nombre", arrayDisp.get(j).getNombre());
-
-                    jsonArrayDisp.put(dispJson);
-                }
-
-                zonaJson = new JSONObject();
-                zonaJson.put("id", dz.getId());
-                zonaJson.put("nombre", dz.getNombre());
-                zonaJson.put("dispositivos", jsonArrayDisp);
-                zonaJson.put("esTakeAway", dz.getEsZona());
-                zonaJson.put("takeAwayActivado", dz.getEsZona());
-                array.put(zonaJson);
-
-
-            }
-
-            editorZonas.putString("zonas", array.toString());
-            editorZonas.apply();
-
-        } catch (JSONException e) {
-
-        }
-
-    }
 
 
     /**
@@ -382,7 +307,6 @@ public class ControladorLogin extends ControladorGeneral{
                         newPos = (pos + desplazamientoPassword) % letras.length();
 
                     }
-                    //int newPos = (pos + desplazamiento) % letras.length();
                     textoCodificadoBuilder.append(letras.charAt(newPos));
                 }
             }
@@ -454,6 +378,7 @@ public class ControladorLogin extends ControladorGeneral{
         deviceEditor.remove("listaDispositivos");
         deviceEditor.apply();
     }
+
 
     /**
      * Obtiene y decodifica la cuenta de usuario guardada en preferencias compartidas.

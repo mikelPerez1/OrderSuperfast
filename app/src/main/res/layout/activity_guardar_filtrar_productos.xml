@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rootLayout"
     android:background="@color/black"
-    tools:context=".Vista.Configuracion">
+    tools:context=".Vista.VistaConfiguracion">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutInterfaz2"
